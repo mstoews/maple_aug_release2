@@ -1,0 +1,37 @@
+platform :ios, '11.2'
+
+target 'Maple' do
+# Comment the next line if you're not using Swift and don't want to use dynamic frameworks
+use_frameworks!
+
+project 'Maple.xcodeproj'
+pod 'AFNetworking'
+pod 'Fabric'
+pod 'Firebase'
+pod 'FirebaseMessaging' 
+pod 'FirebaseUI'
+pod 'GooglePlacePicker'
+pod 'Firebase/Invites'
+pod 'GooglePlaces'
+pod 'GoogleMaps'
+pod 'GoogleSignIn', '~> 4.1'
+pod 'SDWebImage'
+pod 'DKImagePickerController'
+pod 'Sharaku'  
+pod 'BadgeSwift', '~> 5.0'
+pod 'Fabric'
+pod 'Crashlytics'
+pod 'InstantSearch-Core-Swift'
+pod 'Reachability', '~> 3.2'
+pod 'PromiseKit', '~> 4.4'
+pod 'Kingfisher' 
+pod 'INSPhotoGallery'
+pod 'ImagePicker'
+pod 'Lightbox'
+pod 'Hue'
+pod 'Gallery'
+pod 'SVProgressHUD'
+pod 'MaterialComponents'
+pod 'CropViewController'
+end
+

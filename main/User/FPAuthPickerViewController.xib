@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="14109" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES">
+    <device id="retina5_9" orientation="portrait">
+        <adaptation id="fullscreen"/>
+    </device>
+    <dependencies>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="14088"/>
+        <capability name="Named colors" minToolsVersion="9.0"/>
+        <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
+    </dependencies>
+    <objects>
+        <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="FPAuthPickerViewController">
+            <connections>
+                <outlet property="policyTermsLabel" destination="COI-gL-6Ql" id="8EV-Ix-chb"/>
+                <outlet property="view" destination="i5M-Pr-FkT" id="sfx-zR-JGt"/>
+            </connections>
+        </placeholder>
+        <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
+        <view clearsContextBeforeDrawing="NO" contentMode="scaleToFill" id="i5M-Pr-FkT" colorLabel="IBBuiltInLabel-Purple">
+            <rect key="frame" x="0.0" y="0.0" width="375" height="812"/>
+            <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+            <subviews>
+                <label opaque="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="By signing up, you agree to our Terms &amp; Privacy Policy." textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="COI-gL-6Ql">
+                    <rect key="frame" x="16" y="770.66666666666663" width="343" height="13.333333333333371"/>
+                    <gestureRecognizers/>
+                    <fontDescription key="fontDescription" style="UICTFontTextStyleCaption2"/>
+                    <color key="textColor" red="1" green="0.38026782009999999" blue="0.24897895219999999" alpha="0.79834653249999998" colorSpace="custom" customColorSpace="displayP3"/>
+                    <nil key="highlightedColor"/>
+                    <connections>
+                        <outletCollection property="gestureRecognizers" destination="nwX-ex-rCz" appends="YES" id="ZHN-MZ-B84"/>
+                    </connections>
+                </label>
+                <imageView opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" fixedFrame="YES" insetsLayoutMarginsFromSafeArea="NO" image="maple_start_image" translatesAutoresizingMaskIntoConstraints="NO" id="cNs-n7-XBH">
+                    <rect key="frame" x="118" y="229" width="138" height="170"/>
+                    <autoresizingMask key="autoresizingMask"/>
+                </imageView>
+            </subviews>
+            <color key="backgroundColor" name="Color"/>
+            <color key="tintColor" name="Color"/>
+            <accessibility key="accessibilityConfiguration">
+                <accessibilityTraits key="traits" image="YES"/>
+            </accessibility>
+            <constraints>
+                <constraint firstAttribute="bottom" secondItem="COI-gL-6Ql" secondAttribute="bottom" constant="28" id="7ux-nK-kLk"/>
+                <constraint firstAttribute="trailing" secondItem="COI-gL-6Ql" secondAttribute="trailing" constant="16" id="Iny-kB-e8f"/>
+                <constraint firstItem="COI-gL-6Ql" firstAttribute="leading" secondItem="i5M-Pr-FkT" secondAttribute="leading" constant="16" id="ZJV-mR-8mW"/>
+            </constraints>
+            <point key="canvasLocation" x="34.5" y="53"/>
+        </view>
+        <tapGestureRecognizer id="nwX-ex-rCz">
+            <connections>
+                <action selector="didTapTermsPolicy:" destination="-1" id="IbQ-aP-kFG"/>
+            </connections>
+        </tapGestureRecognizer>
+    </objects>
+    <resources>
+        <image name="maple_start_image" width="110" height="137"/>
+        <namedColor name="Color">
+            <color red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+        </namedColor>
+    </resources>
+</document>
