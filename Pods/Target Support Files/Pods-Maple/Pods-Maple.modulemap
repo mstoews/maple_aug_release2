@@ -1,0 +1,6 @@
+framework module Pods_Maple {
+  umbrella header "Pods-Maple-umbrella.h"
+
+  export *
+  module * { export * }
+}

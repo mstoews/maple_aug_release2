@@ -43,7 +43,7 @@ class UserListPostCell : UserGridPostCell {
         imageCollectionView.register(UserImageCell.self, forCellWithReuseIdentifier: horizontalCellId)
         
         
-        backgroundColor = UIColor.collectionCell()
+        backgroundColor = UIColor.white
         
         let topDividerView = UIView()
         topDividerView.backgroundColor = UIColor.collectionCell()

@@ -53,7 +53,6 @@
 		482FC13F20DE296100E23DAE /* FlexibleHeader.swift in Sources */ = {isa = PBXBuildFile; fileRef = 025D70DF20B53AD4004E967B /* FlexibleHeader.swift */; };
 		482FC14120DE29CF00E23DAE /* SearchTableCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 482FC14020DE29CF00E23DAE /* SearchTableCell.swift */; };
 		482FC14320DE2B8000E23DAE /* ProductController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 482FC14220DE2B7F00E23DAE /* ProductController.swift */; };
-		482FC14520DE2DC100E23DAE /* Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 482FC14420DE2DC100E23DAE /* Info.plist */; };
 		48482FC020DA18A00031EBFF /* Location.swift in Sources */ = {isa = PBXBuildFile; fileRef = 48482FB020DA18A00031EBFF /* Location.swift */; };
 		48482FC120DA18A00031EBFF /* Situation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 48482FB120DA18A00031EBFF /* Situation.swift */; };
 		48482FC220DA18A00031EBFF /* DataModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 48482FB220DA18A00031EBFF /* DataModel.swift */; };
@@ -72,7 +71,6 @@
 		4876BB8A20DA14CC0057E5E0 /* Notification.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4876BB8620DA14CC0057E5E0 /* Notification.swift */; };
 		4876BB8B20DA14CC0057E5E0 /* NotificationViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4876BB8720DA14CC0057E5E0 /* NotificationViewController.swift */; };
 		4876BB8C20DA14CC0057E5E0 /* NotificationPostCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4876BB8820DA14CC0057E5E0 /* NotificationPostCell.swift */; };
-		4876BBB820DA14F00057E5E0 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 4876BBAF20DA14EF0057E5E0 /* LaunchScreen.storyboard */; };
 		4876BBB920DA14F00057E5E0 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 4876BBB120DA14EF0057E5E0 /* Main.storyboard */; };
 		4876BBBB20DA14F00057E5E0 /* Localizable.strings in Resources */ = {isa = PBXBuildFile; fileRef = 4876BBB520DA14EF0057E5E0 /* Localizable.strings */; };
 		4876BBBC20DA14F00057E5E0 /* MainTabBarController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4876BBB620DA14EF0057E5E0 /* MainTabBarController.swift */; };
@@ -695,7 +693,6 @@
 		4876BB8620DA14CC0057E5E0 /* Notification.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Notification.swift; sourceTree = "<group>"; };
 		4876BB8720DA14CC0057E5E0 /* NotificationViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NotificationViewController.swift; sourceTree = "<group>"; };
 		4876BB8820DA14CC0057E5E0 /* NotificationPostCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NotificationPostCell.swift; sourceTree = "<group>"; };
-		4876BBAF20DA14EF0057E5E0 /* LaunchScreen.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; name = LaunchScreen.storyboard; path = main/LaunchScreen.storyboard; sourceTree = SOURCE_ROOT; };
 		4876BBB020DA14EF0057E5E0 /* Maple.entitlements */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.entitlements; name = Maple.entitlements; path = main/Maple.entitlements; sourceTree = SOURCE_ROOT; };
 		4876BBB120DA14EF0057E5E0 /* Main.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; name = Main.storyboard; path = main/Main.storyboard; sourceTree = SOURCE_ROOT; };
 		4876BBB520DA14EF0057E5E0 /* Localizable.strings */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.strings; name = Localizable.strings; path = main/Localizable.strings; sourceTree = SOURCE_ROOT; };
@@ -1205,7 +1202,6 @@
 			isa = PBXGroup;
 			children = (
 				4878C18E20F844C70054F227 /* Assets.xcassets */,
-				4876BBAF20DA14EF0057E5E0 /* LaunchScreen.storyboard */,
 				482FC14220DE2B7F00E23DAE /* ProductController.swift */,
 				4876BC8720DA16280057E5E0 /* ProductCell.swift */,
 				4876BD2220DA16B20057E5E0 /* AppDelegate.swift */,
@@ -1349,7 +1345,7 @@
 			isa = PBXProject;
 			attributes = {
 				LastSwiftUpdateCheck = 0930;
-				LastUpgradeCheck = 0930;
+				LastUpgradeCheck = 1000;
 				ORGANIZATIONNAME = "Murray Toews";
 				TargetAttributes = {
 					024EDB9E2078EE760069C77F = {
@@ -1945,12 +1941,10 @@
 				4876BD0420DA164E0057E5E0 /* LaunchScreen.storyboard in Resources */,
 				4876BD0C20DA164E0057E5E0 /* PlaceDetailViewController.xib in Resources */,
 				4876BD0920DA164E0057E5E0 /* PickAPlaceViewController.xib in Resources */,
-				482FC14520DE2DC100E23DAE /* Info.plist in Resources */,
 				4876BD0120DA164E0057E5E0 /* Localizable.strings in Resources */,
 				4876BBBB20DA14F00057E5E0 /* Localizable.strings in Resources */,
 				4876BBB920DA14F00057E5E0 /* Main.storyboard in Resources */,
 				482FC11E20DE168200E23DAE /* FPAuthPickerViewController.xib in Resources */,
-				4876BBB820DA14F00057E5E0 /* LaunchScreen.storyboard in Resources */,
 				484F88D620DE327D0083D226 /* GoogleService-Info.plist in Resources */,
 				4876BD0B20DA164E0057E5E0 /* PlaceAttributeCell.xib in Resources */,
 				4878C18F20F844C80054F227 /* Assets.xcassets in Resources */,
@@ -2007,7 +2001,6 @@
 				"${PODS_ROOT}/GooglePlaces/Frameworks/GooglePlaces.framework/Resources/GooglePlaces.bundle",
 				"${PODS_ROOT}/GoogleSignIn/Resources/GoogleSignIn.bundle",
 				"${PODS_ROOT}/TwitterKit/iOS/TwitterKit.framework/TwitterKitResources.bundle",
-				"${PODS_ROOT}/TwitterKit/iOS/TwitterKit.framework/TwitterShareExtensionUIResources.bundle",
 			);
 			name = "[CP] Copy Pods Resources";
 			outputPaths = (
@@ -2023,7 +2016,6 @@
 				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/GooglePlaces.bundle",
 				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/GoogleSignIn.bundle",
 				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/TwitterKitResources.bundle",
-				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/TwitterShareExtensionUIResources.bundle",
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
