@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		023F0FDA20FA14A1003CAC3F /* SharePhotoController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 023F0FD920FA14A1003CAC3F /* SharePhotoController.swift */; };
 		024EDBC02078EFF50069C77F /* HomeHeaderCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 02DC63492004E5C500AE9662 /* HomeHeaderCell.swift */; };
 		024EDBC32078EFFA0069C77F /* CommentCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 48B4450C1FE7342200DFD412 /* CommentCell.swift */; };
 		024EDBC52078EFFD0069C77F /* CommentInputAccessoryView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 02DC63432001BDD600AE9662 /* CommentInputAccessoryView.swift */; };
@@ -128,7 +129,6 @@
 		4878C0FE20F6D5400054F227 /* ShareSettingCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4878C0FD20F6D5400054F227 /* ShareSettingCell.swift */; };
 		4878C10120F7486F0054F227 /* ShareHeaderCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4878C10020F7486F0054F227 /* ShareHeaderCell.swift */; };
 		4878C18F20F844C80054F227 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 4878C18E20F844C70054F227 /* Assets.xcassets */; };
-		4878C22620F859630054F227 /* SharePhotoController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4878C22520F859620054F227 /* SharePhotoController.swift */; };
 		48B444C41FE7329900DFD412 /* maple_releaseTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 48B444C31FE7329900DFD412 /* maple_releaseTests.swift */; };
 		48B444CF1FE7329900DFD412 /* maple_releaseUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 48B444CE1FE7329900DFD412 /* maple_releaseUITests.swift */; };
 		48B4457F1FE7342D00DFD412 /* HomePostCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 48B444DF1FE7341700DFD412 /* HomePostCell.swift */; };
@@ -630,6 +630,7 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		023F0FD920FA14A1003CAC3F /* SharePhotoController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SharePhotoController.swift; sourceTree = "<group>"; };
 		024EDB9F2078EE760069C77F /* maple_release.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; name = maple_release.app; path = Maple_release.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		025D70DF20B53AD4004E967B /* FlexibleHeader.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FlexibleHeader.swift; sourceTree = "<group>"; };
 		02DC63432001BDD600AE9662 /* CommentInputAccessoryView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CommentInputAccessoryView.swift; sourceTree = "<group>"; };
@@ -793,7 +794,6 @@
 		4878C0FD20F6D5400054F227 /* ShareSettingCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ShareSettingCell.swift; sourceTree = "<group>"; };
 		4878C10020F7486F0054F227 /* ShareHeaderCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ShareHeaderCell.swift; sourceTree = "<group>"; };
 		4878C18E20F844C70054F227 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
-		4878C22520F859620054F227 /* SharePhotoController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = SharePhotoController.swift; path = "../../../../Documents/maple20180316/maple-release/Share/SharePhotoController.swift"; sourceTree = "<group>"; };
 		4878C22B20F85D520054F227 /* maple-release-Bridging-Header.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "maple-release-Bridging-Header.h"; sourceTree = "<group>"; };
 		48B444AB1FE7329900DFD412 /* Maple.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Maple.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		48B444BF1FE7329900DFD412 /* MapleTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = MapleTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -879,7 +879,8 @@
 		4876BB0820DA14790057E5E0 /* Share */ = {
 			isa = PBXGroup;
 			children = (
-				4878C22520F859620054F227 /* SharePhotoController.swift */,
+				023F0FD920FA14A1003CAC3F /* SharePhotoController.swift */,
+				482FC0FC20DE15CC00E23DAE /* SharePhotoController+Save.swift */,
 				482FC0FD20DE15D000E23DAE /* MapCell.swift */,
 				482FC0F820DE15C000E23DAE /* ModifyPhotoController.swift */,
 				482FC14020DE29CF00E23DAE /* SearchTableCell.swift */,
@@ -887,7 +888,6 @@
 				482FC0FB20DE15C800E23DAE /* PreviewPhotoContainerView.swift */,
 				482FC0F920DE15C400E23DAE /* ProductFooterCell.swift */,
 				482FC0F720DE15BD00E23DAE /* SharePhotoCell.swift */,
-				482FC0FC20DE15CC00E23DAE /* SharePhotoController+Save.swift */,
 				4878C0B720F6D0DD0054F227 /* ShareSettingsController.swift */,
 				4878C0FD20F6D5400054F227 /* ShareSettingCell.swift */,
 				4878C10020F7486F0054F227 /* ShareHeaderCell.swift */,
@@ -1217,7 +1217,6 @@
 				4876BB2520DA14880057E5E0 /* User */,
 				4876BB0820DA14790057E5E0 /* Share */,
 				488C9D621FEFA1B9009D0F6D /* Home */,
-				48B445261FE7342900DFD412 /* Base.lproj */,
 			);
 			path = maple;
 			sourceTree = "<group>";
@@ -1238,14 +1237,6 @@
 				48B444D01FE7329900DFD412 /* Info.plist */,
 			);
 			path = "maple-releaseUITests";
-			sourceTree = "<group>";
-		};
-		48B445261FE7342900DFD412 /* Base.lproj */ = {
-			isa = PBXGroup;
-			children = (
-			);
-			name = Base.lproj;
-			path = "../../Projects/maple-ios-1120/maple-ios/Maple/Base.lproj";
 			sourceTree = "<group>";
 		};
 		9F261D613F4A521344E764C3 /* Frameworks */ = {
@@ -2200,7 +2191,7 @@
 				4876BCA120DA16280057E5E0 /* PhotoSelectorHeader.swift in Sources */,
 				4876BD0220DA164E0057E5E0 /* MapLocationSearchController.swift in Sources */,
 				48482FC220DA18A00031EBFF /* DataModel.swift in Sources */,
-				4878C22620F859630054F227 /* SharePhotoController.swift in Sources */,
+				023F0FDA20FA14A1003CAC3F /* SharePhotoController.swift in Sources */,
 				482FC13620DE236D00E23DAE /* PostRecord.swift in Sources */,
 				02F88633202C836900F047BF /* HomeViewPostController.swift in Sources */,
 				482FC13B20DE236D00E23DAE /* PostCollectionCell.swift in Sources */,

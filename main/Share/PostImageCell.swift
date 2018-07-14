@@ -35,7 +35,7 @@ class PostImageObject: MDCCardCollectionCell
         let buttonMenus = UIView()
         buttonMenus.backgroundColor = UIColor.themeColor()
         buttonMenus.layer.cornerRadius = 10
-        buttonMenus.backgroundColor = UIColor.veryLightGray()
+        buttonMenus.backgroundColor = UIColor(displayP3Red: 255, green: 200, blue: 150, alpha: 0.1)
         buttonMenus.layer.borderWidth = 2
         buttonMenus.layer.borderColor = UIColor.black.cgColor
         
