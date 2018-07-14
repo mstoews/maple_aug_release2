@@ -731,7 +731,7 @@ class UserProfileController: MDCCollectionViewController,
             let attributes = [NSAttributedStringKey.font : UIFont.systemFont(ofSize: CGFloat(15))]
             let post = fs_posts[indexPath.item]
             let estimatedFrame = NSString(string: post.description).boundingRect(with: size, options: .usesLineFragmentOrigin, attributes: attributes, context: nil)
-            rc = CGSize(width: view.frame.width - 30, height: estimatedFrame.height + view.frame.width - 180 )
+            rc = CGSize(width: view.frame.width - 15, height: estimatedFrame.height + view.frame.width - 180 )
             break
    
         case CellType.MAP :
