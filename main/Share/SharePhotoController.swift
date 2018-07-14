@@ -69,6 +69,7 @@ protocol  SharePhotoDelegate {
 
 class SharePhotoController:
     UIViewController,
+    UIScrollViewDelegate,
     UICollectionViewDelegateFlowLayout,
     UICollectionViewDataSource,
     UISearchDisplayDelegate,
@@ -118,6 +119,7 @@ class SharePhotoController:
         
     }
     
+   
     
     public func layoutImageView() {
         guard imageView.image != nil else { return }
@@ -472,12 +474,59 @@ class SharePhotoController:
         updateSearchResults(for: Products)
         updateCategorySearchResults(for: CategoryDesc)
         
+        
         NotificationCenter.default.addObserver(self, selector: #selector(handleKeyboardNotification), name: NSNotification.Name.UIKeyboardWillShow, object: nil)
         NotificationCenter.default.addObserver(self, selector: #selector(handleKeyboardNotification), name: NSNotification.Name.UIKeyboardWillHide, object: nil)
         
-        // End Algolia Search
         
     }
+    
+    var editingIndex: IndexPath!
+    
+    @objc func handleKeyboardNotification(notification: NSNotification) {
+        if let keyboardSize = (notification.userInfo?[UIKeyboardFrameEndUserInfoKey] as? NSValue)?.cgRectValue {
+            let isKeyboardShowing = notification.name == NSNotification.Name.UIKeyboardWillShow
+            print(isKeyboardShowing)
+            bottomConstraint?.constant = isKeyboardShowing ? -keyboardSize.height : 0
+            let inset = isKeyboardShowing ? -bottomAreaInset : bottomAreaInset
+            print("Keyboard is showing : \(inset)")
+            heightConstraint?.constant += inset
+            inputBottomConstraint?.constant = isKeyboardShowing ? 0 : bottomAreaInset
+            sendBottomConstraint?.constant = isKeyboardShowing ? 12 : (12 + bottomAreaInset)
+            if let animationDuration = notification.userInfo![UIKeyboardAnimationDurationUserInfoKey] as? Double {
+                UIView.animate(withDuration: animationDuration, delay: 0, options: .curveEaseOut, animations: {
+                    self.view.layoutIfNeeded()
+                }, completion: { completed in
+                    if isKeyboardShowing {
+                        if !(self.Description.text?.isEmpty)!{
+                            let indexPath = self.isEditingComment ? self.editingIndex : IndexPath(item: (self.Description.text?.count)! - 1, section: 1)
+                            //scrollToItem(at: indexPath!, at: .bottom, animated: true)
+                            self.view.frame.origin.y += keyboardSize.height
+                        }
+                    } else {
+                        MDCSnackbarManager.setBottomOffset(0)
+                    }
+                })
+            }
+        }
+    }
+
+    @objc func keyboardWillShow(notification: NSNotification) {
+        if let keyboardSize = (notification.userInfo?[UIKeyboardFrameBeginUserInfoKey] as? NSValue)?.cgRectValue {
+            if self.view.frame.origin.y == 0{
+                self.view.frame.origin.y -= keyboardSize.height
+            }
+        }
+    }
+    
+    @objc func keyboardWillHide(notification: NSNotification) {
+        if let keyboardSize = (notification.userInfo?[UIKeyboardFrameBeginUserInfoKey] as? NSValue)?.cgRectValue {
+            if self.view.frame.origin.y != 0{
+                self.view.frame.origin.y += keyboardSize.height
+            }
+        }
+    }
+    
     
     
     func text(for priceLevel: GMSPlacesPriceLevel) -> String {
@@ -607,7 +656,23 @@ class SharePhotoController:
     let buttonMenus = UIView()
 
     
+    @objc func userTappedLocationCollection(tapGestureRecognizer: UITapGestureRecognizer)
+    {
+        CellType = CT.MAP
+        print("Open the maps window")
+        let config = GMSPlacePickerConfig(viewport: nil)
+        let placePicker = GMSPlacePickerViewController(config: config)
+        placePicker.delegate = self
+        placePicker.modalPresentationStyle = .popover
+        placePicker.popoverPresentationController?.sourceView = view
+        placePicker.popoverPresentationController?.sourceRect = mapsButton.bounds
+        self.present(placePicker, animated: true, completion: nil)
+    }
     
+    @objc func userTappedPhotoCollection(tapGestureRecognizer: UITapGestureRecognizer)
+    {
+        handleAddPhotos()
+    }
     
     func setupImageAndTextViews() {
         
@@ -645,6 +710,13 @@ class SharePhotoController:
         buttonMenus.layer.borderWidth = 2
         buttonMenus.layer.borderColor = UIColor.black.cgColor
         
+        let tapLocation = UITapGestureRecognizer(target: self, action: #selector(userTappedLocationCollection(tapGestureRecognizer: )))
+        locationCard.isUserInteractionEnabled = true
+        locationCard.addGestureRecognizer(tapLocation)
+        
+        let tapPhotos = UITapGestureRecognizer(target: self, action: #selector(userTappedPhotoCollection(tapGestureRecognizer: )))
+        imageCard.isUserInteractionEnabled = true
+        imageCard.addGestureRecognizer(tapPhotos)
         
         
         //let stackButtonsVerical = UIStackView(arrangedSubviews: [addPhotos,filterPhotos,erasePhotos])
@@ -1027,33 +1099,7 @@ class SharePhotoController:
         }
     }
     
-    var editingIndex: IndexPath!
     
-    @objc func handleKeyboardNotification(notification: NSNotification) {
-        if let keyboardSize = (notification.userInfo?[UIKeyboardFrameEndUserInfoKey] as? NSValue)?.cgRectValue {
-            let isKeyboardShowing = notification.name == NSNotification.Name.UIKeyboardWillShow
-            bottomConstraint?.constant = isKeyboardShowing ? -keyboardSize.height : 0
-            let inset = isKeyboardShowing ? -bottomAreaInset : bottomAreaInset
-            heightConstraint?.constant += inset
-            inputBottomConstraint?.constant = isKeyboardShowing ? 0 : bottomAreaInset
-            sendBottomConstraint?.constant = isKeyboardShowing ? 12 : (12 + bottomAreaInset)
-            if let animationDuration = notification.userInfo![UIKeyboardAnimationDurationUserInfoKey] as? Double {
-                UIView.animate(withDuration: animationDuration, delay: 0, options: .curveEaseOut, animations: {
-                    self.view.layoutIfNeeded()
-                }, completion: { completed in
-                    if isKeyboardShowing {
-                        if !(self.Description.text?.isEmpty)!{
-                            let indexPath = self.isEditingComment ? self.editingIndex : IndexPath(item: (self.Description.text?.count)! - 1, section: 1)
-                            //collectionView.scrollToItem(at: indexPath!, at: .bottom, animated: true)
-                        }
-                    } else {
-                        MDCSnackbarManager.setBottomOffset(0)
-                    }
-                })
-            }
-        }
-    }
-
     
     func handleSearchResults(results: SearchResults?, error: Error?, userInfo: [String: Any]) {
         guard let results = results else { return }

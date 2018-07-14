@@ -67,7 +67,7 @@ class MapCell: BaseCell
     
     lazy var  deleteMapCell : UIButton = {
         let button = UIButton(type: .system)
-        button.setImage(#imageLiteral(resourceName: "cancel_dark"), for: .normal)
+        button.setImage(#imageLiteral(resourceName: "ic_delete"), for: .normal)
         button.tintColor = UIColor.themeColor()
         button.sizeToFit()
         button.addTarget(self, action: #selector(didDeleteMapCell), for: .touchUpInside)
