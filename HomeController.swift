@@ -490,7 +490,7 @@ class HomeController: MDCCollectionViewController, HomePostCellDelegate,  HomeHe
     func setupNavigationItems() {
         navigationItem.titleView = UIImageView(image: #imageLiteral(resourceName: "logo2"))
         
-        let rightImage = UIImage(named: "ic_person_add")?.withRenderingMode(.alwaysOriginal)
+        let rightImage = UIImage(named: "ic_people")?.withRenderingMode(.alwaysOriginal)
         let rightButton = UIBarButtonItem(image: rightImage, style: .done , target: self, action: #selector(inviteTapped))
         rightButton.tintColor = UIColor.themeColor()
         navigationItem.rightBarButtonItem = rightButton
@@ -518,13 +518,13 @@ class HomeController: MDCCollectionViewController, HomePostCellDelegate,  HomeHe
     
     override func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
         //let cell : UICollectionViewCell = collectionView.cellForItem(at: indexPath as IndexPath)!
-        if fs_posts.count > 0 {
-            let fs_post = fs_posts[indexPath.item]
-            let  productController = ProductController(collectionViewLayout: UICollectionViewFlowLayout())
-            // todo
-            productController.post = fs_post
-            navigationController?.pushViewController(productController, animated: true)
-        }
+//        if fs_posts.count > 0 {
+//            let fs_post = fs_posts[indexPath.item]
+//            let  productController = ProductController(collectionViewLayout: UICollectionViewFlowLayout())
+//            // todo
+//            productController.post = fs_post
+//            // navigationController?.pushViewController(productController, animated: true)
+//        }
     }
     
     override func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, minimumInteritemSpacingForSectionAt section: Int) -> CGFloat {

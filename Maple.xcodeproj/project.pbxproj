@@ -8,6 +8,8 @@
 
 /* Begin PBXBuildFile section */
 		0225F32620FE0F7300137084 /* UserImageCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0225F2E120FE0F7300137084 /* UserImageCell.swift */; };
+		0225F32F20FE131200137084 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 484F862E20FDB56D00FAF6AA /* LaunchScreen.storyboard */; };
+		0225F33120FE13C500137084 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 0225F32D20FE11FB00137084 /* LaunchScreen.storyboard */; };
 		023F0FDA20FA14A1003CAC3F /* SharePhotoController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 023F0FD920FA14A1003CAC3F /* SharePhotoController.swift */; };
 		024EDBC02078EFF50069C77F /* HomeHeaderCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 02DC63492004E5C500AE9662 /* HomeHeaderCell.swift */; };
 		024EDBC32078EFFA0069C77F /* CommentCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 48B4450C1FE7342200DFD412 /* CommentCell.swift */; };
@@ -67,7 +69,6 @@
 		48482FCB20DA18A00031EBFF /* Category.swift in Sources */ = {isa = PBXBuildFile; fileRef = 48482FBB20DA18A00031EBFF /* Category.swift */; };
 		48482FCC20DA18A00031EBFF /* Post.swift in Sources */ = {isa = PBXBuildFile; fileRef = 48482FBC20DA18A00031EBFF /* Post.swift */; };
 		48482FCE20DA18A00031EBFF /* SinglePhotoPost.swift in Sources */ = {isa = PBXBuildFile; fileRef = 48482FBE20DA18A00031EBFF /* SinglePhotoPost.swift */; };
-		484F862F20FDB56E00FAF6AA /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 484F862E20FDB56D00FAF6AA /* LaunchScreen.storyboard */; };
 		484F88D620DE327D0083D226 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 484F88D520DE327D0083D226 /* GoogleService-Info.plist */; };
 		4876BB3D20DA14880057E5E0 /* Amaranth-Bold.otf in Resources */ = {isa = PBXBuildFile; fileRef = 4876BB2620DA14880057E5E0 /* Amaranth-Bold.otf */; };
 		4876BB8A20DA14CC0057E5E0 /* Notification.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4876BB8620DA14CC0057E5E0 /* Notification.swift */; };
@@ -97,7 +98,6 @@
 		4876BD0120DA164E0057E5E0 /* Localizable.strings in Resources */ = {isa = PBXBuildFile; fileRef = 4876BCB120DA164E0057E5E0 /* Localizable.strings */; };
 		4876BD0220DA164E0057E5E0 /* MapLocationSearchController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4876BCBD20DA164E0057E5E0 /* MapLocationSearchController.swift */; };
 		4876BD0320DA164E0057E5E0 /* MapSearchController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4876BCC520DA164E0057E5E0 /* MapSearchController.swift */; };
-		4876BD0520DA164E0057E5E0 /* PlacePickerDemoAssets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 4876BCC920DA164E0057E5E0 /* PlacePickerDemoAssets.xcassets */; };
 		4876BD0620DA164E0057E5E0 /* MapLocationController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4876BCCA20DA164E0057E5E0 /* MapLocationController.swift */; };
 		4876BD0720DA164E0057E5E0 /* MapShowSettings.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4876BCCD20DA164E0057E5E0 /* MapShowSettings.swift */; };
 		4876BD0820DA164E0057E5E0 /* LocationSearchCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4876BCD120DA164E0057E5E0 /* LocationSearchCell.swift */; };
@@ -155,6 +155,7 @@
 
 /* Begin PBXFileReference section */
 		0225F2E120FE0F7300137084 /* UserImageCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UserImageCell.swift; sourceTree = "<group>"; };
+		0225F32D20FE11FB00137084 /* LaunchScreen.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; name = LaunchScreen.storyboard; path = "maple-release/LaunchScreen.storyboard"; sourceTree = SOURCE_ROOT; };
 		023F0FD920FA14A1003CAC3F /* SharePhotoController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SharePhotoController.swift; sourceTree = "<group>"; };
 		024EDB9F2078EE760069C77F /* maple_release.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; name = maple_release.app; path = Maple_release.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		025D70DF20B53AD4004E967B /* FlexibleHeader.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FlexibleHeader.swift; sourceTree = "<group>"; };
@@ -261,7 +262,6 @@
 		4876BCC320DA164E0057E5E0 /* sk */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = sk; path = sk.lproj/Localizable.strings; sourceTree = "<group>"; };
 		4876BCC420DA164E0057E5E0 /* pt_PT */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = pt_PT; path = pt_PT.lproj/Localizable.strings; sourceTree = "<group>"; };
 		4876BCC520DA164E0057E5E0 /* MapSearchController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MapSearchController.swift; sourceTree = "<group>"; };
-		4876BCC920DA164E0057E5E0 /* PlacePickerDemoAssets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = PlacePickerDemoAssets.xcassets; sourceTree = "<group>"; };
 		4876BCCA20DA164E0057E5E0 /* MapLocationController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MapLocationController.swift; sourceTree = "<group>"; };
 		4876BCCB20DA164E0057E5E0 /* ms */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = ms; path = ms.lproj/Localizable.strings; sourceTree = "<group>"; };
 		4876BCCC20DA164E0057E5E0 /* sv */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = sv; path = sv.lproj/Localizable.strings; sourceTree = "<group>"; };
@@ -370,6 +370,22 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		0225F32720FE0FF600137084 /* Recovered References */ = {
+			isa = PBXGroup;
+			children = (
+				484F862E20FDB56D00FAF6AA /* LaunchScreen.storyboard */,
+			);
+			name = "Recovered References";
+			sourceTree = "<group>";
+		};
+		0225F33220FE144800137084 /* maple_release */ = {
+			isa = PBXGroup;
+			children = (
+				482FC14420DE2DC100E23DAE /* Info.plist */,
+			);
+			path = maple_release;
+			sourceTree = "<group>";
+		};
 		0CDF2965381889381A12CD31 /* Pods */ = {
 			isa = PBXGroup;
 			children = (
@@ -521,7 +537,6 @@
 		4876BCC620DA164E0057E5E0 /* Resources */ = {
 			isa = PBXGroup;
 			children = (
-				4876BCC920DA164E0057E5E0 /* PlacePickerDemoAssets.xcassets */,
 			);
 			path = Resources;
 			sourceTree = "<group>";
@@ -588,7 +603,6 @@
 			isa = PBXGroup;
 			children = (
 				484F88D520DE327D0083D226 /* GoogleService-Info.plist */,
-				482FC14420DE2DC100E23DAE /* Info.plist */,
 			);
 			path = maple_release;
 			sourceTree = "<group>";
@@ -621,8 +635,8 @@
 		48B444A21FE7329900DFD412 = {
 			isa = PBXGroup;
 			children = (
+				0225F33220FE144800137084 /* maple_release */,
 				4878C22C20F85DE20054F227 /* maple-release */,
-				4878C22920F85C940054F227 /* maple_release */,
 				482FC12720DE16CE00E23DAE /* maple-release.entitlements */,
 				48B444AD1FE7329900DFD412 /* maple */,
 				48B444C21FE7329900DFD412 /* maple-releaseTests */,
@@ -630,6 +644,7 @@
 				48B444AC1FE7329900DFD412 /* Products */,
 				0CDF2965381889381A12CD31 /* Pods */,
 				9F261D613F4A521344E764C3 /* Frameworks */,
+				0225F32720FE0FF600137084 /* Recovered References */,
 			);
 			sourceTree = "<group>";
 		};
@@ -647,6 +662,8 @@
 		48B444AD1FE7329900DFD412 /* maple */ = {
 			isa = PBXGroup;
 			children = (
+				0225F32D20FE11FB00137084 /* LaunchScreen.storyboard */,
+				4878C22920F85C940054F227 /* maple_release */,
 				4876BD2220DA16B20057E5E0 /* AppDelegate.swift */,
 				4876BBB520DA14EF0057E5E0 /* Localizable.strings */,
 				4876BBB120DA14EF0057E5E0 /* Main.storyboard */,
@@ -688,7 +705,6 @@
 		9F261D613F4A521344E764C3 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
-				4876BBBF20DA15D10057E5E0 /* Pods.xcodeproj */,
 				D4CD3A3F29E1F6FCAD3D3B30 /* Pods_maple_release.framework */,
 				569B6D348B00EC54C36AA21F /* Pods_maple_releaseTests.framework */,
 				17B91DE03CA00D40A1B4335C /* Pods_maple_releaseUITests.framework */,
@@ -882,6 +898,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				0225F32F20FE131200137084 /* LaunchScreen.storyboard in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -889,6 +906,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				0225F33120FE13C500137084 /* LaunchScreen.storyboard in Resources */,
 				4876BD1020DA164E0057E5E0 /* PlaceNameHeader.xib in Resources */,
 				4876BB3D20DA14880057E5E0 /* Amaranth-Bold.otf in Resources */,
 				4876BD0C20DA164E0057E5E0 /* PlaceDetailViewController.xib in Resources */,
@@ -899,9 +917,7 @@
 				482FC11E20DE168200E23DAE /* FPAuthPickerViewController.xib in Resources */,
 				484F88D620DE327D0083D226 /* GoogleService-Info.plist in Resources */,
 				4876BD0B20DA164E0057E5E0 /* PlaceAttributeCell.xib in Resources */,
-				484F862F20FDB56E00FAF6AA /* LaunchScreen.storyboard in Resources */,
 				4878C18F20F844C80054F227 /* Assets.xcassets in Resources */,
-				4876BD0520DA164E0057E5E0 /* PlacePickerDemoAssets.xcassets in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

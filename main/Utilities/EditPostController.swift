@@ -268,7 +268,7 @@ class EditPostController:
     
     lazy var mapGoHome: UIButton = {
         let button = UIButton(type: .system)
-        button.setImage(#imageLiteral(resourceName: "coordinate"), for: .normal)
+        button.setImage(#imageLiteral(resourceName: "ic_navigation"), for: .normal)
         button.tintColor = .black
         button.sizeToFit()
         button.addTarget(self, action: #selector(handleNavigation), for: .touchUpInside)
@@ -423,54 +423,54 @@ class EditPostController:
                                    height: 40)
         
         
-        imageCollectionView.anchor(top: productLabel.bottomAnchor,
-                                   left: containerView.leftAnchor,
-                                   bottom: nil ,
-                                   right: containerView.rightAnchor,
-                                   paddingTop: 0,
-                                   paddingLeft: 5,
-                                   paddingBottom: 0,
-                                   paddingRight: 5,
-                                   width: 0,
-                                   height: heightOfViewController)
-        
-        topDividerView.anchor(top: imageCollectionView.bottomAnchor,
-                              left: containerView.leftAnchor,
-                              bottom: nil,
-                              right: containerView.rightAnchor,
-                              paddingTop: 2 ,
-                              paddingLeft: 0,
-                              paddingBottom: 0,
-                              paddingRight: 0,
-                              width: 0,
-                              height: 0.5)
-        
-       
-
-        
-        Description.anchor(top: topDividerView.bottomAnchor ,
-                           left: containerView.leftAnchor,
-                           bottom: nil ,
-                           right: containerView.rightAnchor,
-                           paddingTop: 0,
-                           paddingLeft: 5,
-                           paddingBottom: 0,
-                           paddingRight: 5,
-                           width: 0,
-                           height: 60)
-        
-        
-        bottomDividerView.anchor(top:  Description.bottomAnchor,
-                                 left: containerView.leftAnchor,
-                                 bottom: nil,
-                                 right: containerView.rightAnchor,
-                                 paddingTop: 0 ,
-                                 paddingLeft: 0,
-                                 paddingBottom: 0,
-                                 paddingRight: 0,
-                                 width: 0, height: 1.0)
-        
-        mapView.anchor(top: bottomDividerView.bottomAnchor,
+//        imageCollectionView.anchor(top: productLabel.bottomAnchor,
+//                                   left: containerView.leftAnchor,
+//                                   bottom: nil ,
+//                                   right: containerView.rightAnchor,
+//                                   paddingTop: 0,
+//                                   paddingLeft: 5,
+//                                   paddingBottom: 0,
+//                                   paddingRight: 5,
+//                                   width: 0,
+//                                   height: heightOfViewController)
+//
+//        topDividerView.anchor(top: imageCollectionView.bottomAnchor,
+//                              left: containerView.leftAnchor,
+//                              bottom: nil,
+//                              right: containerView.rightAnchor,
+//                              paddingTop: 2 ,
+//                              paddingLeft: 0,
+//                              paddingBottom: 0,
+//                              paddingRight: 0,
+//                              width: 0,
+//                              height: 0.5)
+//
+//
+//
+//
+//        Description.anchor(top: topDividerView.bottomAnchor ,
+//                           left: containerView.leftAnchor,
+//                           bottom: nil ,
+//                           right: containerView.rightAnchor,
+//                           paddingTop: 0,
+//                           paddingLeft: 5,
+//                           paddingBottom: 0,
+//                           paddingRight: 5,
+//                           width: 0,
+//                           height: 60)
+//
+//
+//        bottomDividerView.anchor(top:  Description.bottomAnchor,
+//                                 left: containerView.leftAnchor,
+//                                 bottom: nil,
+//                                 right: containerView.rightAnchor,
+//                                 paddingTop: 0 ,
+//                                 paddingLeft: 0,
+//                                 paddingBottom: 0,
+//                                 paddingRight: 0,
+//                                 width: 0, height: 1.0)
+//
+        mapView.anchor(top: productLabel.bottomAnchor,
                        left: containerView.leftAnchor,
                        bottom: containerView.bottomAnchor,
                        right: containerView.rightAnchor,
