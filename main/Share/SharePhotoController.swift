@@ -5,6 +5,12 @@
 //  Created by Murray Toews on 6/3/17.
 //  Copyright © 2017 maple.com
 
+/*
+ <unknown>:0: error: filename "UserImageCell.swift" used twice: '/Users/mst/Documents/maple20180618/main/User/UserImageCell.swift' and '/Users/mst/Documents/mapleMD/mapleMD/UserImageCell.swift'
+ <unknown>:0: error: filename "HomeController.swift" used twice: '/Users/mst/Documents/maple20180618/HomeController.swift' and '/Users/mst/Documents/mapleMD/mapleMD/supplemental/HomeController.swift'
+ <unknown>:0: error: filename "SettingCell.swift" used twice: '/Users/mst/Documents/mapleMD/mapleMD/SettingCell.swift' and '/Users/mst/Documents/maple20180618/main/User/SettingCell.swift'
+ */
+
 import UIKit
 import Photos
 import AssetsLibrary
@@ -83,7 +89,7 @@ class SharePhotoController:
     UISearchResultsUpdating,
     UITabBarDelegate,
     SearchProgressDelegate,
-    ImagePickerDelegate,
+    //ImagePickerDelegate,
     LightboxControllerDismissalDelegate,
     GalleryControllerDelegate,
     UIImagePickerControllerDelegate,
@@ -255,17 +261,17 @@ class SharePhotoController:
         imagePicker.present(lightbox, animated: true, completion: nil)
     }
     
-    func doneButtonDidPress(_ imagePicker: ImagePickerController, images: [UIImage]) {
-        imageArray = imageAssets
-        if imageArray.count > 0 {
-            imageCollectionView.reloadData()
-        }
-        imagePicker.dismiss(animated: true, completion: nil)
-    }
+//    func doneButtonDidPress(_ imagePicker: ImagePickerController, images: [UIImage]) {
+//        imageArray = imageAssets
+//        if imageArray.count > 0 {
+//            imageCollectionView.reloadData()
+//        }
+//        imagePicker.dismiss(animated: true, completion: nil)
+//    }
     
-    func cancelButtonDidPress(_ imagePicker: ImagePickerController) {
-        imagePicker.dismiss(animated: true, completion: nil)
-    }
+//    func cancelButtonDidPress(_ imagePicker: ImagePickerController) {
+//        imagePicker.dismiss(animated: true, completion: nil)
+//    }
     
     var gallery: GalleryController!
     let editor: VideoEditing = VideoEditor()
@@ -475,8 +481,8 @@ class SharePhotoController:
         updateCategorySearchResults(for: CategoryDesc)
         
         
-        NotificationCenter.default.addObserver(self, selector: #selector(handleKeyboardNotification), name: NSNotification.Name.UIKeyboardWillShow, object: nil)
-        NotificationCenter.default.addObserver(self, selector: #selector(handleKeyboardNotification), name: NSNotification.Name.UIKeyboardWillHide, object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillShow), name: NSNotification.Name.UIKeyboardWillShow, object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillHide), name: NSNotification.Name.UIKeyboardWillHide, object: nil)
         
         
     }
@@ -488,11 +494,13 @@ class SharePhotoController:
             let isKeyboardShowing = notification.name == NSNotification.Name.UIKeyboardWillShow
             print(isKeyboardShowing)
             bottomConstraint?.constant = isKeyboardShowing ? -keyboardSize.height : 0
+            print(bottomConstraint)
             let inset = isKeyboardShowing ? -bottomAreaInset : bottomAreaInset
             print("Keyboard is showing : \(inset)")
             heightConstraint?.constant += inset
             inputBottomConstraint?.constant = isKeyboardShowing ? 0 : bottomAreaInset
             sendBottomConstraint?.constant = isKeyboardShowing ? 12 : (12 + bottomAreaInset)
+            print(sendBottomConstraint)
             if let animationDuration = notification.userInfo![UIKeyboardAnimationDurationUserInfoKey] as? Double {
                 UIView.animate(withDuration: animationDuration, delay: 0, options: .curveEaseOut, animations: {
                     self.view.layoutIfNeeded()
@@ -501,7 +509,8 @@ class SharePhotoController:
                         if !(self.Description.text?.isEmpty)!{
                             let indexPath = self.isEditingComment ? self.editingIndex : IndexPath(item: (self.Description.text?.count)! - 1, section: 1)
                             //scrollToItem(at: indexPath!, at: .bottom, animated: true)
-                            self.view.frame.origin.y += keyboardSize.height
+                            //print ("Print Keyboard Height : \(keyboardSize.height) \() " )
+                            self.view.frame.origin.y -= keyboardSize.height + 100
                         }
                     } else {
                         MDCSnackbarManager.setBottomOffset(0)
@@ -512,20 +521,26 @@ class SharePhotoController:
     }
 
     @objc func keyboardWillShow(notification: NSNotification) {
+        print("Keyboard will show...")
+        let isKeyboardShowing = notification.name == NSNotification.Name.UIKeyboardWillShow
         if let keyboardSize = (notification.userInfo?[UIKeyboardFrameBeginUserInfoKey] as? NSValue)?.cgRectValue {
-            if self.view.frame.origin.y == 0{
-                self.view.frame.origin.y -= keyboardSize.height
+            //let inset = isKeyboardShowing ? -bottomAreaInset : bottomAreaInset
+            if isKeyboardShowing {
+                print ("Print Keyboard Height : \(keyboardSize.height)  \(self.view.frame.origin.y)")
+                self.view.frame.origin.y = -keyboardSize.height + 2 * (88)
             }
         }
     }
     
     @objc func keyboardWillHide(notification: NSNotification) {
+        print("Keyboard will hide...")
+        let isKeyboardShowing = notification.name == NSNotification.Name.UIKeyboardWillShow
         if let keyboardSize = (notification.userInfo?[UIKeyboardFrameBeginUserInfoKey] as? NSValue)?.cgRectValue {
-            if self.view.frame.origin.y != 0{
-                self.view.frame.origin.y += keyboardSize.height
-            }
+            let inset = isKeyboardShowing ? -bottomAreaInset : bottomAreaInset
+            self.view.frame.origin.y = 88 //keyboardSize.height
         }
     }
+       
     
     
     
@@ -973,19 +988,19 @@ class SharePhotoController:
         print (place)
     }
     
+    func textFieldShouldClear(_ textField: UITextField) -> Bool {
+        
+        textField.resignFirstResponder()
+        return true
+    }
+    
     func setNavigationButtons(){
-        //let rightButton = UIBarButtonItem(barButtonSystemItem: UIBarButtonSystemItem.compose, target: self, action: #selector(handleShareAll))
-        //navigationItem.rightBarButtonItem = rightButton
         
         let rightImage = UIImage(named: "ic_add_to_photos")?.withRenderingMode(.automatic)
-        let rightButton = UIBarButtonItem(image: rightImage, style: .done , target: self, action: #selector(handleEditMenu))
+        let rightButton = UIBarButtonItem(image: rightImage, style: .done , target: self, action: #selector(handleShareAll))
         rightButton.tintColor = UIColor.themeColor()
         navigationItem.rightBarButtonItem = rightButton
-        
-//        let leftButton = UIBarButtonItem(barButtonSystemItem: UIBarButtonSystemItem.edit, target: self, action: #selector(handleEditMenu))
-//        navigationItem.leftBarButtonItem = leftButton
-//
-        
+                
         let leftImage = UIImage(named: "ic_menu")?.withRenderingMode(.automatic)
         let leftButton = UIBarButtonItem(image: leftImage, style: .done , target: self, action: #selector(handleEditMenu))
         leftButton.tintColor = UIColor.themeColor()
@@ -1328,7 +1343,6 @@ class SharePhotoController:
         
     }
 
-    
     func shViewControllerDidCancel() {
         print ("print ...")
     }
@@ -1348,47 +1362,23 @@ class SharePhotoController:
         present(navController, animated: true, completion: nil)
     }
     
-    let imagePicker = ImagePickerController()
+    //let imagePicker = ImagePickerController()
     
     @objc func handleAddPhotos(){
         CellType = CT.PIC
-//        let pickerController = DKImagePickerController()
-//        //self.imageArray.removeAll()
-//        pickerController.didSelectAssets = { (assets: [DKAsset]) in
-//            for asset in assets {
-//                asset.fetchOriginalImage(true, completeBlock: { image, info in
-//                    self.imageArray.append(image!)
-//                })
-//                self.imageCollectionView.reloadData()
-//            }
-//        }
-//        self.present(pickerController, animated: true) {}
-        
-        var config = Configuration()
-        config.doneButtonTitle = "Finish"
-        config.noImagesTitle = "Sorry! There are no images here!"
-        config.recordLocation = true
-        config.allowVideoSelection = true
-        
-        imagePicker.expandGalleryView()
-        imagePicker.delegate = self
-        imagePicker.imageLimit = 5
-        imagePicker.doneButtonTitle = "Select"
-        
+        //imagePicker.expandGalleryView()
+        //imagePicker.delegate = self
+        //imagePicker.imageLimit = 5
+        //imagePicker.doneButtonTitle = "Select"
         
         gallery = GalleryController()
         gallery.delegate = self
         present(gallery, animated: true, completion: nil)
-        
-        //present(imagePicker, animated: true, completion: nil)
     }
     
-    
-    
-    
-    public var imageAssets : [UIImage] {
-        return AssetManager.resolveAssets(imagePicker.stack.assets)
-    }
+    // public var imageAssets : [UIImage] {
+    //    return AssetManager.resolveAssets(imagePicker.stack.assets)
+    // }
    
     let RunningCountLabel: UILabel = {
         let TextField = UILabel()
@@ -1492,25 +1482,6 @@ class SharePhotoController:
         iv.layer.cornerRadius = 10
         return iv
     }()
-    
-    
-    @objc func handleFilter()
-    {
-        if imageArray.count > 0 {
-            let pickerController = DKImagePickerController()
-            self.imageArray.removeAll()
-            pickerController.didSelectAssets = { (assets: [DKAsset]) in
-                pickerController.maxSelectableCount = 5
-                for asset in assets {
-                    asset.fetchOriginalImage(true, completeBlock: { image, info in
-                        self.imageArray.append(image!)
-                    })
-                    self.imageCollectionView.reloadData()
-                }
-            }
-            self.present(pickerController, animated: true) {}
-        }
-    }
     
     
     var PrefersStatusBarHidden: Bool {

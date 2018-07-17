@@ -50,7 +50,15 @@ class PostsImage: BaseCell
 
 
 
-class EditPostController: UIViewController,CLLocationManagerDelegate,  UICollectionViewDataSource, UICollectionViewDelegate, UICollectionViewDelegateFlowLayout, GMSMapViewDelegate {
+class EditPostController:
+    UIViewController,
+    CLLocationManagerDelegate,
+    UICollectionViewDataSource,
+    UICollectionViewDelegate,
+    UICollectionViewDelegateFlowLayout,
+    GMSMapViewDelegate
+
+{
 
     var postCellId = "postCellId"
     var searchController = UISearchController()

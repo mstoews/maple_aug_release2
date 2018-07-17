@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		0225F32620FE0F7300137084 /* UserImageCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0225F2E120FE0F7300137084 /* UserImageCell.swift */; };
 		023F0FDA20FA14A1003CAC3F /* SharePhotoController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 023F0FD920FA14A1003CAC3F /* SharePhotoController.swift */; };
 		024EDBC02078EFF50069C77F /* HomeHeaderCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 02DC63492004E5C500AE9662 /* HomeHeaderCell.swift */; };
 		024EDBC32078EFFA0069C77F /* CommentCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 48B4450C1FE7342200DFD412 /* CommentCell.swift */; };
@@ -36,7 +37,6 @@
 		482FC12120DE168200E23DAE /* UserGridCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 482FC11220DE166E00E23DAE /* UserGridCell.swift */; };
 		482FC12220DE168200E23DAE /* UserPostSettingsController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 482FC11320DE167200E23DAE /* UserPostSettingsController.swift */; };
 		482FC12320DE168200E23DAE /* UserProfilePhotoCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 482FC11420DE167600E23DAE /* UserProfilePhotoCell.swift */; };
-		482FC12420DE168200E23DAE /* UserImageCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 482FC11520DE167B00E23DAE /* UserImageCell.swift */; };
 		482FC12520DE168200E23DAE /* MapViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 482FC11620DE167E00E23DAE /* MapViewCell.swift */; };
 		482FC12620DE168200E23DAE /* UserProfileHeader.swift in Sources */ = {isa = PBXBuildFile; fileRef = 482FC11720DE168200E23DAE /* UserProfileHeader.swift */; };
 		482FC13220DE236D00E23DAE /* SearchAlgoliaCollectionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 482FC12820DE234800E23DAE /* SearchAlgoliaCollectionView.swift */; };
@@ -630,6 +630,7 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		0225F2E120FE0F7300137084 /* UserImageCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UserImageCell.swift; sourceTree = "<group>"; };
 		023F0FD920FA14A1003CAC3F /* SharePhotoController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SharePhotoController.swift; sourceTree = "<group>"; };
 		024EDB9F2078EE760069C77F /* maple_release.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; name = maple_release.app; path = Maple_release.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		025D70DF20B53AD4004E967B /* FlexibleHeader.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FlexibleHeader.swift; sourceTree = "<group>"; };
@@ -658,7 +659,6 @@
 		482FC11220DE166E00E23DAE /* UserGridCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UserGridCell.swift; sourceTree = "<group>"; };
 		482FC11320DE167200E23DAE /* UserPostSettingsController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UserPostSettingsController.swift; sourceTree = "<group>"; };
 		482FC11420DE167600E23DAE /* UserProfilePhotoCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UserProfilePhotoCell.swift; sourceTree = "<group>"; };
-		482FC11520DE167B00E23DAE /* UserImageCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UserImageCell.swift; sourceTree = "<group>"; };
 		482FC11620DE167E00E23DAE /* MapViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MapViewCell.swift; sourceTree = "<group>"; };
 		482FC11720DE168200E23DAE /* UserProfileHeader.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UserProfileHeader.swift; sourceTree = "<group>"; };
 		482FC12720DE16CE00E23DAE /* maple-release.entitlements */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.entitlements; path = "maple-release.entitlements"; sourceTree = "<group>"; };
@@ -910,7 +910,6 @@
 				482FC10E20DE165F00E23DAE /* SettingCell.swift */,
 				482FC10C20DE165800E23DAE /* SignUpController.swift */,
 				482FC11020DE166700E23DAE /* UserGridPostCell.swift */,
-				482FC11520DE167B00E23DAE /* UserImageCell.swift */,
 				482FC11320DE167200E23DAE /* UserPostSettingsController.swift */,
 				482FC10B20DE165300E23DAE /* UserProfileGridCell.swift */,
 				482FC11720DE168200E23DAE /* UserProfileHeader.swift */,
@@ -924,6 +923,7 @@
 		4876BB5420DA14B70057E5E0 /* Search */ = {
 			isa = PBXGroup;
 			children = (
+				0225F2E120FE0F7300137084 /* UserImageCell.swift */,
 				482FC12B20DE235500E23DAE /* AlgoliaManager.swift */,
 				482FC12F20DE236500E23DAE /* InstantSearch.swift */,
 				482FC12920DE234D00E23DAE /* LocationRecord.swift */,
@@ -1174,7 +1174,6 @@
 		48B444A21FE7329900DFD412 = {
 			isa = PBXGroup;
 			children = (
-				4876BBBF20DA15D10057E5E0 /* Pods.xcodeproj */,
 				4878C22C20F85DE20054F227 /* maple-release */,
 				4878C22920F85C940054F227 /* maple_release */,
 				482FC12720DE16CE00E23DAE /* maple-release.entitlements */,
@@ -1201,17 +1200,17 @@
 		48B444AD1FE7329900DFD412 /* maple */ = {
 			isa = PBXGroup;
 			children = (
-				4878C18E20F844C70054F227 /* Assets.xcassets */,
-				482FC14220DE2B7F00E23DAE /* ProductController.swift */,
-				4876BC8720DA16280057E5E0 /* ProductCell.swift */,
 				4876BD2220DA16B20057E5E0 /* AppDelegate.swift */,
-				48482FAF20DA18A00031EBFF /* Models */,
-				4876BCB020DA164E0057E5E0 /* GoogleMapPicker */,
-				4876BC7F20DA16280057E5E0 /* Utilities */,
 				4876BBB520DA14EF0057E5E0 /* Localizable.strings */,
 				4876BBB120DA14EF0057E5E0 /* Main.storyboard */,
 				4876BBB620DA14EF0057E5E0 /* MainTabBarController.swift */,
 				4876BBB020DA14EF0057E5E0 /* Maple.entitlements */,
+				4878C18E20F844C70054F227 /* Assets.xcassets */,
+				482FC14220DE2B7F00E23DAE /* ProductController.swift */,
+				4876BC8720DA16280057E5E0 /* ProductCell.swift */,
+				48482FAF20DA18A00031EBFF /* Models */,
+				4876BCB020DA164E0057E5E0 /* GoogleMapPicker */,
+				4876BC7F20DA16280057E5E0 /* Utilities */,
 				4876BB8420DA14CC0057E5E0 /* Notifications */,
 				4876BB5420DA14B70057E5E0 /* Search */,
 				4876BB2520DA14880057E5E0 /* User */,
@@ -1242,6 +1241,7 @@
 		9F261D613F4A521344E764C3 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				4876BBBF20DA15D10057E5E0 /* Pods.xcodeproj */,
 				D4CD3A3F29E1F6FCAD3D3B30 /* Pods_maple_release.framework */,
 				569B6D348B00EC54C36AA21F /* Pods_maple_releaseTests.framework */,
 				17B91DE03CA00D40A1B4335C /* Pods_maple_releaseUITests.framework */,
@@ -2213,7 +2213,6 @@
 				48482FC620DA18A00031EBFF /* Image.swift in Sources */,
 				4876BCA020DA16280057E5E0 /* CustomAnimationPresentor.swift in Sources */,
 				48482FC820DA18A00031EBFF /* User.swift in Sources */,
-				482FC12420DE168200E23DAE /* UserImageCell.swift in Sources */,
 				482FC12220DE168200E23DAE /* UserPostSettingsController.swift in Sources */,
 				482FC13220DE236D00E23DAE /* SearchAlgoliaCollectionView.swift in Sources */,
 				482FC11A20DE168200E23DAE /* UserProfileGridCell.swift in Sources */,
@@ -2236,6 +2235,7 @@
 				48482FCB20DA18A00031EBFF /* Category.swift in Sources */,
 				4876BD0320DA164E0057E5E0 /* MapSearchController.swift in Sources */,
 				48B4457F1FE7342D00DFD412 /* HomePostCell.swift in Sources */,
+				0225F32620FE0F7300137084 /* UserImageCell.swift in Sources */,
 				482FC13F20DE296100E23DAE /* FlexibleHeader.swift in Sources */,
 				482FC11F20DE168200E23DAE /* UserGridPostCell.swift in Sources */,
 				4876BB8B20DA14CC0057E5E0 /* NotificationViewController.swift in Sources */,

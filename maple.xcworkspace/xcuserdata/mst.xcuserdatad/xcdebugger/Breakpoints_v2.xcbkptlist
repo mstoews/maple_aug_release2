@@ -17,38 +17,6 @@
             endingLineNumber = "75"
             landmarkName = "isPostLikebyUser(uid:postId:_:)"
             landmarkType = "7">
-            <Locations>
-               <Location
-                  shouldBeEnabled = "Yes"
-                  ignoreCount = "0"
-                  continueAfterRunningActions = "No"
-                  symbolName = "closure #1 (__ObjC.DataSnapshot) -&gt; () in (extension in maple_release):__ObjC.Database.isPostLikebyUser(uid: Swift.String, postId: Swift.String, (Swift.Int) -&gt; ()) -&gt; ()"
-                  moduleName = "maple_release"
-                  usesParentBreakpointCondition = "Yes"
-                  urlString = "file:///Users/mst/Documents/maple20180316/maple-release/Utilities/FirebaseUtilites.swift"
-                  timestampString = "546901098.6598229"
-                  startingColumnNumber = "9223372036854775807"
-                  endingColumnNumber = "9223372036854775807"
-                  startingLineNumber = "75"
-                  endingLineNumber = "75"
-                  offsetFromSymbolStart = "516">
-               </Location>
-               <Location
-                  shouldBeEnabled = "Yes"
-                  ignoreCount = "0"
-                  continueAfterRunningActions = "No"
-                  symbolName = "closure #1 (Swift.String, Any) -&gt; () in closure #1 (__ObjC.DataSnapshot) -&gt; () in (extension in maple_release):__ObjC.Database.isPostLikebyUser(uid: Swift.String, postId: Swift.String, (Swift.Int) -&gt; ()) -&gt; ()"
-                  moduleName = "maple_release"
-                  usesParentBreakpointCondition = "Yes"
-                  urlString = "file:///Users/mst/Documents/maple20180316/maple-release/Utilities/FirebaseUtilites.swift"
-                  timestampString = "546901098.661911"
-                  startingColumnNumber = "9223372036854775807"
-                  endingColumnNumber = "9223372036854775807"
-                  startingLineNumber = "76"
-                  endingLineNumber = "76"
-                  offsetFromSymbolStart = "28">
-               </Location>
-            </Locations>
          </BreakpointContent>
       </BreakpointProxy>
       <BreakpointProxy
@@ -202,13 +170,13 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "HomeController.swift"
-            timestampString = "546780695.619478"
+            timestampString = "553521068.31216"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
             startingLineNumber = "117"
             endingLineNumber = "117"
-            landmarkName = "unknown"
-            landmarkType = "0">
+            landmarkName = "HomeController"
+            landmarkType = "3">
          </BreakpointContent>
       </BreakpointProxy>
       <BreakpointProxy
@@ -218,13 +186,13 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "HomeController.swift"
-            timestampString = "546780695.619537"
+            timestampString = "553521068.312212"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
             startingLineNumber = "163"
             endingLineNumber = "163"
-            landmarkName = "unknown"
-            landmarkType = "0">
+            landmarkName = "observeQuery()"
+            landmarkType = "7">
          </BreakpointContent>
       </BreakpointProxy>
       <BreakpointProxy
@@ -234,13 +202,13 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "HomeController.swift"
-            timestampString = "546780695.619598"
+            timestampString = "553521068.312242"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
             startingLineNumber = "198"
             endingLineNumber = "198"
-            landmarkName = "unknown"
-            landmarkType = "0">
+            landmarkName = "didShowAllPosts()"
+            landmarkType = "7">
          </BreakpointContent>
       </BreakpointProxy>
       <BreakpointProxy
@@ -282,13 +250,13 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "HomeController.swift"
-            timestampString = "546780695.619743"
+            timestampString = "553521068.312291"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
             startingLineNumber = "184"
             endingLineNumber = "184"
-            landmarkName = "unknown"
-            landmarkType = "0">
+            landmarkName = "didShowAllPosts()"
+            landmarkType = "7">
          </BreakpointContent>
       </BreakpointProxy>
       <BreakpointProxy
@@ -298,13 +266,13 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "HomeController.swift"
-            timestampString = "546780695.619796"
+            timestampString = "553521068.31232"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
             startingLineNumber = "226"
             endingLineNumber = "226"
-            landmarkName = "unknown"
-            landmarkType = "0">
+            landmarkName = "didShowTopPosts()"
+            landmarkType = "7">
          </BreakpointContent>
       </BreakpointProxy>
       <BreakpointProxy
@@ -314,13 +282,13 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "HomeController.swift"
-            timestampString = "546780695.619843"
+            timestampString = "553521068.312346"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
             startingLineNumber = "183"
             endingLineNumber = "183"
-            landmarkName = "unknown"
-            landmarkType = "0">
+            landmarkName = "didShowAllPosts()"
+            landmarkType = "7">
          </BreakpointContent>
       </BreakpointProxy>
       <BreakpointProxy
@@ -330,13 +298,13 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "HomeController.swift"
-            timestampString = "546780695.619887"
+            timestampString = "553521068.312373"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
             startingLineNumber = "185"
             endingLineNumber = "185"
-            landmarkName = "unknown"
-            landmarkType = "0">
+            landmarkName = "didShowAllPosts()"
+            landmarkType = "7">
          </BreakpointContent>
       </BreakpointProxy>
       <BreakpointProxy
@@ -346,13 +314,13 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "HomeController.swift"
-            timestampString = "546780695.619935"
+            timestampString = "553521068.312398"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
             startingLineNumber = "187"
             endingLineNumber = "187"
-            landmarkName = "unknown"
-            landmarkType = "0">
+            landmarkName = "didShowAllPosts()"
+            landmarkType = "7">
          </BreakpointContent>
       </BreakpointProxy>
       <BreakpointProxy
@@ -369,38 +337,6 @@
             endingLineNumber = "96"
             landmarkName = "showContent(_:)"
             landmarkType = "7">
-            <Locations>
-               <Location
-                  shouldBeEnabled = "Yes"
-                  ignoreCount = "0"
-                  continueAfterRunningActions = "No"
-                  symbolName = "maple_release.AppDelegate.showContent(__ObjC.UNNotificationContent) -&gt; ()"
-                  moduleName = "maple_release"
-                  usesParentBreakpointCondition = "Yes"
-                  urlString = "file:///Users/mst/Documents/maple20180316/maple-release/AppDelegate.swift"
-                  timestampString = "546901098.6739939"
-                  startingColumnNumber = "9223372036854775807"
-                  endingColumnNumber = "9223372036854775807"
-                  startingLineNumber = "96"
-                  endingLineNumber = "96"
-                  offsetFromSymbolStart = "657">
-               </Location>
-               <Location
-                  shouldBeEnabled = "Yes"
-                  ignoreCount = "0"
-                  continueAfterRunningActions = "No"
-                  symbolName = "closure #1 () -&gt; () in maple_release.AppDelegate.showContent(__ObjC.UNNotificationContent) -&gt; ()"
-                  moduleName = "maple_release"
-                  usesParentBreakpointCondition = "Yes"
-                  urlString = "file:///Users/mst/Documents/maple20180316/maple-release/AppDelegate.swift"
-                  timestampString = "546901098.675647"
-                  startingColumnNumber = "9223372036854775807"
-                  endingColumnNumber = "9223372036854775807"
-                  startingLineNumber = "98"
-                  endingLineNumber = "98"
-                  offsetFromSymbolStart = "28">
-               </Location>
-            </Locations>
          </BreakpointContent>
       </BreakpointProxy>
       <BreakpointProxy
