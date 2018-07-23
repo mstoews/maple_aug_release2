@@ -505,7 +505,6 @@
 				4876BC8920DA16280057E5E0 /* PhotoSelectorHeader.swift */,
 				4876BC8A20DA16280057E5E0 /* Extensions.swift */,
 				4876BC8B20DA16280057E5E0 /* PhotoSelectorController.swift */,
-				4876BC9220DA16280057E5E0 /* EditPostController.swift */,
 				4876BC9320DA16280057E5E0 /* PhotoSelectorCell.swift */,
 				4876BC9520DA16280057E5E0 /* CustomImageView.swift */,
 				4876BC9620DA16280057E5E0 /* PhotoViewModel.swift */,
@@ -620,6 +619,7 @@
 			children = (
 				48B444F51FE7341D00DFD412 /* HomeController.swift */,
 				48B444DF1FE7341700DFD412 /* HomePostCell.swift */,
+				4876BC9220DA16280057E5E0 /* EditPostController.swift */,
 				025D70DF20B53AD4004E967B /* FlexibleHeader.swift */,
 				02DC63492004E5C500AE9662 /* HomeHeaderCell.swift */,
 				48B4451A1FE7342600DFD412 /* CommentsController.swift */,

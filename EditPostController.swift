@@ -12,6 +12,7 @@ import GoogleMaps
 import GooglePlaces
 import Kingfisher
 import INSPhotoGallery
+import MaterialComponents
 
 
 class PostsImage: BaseCell
@@ -344,23 +345,29 @@ class EditPostController:
     }
     
     override func viewDidLayoutSubviews() {
-        let containerView = UIView()
         
-        let editMenu = UIView()
-        editMenu.backgroundColor = UIColor.blue
-        editMenu.layer.cornerRadius = 10
-        editMenu.backgroundColor = .white
-        editMenu.layer.borderWidth = 2
-        editMenu.layer.borderColor = UIColor.black.cgColor
+        
+        let containerView = MDCCard()
+        containerView.setShadowElevation(ShadowElevation.menu, for: UIControlState.normal)
+        containerView.addSubview(imageCollectionView)
+        
+        
+//
+//        let editMenu = UIView()
+//        editMenu.backgroundColor = UIColor.blue
+//        editMenu.layer.cornerRadius = 10
+//        editMenu.backgroundColor = .white
+//        editMenu.layer.borderWidth = 2
+//        editMenu.layer.borderColor = UIColor.black.cgColor
         
         let mapMenu = setMapMenu()
     
         //let stackButtonsVerical = UIStackView(arrangedSubviews: [addPhotos,filterPhotos,erasePhotos])
-        let stackButtonsVerical = UIStackView(arrangedSubviews: [addPhotos,filterPhotos])
-        stackButtonsVerical.axis = .vertical
-        stackButtonsVerical.distribution = .fillEqually
+        //let stackButtonsVerical = UIStackView(arrangedSubviews: [addPhotos,filterPhotos])
+        //stackButtonsVerical.axis = .vertical
+        //stackButtonsVerical.distribution = .fillEqually
         
-        editMenu.addSubview(stackButtonsVerical)
+        //editMenu.addSubview(stackButtonsVerical)
         
         let stackVerticalMapButtons = UIStackView(arrangedSubviews: [mapGoHome,mapSetType])
         stackVerticalMapButtons.axis = .vertical
@@ -368,21 +375,21 @@ class EditPostController:
         mapMenu.addSubview(stackVerticalMapButtons)
         
         
-        containerView.backgroundColor = UIColor.veryLightGray()
+        containerView.backgroundColor = UIColor.collectionCell()
         view.addSubview(containerView)
-        let stackView = UIStackView(arrangedSubviews: [likeButton, commentButton, bookmarkButton])
-        stackView.distribution = .fillEqually
+        //let stackView = UIStackView(arrangedSubviews: [likeButton, commentButton, bookmarkButton])
+        //stackView.distribution = .fillEqually
         //containerView.addSubview(userProfileImageView)
         containerView.addSubview(prodIcon)
         containerView.addSubview(productLabel)
-        containerView.addSubview(imageCollectionView)
-        containerView.addSubview(topDividerView)
-        containerView.addSubview(bottomDividerView)
+        //containerView.addSubview(imageCollectionView)
+        //containerView.addSubview(topDividerView)
+        //containerView.addSubview(bottomDividerView)
         //containerView.addSubview(stackView)
-        containerView.addSubview(Description)
+        //containerView.addSubview(Description)
         //containerView.addSubview(mapviewDividerView)
         containerView.addSubview(mapView)
-        containerView.addSubview(editMenu)
+        //containerView.addSubview(editMenu)
         containerView.addSubview(mapMenu)
         
         let heightOfViewController = view.frame.width / 2 - 10
@@ -391,13 +398,26 @@ class EditPostController:
             containerView.anchor(top: view.safeAreaLayoutGuide.topAnchor,
                                  left: view.leftAnchor,
                                  bottom: view.safeAreaLayoutGuide.bottomAnchor,
-                                 right: view.rightAnchor)
+                                 right: view.rightAnchor,
+                                 paddingTop: 7,
+                                 paddingLeft: 7,
+                                 paddingBottom: 7,
+                                 paddingRight: 7,
+                                 width: 0,
+                                 height: 0)
+            
         } else {
             // Fallback on earlier versions
             containerView.anchor(top: view.topAnchor,
                                  left: view.leftAnchor,
                                  bottom: view.bottomAnchor,
-                                 right: view.rightAnchor)
+                                 right: view.rightAnchor,
+                                 paddingTop: 7,
+                                 paddingLeft: 7,
+                                 paddingBottom: 7,
+                                 paddingRight: 7,
+                                 width: 0,
+                                 height: 0)
         }
         
         prodIcon.anchor(top: containerView.topAnchor,

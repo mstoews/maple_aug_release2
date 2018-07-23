@@ -787,15 +787,26 @@ class SharePhotoController:
                          paddingRight: paddingSize,
                          width: 0 , height: (imageConstraint?.constant)!)
         
-        Products.anchor(top:  imageCard.bottomAnchor, left: containerView.leftAnchor, bottom: nil , right: containerView.rightAnchor ,
+         let bounds = UIScreen.main.bounds
+         let width = bounds.size.width - (2 * (paddingSize + 8) )
+ 
+        Products.anchor(top:  imageCard.bottomAnchor, left: containerView.leftAnchor, bottom: nil ,
+                        //right: containerView.rightAnchor ,
+                        right: nil,
                         paddingTop: paddingTopBottom,
                         paddingLeft: paddingSize,
                         paddingBottom: paddingTopBottom,
                         paddingRight: paddingSize,
-                        width: 0 , height: productsHeight)
+                        width: width / 2   , height: productsHeight)
+        
+        CategoryDesc.anchor(top: imageCard.bottomAnchor, left: Products.rightAnchor, bottom: nil , right: containerView.rightAnchor,
+                            paddingTop: paddingTopBottom ,
+                            paddingLeft: paddingSize,
+                            paddingBottom: paddingTopBottom,
+                            paddingRight: paddingSize,
+                            width: 0 , height: productsHeight)
         
         
-
         locationCard.anchor(top: Products.bottomAnchor, left: containerView.leftAnchor, bottom: nil, right: containerView.rightAnchor ,
                                               paddingTop: paddingTopBottom,
                                               paddingLeft: paddingSize,
@@ -814,12 +825,7 @@ class SharePhotoController:
         
         RunningCountLabel.anchor(top: nil, left: nil, bottom: Description.bottomAnchor, right: Description.rightAnchor , paddingTop: 4 , paddingLeft: 0, paddingBottom: 1 , paddingRight: 0, width: 50 , height: 30)
         
-        CategoryDesc.anchor(top: Description.bottomAnchor, left: containerView.leftAnchor, bottom: nil , right: containerView.rightAnchor,
-                            paddingTop: paddingTopBottom ,
-                            paddingLeft: paddingSize,
-                            paddingBottom: paddingTopBottom,
-                            paddingRight: paddingSize,
-                            width: 0 , height: productsHeight)
+       
         
         stackButtonsVerical.anchor(top: buttonMenus.topAnchor, left: buttonMenus.leftAnchor, bottom: buttonMenus.bottomAnchor, right: buttonMenus.rightAnchor)
         

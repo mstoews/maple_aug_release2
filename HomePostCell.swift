@@ -68,6 +68,7 @@ class HomePostCell: MDCCardCollectionCell , UICollectionViewDataSource, UICollec
     var horizontalCellId = "horizontalCellId"
     var delegate: HomePostCellDelegate?
     var images = [ImageObject]()
+    var uid : String?
     
     public var imageConstraint: NSLayoutConstraint?
     public var imageWidthContraint: NSLayoutConstraint?
@@ -95,6 +96,43 @@ class HomePostCell: MDCCardCollectionCell , UICollectionViewDataSource, UICollec
     }
     
     
+    deinit {
+        postCountListener?.remove()
+    }
+    
+    private var postCountListener: ListenerRegistration?
+    
+    fileprivate func observeQuery()
+    {
+        stopObserving()
+        
+        self.postCountListener = Firestore.firestore().collection("posts")
+            .whereField("uid", isEqualTo: uid)
+            .addSnapshotListener{  (snapshot, error) in
+                guard let snapshot = snapshot else {
+                    print("Error fetching snapshot results: \(error!)")
+                    return
+                }
+                
+                let models = snapshot.documents.map { (document) -> FSPost in
+                    if let model = FSPost(dictionary: document.data(), postId: document.documentID) {
+                        //Firestore.updateAlgoliaPost(post: model)
+                        return model
+                    }
+                    else {
+                        // Don't use fatalError here in a real app.
+                        fatalError("Unable to initialize type \(FSPost.self) with dictionary \(document.data())")
+                    }
+                }
+        }
+    }
+    
+    
+    fileprivate func stopObserving() {
+        postCountListener?.remove()
+    }
+    
+    
     var fs_post: FSPost? {
         
         didSet {
@@ -105,7 +143,7 @@ class HomePostCell: MDCCardCollectionCell , UICollectionViewDataSource, UICollec
             images = []
             
             self.likeButton.setImage(#imageLiteral(resourceName: "ic_favorite_border").withRenderingMode(.alwaysOriginal), for: .normal)
-            
+            self.uid = fs_post?.uid
             var isLikedByUid = false
             var isBookMarkedByUid = false
             

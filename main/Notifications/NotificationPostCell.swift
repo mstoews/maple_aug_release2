@@ -83,7 +83,7 @@ class NotificationPostCell: MDCCardCollectionCell {
     
     let clearButton : UIButton = {
         let button = UIButton(type: .system)
-        button.setImage(#imageLiteral(resourceName: "ic_clear").withRenderingMode(.alwaysOriginal), for: .normal)
+        button.setImage(#imageLiteral(resourceName: "ic_delete").withRenderingMode(.alwaysOriginal), for: .normal)
         button.addTarget(self, action: #selector(handleClear), for: .touchUpInside)
         return button
     }()
@@ -145,13 +145,13 @@ class NotificationPostCell: MDCCardCollectionCell {
                             paddingBottom: 5, paddingRight: 60, width: 0, height: 40)
         
         
-        saveButton.anchor(top: contentLabel.topAnchor, left: nil, bottom: nil,
-                            right: contentView.rightAnchor, paddingTop: 0, paddingLeft: 2,
-                            paddingBottom: 5, paddingRight: 2, width: 25, height: 25)
+//        saveButton.anchor(top: contentLabel.topAnchor, left: nil, bottom: nil,
+//                            right: contentView.rightAnchor, paddingTop: 0, paddingLeft: 2,
+//                            paddingBottom: 5, paddingRight: 2, width: 25, height: 25)
         
-        clearButton.anchor(top: saveButton.bottomAnchor, left: nil, bottom: nil,
-                          right: contentView.rightAnchor, paddingTop: 0, paddingLeft: 2,
-                          paddingBottom: 5, paddingRight: 2, width: 25 , height: 25)
+        clearButton.anchor(top: contentLabel.topAnchor, left: nil, bottom: nil,
+                               right: contentView.rightAnchor, paddingTop: 0, paddingLeft: 2,
+                               paddingBottom: 5, paddingRight: 2, width: 25, height: 25)
         
         timeLabel.anchor(top: contentLabel.bottomAnchor, left:  profileImageView.rightAnchor, bottom: nil, right: nil, paddingTop: 0, paddingLeft: 8,
                          paddingBottom: 0, paddingRight: 0, width: 0, height: 10)
