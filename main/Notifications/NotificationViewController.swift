@@ -10,7 +10,16 @@ import UIKit
 import Firebase
 import MaterialComponents
 
-class NotificationViewController: MDCCollectionViewController {
+class NotificationViewController: MDCCollectionViewController , NotificationDelegate {
+    func didSave(for cell: NotificationPostCell) {
+        
+    }
+    
+    func didClear(for cell: NotificationPostCell) {
+        guard let indexPath = collectionView?.indexPath(for: cell) else { return }
+        removeNotification(indexPath.item)
+    }
+    
     
     var notification: NotificationObject? {
         didSet {
@@ -161,7 +170,7 @@ class NotificationViewController: MDCCollectionViewController {
     override func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: cellId, for: indexPath) as! NotificationPostCell
         let notification = self.allNotifications[indexPath.item]
-        
+        cell.delegate = self
         Database.fetchUserWithUID(uid: notification.sender, completion: { (user) in
             cell.populateContent(from: user, text: notification.content, date: notification.date, index: indexPath.item, isDryRun: false )
         })

@@ -81,7 +81,7 @@ class NotificationPostCell: MDCCardCollectionCell {
         return button
     }()
     
-    let clearButton : UIButton = {
+    lazy var clearButton : UIButton = {
         let button = UIButton(type: .system)
         button.setImage(#imageLiteral(resourceName: "ic_delete").withRenderingMode(.alwaysOriginal), for: .normal)
         button.addTarget(self, action: #selector(handleClear), for: .touchUpInside)
