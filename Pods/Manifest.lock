@@ -31,7 +31,7 @@ PODS:
   - Cache (4.2.0)
   - Crashlytics (3.10.5):
     - Fabric (~> 1.7.9)
-  - CropViewController (2.3.6)
+  - CropViewController (2.3.7)
   - DKImagePickerController (3.8.1):
     - DKImagePickerController/Camera (= 3.8.1)
     - DKImagePickerController/ImageManager (= 3.8.1)
@@ -42,26 +42,26 @@ PODS:
     - Bolts (~> 1.7)
   - FBSDKLoginKit (4.34.0):
     - FBSDKCoreKit
-  - Firebase (5.4.0):
-    - Firebase/Core (= 5.4.0)
-  - Firebase/Auth (5.4.0):
+  - Firebase (5.4.1):
+    - Firebase/Core (= 5.4.1)
+  - Firebase/Auth (5.4.1):
     - Firebase/CoreOnly
     - FirebaseAuth (= 5.0.2)
-  - Firebase/Core (5.4.0):
+  - Firebase/Core (5.4.1):
     - Firebase/CoreOnly
     - FirebaseAnalytics (= 5.0.1)
-  - Firebase/CoreOnly (5.4.0):
-    - FirebaseCore (= 5.0.5)
-  - Firebase/Database (5.4.0):
+  - Firebase/CoreOnly (5.4.1):
+    - FirebaseCore (= 5.0.6)
+  - Firebase/Database (5.4.1):
     - Firebase/CoreOnly
     - FirebaseDatabase (= 5.0.2)
-  - Firebase/Firestore (5.4.0):
+  - Firebase/Firestore (5.4.1):
     - Firebase/CoreOnly
-    - FirebaseFirestore (= 0.12.5)
-  - Firebase/Invites (5.4.0):
+    - FirebaseFirestore (= 0.12.6)
+  - Firebase/Invites (5.4.1):
     - Firebase/Core
     - FirebaseInvites (= 3.0.0)
-  - Firebase/Storage (5.4.0):
+  - Firebase/Storage (5.4.1):
     - Firebase/CoreOnly
     - FirebaseStorage (= 3.0.0)
   - FirebaseAnalytics (5.0.1):
@@ -72,21 +72,21 @@ PODS:
   - FirebaseAuth (5.0.2):
     - FirebaseCore (~> 5.0)
     - GTMSessionFetcher/Core (~> 1.1)
-  - FirebaseCore (5.0.5):
+  - FirebaseCore (5.0.6):
     - "GoogleToolboxForMac/NSData+zlib (~> 2.1)"
   - FirebaseDatabase (5.0.2):
     - FirebaseCore (~> 5.0)
     - leveldb-library (~> 1.18)
   - FirebaseDynamicLinks (3.0.1):
     - FirebaseAnalytics (~> 5.0)
-  - FirebaseFirestore (0.12.5):
+  - FirebaseFirestore (0.12.6):
     - FirebaseCore (~> 5.0)
-    - FirebaseFirestore/abseil-cpp (= 0.12.5)
+    - FirebaseFirestore/abseil-cpp (= 0.12.6)
     - gRPC-ProtoRPC (~> 1.0)
     - leveldb-library (~> 1.18)
     - nanopb (~> 0.3.8)
     - Protobuf (~> 3.1)
-  - FirebaseFirestore/abseil-cpp (0.12.5):
+  - FirebaseFirestore/abseil-cpp (0.12.6):
     - FirebaseCore (~> 5.0)
     - gRPC-ProtoRPC (~> 1.0)
     - leveldb-library (~> 1.18)
@@ -116,33 +116,33 @@ PODS:
   - FirebaseStorage (3.0.0):
     - FirebaseCore (~> 5.0)
     - GTMSessionFetcher/Core (~> 1.1)
-  - FirebaseUI (5.0.1):
-    - FirebaseUI/Auth (= 5.0.1)
-    - FirebaseUI/Database (= 5.0.1)
-    - FirebaseUI/Facebook (= 5.0.1)
-    - FirebaseUI/Firestore (= 5.0.1)
-    - FirebaseUI/Google (= 5.0.1)
-    - FirebaseUI/Phone (= 5.0.1)
-    - FirebaseUI/Storage (= 5.0.1)
-    - FirebaseUI/Twitter (= 5.0.1)
-  - FirebaseUI/Auth (5.0.1):
+  - FirebaseUI (5.1.3):
+    - FirebaseUI/Auth (= 5.1.3)
+    - FirebaseUI/Database (= 5.1.3)
+    - FirebaseUI/Facebook (= 5.1.3)
+    - FirebaseUI/Firestore (= 5.1.3)
+    - FirebaseUI/Google (= 5.1.3)
+    - FirebaseUI/Phone (= 5.1.3)
+    - FirebaseUI/Storage (= 5.1.3)
+    - FirebaseUI/Twitter (= 5.1.3)
+  - FirebaseUI/Auth (5.1.3):
     - Firebase/Auth (~> 5.0)
-  - FirebaseUI/Database (5.0.1):
+  - FirebaseUI/Database (5.1.3):
     - Firebase/Database (~> 5.0)
-  - FirebaseUI/Facebook (5.0.1):
+  - FirebaseUI/Facebook (5.1.3):
     - FBSDKLoginKit (~> 4.0)
     - FirebaseUI/Auth
-  - FirebaseUI/Firestore (5.0.1):
+  - FirebaseUI/Firestore (5.1.3):
     - Firebase/Firestore
-  - FirebaseUI/Google (5.0.1):
+  - FirebaseUI/Google (5.1.3):
     - FirebaseUI/Auth
     - GoogleSignIn (~> 4.0)
-  - FirebaseUI/Phone (5.0.1):
+  - FirebaseUI/Phone (5.1.3):
     - FirebaseUI/Auth
-  - FirebaseUI/Storage (5.0.1):
+  - FirebaseUI/Storage (5.1.3):
     - Firebase/Storage (~> 5.0)
     - SDWebImage (~> 4.0)
-  - FirebaseUI/Twitter (5.0.1):
+  - FirebaseUI/Twitter (5.1.3):
     - FirebaseUI/Auth
     - TwitterKit (~> 3.0)
   - Gallery (2.0.6)
@@ -227,94 +227,94 @@ PODS:
   - Lightbox (2.1.2):
     - Hue (~> 3.0)
     - Imaginary (~> 3.0)
-  - MaterialComponents (57.0.0):
-    - MaterialComponents/ActivityIndicator (= 57.0.0)
-    - "MaterialComponents/ActivityIndicator+ColorThemer (= 57.0.0)"
-    - MaterialComponents/AnimationTiming (= 57.0.0)
-    - MaterialComponents/AppBar (= 57.0.0)
-    - "MaterialComponents/AppBar+ColorThemer (= 57.0.0)"
-    - "MaterialComponents/AppBar+TypographyThemer (= 57.0.0)"
-    - MaterialComponents/BottomAppBar (= 57.0.0)
-    - "MaterialComponents/BottomAppBar+ColorThemer (= 57.0.0)"
-    - MaterialComponents/BottomNavigation (= 57.0.0)
-    - "MaterialComponents/BottomNavigation+ColorThemer (= 57.0.0)"
-    - "MaterialComponents/BottomNavigation+TypographyThemer (= 57.0.0)"
-    - MaterialComponents/BottomSheet (= 57.0.0)
-    - MaterialComponents/ButtonBar (= 57.0.0)
-    - "MaterialComponents/ButtonBar+ColorThemer (= 57.0.0)"
-    - "MaterialComponents/ButtonBar+TypographyThemer (= 57.0.0)"
-    - MaterialComponents/Buttons (= 57.0.0)
-    - "MaterialComponents/Buttons+ButtonThemer (= 57.0.0)"
-    - "MaterialComponents/Buttons+ColorThemer (= 57.0.0)"
-    - "MaterialComponents/Buttons+TitleColorAccessibilityMutator (= 57.0.0)"
-    - "MaterialComponents/Buttons+TypographyThemer (= 57.0.0)"
-    - MaterialComponents/Cards (= 57.0.0)
-    - "MaterialComponents/Cards+CardThemer (= 57.0.0)"
-    - "MaterialComponents/Cards+ColorThemer (= 57.0.0)"
-    - MaterialComponents/Chips (= 57.0.0)
-    - "MaterialComponents/Chips+ChipThemer (= 57.0.0)"
-    - "MaterialComponents/Chips+ColorThemer (= 57.0.0)"
-    - "MaterialComponents/Chips+FontThemer (= 57.0.0)"
-    - "MaterialComponents/Chips+TypographyThemer (= 57.0.0)"
-    - MaterialComponents/CollectionCells (= 57.0.0)
-    - MaterialComponents/CollectionLayoutAttributes (= 57.0.0)
-    - MaterialComponents/Collections (= 57.0.0)
-    - MaterialComponents/Dialogs (= 57.0.0)
-    - "MaterialComponents/Dialogs+ColorThemer (= 57.0.0)"
-    - "MaterialComponents/Dialogs+TypographyThemer (= 57.0.0)"
-    - MaterialComponents/FeatureHighlight (= 57.0.0)
-    - "MaterialComponents/FeatureHighlight+ColorThemer (= 57.0.0)"
-    - "MaterialComponents/FeatureHighlight+FeatureHighlightAccessibilityMutator (= 57.0.0)"
-    - "MaterialComponents/FeatureHighlight+FontThemer (= 57.0.0)"
-    - "MaterialComponents/FeatureHighlight+TypographyThemer (= 57.0.0)"
-    - MaterialComponents/FlexibleHeader (= 57.0.0)
-    - "MaterialComponents/FlexibleHeader+ColorThemer (= 57.0.0)"
-    - MaterialComponents/HeaderStackView (= 57.0.0)
-    - "MaterialComponents/HeaderStackView+ColorThemer (= 57.0.0)"
-    - MaterialComponents/Ink (= 57.0.0)
-    - "MaterialComponents/Ink+ColorThemer (= 57.0.0)"
-    - MaterialComponents/LibraryInfo (= 57.0.0)
-    - MaterialComponents/List (= 57.0.0)
-    - MaterialComponents/MaskedTransition (= 57.0.0)
-    - MaterialComponents/NavigationBar (= 57.0.0)
-    - "MaterialComponents/NavigationBar+ColorThemer (= 57.0.0)"
-    - "MaterialComponents/NavigationBar+TypographyThemer (= 57.0.0)"
-    - MaterialComponents/OverlayWindow (= 57.0.0)
-    - MaterialComponents/PageControl (= 57.0.0)
-    - "MaterialComponents/PageControl+ColorThemer (= 57.0.0)"
-    - MaterialComponents/Palettes (= 57.0.0)
-    - MaterialComponents/private (= 57.0.0)
-    - MaterialComponents/ProgressView (= 57.0.0)
-    - "MaterialComponents/ProgressView+ColorThemer (= 57.0.0)"
-    - MaterialComponents/schemes (= 57.0.0)
-    - MaterialComponents/ShadowElevations (= 57.0.0)
-    - MaterialComponents/ShadowLayer (= 57.0.0)
-    - MaterialComponents/Slider (= 57.0.0)
-    - "MaterialComponents/Slider+ColorThemer (= 57.0.0)"
-    - MaterialComponents/Snackbar (= 57.0.0)
-    - "MaterialComponents/Snackbar+ColorThemer (= 57.0.0)"
-    - "MaterialComponents/Snackbar+FontThemer (= 57.0.0)"
-    - "MaterialComponents/Snackbar+TypographyThemer (= 57.0.0)"
-    - MaterialComponents/Tabs (= 57.0.0)
-    - "MaterialComponents/Tabs+ColorThemer (= 57.0.0)"
-    - "MaterialComponents/Tabs+FontThemer (= 57.0.0)"
-    - "MaterialComponents/Tabs+TypographyThemer (= 57.0.0)"
-    - MaterialComponents/TextFields (= 57.0.0)
-    - "MaterialComponents/TextFields+ColorThemer (= 57.0.0)"
-    - "MaterialComponents/TextFields+FontThemer (= 57.0.0)"
-    - "MaterialComponents/TextFields+TypographyThemer (= 57.0.0)"
-    - MaterialComponents/Themes (= 57.0.0)
-    - MaterialComponents/Typography (= 57.0.0)
-  - MaterialComponents/ActivityIndicator (57.0.0):
+  - MaterialComponents (58.0.0):
+    - MaterialComponents/ActivityIndicator (= 58.0.0)
+    - "MaterialComponents/ActivityIndicator+ColorThemer (= 58.0.0)"
+    - MaterialComponents/AnimationTiming (= 58.0.0)
+    - MaterialComponents/AppBar (= 58.0.0)
+    - "MaterialComponents/AppBar+ColorThemer (= 58.0.0)"
+    - "MaterialComponents/AppBar+TypographyThemer (= 58.0.0)"
+    - MaterialComponents/BottomAppBar (= 58.0.0)
+    - "MaterialComponents/BottomAppBar+ColorThemer (= 58.0.0)"
+    - MaterialComponents/BottomNavigation (= 58.0.0)
+    - "MaterialComponents/BottomNavigation+ColorThemer (= 58.0.0)"
+    - "MaterialComponents/BottomNavigation+TypographyThemer (= 58.0.0)"
+    - MaterialComponents/BottomSheet (= 58.0.0)
+    - MaterialComponents/ButtonBar (= 58.0.0)
+    - "MaterialComponents/ButtonBar+ColorThemer (= 58.0.0)"
+    - "MaterialComponents/ButtonBar+TypographyThemer (= 58.0.0)"
+    - MaterialComponents/Buttons (= 58.0.0)
+    - "MaterialComponents/Buttons+ButtonThemer (= 58.0.0)"
+    - "MaterialComponents/Buttons+ColorThemer (= 58.0.0)"
+    - "MaterialComponents/Buttons+TitleColorAccessibilityMutator (= 58.0.0)"
+    - "MaterialComponents/Buttons+TypographyThemer (= 58.0.0)"
+    - MaterialComponents/Cards (= 58.0.0)
+    - "MaterialComponents/Cards+CardThemer (= 58.0.0)"
+    - "MaterialComponents/Cards+ColorThemer (= 58.0.0)"
+    - MaterialComponents/Chips (= 58.0.0)
+    - "MaterialComponents/Chips+ChipThemer (= 58.0.0)"
+    - "MaterialComponents/Chips+ColorThemer (= 58.0.0)"
+    - "MaterialComponents/Chips+FontThemer (= 58.0.0)"
+    - "MaterialComponents/Chips+TypographyThemer (= 58.0.0)"
+    - MaterialComponents/CollectionCells (= 58.0.0)
+    - MaterialComponents/CollectionLayoutAttributes (= 58.0.0)
+    - MaterialComponents/Collections (= 58.0.0)
+    - MaterialComponents/Dialogs (= 58.0.0)
+    - "MaterialComponents/Dialogs+ColorThemer (= 58.0.0)"
+    - "MaterialComponents/Dialogs+TypographyThemer (= 58.0.0)"
+    - MaterialComponents/FeatureHighlight (= 58.0.0)
+    - "MaterialComponents/FeatureHighlight+ColorThemer (= 58.0.0)"
+    - "MaterialComponents/FeatureHighlight+FeatureHighlightAccessibilityMutator (= 58.0.0)"
+    - "MaterialComponents/FeatureHighlight+FontThemer (= 58.0.0)"
+    - "MaterialComponents/FeatureHighlight+TypographyThemer (= 58.0.0)"
+    - MaterialComponents/FlexibleHeader (= 58.0.0)
+    - "MaterialComponents/FlexibleHeader+ColorThemer (= 58.0.0)"
+    - MaterialComponents/HeaderStackView (= 58.0.0)
+    - "MaterialComponents/HeaderStackView+ColorThemer (= 58.0.0)"
+    - MaterialComponents/Ink (= 58.0.0)
+    - "MaterialComponents/Ink+ColorThemer (= 58.0.0)"
+    - MaterialComponents/LibraryInfo (= 58.0.0)
+    - MaterialComponents/List (= 58.0.0)
+    - MaterialComponents/MaskedTransition (= 58.0.0)
+    - MaterialComponents/NavigationBar (= 58.0.0)
+    - "MaterialComponents/NavigationBar+ColorThemer (= 58.0.0)"
+    - "MaterialComponents/NavigationBar+TypographyThemer (= 58.0.0)"
+    - MaterialComponents/OverlayWindow (= 58.0.0)
+    - MaterialComponents/PageControl (= 58.0.0)
+    - "MaterialComponents/PageControl+ColorThemer (= 58.0.0)"
+    - MaterialComponents/Palettes (= 58.0.0)
+    - MaterialComponents/private (= 58.0.0)
+    - MaterialComponents/ProgressView (= 58.0.0)
+    - "MaterialComponents/ProgressView+ColorThemer (= 58.0.0)"
+    - MaterialComponents/schemes (= 58.0.0)
+    - MaterialComponents/ShadowElevations (= 58.0.0)
+    - MaterialComponents/ShadowLayer (= 58.0.0)
+    - MaterialComponents/Slider (= 58.0.0)
+    - "MaterialComponents/Slider+ColorThemer (= 58.0.0)"
+    - MaterialComponents/Snackbar (= 58.0.0)
+    - "MaterialComponents/Snackbar+ColorThemer (= 58.0.0)"
+    - "MaterialComponents/Snackbar+FontThemer (= 58.0.0)"
+    - "MaterialComponents/Snackbar+TypographyThemer (= 58.0.0)"
+    - MaterialComponents/Tabs (= 58.0.0)
+    - "MaterialComponents/Tabs+ColorThemer (= 58.0.0)"
+    - "MaterialComponents/Tabs+FontThemer (= 58.0.0)"
+    - "MaterialComponents/Tabs+TypographyThemer (= 58.0.0)"
+    - MaterialComponents/TextFields (= 58.0.0)
+    - "MaterialComponents/TextFields+ColorThemer (= 58.0.0)"
+    - "MaterialComponents/TextFields+FontThemer (= 58.0.0)"
+    - "MaterialComponents/TextFields+TypographyThemer (= 58.0.0)"
+    - MaterialComponents/Themes (= 58.0.0)
+    - MaterialComponents/Typography (= 58.0.0)
+  - MaterialComponents/ActivityIndicator (58.0.0):
     - MaterialComponents/Palettes
     - MaterialComponents/private/Application
     - MDFInternationalization
     - MotionAnimator (~> 2.0)
-  - "MaterialComponents/ActivityIndicator+ColorThemer (57.0.0)":
+  - "MaterialComponents/ActivityIndicator+ColorThemer (58.0.0)":
     - MaterialComponents/ActivityIndicator
     - MaterialComponents/schemes/Color
-  - MaterialComponents/AnimationTiming (57.0.0)
-  - MaterialComponents/AppBar (57.0.0):
+  - MaterialComponents/AnimationTiming (58.0.0)
+  - MaterialComponents/AppBar (58.0.0):
     - MaterialComponents/FlexibleHeader
     - MaterialComponents/HeaderStackView
     - MaterialComponents/NavigationBar
@@ -325,50 +325,50 @@ PODS:
     - MaterialComponents/ShadowLayer
     - MaterialComponents/Typography
     - MDFInternationalization
-  - "MaterialComponents/AppBar+ColorThemer (57.0.0)":
+  - "MaterialComponents/AppBar+ColorThemer (58.0.0)":
     - MaterialComponents/AppBar
     - "MaterialComponents/FlexibleHeader+ColorThemer"
     - "MaterialComponents/NavigationBar+ColorThemer"
     - MaterialComponents/Themes
-  - "MaterialComponents/AppBar+TypographyThemer (57.0.0)":
+  - "MaterialComponents/AppBar+TypographyThemer (58.0.0)":
     - MaterialComponents/AppBar
     - "MaterialComponents/NavigationBar+TypographyThemer"
-  - MaterialComponents/BottomAppBar (57.0.0):
+  - MaterialComponents/BottomAppBar (58.0.0):
     - MaterialComponents/Buttons
     - MaterialComponents/NavigationBar
     - MaterialComponents/private/Math
     - MDFInternationalization
-  - "MaterialComponents/BottomAppBar+ColorThemer (57.0.0)":
+  - "MaterialComponents/BottomAppBar+ColorThemer (58.0.0)":
     - MaterialComponents/BottomAppBar
     - MaterialComponents/Themes
-  - MaterialComponents/BottomNavigation (57.0.0):
+  - MaterialComponents/BottomNavigation (58.0.0):
     - MaterialComponents/Ink
     - MaterialComponents/private/Math
     - MaterialComponents/ShadowElevations
     - MaterialComponents/ShadowLayer
     - MaterialComponents/Typography
     - MDFInternationalization
-  - "MaterialComponents/BottomNavigation+ColorThemer (57.0.0)":
+  - "MaterialComponents/BottomNavigation+ColorThemer (58.0.0)":
     - MaterialComponents/BottomNavigation
     - MaterialComponents/schemes/Color
-  - "MaterialComponents/BottomNavigation+TypographyThemer (57.0.0)":
+  - "MaterialComponents/BottomNavigation+TypographyThemer (58.0.0)":
     - MaterialComponents/BottomNavigation
     - MaterialComponents/schemes/Typography
-  - MaterialComponents/BottomSheet (57.0.0):
+  - MaterialComponents/BottomSheet (58.0.0):
     - MaterialComponents/private/KeyboardWatcher
     - MaterialComponents/private/Math
     - MaterialComponents/private/ShapeLibrary
     - MaterialComponents/private/Shapes
-  - MaterialComponents/ButtonBar (57.0.0):
+  - MaterialComponents/ButtonBar (58.0.0):
     - MaterialComponents/Buttons
     - MDFInternationalization
-  - "MaterialComponents/ButtonBar+ColorThemer (57.0.0)":
+  - "MaterialComponents/ButtonBar+ColorThemer (58.0.0)":
     - MaterialComponents/ButtonBar
     - MaterialComponents/Themes
-  - "MaterialComponents/ButtonBar+TypographyThemer (57.0.0)":
+  - "MaterialComponents/ButtonBar+TypographyThemer (58.0.0)":
     - MaterialComponents/ButtonBar
     - MaterialComponents/schemes/Typography
-  - MaterialComponents/Buttons (57.0.0):
+  - MaterialComponents/Buttons (58.0.0):
     - MaterialComponents/Ink
     - MaterialComponents/private/Math
     - MaterialComponents/private/Shapes
@@ -377,32 +377,32 @@ PODS:
     - MaterialComponents/Typography
     - MDFInternationalization
     - MDFTextAccessibility
-  - "MaterialComponents/Buttons+ButtonThemer (57.0.0)":
+  - "MaterialComponents/Buttons+ButtonThemer (58.0.0)":
     - MaterialComponents/Buttons
     - "MaterialComponents/Buttons+ColorThemer"
     - "MaterialComponents/Buttons+TypographyThemer"
-  - "MaterialComponents/Buttons+ColorThemer (57.0.0)":
+  - "MaterialComponents/Buttons+ColorThemer (58.0.0)":
     - MaterialComponents/Buttons
     - MaterialComponents/schemes/Color
-  - "MaterialComponents/Buttons+TitleColorAccessibilityMutator (57.0.0)":
+  - "MaterialComponents/Buttons+TitleColorAccessibilityMutator (58.0.0)":
     - MaterialComponents/Buttons
     - MDFTextAccessibility
-  - "MaterialComponents/Buttons+TypographyThemer (57.0.0)":
+  - "MaterialComponents/Buttons+TypographyThemer (58.0.0)":
     - MaterialComponents/Buttons
     - MaterialComponents/schemes/Typography
-  - MaterialComponents/Cards (57.0.0):
+  - MaterialComponents/Cards (58.0.0):
     - MaterialComponents/Ink
     - MaterialComponents/private/Icons/ic_check_circle
     - MaterialComponents/private/Math
     - MaterialComponents/private/Shapes
     - MaterialComponents/ShadowLayer
-  - "MaterialComponents/Cards+CardThemer (57.0.0)":
+  - "MaterialComponents/Cards+CardThemer (58.0.0)":
     - MaterialComponents/Cards
     - "MaterialComponents/Cards+ColorThemer"
-  - "MaterialComponents/Cards+ColorThemer (57.0.0)":
+  - "MaterialComponents/Cards+ColorThemer (58.0.0)":
     - MaterialComponents/Cards
     - MaterialComponents/schemes/Color
-  - MaterialComponents/Chips (57.0.0):
+  - MaterialComponents/Chips (58.0.0):
     - MaterialComponents/Ink
     - MaterialComponents/private/Math
     - MaterialComponents/private/ShapeLibrary
@@ -412,20 +412,20 @@ PODS:
     - MaterialComponents/TextFields
     - MaterialComponents/Typography
     - MDFInternationalization
-  - "MaterialComponents/Chips+ChipThemer (57.0.0)":
+  - "MaterialComponents/Chips+ChipThemer (58.0.0)":
     - MaterialComponents/Chips
     - "MaterialComponents/Chips+ColorThemer"
     - "MaterialComponents/Chips+TypographyThemer"
-  - "MaterialComponents/Chips+ColorThemer (57.0.0)":
+  - "MaterialComponents/Chips+ColorThemer (58.0.0)":
     - MaterialComponents/Chips
     - MaterialComponents/schemes/Color
-  - "MaterialComponents/Chips+FontThemer (57.0.0)":
+  - "MaterialComponents/Chips+FontThemer (58.0.0)":
     - MaterialComponents/Chips
     - MaterialComponents/Themes
-  - "MaterialComponents/Chips+TypographyThemer (57.0.0)":
+  - "MaterialComponents/Chips+TypographyThemer (58.0.0)":
     - MaterialComponents/Chips
     - MaterialComponents/schemes/Typography
-  - MaterialComponents/CollectionCells (57.0.0):
+  - MaterialComponents/CollectionCells (58.0.0):
     - MaterialComponents/CollectionLayoutAttributes
     - MaterialComponents/Ink
     - MaterialComponents/Palettes
@@ -438,8 +438,8 @@ PODS:
     - MaterialComponents/private/Math
     - MaterialComponents/Typography
     - MDFInternationalization
-  - MaterialComponents/CollectionLayoutAttributes (57.0.0)
-  - MaterialComponents/Collections (57.0.0):
+  - MaterialComponents/CollectionLayoutAttributes (58.0.0)
+  - MaterialComponents/Collections (58.0.0):
     - MaterialComponents/CollectionCells
     - MaterialComponents/CollectionLayoutAttributes
     - MaterialComponents/Ink
@@ -447,170 +447,170 @@ PODS:
     - MaterialComponents/ShadowElevations
     - MaterialComponents/ShadowLayer
     - MaterialComponents/Typography
-  - MaterialComponents/Dialogs (57.0.0):
+  - MaterialComponents/Dialogs (58.0.0):
     - MaterialComponents/Buttons
     - MaterialComponents/private/KeyboardWatcher
     - MaterialComponents/ShadowElevations
     - MaterialComponents/ShadowLayer
     - MaterialComponents/Typography
     - MDFInternationalization
-  - "MaterialComponents/Dialogs+ColorThemer (57.0.0)":
+  - "MaterialComponents/Dialogs+ColorThemer (58.0.0)":
     - MaterialComponents/Dialogs
     - MaterialComponents/Themes
-  - "MaterialComponents/Dialogs+TypographyThemer (57.0.0)":
+  - "MaterialComponents/Dialogs+TypographyThemer (58.0.0)":
     - MaterialComponents/Dialogs
     - MaterialComponents/schemes/Typography
-  - MaterialComponents/FeatureHighlight (57.0.0):
+  - MaterialComponents/FeatureHighlight (58.0.0):
     - MaterialComponents/private/Math
     - MaterialComponents/Typography
     - MDFTextAccessibility
-  - "MaterialComponents/FeatureHighlight+ColorThemer (57.0.0)":
+  - "MaterialComponents/FeatureHighlight+ColorThemer (58.0.0)":
     - MaterialComponents/FeatureHighlight
     - MaterialComponents/Themes
-  - "MaterialComponents/FeatureHighlight+FeatureHighlightAccessibilityMutator (57.0.0)":
+  - "MaterialComponents/FeatureHighlight+FeatureHighlightAccessibilityMutator (58.0.0)":
     - MaterialComponents/FeatureHighlight
     - MDFTextAccessibility
-  - "MaterialComponents/FeatureHighlight+FontThemer (57.0.0)":
+  - "MaterialComponents/FeatureHighlight+FontThemer (58.0.0)":
     - MaterialComponents/FeatureHighlight
     - MaterialComponents/Themes
-  - "MaterialComponents/FeatureHighlight+TypographyThemer (57.0.0)":
+  - "MaterialComponents/FeatureHighlight+TypographyThemer (58.0.0)":
     - MaterialComponents/FeatureHighlight
     - MaterialComponents/schemes/Typography
-  - MaterialComponents/FlexibleHeader (57.0.0):
+  - MaterialComponents/FlexibleHeader (58.0.0):
     - MaterialComponents/private/Application
     - MaterialComponents/private/UIMetrics
     - MDFTextAccessibility
-  - "MaterialComponents/FlexibleHeader+ColorThemer (57.0.0)":
+  - "MaterialComponents/FlexibleHeader+ColorThemer (58.0.0)":
     - MaterialComponents/FlexibleHeader
     - MaterialComponents/schemes/Color
-  - MaterialComponents/HeaderStackView (57.0.0)
-  - "MaterialComponents/HeaderStackView+ColorThemer (57.0.0)":
+  - MaterialComponents/HeaderStackView (58.0.0)
+  - "MaterialComponents/HeaderStackView+ColorThemer (58.0.0)":
     - MaterialComponents/HeaderStackView
     - MaterialComponents/Themes
-  - MaterialComponents/Ink (57.0.0):
+  - MaterialComponents/Ink (58.0.0):
     - MaterialComponents/private/Math
-  - "MaterialComponents/Ink+ColorThemer (57.0.0)":
+  - "MaterialComponents/Ink+ColorThemer (58.0.0)":
     - MaterialComponents/Ink
     - MaterialComponents/Themes
-  - MaterialComponents/LibraryInfo (57.0.0)
-  - MaterialComponents/List (57.0.0):
+  - MaterialComponents/LibraryInfo (58.0.0)
+  - MaterialComponents/List (58.0.0):
     - MaterialComponents/Ink
     - MaterialComponents/ShadowElevations
     - MaterialComponents/ShadowLayer
-  - MaterialComponents/MaskedTransition (57.0.0):
+  - MaterialComponents/MaskedTransition (58.0.0):
     - MotionAnimator (~> 2.0)
     - MotionInterchange (~> 1.0)
     - MotionTransitioning (~> 5.0)
-  - MaterialComponents/NavigationBar (57.0.0):
+  - MaterialComponents/NavigationBar (58.0.0):
     - MaterialComponents/ButtonBar
     - MaterialComponents/private/Math
     - MaterialComponents/Typography
     - MDFInternationalization
     - MDFTextAccessibility
-  - "MaterialComponents/NavigationBar+ColorThemer (57.0.0)":
+  - "MaterialComponents/NavigationBar+ColorThemer (58.0.0)":
     - MaterialComponents/NavigationBar
     - MaterialComponents/schemes/Color
-  - "MaterialComponents/NavigationBar+TypographyThemer (57.0.0)":
+  - "MaterialComponents/NavigationBar+TypographyThemer (58.0.0)":
     - MaterialComponents/NavigationBar
     - MaterialComponents/schemes/Typography
-  - MaterialComponents/OverlayWindow (57.0.0):
+  - MaterialComponents/OverlayWindow (58.0.0):
     - MaterialComponents/private/Application
-  - MaterialComponents/PageControl (57.0.0)
-  - "MaterialComponents/PageControl+ColorThemer (57.0.0)":
+  - MaterialComponents/PageControl (58.0.0)
+  - "MaterialComponents/PageControl+ColorThemer (58.0.0)":
     - MaterialComponents/PageControl
     - MaterialComponents/Themes
-  - MaterialComponents/Palettes (57.0.0)
-  - MaterialComponents/private (57.0.0):
-    - MaterialComponents/private/Application (= 57.0.0)
-    - MaterialComponents/private/Icons (= 57.0.0)
-    - MaterialComponents/private/KeyboardWatcher (= 57.0.0)
-    - MaterialComponents/private/Math (= 57.0.0)
-    - MaterialComponents/private/Overlay (= 57.0.0)
-    - MaterialComponents/private/ShapeLibrary (= 57.0.0)
-    - MaterialComponents/private/Shapes (= 57.0.0)
-    - MaterialComponents/private/ThumbTrack (= 57.0.0)
-    - MaterialComponents/private/UIMetrics (= 57.0.0)
-  - MaterialComponents/private/Application (57.0.0)
-  - MaterialComponents/private/Icons (57.0.0):
-    - MaterialComponents/private/Icons/Base (= 57.0.0)
-    - MaterialComponents/private/Icons/ic_arrow_back (= 57.0.0)
-    - MaterialComponents/private/Icons/ic_check (= 57.0.0)
-    - MaterialComponents/private/Icons/ic_check_circle (= 57.0.0)
-    - MaterialComponents/private/Icons/ic_chevron_right (= 57.0.0)
-    - MaterialComponents/private/Icons/ic_color_lens (= 57.0.0)
-    - MaterialComponents/private/Icons/ic_help_outline (= 57.0.0)
-    - MaterialComponents/private/Icons/ic_info (= 57.0.0)
-    - MaterialComponents/private/Icons/ic_more_horiz (= 57.0.0)
-    - MaterialComponents/private/Icons/ic_radio_button_unchecked (= 57.0.0)
-    - MaterialComponents/private/Icons/ic_reorder (= 57.0.0)
-    - MaterialComponents/private/Icons/ic_settings (= 57.0.0)
-  - MaterialComponents/private/Icons/Base (57.0.0)
-  - MaterialComponents/private/Icons/ic_arrow_back (57.0.0):
+  - MaterialComponents/Palettes (58.0.0)
+  - MaterialComponents/private (58.0.0):
+    - MaterialComponents/private/Application (= 58.0.0)
+    - MaterialComponents/private/Icons (= 58.0.0)
+    - MaterialComponents/private/KeyboardWatcher (= 58.0.0)
+    - MaterialComponents/private/Math (= 58.0.0)
+    - MaterialComponents/private/Overlay (= 58.0.0)
+    - MaterialComponents/private/ShapeLibrary (= 58.0.0)
+    - MaterialComponents/private/Shapes (= 58.0.0)
+    - MaterialComponents/private/ThumbTrack (= 58.0.0)
+    - MaterialComponents/private/UIMetrics (= 58.0.0)
+  - MaterialComponents/private/Application (58.0.0)
+  - MaterialComponents/private/Icons (58.0.0):
+    - MaterialComponents/private/Icons/Base (= 58.0.0)
+    - MaterialComponents/private/Icons/ic_arrow_back (= 58.0.0)
+    - MaterialComponents/private/Icons/ic_check (= 58.0.0)
+    - MaterialComponents/private/Icons/ic_check_circle (= 58.0.0)
+    - MaterialComponents/private/Icons/ic_chevron_right (= 58.0.0)
+    - MaterialComponents/private/Icons/ic_color_lens (= 58.0.0)
+    - MaterialComponents/private/Icons/ic_help_outline (= 58.0.0)
+    - MaterialComponents/private/Icons/ic_info (= 58.0.0)
+    - MaterialComponents/private/Icons/ic_more_horiz (= 58.0.0)
+    - MaterialComponents/private/Icons/ic_radio_button_unchecked (= 58.0.0)
+    - MaterialComponents/private/Icons/ic_reorder (= 58.0.0)
+    - MaterialComponents/private/Icons/ic_settings (= 58.0.0)
+  - MaterialComponents/private/Icons/Base (58.0.0)
+  - MaterialComponents/private/Icons/ic_arrow_back (58.0.0):
     - MaterialComponents/private/Icons/Base
-  - MaterialComponents/private/Icons/ic_check (57.0.0):
+  - MaterialComponents/private/Icons/ic_check (58.0.0):
     - MaterialComponents/private/Icons/Base
-  - MaterialComponents/private/Icons/ic_check_circle (57.0.0):
+  - MaterialComponents/private/Icons/ic_check_circle (58.0.0):
     - MaterialComponents/private/Icons/Base
-  - MaterialComponents/private/Icons/ic_chevron_right (57.0.0):
+  - MaterialComponents/private/Icons/ic_chevron_right (58.0.0):
     - MaterialComponents/private/Icons/Base
-  - MaterialComponents/private/Icons/ic_color_lens (57.0.0):
+  - MaterialComponents/private/Icons/ic_color_lens (58.0.0):
     - MaterialComponents/private/Icons/Base
-  - MaterialComponents/private/Icons/ic_help_outline (57.0.0):
+  - MaterialComponents/private/Icons/ic_help_outline (58.0.0):
     - MaterialComponents/private/Icons/Base
-  - MaterialComponents/private/Icons/ic_info (57.0.0):
+  - MaterialComponents/private/Icons/ic_info (58.0.0):
     - MaterialComponents/private/Icons/Base
-  - MaterialComponents/private/Icons/ic_more_horiz (57.0.0):
+  - MaterialComponents/private/Icons/ic_more_horiz (58.0.0):
     - MaterialComponents/private/Icons/Base
-  - MaterialComponents/private/Icons/ic_radio_button_unchecked (57.0.0):
+  - MaterialComponents/private/Icons/ic_radio_button_unchecked (58.0.0):
     - MaterialComponents/private/Icons/Base
-  - MaterialComponents/private/Icons/ic_reorder (57.0.0):
+  - MaterialComponents/private/Icons/ic_reorder (58.0.0):
     - MaterialComponents/private/Icons/Base
-  - MaterialComponents/private/Icons/ic_settings (57.0.0):
+  - MaterialComponents/private/Icons/ic_settings (58.0.0):
     - MaterialComponents/private/Icons/Base
-  - MaterialComponents/private/KeyboardWatcher (57.0.0):
+  - MaterialComponents/private/KeyboardWatcher (58.0.0):
     - MaterialComponents/private/Application
-  - MaterialComponents/private/Math (57.0.0)
-  - MaterialComponents/private/Overlay (57.0.0)
-  - MaterialComponents/private/ShapeLibrary (57.0.0):
+  - MaterialComponents/private/Math (58.0.0)
+  - MaterialComponents/private/Overlay (58.0.0)
+  - MaterialComponents/private/ShapeLibrary (58.0.0):
     - MaterialComponents/private/Math
     - MaterialComponents/private/Shapes
-  - MaterialComponents/private/Shapes (57.0.0):
+  - MaterialComponents/private/Shapes (58.0.0):
     - MaterialComponents/private/Math
     - MaterialComponents/ShadowLayer
-  - MaterialComponents/private/ThumbTrack (57.0.0):
+  - MaterialComponents/private/ThumbTrack (58.0.0):
     - MaterialComponents/Ink
     - MaterialComponents/private/Math
     - MaterialComponents/ShadowElevations
     - MaterialComponents/ShadowLayer
     - MaterialComponents/Typography
     - MDFInternationalization
-  - MaterialComponents/private/UIMetrics (57.0.0):
+  - MaterialComponents/private/UIMetrics (58.0.0):
     - MaterialComponents/private/Application
-  - MaterialComponents/ProgressView (57.0.0):
+  - MaterialComponents/ProgressView (58.0.0):
     - MaterialComponents/Palettes
     - MaterialComponents/private/Math
     - MDFInternationalization
     - MotionAnimator (~> 2.1)
-  - "MaterialComponents/ProgressView+ColorThemer (57.0.0)":
+  - "MaterialComponents/ProgressView+ColorThemer (58.0.0)":
     - MaterialComponents/ProgressView
     - MaterialComponents/Themes
-  - MaterialComponents/schemes (57.0.0):
-    - MaterialComponents/schemes/Color (= 57.0.0)
-    - MaterialComponents/schemes/Typography (= 57.0.0)
-  - MaterialComponents/schemes/Color (57.0.0)
-  - MaterialComponents/schemes/Typography (57.0.0)
-  - MaterialComponents/ShadowElevations (57.0.0)
-  - MaterialComponents/ShadowLayer (57.0.0):
+  - MaterialComponents/schemes (58.0.0):
+    - MaterialComponents/schemes/Color (= 58.0.0)
+    - MaterialComponents/schemes/Typography (= 58.0.0)
+  - MaterialComponents/schemes/Color (58.0.0)
+  - MaterialComponents/schemes/Typography (58.0.0)
+  - MaterialComponents/ShadowElevations (58.0.0)
+  - MaterialComponents/ShadowLayer (58.0.0):
     - MaterialComponents/ShadowElevations
-  - MaterialComponents/Slider (57.0.0):
+  - MaterialComponents/Slider (58.0.0):
     - MaterialComponents/Palettes
     - MaterialComponents/private/ThumbTrack
     - MaterialComponents/ShadowElevations
-  - "MaterialComponents/Slider+ColorThemer (57.0.0)":
+  - "MaterialComponents/Slider+ColorThemer (58.0.0)":
     - MaterialComponents/Palettes
     - MaterialComponents/schemes/Color
     - MaterialComponents/Slider
-  - MaterialComponents/Snackbar (57.0.0):
+  - MaterialComponents/Snackbar (58.0.0):
     - MaterialComponents/AnimationTiming
     - MaterialComponents/Buttons
     - MaterialComponents/OverlayWindow
@@ -618,16 +618,16 @@ PODS:
     - MaterialComponents/private/KeyboardWatcher
     - MaterialComponents/private/Overlay
     - MaterialComponents/Typography
-  - "MaterialComponents/Snackbar+ColorThemer (57.0.0)":
+  - "MaterialComponents/Snackbar+ColorThemer (58.0.0)":
     - MaterialComponents/schemes/Color
     - MaterialComponents/Snackbar
-  - "MaterialComponents/Snackbar+FontThemer (57.0.0)":
+  - "MaterialComponents/Snackbar+FontThemer (58.0.0)":
     - MaterialComponents/Snackbar
     - MaterialComponents/Themes
-  - "MaterialComponents/Snackbar+TypographyThemer (57.0.0)":
+  - "MaterialComponents/Snackbar+TypographyThemer (58.0.0)":
     - MaterialComponents/schemes/Typography
     - MaterialComponents/Snackbar
-  - MaterialComponents/Tabs (57.0.0):
+  - MaterialComponents/Tabs (58.0.0):
     - MaterialComponents/AnimationTiming
     - MaterialComponents/Ink
     - MaterialComponents/private/Math
@@ -635,34 +635,34 @@ PODS:
     - MaterialComponents/ShadowLayer
     - MaterialComponents/Typography
     - MDFInternationalization
-  - "MaterialComponents/Tabs+ColorThemer (57.0.0)":
+  - "MaterialComponents/Tabs+ColorThemer (58.0.0)":
     - MaterialComponents/schemes/Color
     - MaterialComponents/Tabs
-  - "MaterialComponents/Tabs+FontThemer (57.0.0)":
+  - "MaterialComponents/Tabs+FontThemer (58.0.0)":
     - MaterialComponents/Tabs
     - MaterialComponents/Themes
-  - "MaterialComponents/Tabs+TypographyThemer (57.0.0)":
+  - "MaterialComponents/Tabs+TypographyThemer (58.0.0)":
     - MaterialComponents/schemes/Typography
     - MaterialComponents/Tabs
-  - MaterialComponents/TextFields (57.0.0):
+  - MaterialComponents/TextFields (58.0.0):
     - MaterialComponents/AnimationTiming
     - MaterialComponents/Palettes
     - MaterialComponents/private/Math
     - MaterialComponents/Typography
     - MDFInternationalization
-  - "MaterialComponents/TextFields+ColorThemer (57.0.0)":
+  - "MaterialComponents/TextFields+ColorThemer (58.0.0)":
     - MaterialComponents/TextFields
     - MaterialComponents/Themes
-  - "MaterialComponents/TextFields+FontThemer (57.0.0)":
+  - "MaterialComponents/TextFields+FontThemer (58.0.0)":
     - MaterialComponents/TextFields
     - MaterialComponents/Themes
-  - "MaterialComponents/TextFields+TypographyThemer (57.0.0)":
+  - "MaterialComponents/TextFields+TypographyThemer (58.0.0)":
     - MaterialComponents/schemes/Typography
     - MaterialComponents/TextFields
-  - MaterialComponents/Themes (57.0.0):
+  - MaterialComponents/Themes (58.0.0):
     - MaterialComponents/schemes/Color
     - MaterialComponents/schemes/Typography
-  - MaterialComponents/Typography (57.0.0):
+  - MaterialComponents/Typography (58.0.0):
     - MaterialComponents/private/Application
     - MaterialComponents/private/Math
   - MDFInternationalization (1.0.4)
@@ -689,9 +689,9 @@ PODS:
     - PromiseKit/CorePromise
   - Protobuf (3.6.0)
   - Reachability (3.2)
-  - SDWebImage (4.4.1):
-    - SDWebImage/Core (= 4.4.1)
-  - SDWebImage/Core (4.4.1)
+  - SDWebImage (4.4.2):
+    - SDWebImage/Core (= 4.4.2)
+  - SDWebImage/Core (4.4.2)
   - Sharaku (1.0.2)
   - SVProgressHUD (2.2.5)
   - TwitterCore (3.2.0)
@@ -798,23 +798,23 @@ SPEC CHECKSUMS:
   BoringSSL: cf3f1793eb6e3c445c4d150456341f149c268a35
   Cache: f28f8dd64b632155aabf9b3906b036a659048251
   Crashlytics: 7f2e38d302d9da96475b3d64d86fb29e31a542b7
-  CropViewController: e6d4bd512d15a1709e9ddf71fe7d98ffd05dda0f
+  CropViewController: a9d579b526926c4e1caf754a89a9ac1c20aaa8eb
   DKImagePickerController: 51ad6ee2ba05414bb741db54a72cd7f4fb178e34
   Fabric: a2917d3895e4c1569b9c3170de7320ea1b1e6661
   FBSDKCoreKit: 0ff57f093b85c8c9d5aba697d3edf68a8960ce78
   FBSDKLoginKit: 8c78f57a145afb756e4755e69195ebe08a42466e
-  Firebase: d66f4f29c23f22d96808d9abc174d81d8eee968f
+  Firebase: 355bd535bfdacaa82a7fe8d9784115edefd6fc03
   FirebaseAnalytics: b3628aea54c50464c32c393fb2ea032566e7ecc2
   FirebaseAuth: 096e457cdd4274412a66c4a35874787e411f5a03
-  FirebaseCore: 42b3267233bd21a5abd54117ccc38ca3dd0f8e83
+  FirebaseCore: 4c28e3b9708ba48a765e76515f913a71596eb5dd
   FirebaseDatabase: 27be5ac5bc75e0b17537b2bbfada8258addcc8cd
   FirebaseDynamicLinks: d624a7adc81a8fd70d52be5a6a47a2bc0644b923
-  FirebaseFirestore: b041e4a94601e18e82a863e0dcfa9d3e55cc2031
+  FirebaseFirestore: d4a3a7787624e612298a320da95935b8dc036c1d
   FirebaseInstanceID: f3f0657372592ecdfdfe2cac604a5a75758376a6
   FirebaseInvites: d7534f94d0610b892bac8ee0cf4218a14be46c28
   FirebaseMessaging: f43eb0c0e1da096e659de6f713038e74862a62cd
   FirebaseStorage: 7ca4bb7b58a25fa647b04f524033fc7cb7eb272b
-  FirebaseUI: 5d97d3d5d6a019fc960eb573ea6ce9fb8c310669
+  FirebaseUI: 6d3f86249a4de8288424e154c9ff1a976aae3910
   Gallery: 5489ae11d8010a3cc163030f6e92d618afbdf4df
   GoogleAPIClientForREST: f7951c455df271bc6259b3ddb4073d0026475ccf
   GoogleMaps: f79af95cb24d869457b1f961c93d3ce8b2f3b848
@@ -836,7 +836,7 @@ SPEC CHECKSUMS:
   Kingfisher: 976d828df2b24834c6a3f2fc4d82cdbd26552be1
   leveldb-library: 08cba283675b7ed2d99629a4bc5fd052cd2bb6a5
   Lightbox: 2dc267df8be2285bc7724cb11cbbf4aaaf59dced
-  MaterialComponents: 0dfd3bf21642f205ecd59d633a4492e14571e53f
+  MaterialComponents: 0520466595b729ebd106e84b96626803aca4a8d2
   MDFInternationalization: e355b0cebecf53d60233bd267084e49366c82513
   MDFTextAccessibility: 94098925e0853551c5a311ce7c1ecefbe297cdb6
   MotionAnimator: ee16aa30567c5bae0fb2750c132915829cfaaf8a
@@ -846,7 +846,7 @@ SPEC CHECKSUMS:
   PromiseKit: 743e497a5f505a470d3bbbf4ce0663c1268af0a4
   Protobuf: 0fc0ad8bec688b2a3017a139953e01374fedbd5f
   Reachability: 33e18b67625424e47b6cde6d202dce689ad7af96
-  SDWebImage: 47e9b5b925cbce75946c23f0c42dd19464189af4
+  SDWebImage: 624d6e296c69b244bcede364c72ae0430ac14681
   Sharaku: c18de569fc99f6e936f46ca812b571826cc658a7
   SVProgressHUD: 1428aafac632c1f86f62aa4243ec12008d7a51d6
   TwitterCore: 8cbc9ad34d91c63a0035ea05bfbfc0d7ca72a28c
