@@ -1,4 +1,4 @@
-//
+		//
 //  EditPostController.swift
 //  maple
 //
@@ -10,10 +10,21 @@ import UIKit
 import Firebase
 import GoogleMaps
 import GooglePlaces
+
 import Kingfisher
 import INSPhotoGallery
 import MaterialComponents
 
+
+class POIItem: NSObject, GMUClusterItem {
+    var position: CLLocationCoordinate2D
+    var name: String!
+    
+    init(position: CLLocationCoordinate2D, name: String) {
+        self.position = position
+        self.name = name
+    }
+}
 
 class PostsImage: BaseCell
 {
@@ -49,38 +60,59 @@ class PostsImage: BaseCell
     
 }
 
-
-
 class EditPostController:
     UIViewController,
     CLLocationManagerDelegate,
     UICollectionViewDataSource,
     UICollectionViewDelegate,
     UICollectionViewDelegateFlowLayout,
-    GMSMapViewDelegate
+    GMSMapViewDelegate,
+    GMUClusterManagerDelegate
 
 {
-
     var postCellId = "postCellId"
     var searchController = UISearchController()
     var resultsViewController: GMSAutocompleteResultsViewController?
     var placesClient: GMSPlacesClient!
     var numberOfLikes : Int?
+    private var clusterManager: GMUClusterManager!
+    private var infoWindow = InfoWindow()
     
     let locationManager = CLLocationManager()
+    
+    private func clusterManager(_ clusterManager: GMUClusterManager, didTap cluster: GMUCluster) {
+        let newCamera = GMSCameraPosition.camera(withTarget: cluster.position,
+                                                 zoom: mapView.camera.zoom + 1)
+        let update = GMSCameraUpdate.setCamera(newCamera)
+        mapView.moveCamera(update)
+    }
    
     var post: FSPost? {
         didSet {
-            title =  "Where it is ..."
+            title =  "Where to find it ..."
             locations.removeAll()
             setupAttributedCaption()
+            let iconGenerator = GMUDefaultClusterIconGenerator()
+            let algorithm = GMUNonHierarchicalDistanceBasedAlgorithm()
+            let renderer = GMUDefaultClusterRenderer(mapView: mapView, clusterIconGenerator: iconGenerator)
+            clusterManager = GMUClusterManager(map: mapView, algorithm: algorithm, renderer: renderer)
+            
+            // Call cluster() after items have been added to perform the clustering and rendering on map.
+            clusterManager.cluster()
+            
+            // Register self to listen to both GMUClusterManagerDelegate and GMSMapViewDelegate events.
+            clusterManager.setDelegate(self, mapDelegate: self)
             if let uid = post?.uid  {
                 Firestore.fetchLocationByUserId(uid: uid) { (locationObjects) in
                     for location in locationObjects {
+                        let lat = location.latitude
+                        let lng = location.longitude
                         self.locations.append(location)
                         if let product = location.types {
                             if let desc = location.address {
-                                self.markerByLocation(location, desc, product)
+                                let item = POIItem(position: CLLocationCoordinate2DMake(lat!, lng!), name: product)
+                                self.clusterManager.add(item)
+                                //self.markerByLocation(location, desc, product)
                             }
                         }
                     }
@@ -98,11 +130,10 @@ class EditPostController:
             }
             //guard let profileImageUrl = post?.user.profileImageUrl else { return }
                 //userProfileImageView.loadImage(urlString: profileImageUrl)
-                imageCollectionView.reloadData()
+            clusterManager.setDelegate(self, mapDelegate: self)
+            imageCollectionView.reloadData()
         }
     }
-    
-    
     
     let imageCollectionView: UICollectionView = {
         let layout = UICollectionViewFlowLayout()
@@ -171,10 +202,9 @@ class EditPostController:
         }
         
         DispatchQueue.main.async { () -> Void in
-            
             let position = CLLocationCoordinate2DMake(location.latitude!, location.longitude!)
             let marker = GMSMarker(position: position)
-            let camera = GMSCameraPosition.camera(withLatitude: location.latitude!, longitude: location.longitude!, zoom: 14)
+            let camera = GMSCameraPosition.camera(withLatitude: location.latitude!, longitude: location.longitude!, zoom: 10)
             self.mapView.camera = camera
             marker.title = "\(location.location!)"
             marker.snippet = "\(category)\n\(locationResult)"
@@ -227,7 +257,72 @@ class EditPostController:
         locationManager.startUpdatingLocation()
         locationManager.delegate =  self
         placesClient = GMSPlacesClient.shared()
+    }
+    
+     fileprivate var locationMarker : GMSMarker? = GMSMarker()
+    
+    // MARK: Needed to create the custom info window (this is optional)
+    func loadNiB() -> InfoWindow{
+        let infoWindow = InfoWindow.instanceFromNib() as! InfoWindow
+        return infoWindow
+    }
+    
+    // MARK: Needed to create the custom info window (this is optional)
+    func sizeForOffset(view: UIView) -> CGFloat {
+        return  120.0
+    }
+    
+    func mapView(_ mapView: GMSMapView, didTap marker: GMSMarker) -> Bool {
+        if let poiItem = marker.userData as? POIItem {
+            NSLog("Did tap marker for cluster item \(poiItem.name)")
+        } else {
+            NSLog("Did tap a normal marker")
+        }
         
+        // Needed to create the custom info window
+        locationMarker = marker
+        infoWindow.removeFromSuperview()
+        infoWindow = loadNiB()
+        guard let location = locationMarker?.position else {
+            print("locationMarker is nil")
+            return false
+        }
+        infoWindow.center = mapView.projection.point(for: location)
+        infoWindow.center.y = infoWindow.center.y - sizeForOffset(view: infoWindow)
+        self.view.addSubview(infoWindow)
+        
+        return false
+    }
+    
+    // MARK: Needed to create the custom info window
+    func mapView(_ mapView: GMSMapView, didChange position: GMSCameraPosition) {
+        if (locationMarker != nil){
+            guard let location = locationMarker?.position else {
+                print("locationMarker is nil")
+                return
+            }
+            infoWindow.center = mapView.projection.point(for: location)
+            infoWindow.center.y = infoWindow.center.y - sizeForOffset(view: infoWindow)
+        }
+    }
+    
+    // MARK: Needed to create the custom info window
+    func mapView(_ mapView: GMSMapView, markerInfoWindow marker: GMSMarker) -> UIView? {
+        return UIView()
+    }
+    
+    
+    // MARK: Needed to create the custom info window
+    func mapView(_ mapView: GMSMapView, didTapAt coordinate: CLLocationCoordinate2D) {
+        infoWindow.removeFromSuperview()
+    }
+    
+    
+    private func generateClusterItems() {
+        for location in locations {
+            let item = POIItem(position: CLLocationCoordinate2DMake(location.latitude!, location.longitude!), name: (location.place?.name)!)
+            clusterManager.add(item)
+        }
     }
     
     
@@ -299,25 +394,30 @@ class EditPostController:
     
     @objc func handleNavigation()
     {
-        let testURL = URL(string: "comgooglemaps-x-callback://")!
-        if UIApplication.shared.canOpenURL(testURL) {
-            let directionsRequest = "comgooglemaps-x-callback://" +
-                "?daddr=John+F.+Kennedy+International+Airport,+Van+Wyck+Expressway,+Jamaica,+New+York" +
-            "&x-success=sourceapp://?resume=true&x-source=AirApp"
-            
-            let directionsURL = URL(string: directionsRequest)!
-            UIApplication.shared.open(directionsURL)
-        } else {
-            //NSLog("Can't use comgooglemaps-x-callback:// on this device.")
-            
-            let customURL = "https://maps.google.com/maps"
-            let location = locations[0]
-            
-            if UIApplication.shared.canOpenURL(NSURL(string: customURL)! as URL) {
-                UIApplication.shared.open(URL(string:"https://maps.google.com/maps/?center=\(String(describing: location.latitude)),\(String(describing: location.longitude))&zoom=14&views=traffic&q=\(String(describing: location.latitude)),\(String(describing: location.longitude))")!, options: [:], completionHandler: nil)
+        // Location should be okay once the cooridinates
+        if locations.count > 0 {
+            let testURL = URL(string: "comgooglemaps-x-callback://")!
+            if UIApplication.shared.canOpenURL(testURL) {
+                let directionsRequest = "comgooglemaps-x-callback://" +
+                    "?daddr=John+F.+Kennedy+International+Airport,+Van+Wyck+Expressway,+Jamaica,+New+York" +
+                "&x-success=sourceapp://?resume=true&x-source=AirApp"
                 
-                let urlTEST = "https://maps.google.com/maps/?daddr=Roppongi%20Hills%20Mori%20Tower%20Tokyo%20Japan&dirflg=r"
-                UIApplication.shared.open(URL(string: urlTEST)!) //, options: [:], completionHandler: nil)
+                let directionsURL = URL(string: directionsRequest)!
+                UIApplication.shared.open(directionsURL)
+            } else {
+                
+                // this has to be the coordinates for the current location vs. the last touched location.
+                
+                let customURL = "https://maps.google.com/maps"
+                let location = locations[0]
+                
+                if UIApplication.shared.canOpenURL(NSURL(string: customURL)! as URL) {
+                    UIApplication.shared.open(
+                        URL(string:"https://maps.google.com/maps/?center=\(String(describing: location.latitude)),\(String(describing: location.longitude))&zoom=12&views=traffic&q=\(String(describing: location.latitude)),\(String(describing: location.longitude))")!, options: [:], completionHandler: nil)
+                    
+                    let urlTEST = "https://maps.google.com/maps/?daddr=Roppongi%20Hills%20Mori%20Tower%20Tokyo%20Japan&dirflg=r"
+                    UIApplication.shared.open(URL(string: urlTEST)!) //, options: [:], completionHandler: nil)
+                }
             }
         }
     }
@@ -345,54 +445,23 @@ class EditPostController:
     }
     
     override func viewDidLayoutSubviews() {
-        
-        
+
         let containerView = MDCCard()
         containerView.setShadowElevation(ShadowElevation.menu, for: UIControlState.normal)
         containerView.addSubview(imageCollectionView)
-        
-        
-//
-//        let editMenu = UIView()
-//        editMenu.backgroundColor = UIColor.blue
-//        editMenu.layer.cornerRadius = 10
-//        editMenu.backgroundColor = .white
-//        editMenu.layer.borderWidth = 2
-//        editMenu.layer.borderColor = UIColor.black.cgColor
-        
         let mapMenu = setMapMenu()
     
-        //let stackButtonsVerical = UIStackView(arrangedSubviews: [addPhotos,filterPhotos,erasePhotos])
-        //let stackButtonsVerical = UIStackView(arrangedSubviews: [addPhotos,filterPhotos])
-        //stackButtonsVerical.axis = .vertical
-        //stackButtonsVerical.distribution = .fillEqually
-        
-        //editMenu.addSubview(stackButtonsVerical)
-        
         let stackVerticalMapButtons = UIStackView(arrangedSubviews: [mapGoHome,mapSetType])
         stackVerticalMapButtons.axis = .vertical
         stackVerticalMapButtons.distribution = .fillEqually
         mapMenu.addSubview(stackVerticalMapButtons)
         
-        
         containerView.backgroundColor = UIColor.collectionCell()
         view.addSubview(containerView)
-        //let stackView = UIStackView(arrangedSubviews: [likeButton, commentButton, bookmarkButton])
-        //stackView.distribution = .fillEqually
-        //containerView.addSubview(userProfileImageView)
         containerView.addSubview(prodIcon)
         containerView.addSubview(productLabel)
-        //containerView.addSubview(imageCollectionView)
-        //containerView.addSubview(topDividerView)
-        //containerView.addSubview(bottomDividerView)
-        //containerView.addSubview(stackView)
-        //containerView.addSubview(Description)
-        //containerView.addSubview(mapviewDividerView)
         containerView.addSubview(mapView)
-        //containerView.addSubview(editMenu)
         containerView.addSubview(mapMenu)
-        
-        let heightOfViewController = view.frame.width / 2 - 10
         
         if #available(iOS 11.0, *) {
             containerView.anchor(top: view.safeAreaLayoutGuide.topAnchor,
@@ -443,53 +512,6 @@ class EditPostController:
                                    height: 40)
         
         
-//        imageCollectionView.anchor(top: productLabel.bottomAnchor,
-//                                   left: containerView.leftAnchor,
-//                                   bottom: nil ,
-//                                   right: containerView.rightAnchor,
-//                                   paddingTop: 0,
-//                                   paddingLeft: 5,
-//                                   paddingBottom: 0,
-//                                   paddingRight: 5,
-//                                   width: 0,
-//                                   height: heightOfViewController)
-//
-//        topDividerView.anchor(top: imageCollectionView.bottomAnchor,
-//                              left: containerView.leftAnchor,
-//                              bottom: nil,
-//                              right: containerView.rightAnchor,
-//                              paddingTop: 2 ,
-//                              paddingLeft: 0,
-//                              paddingBottom: 0,
-//                              paddingRight: 0,
-//                              width: 0,
-//                              height: 0.5)
-//
-//
-//
-//
-//        Description.anchor(top: topDividerView.bottomAnchor ,
-//                           left: containerView.leftAnchor,
-//                           bottom: nil ,
-//                           right: containerView.rightAnchor,
-//                           paddingTop: 0,
-//                           paddingLeft: 5,
-//                           paddingBottom: 0,
-//                           paddingRight: 5,
-//                           width: 0,
-//                           height: 60)
-//
-//
-//        bottomDividerView.anchor(top:  Description.bottomAnchor,
-//                                 left: containerView.leftAnchor,
-//                                 bottom: nil,
-//                                 right: containerView.rightAnchor,
-//                                 paddingTop: 0 ,
-//                                 paddingLeft: 0,
-//                                 paddingBottom: 0,
-//                                 paddingRight: 0,
-//                                 width: 0, height: 1.0)
-//
         mapView.anchor(top: productLabel.bottomAnchor,
                        left: containerView.leftAnchor,
                        bottom: containerView.bottomAnchor,
@@ -500,13 +522,8 @@ class EditPostController:
                        paddingRight: 5,
                        width: 0, height: 0)
         
-        
-        //stackButtonsVerical.anchor(top: editMenu.topAnchor, left: editMenu.leftAnchor, bottom: editMenu.bottomAnchor, right: editMenu.rightAnchor)
-        //editMenu.anchor(top: imageCollectionView.topAnchor, left: nil, bottom: nil, right: imageCollectionView.rightAnchor, paddingTop: 10, paddingLeft: 5, paddingBottom: 0, paddingRight: 15, width: 50, height: 120)
-       
         stackVerticalMapButtons.anchor(top: mapView.topAnchor, left: mapMenu.leftAnchor, bottom: mapMenu.bottomAnchor, right: mapMenu.rightAnchor)
         mapMenu.anchor(top: mapView.topAnchor, left: mapView.leftAnchor, bottom: nil, right: nil, paddingTop: 3, paddingLeft: 3, paddingBottom: 0, paddingRight: 0, width: 40, height: 100)
-        
         
     }
     
@@ -544,8 +561,6 @@ class EditPostController:
         navigationController?.navigationBar.titleTextAttributes = [NSAttributedStringKey.foregroundColor: UIColor.white]
         navigationController?.pushViewController(dummySettingsViewController, animated: true)
     }
-
-
     
     let mapView : GMSMapView = {
         let camera = GMSCameraPosition.camera(withLatitude: 35.652832 , longitude: 139.839478 , zoom: 14.0)
@@ -717,7 +732,7 @@ extension EditPostController: GMSAutocompleteResultsViewControllerDelegate {
         
         let camera = GMSCameraPosition.camera(withLatitude: location.coordinate.latitude,
                                               longitude: location.coordinate.longitude,
-                                              zoom: 14)
+                                              zoom: 10)
         
         if mapView.isHidden {
             mapView.isHidden = false

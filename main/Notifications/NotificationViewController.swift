@@ -98,7 +98,9 @@ class NotificationViewController: MDCCollectionViewController , NotificationDele
     
     @objc func reloadTable() {
         self.allNotifications = notifications
+        NotificationCenter.default.post(name: NSNotification.Name(rawValue : "Badge Changed"), object: nil)
         collectionView?.reloadData()
+        
     }
     
     override func viewDidLoad() {
