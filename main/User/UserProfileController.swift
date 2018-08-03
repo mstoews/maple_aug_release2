@@ -71,7 +71,7 @@ class UserProfileController: MDCCollectionViewController,
     
     var user: MapleUser?
     var profile: MapleUser!
-    let uid = Auth.auth().currentUser!.uid
+    //let uid = Auth.auth().currentUser!.uid
     
     
     deinit {
@@ -429,6 +429,7 @@ class UserProfileController: MDCCollectionViewController,
     func fetchLocations()
     {
         fs_locations.removeAll()
+        let uid = Auth.auth().currentUser!.uid
         Firestore.fetchLocationByUserId( uid: uid) { (locObj) in
             for location in locObj {
                 self.fs_locations.append(location)
@@ -576,12 +577,12 @@ class UserProfileController: MDCCollectionViewController,
         alertController.addAction(UIAlertAction(title: "Log Out", style: .default, handler: { (_) in
             do {
                 
-                self.appDelegate.signOut()
+                //self.appDelegate.signOut()
                 do {
                     try Auth.auth().signOut()
                 } catch {
                 }
-                self.appDelegate.signOut()
+                //self.appDelegate.signOut()
                 self.navigationController?.popToRootViewController(animated: false)
                 
                 let authViewController = FUIAuth.defaultAuthUI()?.authViewController()

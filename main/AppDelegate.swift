@@ -6,7 +6,7 @@ import UserNotifications
 import GoogleMaps
 import GooglePlaces
 
-private let kFirebaseTermsOfService = URL(string: "https://mapleon.com/terms/")!
+
 
 @UIApplicationMain
 class AppDelegate: UIResponder, UIApplicationDelegate {
@@ -28,12 +28,12 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         
         FirebaseApp.configure()
         Messaging.messaging().delegate = self
-        if let uid = Auth.auth().currentUser?.uid {
-            blockedRef = database.reference(withPath: "blocked/\(uid)")
-            blockingRef = database.reference(withPath: "blocking/\(uid)")
-            observeBlocks()
-        }
-        
+//        if let uid = Auth.auth().currentUser?.uid {
+//            blockedRef = database.reference(withPath: "blocked/\(uid)")
+//            blockingRef = database.reference(withPath: "blocking/\(uid)")
+//            observeBlocks()
+//        }
+//        
         // Set up an on-disk URL cache.
         //let urlCache = URLCache(memoryCapacity: 0, diskCapacity:50 * 1024 * 1024, diskPath:nil)
         //URLCache.shared = urlCache
@@ -67,22 +67,15 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         db.settings = settings
         application.registerForRemoteNotifications()
         
-        let authUI = FUIAuth.defaultAuthUI()
-        authUI?.delegate = self
-        authUI?.tosurl = kFirebaseTermsOfService
-        authUI?.isSignInWithEmailHidden = false
-        let providers: [FUIAuthProvider] = [FUIGoogleAuth(), FUIFacebookAuth()]
-        authUI?.providers = providers
-        
         UINavigationBar.appearance().backgroundColor = UIColor.themeColor()
         UIBarButtonItem.appearance().tintColor = UIColor.themeColor()
         UITabBar.appearance().backgroundColor = UIColor.themeColor()
+        window?.backgroundColor = .white
         
         window?.rootViewController = MainTabBarController()
         GMSPlacesClient.provideAPIKey(kPlacesAPIKey)
         GMSServices.provideAPIKey(kMapsAPIKey)
         GIDSignIn.sharedInstance().clientID = FirebaseApp.app()?.options.clientID
-        
         return true
     }
     
@@ -113,25 +106,26 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         MDCSnackbarManager.show(mdcMessage)
     }
 
-    @available(iOS 9.0, *)
-    func application(_ app: UIApplication, open url: URL, options: [UIApplicationOpenURLOptionsKey: Any]) -> Bool {
-        guard let sourceApplication = options[UIApplicationOpenURLOptionsKey.sourceApplication] as? String else {
-            return false
-        }
-        return self.handleOpenUrl(url, sourceApplication: sourceApplication)
-    }
-    
-    @available(iOS 8.0, *)
-    func application(_ application: UIApplication, open url: URL, sourceApplication: String?, annotation: Any) -> Bool {
-        return self.handleOpenUrl(url, sourceApplication: sourceApplication)
-    }
-    
-    func handleOpenUrl(_ url: URL, sourceApplication: String?) -> Bool {
-        if FUIAuth.defaultAuthUI()?.handleOpen(url, sourceApplication: sourceApplication) ?? false {
-            return true
-        }
-        return GIDSignIn.sharedInstance().handle(url, sourceApplication: sourceApplication, annotation: nil)
-    }
+//    @available(iOS 9.0, *)
+//    func application(_ app: UIApplication, open url: URL, options: [UIApplicationOpenURLOptionsKey: Any]) -> Bool {
+//        guard let sourceApplication = options[UIApplicationOpenURLOptionsKey.sourceApplication] as? String else {
+//            return false
+//        }
+//        return self.handleOpenUrl(url, sourceApplication: sourceApplication)
+//    }
+//
+//    @available(iOS 8.0, *)
+//    func application(_ application: UIApplication, open url: URL, sourceApplication: String?, annotation: Any) -> Bool {
+//        return self.handleOpenUrl(url, sourceApplication: sourceApplication)
+//    }
+//
+//    func handleOpenUrl(_ url: URL, sourceApplication: String?) -> Bool {
+//        if FUIAuth.defaultAuthUI()?.handleOpen(url, sourceApplication: sourceApplication) ?? false {
+//            return true
+//        }
+//        return false
+//        // return GIDSignIn.sharedInstance().handle(url, sourceApplication: sourceApplication, annotation: nil)
+//    }
     
     func application(_ application: UIApplication, didReceiveRemoteNotification userInfo: [AnyHashable: Any]) {
         // If you are receiving a notification message while your app is in the background,
@@ -147,81 +141,81 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         completionHandler(.newData)
     }
     
-    func observeBlocks() {
-        blockedRef.observe(.childAdded) { self.blocked.insert($0.key) }
-        blockingRef.observe(.childAdded) { self.blocking.insert($0.key) }
-        blockedRef.observe(.childRemoved) { self.blocked.remove($0.key) }
-        blockingRef.observe(.childRemoved) { self.blocking.remove($0.key) }
-    }
-    
-    
-    func isBlocked(_ snapshot: DataSnapshot) -> Bool {
-        let author = snapshot.childSnapshot(forPath: "users/uid").value as! String
-        if blocked.contains(author) || blocking.contains(author) {
-            return true
-        }
-        return false
-    }
-    
-    func isBlocked(by person: String) -> Bool {
-        return blocked.contains(person)
-    }
-    
-    func isBlocking(_ person: String) -> Bool {
-        return blocking.contains(person)
-    }
+//    func observeBlocks() {
+//        blockedRef.observe(.childAdded) { self.blocked.insert($0.key) }
+//        blockingRef.observe(.childAdded) { self.blocking.insert($0.key) }
+//        blockedRef.observe(.childRemoved) { self.blocked.remove($0.key) }
+//        blockingRef.observe(.childRemoved) { self.blocking.remove($0.key) }
+//    }
+//
+//
+//    func isBlocked(_ snapshot: DataSnapshot) -> Bool {
+//        let author = snapshot.childSnapshot(forPath: "users/uid").value as! String
+//        if blocked.contains(author) || blocking.contains(author) {
+//            return true
+//        }
+//        return false
+//    }
+//
+//    func isBlocked(by person: String) -> Bool {
+//        return blocked.contains(person)
+//    }
+//
+//    func isBlocking(_ person: String) -> Bool {
+//        return blocking.contains(person)
+//    }
 }
 
-extension AppDelegate: FUIAuthDelegate {
-    func authUI(_ authUI: FUIAuth, didSignInWith authDataResult: AuthDataResult?, error: Error?) {
-        switch error {
-        case .some(let error as NSError) where UInt(error.code) == FUIAuthErrorCode.userCancelledSignIn.rawValue:
-            print("User cancelled sign-in")
-        case .some(let error as NSError) where error.userInfo[NSUnderlyingErrorKey] != nil:
-            print("Login error: \(error.userInfo[NSUnderlyingErrorKey]!)")
-        case .some(let error):
-            print("Login error: \(error.localizedDescription)")
-        case .none:
-            if let user = authDataResult?.user {
-                signed(in: user)
-                window?.rootViewController = MainTabBarController()
-            }
-        }
-    }
-    
-    func authPickerViewController(forAuthUI authUI: FUIAuth) -> FUIAuthPickerViewController {
-        return FPAuthPickerViewController(nibName: "FPAuthPickerViewController", bundle: Bundle.main, authUI: authUI)
-    }
-    
-    func signOut() {
-        blockedRef.removeAllObservers()
-        blockingRef.removeAllObservers()
-        blocked.removeAll()
-        blocking.removeAll()
-    }
-    
-    func signed(in user: User) {
-        blockedRef = database.reference(withPath: "blocked/\(user.uid)")
-        blockingRef = database.reference(withPath: "blocking/\(user.uid)")
-        observeBlocks()
-        
-        //Storage.storage()
-        
-        var values: [String: Any] = ["profileImageUrl": user.photoURL?.absoluteString ?? "",
-                                     "username": user.displayName ?? "",
-                                     "_search_index": ["full_name": user.displayName?.lowercased(),
-                                                       "reversed_full_name": user.displayName?.components(separatedBy: " ")
-                                                        .reversed().joined(separator: "")]]
-        
-        if notificationGranted {
-            values["notificationEnabled"] = true
-            notificationGranted = false
-        }
-        database.reference(withPath: "users/\(user.uid)").updateChildValues(values)
-        Firestore.firestore().collection("users").document(user.uid).collection("profile").document(user.uid).setData(values)
-    }
-}
-
+//extension AppDelegate: FUIAuthDelegate {
+//    func authUI(_ authUI: FUIAuth, didSignInWith authDataResult: AuthDataResult?, error: Error?) {
+//        switch error {
+//        case .some(let error as NSError) where UInt(error.code) == FUIAuthErrorCode.userCancelledSignIn.rawValue:
+//            print("User cancelled sign-in")
+//        case .some(let error as NSError) where error.userInfo[NSUnderlyingErrorKey] != nil:
+//            print("Login error: \(error.userInfo[NSUnderlyingErrorKey]!)")
+//        case .some(let error):
+//            print("Login error: \(error.localizedDescription)")
+//        case .none:
+//            if let user = authDataResult?.user {
+//                signed(in: user)
+//                window?.rootViewController = MainTabBarController()
+//            }
+//        }
+//    }
+//
+//    func authPickerViewController(forAuthUI authUI: FUIAuth) -> FUIAuthPickerViewController {
+//        return FPAuthPickerViewController(nibName: "FPAuthPickerViewController", bundle: Bundle.main, authUI: authUI)
+//    }
+//
+//    func signOut() {
+//        blockedRef.removeAllObservers()
+//        blockingRef.removeAllObservers()
+//        blocked.removeAll()
+//        blocking.removeAll()
+//    }
+//
+//    func signed(in user: User) {
+//        blockedRef = database.reference(withPath: "blocked/\(user.uid)")
+//        blockingRef = database.reference(withPath: "blocking/\(user.uid)")
+//        observeBlocks()
+//
+//        //Storage.storage()
+//
+//        var values: [String: Any] = ["profileImageUrl": user.photoURL?.absoluteString ?? "",
+//                                     "username": user.displayName ?? "",
+//                                     "_search_index": ["full_name": user.displayName?.lowercased(),
+//                                                       "reversed_full_name": user.displayName?.components(separatedBy: " ")
+//                                                        .reversed().joined(separator: "")]]
+//
+//        if notificationGranted {
+//            values["notificationEnabled"] = true
+//            notificationGranted = false
+//        }
+//        database.reference(withPath: "users/\(user.uid)").updateChildValues(values)
+//        Firestore.firestore().collection("users").document(user.uid).collection("profile").document(user.uid).updateData(values)
+//    }
+//}
+//
 
 
 @available(iOS 10, *)
@@ -244,11 +238,12 @@ extension AppDelegate: UNUserNotificationCenterDelegate {
     }
 }
 
-
 extension AppDelegate: MessagingDelegate {
     func messaging(_ messaging: Messaging, didReceiveRegistrationToken fcmToken: String) {
         guard let uid = Auth.auth().currentUser?.uid else { return }
-        Database.database().reference(withPath: "/users/\(uid)/notificationTokens/\(fcmToken)").setValue(true)
+        //Database.database().reference(withPath: "/users/\(uid)/notificationTokens/\(fcmToken)").setValue(true)
+        let values: [String: Any] = ["token": fcmToken ]
+        Firestore.firestore().collection("users").document(uid).collection("profile").document(uid).updateData(values)
     }
     
     // Receive data messages on iOS 10+ directly from FCM (bypassing APNs) when the app is in the foreground.

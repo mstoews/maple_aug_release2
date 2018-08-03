@@ -16,7 +16,7 @@ import MaterialComponents
 import Lightbox
 import GoogleSignIn
 
-
+private let kFirebaseTermsOfService = URL(string: "https://mapleon.com/terms/")!
 
 protocol SharePhotoControllerDelegate  {
     func handleShareFromMain()
@@ -24,9 +24,12 @@ protocol SharePhotoControllerDelegate  {
 }
 
 
-class MainTabBarController: UITabBarController, UITabBarControllerDelegate, SharePhotoDelegate  {
+class MainTabBarController: UITabBarController, AuthUIDelegate  {
     
     lazy var uid = Auth.auth().currentUser!.uid
+    var notificationGranted = false
+    
+    
     
     var floatingButtonOffset: CGFloat = 0.0
     var spinner: UIView?
@@ -121,42 +124,27 @@ class MainTabBarController: UITabBarController, UITabBarControllerDelegate, Shar
     }
     
     
+    let authUI: FUIAuth? = FUIAuth.defaultAuthUI()
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        self.delegate = self
+        authUI?.delegate = self 
+        authUI?.tosurl = kFirebaseTermsOfService
+        authUI?.isSignInWithEmailHidden = false
+        let providers: [FUIAuthProvider] = [FUIGoogleAuth(), FUIFacebookAuth()]
+        authUI?.providers = providers
         
         NotificationCenter.default.addObserver(self, selector: #selector(resetBadges), name: NSNotification.Name(rawValue : "Badge Changed"), object: nil)
-        // Open the FUIAuthentication window rather than the current one.
-        
-        var Count = 0
-        Count = observeBadges(ObserveChild: "likes", BarItem: 3 , StartAt: Count)
-        
-        if let currentUser  = Auth.auth().currentUser {
-            self.uid = currentUser.uid
-            setupViewControllers()
-        }
-        else
-        {
-            let authViewController = FUIAuth.defaultAuthUI()?.authViewController()
-            authViewController?.navigationBar.isHidden = true
-            self.present(authViewController!, animated: true, completion: nil)
-            return
-        }
-        resetBadges()
     }
     
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
-        if let currentUser = Auth.auth().currentUser  {
-            self.uid = currentUser.uid
-            self.followingRef = database.reference(withPath: "people/\(uid)/following")
-        } else {
-            let authViewController = FUIAuth.defaultAuthUI()?.authViewController()
-            authViewController?.navigationBar.isHidden = true
-            self.present(authViewController!, animated: true, completion: nil)
-            return
+        if !isUserSignedIn() {
+            showLoginView()
         }
+        setupViewControllers()
+        
     }
     
     
@@ -223,6 +211,72 @@ class MainTabBarController: UITabBarController, UITabBarControllerDelegate, Shar
         return navController
     }
 }
+
+
+extension MainTabBarController: FUIAuthDelegate {
+    func authUI(_ authUI: FUIAuth, didSignInWith authDataResult: AuthDataResult?, error: Error?) {
+        switch error {
+        case .some(let error as NSError) where UInt(error.code) == FUIAuthErrorCode.userCancelledSignIn.rawValue:
+            print("User cancelled sign-in")
+        case .some(let error as NSError) where error.userInfo[NSUnderlyingErrorKey] != nil:
+            print("Login error: \(error.userInfo[NSUnderlyingErrorKey]!)")
+        case .some(let error):
+            print("Login error: \(error.localizedDescription)")
+        case .none:
+            if let user = authDataResult?.user {
+                signed(in: user)
+            }
+        }
+    }
+    
+    private func isUserSignedIn() -> Bool {
+        guard Auth.auth().currentUser != nil else {return false}
+        return true
+    }
+    
+    private func showLoginView(){
+        if let authVC = FUIAuth.defaultAuthUI()?.authViewController() {
+            present(authVC,animated: true, completion: nil)
+        }
+    }
+
+    func authPickerViewController(forAuthUI authUI: FUIAuth) -> FUIAuthPickerViewController {
+        return FPAuthPickerViewController(nibName: "FPAuthPickerViewController", bundle: Bundle.main, authUI: authUI)
+    }
+
+    func signOut() {
+        let firebaseAuth = Auth.auth()
+        do {
+            try firebaseAuth.signOut()
+            //AppState.sharedInstance.signedIn = false
+            dismiss(animated: true, completion: nil)
+        } catch let signOutError as NSError {
+            print ("Error signing out: \(signOutError)")
+        } catch {
+            print("Unknown error.")
+        }
+     }
+
+    func signed(in user: User) {
+ 
+        //Storage.storage()
+
+        var values: [String: Any] = ["profileImageUrl": user.photoURL?.absoluteString ?? "",
+                                     "username": user.displayName ?? "",
+                                     "_search_index": ["full_name": user.displayName?.lowercased(),
+                                                       "reversed_full_name": user.displayName?.components(separatedBy: " ")
+                                                        .reversed().joined(separator: "")]]
+
+        if notificationGranted {
+            values["notificationEnabled"] = true
+            notificationGranted = false
+        }
+        //database.reference(withPath: "users/\(user.uid)").updateChildValues(values)
+        Firestore.firestore().collection("users").document(user.uid).collection("profile").document(user.uid).updateData(values)
+    }
+}
+
+
 
 
 

@@ -50,11 +50,13 @@ class ChangeSignPhotoController: UIViewController, UIImagePickerControllerDelega
     
     func signOut() {
         do {
+            dismiss(animated: false, completion: nil)
             try Auth.auth().signOut()
         } catch {
         }
-        appDelegate.signOut()
-        self.navigationController?.popToRootViewController(animated: false)
+        //
+        //appDelegate.signOut()
+        //self.navigationController?.popToRootViewController(animated: false)
     }
     
     @objc func handleLogOut() {
