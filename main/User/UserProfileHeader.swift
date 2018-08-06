@@ -29,17 +29,8 @@
         var bSet = false
         
         fileprivate func getNumberOfPostsWithId(userId: String) {
-            print("Get the number of User posts...")
-            //var iProducts = 0
-            //var value: NSDictionary?
-
             Database.getNumberOfPosts(userId: userId, { (iProducts) in
-                let strPosts = "\(iProducts)\n"
-                let attributedText = NSMutableAttributedString(string: strPosts, attributes: [NSAttributedStringKey.font: UIFont.boldSystemFont(ofSize: 14)])
-                attributedText.append(NSAttributedString(string: "posts",
-                        attributes: [NSAttributedStringKey.foregroundColor: UIColor.lightGray,
-                                     NSAttributedStringKey.font: UIFont.systemFont(ofSize: 14)]))
-
+                 let attributedText = NSMutableAttributedString(string: "Posts : \(iProducts)", attributes: [NSAttributedStringKey.font: UIFont.boldSystemFont(ofSize: 14)])
                 self.postsLabel.attributedText = attributedText
             })
             return
@@ -49,11 +40,8 @@
         {
             // Followers
             Database.getNumberOfFollowers(userId: userId,  { (iFollowers) in
-            let strPosts = "\(iFollowers)\n"
-            let attributedText = NSMutableAttributedString(string: strPosts , attributes: [NSAttributedStringKey.font: UIFont.boldSystemFont(ofSize: 14)])
-            attributedText.append(NSAttributedString(string: "followers",
-                                                     attributes: [NSAttributedStringKey.foregroundColor: UIColor.lightGray, NSAttributedStringKey.font: UIFont.systemFont(ofSize: 14)]))
-            self.followersLabel.attributedText = attributedText
+               let attributedText = NSMutableAttributedString(string: "Followers : \(iFollowers)" , attributes: [NSAttributedStringKey.font: UIFont.boldSystemFont(ofSize: 14)])
+               self.followersLabel.attributedText = attributedText
             print("Followers: ", Int32((iFollowers)))
             })
             return
@@ -64,15 +52,11 @@
         {
             // Following
             Database.getNumberOfFollowing(userId: userId, { (iFollowing) in
-            let strPosts = "\(iFollowing)\n"
-            let attributedText = NSMutableAttributedString(string: strPosts , attributes: [NSAttributedStringKey.font: UIFont.boldSystemFont(ofSize: 14)])
-            attributedText.append(NSAttributedString(string: "following",
-                                                     attributes: [NSAttributedStringKey.foregroundColor: UIColor.lightGray, NSAttributedStringKey.font: UIFont.systemFont(ofSize: 14)]))
+            let attributedText = NSMutableAttributedString(string: "Following : \(iFollowing)" , attributes: [NSAttributedStringKey.font: UIFont.boldSystemFont(ofSize: 14)])
             self.followingLabel.attributedText = attributedText
             })
             return
         }
-        
         
         
         var userView: MapleUser? {
@@ -94,8 +78,8 @@
         fileprivate func setupEditFollowButton() {
             guard let uid = Auth.auth().currentUser?.uid else { return }
             
-            self.editProfileFollowButton.setImage(#imageLiteral(resourceName: "ic_favorite"), for: .normal) // solid heart
-            self.editProfileFollowedButton.setImage(#imageLiteral(resourceName: "ic_favorite_border"), for: .normal) // heart outline
+            //self.editProfileFollowButton.setImage(#imageLiteral(resourceName: "ic_favorite"), for: .normal) // solid heart
+            //self.editProfileFollowedButton.setImage(#imageLiteral(resourceName: "ic_favorite_border"), for: .normal) // heart outline
             
             if let userId = userView?.uid {
                 if uid == userId {
@@ -311,10 +295,10 @@
         let postsLabel: UILabel = {
             let label = UILabel()
             var strPosts =  "0\n"
-            let attributedText = NSMutableAttributedString(string: strPosts , attributes: [NSAttributedStringKey.font: UIFont.boldSystemFont(ofSize: 14)])
-            attributedText.append(NSAttributedString(string: "posts", attributes: [NSAttributedStringKey.foregroundColor: UIColor.lightGray, NSAttributedStringKey.font: UIFont.systemFont(ofSize: 14)]))
+            let attributedText = NSMutableAttributedString(string: "Posts : \(strPosts)" , attributes: [NSAttributedStringKey.font: UIFont.boldSystemFont(ofSize: 14)])
+            //attributedText.append(NSAttributedString(string: "posts", attributes: [NSAttributedStringKey.foregroundColor: UIColor.lightGray, NSAttributedStringKey.font: UIFont.systemFont(ofSize: 14)]))
             label.attributedText = attributedText
-            label.textAlignment = .center
+            label.textAlignment = .left
             label.numberOfLines = 0
             return label
         }()
@@ -323,58 +307,36 @@
         
         let followersLabel: UILabel = {
             let label = UILabel()
-            
-            let attributedText = NSMutableAttributedString(string: "0\n", attributes: [NSAttributedStringKey.font: UIFont.boldSystemFont(ofSize: 14)])
-            
-            attributedText.append(NSAttributedString(string: "followers", attributes: [NSAttributedStringKey.foregroundColor: UIColor.lightGray, NSAttributedStringKey.font: UIFont.systemFont(ofSize: 14)]))
-            
+            let attributedText = NSMutableAttributedString(string: "Followers : 0", attributes: [NSAttributedStringKey.font: UIFont.boldSystemFont(ofSize: 14)])
             label.attributedText = attributedText
             
-            label.textAlignment = .center
+            label.textAlignment = .left
             label.numberOfLines = 0
             return label
         }()
         
         let followingLabel: UILabel  = {
             let label  = UILabel()
-            let attributedText = NSMutableAttributedString(string: "0\n", attributes: [NSAttributedStringKey.font: UIFont.boldSystemFont(ofSize: 14)])
-            
-            attributedText.append(NSAttributedString(string: "following", attributes: [NSAttributedStringKey.foregroundColor: UIColor.lightGray, NSAttributedStringKey.font: UIFont.systemFont(ofSize: 14)]))
-            
-            var titleStr : String?
-            
-            //titleStr = attributedText
-            
+            let attributedText = NSMutableAttributedString(string: "Following : 0", attributes: [NSAttributedStringKey.font: UIFont.boldSystemFont(ofSize: 14)])
             label.attributedText = attributedText
             label.numberOfLines = 0
-            label.textAlignment = .center
+            label.textAlignment = .left
             return label
         }()
         
-        lazy var editProfileFollowButton: UIButton = {
-            let button = UIButton(type: .system)
-            button.setTitleColor(.black, for: .normal)
-            button.titleLabel?.font = UIFont.boldSystemFont(ofSize: 20)
-            button.layer.borderColor = UIColor.white.cgColor
-            button.layer.borderWidth = 1
-            button.layer.cornerRadius = 30 / 2;
-            button.setImage(#imageLiteral(resourceName: "ic_favorite"), for: .normal)
-            button.clipsToBounds = true;
-            button.tintColor = .red
+        
+        lazy var editProfileFollowButton: MDCRaisedButton = {
+            let button = MDCRaisedButton()
+            button.translatesAutoresizingMaskIntoConstraints = false
+            button.setTitle("FOLLOW", for: .normal)
             button.addTarget(self, action: #selector(handleEditProfileOrFollow), for: .touchUpInside)
             return button
         }()
         
-        lazy var editProfileFollowedButton: UIButton = {
-            let button = UIButton(type: .system)
-            button.setTitleColor(.black, for: .normal)
-            button.titleLabel?.font = UIFont.boldSystemFont(ofSize: 20)
-            button.layer.borderColor = UIColor.white.cgColor
-            button.layer.borderWidth = 1
-            button.layer.cornerRadius = 30 / 2;
-            button.setImage(#imageLiteral(resourceName: "ic_favorite"), for: .normal)
-            button.clipsToBounds = true;
-            button.tintColor = .red
+        lazy var editProfileFollowedButton: MDCRaisedButton = {
+            let button = MDCRaisedButton()
+            button.translatesAutoresizingMaskIntoConstraints = false
+            button.setTitle("FOLLOWED", for: .normal)
             button.addTarget(self, action: #selector(handleEditProfileOrFollow), for: .touchUpInside)
             return button
         }()
@@ -385,12 +347,13 @@
             super.init(frame: frame)
             
             let Width : CGFloat  = 80
-            
+            addSubview(usernameLabel)
             addSubview(profileImageView)
             addSubview(editProfileFollowButton)
             addSubview(editProfileFollowedButton)
             
-            profileImageView.anchor(top: topAnchor, left: self.centerXAnchor, bottom: nil, right: nil, paddingTop: 15, paddingLeft: CGFloat(-Width/2) , paddingBottom: 0, paddingRight: 0, width: Width, height: Width)
+            usernameLabel.anchor(top: topAnchor, left: leftAnchor, bottom: nil , right: rightAnchor, paddingTop: 15, paddingLeft: 10 , paddingBottom: 0, paddingRight: 0, width: 0, height: 0)
+            profileImageView.anchor(top: usernameLabel.bottomAnchor, left: leftAnchor, bottom: nil, right: nil, paddingTop: 15, paddingLeft: 10 , paddingBottom: 0, paddingRight: 0, width: Width, height: Width)
             profileImageView.layer.cornerRadius = Width / 2
             profileImageView.clipsToBounds = true
             let tapRecognizer = UITapGestureRecognizer(target: self, action: #selector(imageTapped(tapGestureRecognizer:)))
@@ -399,26 +362,27 @@
             profileImageView.isUserInteractionEnabled = true
             profileImageView.addGestureRecognizer(tapRecognizer)
             
+            editProfileFollowButton.anchor(top: usernameLabel.bottomAnchor, left: profileImageView.rightAnchor, bottom: nil, right: nil, paddingTop: 30, paddingLeft: 150, paddingBottom: 0, paddingRight: 0, width: 120, height: 30)
             
-            editProfileFollowButton.anchor(top: topAnchor, left: profileImageView.rightAnchor, bottom: nil, right: nil, paddingTop: 30, paddingLeft: 20, paddingBottom: 0, paddingRight: 0, width: 30, height: 30)
+            editProfileFollowedButton.anchor(top: usernameLabel.bottomAnchor, left: profileImageView.rightAnchor, bottom: nil, right: nil, paddingTop: 30, paddingLeft: 150, paddingBottom: 0, paddingRight: 0, width: 120, height: 30)
             
-            editProfileFollowedButton.anchor(top: topAnchor, left: profileImageView.rightAnchor, bottom: nil, right: nil, paddingTop: 30, paddingLeft: 20, paddingBottom: 0, paddingRight: 0, width: 30, height: 30)
-            
-            editProfileFollowedButton.isHidden = true
+            editProfileFollowedButton.isHidden = false
             
             setupBottomToolbar()
             setupUserStatsView()
-           
-
-           
         }
         
         fileprivate func setupUserStatsView() {
+            
             let stackView = UIStackView(arrangedSubviews: [postsLabel, followersLabel, followingLabel])
             
-            stackView.distribution = .fillEqually
+            stackView.axis = .vertical;
+            stackView.distribution = .equalSpacing;
+            stackView.alignment = .leading;
+            stackView.spacing = 10;
+        
             addSubview(stackView)
-            stackView.anchor(top: profileImageView.bottomAnchor, left: self.leftAnchor, bottom: nil, right: rightAnchor, paddingTop: 0, paddingLeft: 0, paddingBottom: 0, paddingRight: 12, width: 0, height: 50)
+            stackView.anchor(top: profileImageView.topAnchor, left: profileImageView.rightAnchor, bottom: profileImageView.bottomAnchor, right: rightAnchor, paddingTop: 0, paddingLeft: 10, paddingBottom: 0, paddingRight: 0, width: 0, height: 0)
             
             let tapFollowers = UITapGestureRecognizer(target: self, action: #selector(followersTapped(tapGestureRecognizer: )))
             followersLabel.isUserInteractionEnabled = true
@@ -428,9 +392,9 @@
             followingLabel.isUserInteractionEnabled = true
             followingLabel.addGestureRecognizer(tapFollowing)
             
-            let tapProducts = UITapGestureRecognizer(target: self, action: #selector(productsTapped(tapGestureRecognizer: )))
-            postsLabel.isUserInteractionEnabled = true
-            postsLabel.addGestureRecognizer(tapProducts)
+//            let tapProducts = UITapGestureRecognizer(target: self, action: #selector(productsTapped(tapGestureRecognizer: )))
+//            postsLabel.isUserInteractionEnabled = true
+//            postsLabel.addGestureRecognizer(tapProducts)
             
         }
         
@@ -451,13 +415,14 @@
             addSubview(topDividerView)
             addSubview(bottomDividerView)
             
+            stackView.anchor(top: nil, left: leftAnchor, bottom: self.bottomAnchor, right: self.rightAnchor, paddingTop: 0,
+                                paddingLeft: 0, paddingBottom: 0, paddingRight: 0, width: 100, height: 50)
             
+            topDividerView.anchor(top: stackView.topAnchor, left: leftAnchor, bottom: nil, right: rightAnchor,
+                                paddingTop: 0, paddingLeft: 0, paddingBottom: 0, paddingRight: 0, width: 0, height: 0.5)
             
-            stackView.anchor(top: nil, left: leftAnchor, bottom: self.bottomAnchor, right: rightAnchor, paddingTop: 0, paddingLeft: 0, paddingBottom: 0, paddingRight: 0, width: 0, height: 50)
-            
-            topDividerView.anchor(top: stackView.topAnchor, left: leftAnchor, bottom: nil, right: rightAnchor, paddingTop: 0, paddingLeft: 0, paddingBottom: 0, paddingRight: 0, width: 0, height: 0.5)
-            
-            bottomDividerView.anchor(top: stackView.bottomAnchor, left: leftAnchor, bottom: nil, right: rightAnchor, paddingTop: 0, paddingLeft: 0, paddingBottom: 0, paddingRight: 0, width: 0, height: 0.5)
+            bottomDividerView.anchor(top: stackView.bottomAnchor, left: leftAnchor, bottom: nil, right: rightAnchor,
+                                paddingTop: 0, paddingLeft: 0, paddingBottom: 0, paddingRight: 0, width: 0, height: 0.5)
             
             handleChangeToGridView()
         }
@@ -469,113 +434,4 @@
     
     
     
-    //
-    //    fileprivate func getNumberOfFollowers()
-    //    {
-    //        print("Get the number of followers...")
-    //        var iPosts = 0
-    //        // check if there are a number of followerds
-    //
-    ////        refDatabase.child("following").observeSingleEvent(of: .value, with: { (snapshot) in
-    //            guard let dictionaries = snapshot.value as? [String: Any] else { return }
-    //            //value = snapshot.value as? NSDictionary
-    //            dictionaries.forEach({ (key, value) in
-    //                if key == Auth.auth().currentUser?.uid {
-    //                    print("Found myself, omit from list")
-    //                }
-    //                else
-    //                {
-    //                    guard let userDictionary = value as? [String: Any] else { return }
-    //                    userDictionary.forEach({(key, value) in
-    //                        if key == Auth.auth().currentUser?.uid {
-    //                            print("Found myself as a follower")
-    //                            iPosts = iPosts + 1
-    //                        }
-    //                    })
-    //                }
-    //            })
-    //            // compare the value to the currentLoggedInUserId to see if that person is a follower
-    //            let strPosts = "\(iPosts)\n"
-    //            let attributedText = NSMutableAttributedString(string: strPosts , attributes: [NSAttributedStringKey.font: UIFont.boldSystemFont(ofSize: 14)])
-    //            attributedText.append(NSAttributedString(string: "followers", attributes: [NSAttributedStringKey.foregroundColor: UIColor.lightGray, NSAttributedStringKey.font: UIFont.systemFont(ofSize: 14)]))
-    //            self.followersLabel.attributedText = attributedText
-    //            print("followers: ", Int32((iPosts)))
-    //        }, withCancel: { (err) in
-    //            print("Failed to check if followers:", err)
-    //        })
-    //
-    //
-    //        refDatabase.child("following").observe(.childChanged, with: { (snapshot) in
-    //            guard let dictionaries = snapshot.value as? [String: Any] else { return }
-    //            //value = snapshot.value as? NSDictionary
-    //
-    //            dictionaries.forEach({ (key, value) in
-    //                if key == Auth.auth().currentUser?.uid {
-    //                    print("Found myself, omit from list")
-    //                }
-    //                else
-    //                {
-    //                    guard let userDictionary = value as? [String: Any] else { return }
-    //                    userDictionary.forEach({(key, value) in
-    //                        if key == Auth.auth().currentUser?.uid {
-    //                            print("Found myself as a follower", key)
-    //                            iPosts = iPosts + 1
-    //                        }
-    //                    })
-    //                }
-    //            })
-    //
-    //            // compare the value to the currentLoggedInUserId to see if that person is a follower
-    //            let strPosts = "\(iPosts)\n"
-    //            let attributedText = NSMutableAttributedString(string: strPosts , attributes: [NSAttributedStringKey.font: UIFont.boldSystemFont(ofSize: 14)])
-    //            attributedText.append(NSAttributedString(string: "followers", attributes: [NSAttributedStringKey.foregroundColor: UIColor.lightGray, NSAttributedStringKey.font: UIFont.systemFont(ofSize: 14)]))
-    //            self.followersLabel.attributedText = attributedText
-    //            print("followers: ", Int32((iPosts)))
-    //        }, withCancel: { (err) in
-    //            print("Failed to check if followers:", err)
-    //        })
-    //        iPosts = 0
-    //        return
-    //    }
-    
-    
-    
-    //    private func observeMessages() {
-    //        var iPosts = 0
-    //
-    //        refDatabase.child("following").observe(.value, with: { (snapshot) in
-    //            guard let dictionaries = snapshot.value as? [String: Any] else { return }
-    //            iPosts = 0
-    //            dictionaries.forEach({ (key, value) in
-    //                if key == Auth.auth().currentUser?.uid {
-    //                    print("Found myself, omit from list")
-    //                }
-    //                else
-    //                {
-    //                    guard let userDictionary = value as? [String: Any] else { return }
-    //                    userDictionary.forEach({(key, value) in
-    //                        if key == Auth.auth().currentUser?.uid {
-    //                            print("Found myself as a follower")
-    //                            iPosts = iPosts + 1
-    //                        }
-    //                    })
-    //                }
-    //            })
-    //            // compare the value to the currentLoggedInUserId to see if that person is a follower
-    //            let strPosts = "\(iPosts)\n"
-    //            let attributedText = NSMutableAttributedString(string: strPosts , attributes: [NSAttributedStringKey.font: UIFont.boldSystemFont(ofSize: 14)])
-    //            attributedText.append(NSAttributedString(string: "followers", attributes: [NSAttributedStringKey.foregroundColor: UIColor.lightGray, NSAttributedStringKey.font: UIFont.systemFont(ofSize: 14)]))
-    //            self.followersLabel.attributedText = attributedText
-    //            print("Realtime Update Followers: ", Int32((iPosts)))
-    //        }, withCancel: { (err) in
-    //            print("Failed to check if followers:", err)
-    //        })
-    //        iPosts = 0
-    //    }
-    //
-    //    deinit {
-    //        if let refHandle = channelRefHandle {
-    //            channelRef.removeObserver(withHandle: refHandle)
-    //        }
-    //    }
-    
+  
