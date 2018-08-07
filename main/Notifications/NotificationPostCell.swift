@@ -22,21 +22,19 @@ protocol NotificationDelegate {
 
 class NotificationPostCell: MDCCardCollectionCell {
     
-    var notification: NotificationObject? {
+    var notification: NotificationFireObject? {
         didSet {
-            if  let sender = notification?.sender {
-                Database.fetchUserWithUID(uid: sender, completion: { (user) in
-                    self.usernameLabel.text = user.username
-                    let profileImageUrl = user.profileImageUrl
-                    self.profileImageView.loadImage(urlString: profileImageUrl)
-                    self.contentLabel.text = self.notification?.content
+           
+                
+                    self.usernameLabel.text = notification?.interactionUserUsername
+                    let profileImageUrl = notification?.interactionUserProfilePicture
+                    self.profileImageView.loadImage(urlString: profileImageUrl!)
+                    self.contentLabel.text = self.notification?.kind
                     let formatter = DateFormatter()
                     formatter.dateFormat = "yyyy/MM/dd"
-                    let date = Date(timeIntervalSince1970: (self.notification?.date)!)
-                    let timeAgoDisplay = date.timeAgoDisplay()
-                    self.timeLabel.text = timeAgoDisplay
-                })
-            }
+                    //let date = Date(timeIntervalSince1970: (self.notification?.timestamp)!)
+                    //let timeAgoDisplay = date.timeAgoDisplay()
+                    //self.timeLabel.text = timeAgoDisplay
         }
     }
     
@@ -122,6 +120,29 @@ class NotificationPostCell: MDCCardCollectionCell {
         }
     
     }
+
+    func populateCell(from: NotificationFireObject, isDryRun: Bool)
+    {
+        let dateCreated = from.timestamp
+        
+        let commentText =  NSMutableAttributedString(string: from.kind, attributes: attributes)
+        commentText.addAttribute(.paragraphStyle, value: NotificationPostCell.paragraphStyle, range: NSMakeRange(0, commentText.length))
+        
+        contentLabel.attributedText = commentText
+        timeLabel.text = dateCreated.timeAgoDisplay()
+        
+        
+        if !isDryRun {
+            profileImageView.accessibilityLabel = from.interactionUserUsername
+            profileImageView.accessibilityHint = "Double-tap to open profile."
+            profileImageView.loadImage(urlString: from.interactionUserProfilePicture)
+            profileImageView.tag = 1
+            contentLabel.tag = 1
+            profileImageView.loadImage(urlString: from.interactionUserProfilePicture)
+        }
+        
+    }
+    
     
 
     override init(frame: CGRect) {
@@ -144,10 +165,6 @@ class NotificationPostCell: MDCCardCollectionCell {
                             right: contentView.rightAnchor, paddingTop: 0, paddingLeft: 8,
                             paddingBottom: 5, paddingRight: 60, width: 0, height: 40)
         
-        
-//        saveButton.anchor(top: contentLabel.topAnchor, left: nil, bottom: nil,
-//                            right: contentView.rightAnchor, paddingTop: 0, paddingLeft: 2,
-//                            paddingBottom: 5, paddingRight: 2, width: 25, height: 25)
         
         clearButton.anchor(top: contentLabel.topAnchor, left: nil, bottom: nil,
                                right: contentView.rightAnchor, paddingTop: 0, paddingLeft: 2,

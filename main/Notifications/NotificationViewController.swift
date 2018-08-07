@@ -11,6 +11,8 @@ import Firebase
 import MaterialComponents
 
 class NotificationViewController: MDCCollectionViewController , NotificationDelegate {
+    
+    
     func didSave(for cell: NotificationPostCell) {
         
     }
@@ -54,14 +56,14 @@ class NotificationViewController: MDCCollectionViewController , NotificationDele
         return label
     }()
     
-//    let contentLabel: UILabel = {
-//        let label = UILabel()
-//        label.text = "Content"
-//        label.textColor = .darkGray
-//        label.font = UIFont.systemFont(ofSize: 12)
-//        label.numberOfLines = 0
-//        return label
-//    }()
+    //    let contentLabel: UILabel = {
+    //        let label = UILabel()
+    //        label.text = "Content"
+    //        label.textColor = .darkGray
+    //        label.font = UIFont.systemFont(ofSize: 12)
+    //        label.numberOfLines = 0
+    //        return label
+    //    }()
     
     
     let contentLabel:  MDCMultilineTextField = {
@@ -93,15 +95,18 @@ class NotificationViewController: MDCCollectionViewController , NotificationDele
     var userId: String?
     var followers: [String] = []
     var user: MapleUser?
-    var allNotifications: [NotificationObject] = []
-
+    var allNotifications: [NotificationFireObject] = []
+    
     
     @objc func reloadTable() {
-        self.allNotifications = notifications
-        NotificationCenter.default.post(name: NSNotification.Name(rawValue : "Badge Changed"), object: nil)
-        collectionView?.reloadData()
+        //self.allNotifications = notifications
+        //NotificationCenter.default.post(name: NSNotification.Name(rawValue : "Badge Changed"), object: nil)
+        
+        self.fetchNotifications()
         
     }
+    
+    
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -118,11 +123,9 @@ class NotificationViewController: MDCCollectionViewController , NotificationDele
         styler.cellLayoutType = .grid
         styler.gridPadding = 8
         
-        self.allNotifications = notifications
+        self.allNotifications = notificationsFire
         
         NotificationCenter.default.addObserver(self, selector: #selector(reloadTable), name: NSNotification.Name(rawValue : "Got Values"), object: nil)
-        
-        self.fetchUser()
         
         if #available(iOS 10.0, *) {
             let refreshControl = UIRefreshControl()
@@ -132,18 +135,79 @@ class NotificationViewController: MDCCollectionViewController , NotificationDele
             collectionView?.refreshControl = refreshControl
         }
         
-         self.fetchNotification()
+        self.fetchNotifications()
+        self.observeNotifications()
     }
     
     
     @objc private func refreshOptions(sender: UIRefreshControl) {
-         self.fetchNotification()
+        self.fetchNotifications()
+        self.observeNotifications()
         sender.endRefreshing()
     }
     
     
+    fileprivate func fetchNotifications() {
+        notifications.removeAll()
+        if let uid = Auth.auth().currentUser?.uid  {
+            Firestore.firestore().collection("users").document(uid).collection("Events").getDocuments() {
+                (querySnapshot, err) in
+                if let err = err  {
+                    print("Error getting documents: \(err)");
+                }
+                else  {
+                    
+                    for document in querySnapshot!.documents {
+                        if let notification = NotificationFireObject(dictionary: document.data()) {
+                            notificationsFire.append(notification)
+                            self.collectionView?.reloadData()
+                        }
+                    }
+                }
+            }
+        }
+    }
+    
+    
+    deinit {
+        listener?.remove()
+    }
+    
+    private var listener: ListenerRegistration?
+    
+    fileprivate func observeNotifications()
+    {
+        stopObserving()
+        allNotifications.removeAll()
+        if let uid = Auth.auth().currentUser?.uid {
+            self.listener =
+                 Firestore.firestore().collection("users").document(uid).collection("Events")
+                    .order(by: "timestanp", descending: true)
+                    .addSnapshotListener{  (snapshot, error) in
+                        guard let snapshot = snapshot else {
+                            print("Error fetching snapshot results: \(error!)")
+                            return
+                        }
+                        for document in snapshot.documents {
+                            if let notification = NotificationFireObject(dictionary: document.data()) {
+                                notificationsFire.append(notification)
+                                self.collectionView?.reloadData()
+                            }
+                        }
+            }
+        }
+    }
+    
+    
+    fileprivate func stopObserving() {
+        listener?.remove()
+    }
+    
+
     override func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        return  notifications.count
+        let mainTabBarController = UIApplication.shared.keyWindow?.rootViewController as? MainTabBarController
+        mainTabBarController?.setNotificationBadgeCount(count: notificationsFire.count)
+        return  notificationsFire.count
     }
     
     override func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, insetForSectionAt section: Int) -> UIEdgeInsets {
@@ -154,16 +218,16 @@ class NotificationViewController: MDCCollectionViewController , NotificationDele
         
         let frame = CGRect(x: 0, y: 0, width: view.frame.width, height: 50)
         let dummyCell = NotificationPostCell(frame: frame)
-        dummyCell.notification = notifications[indexPath.item]
+        dummyCell.notification = notificationsFire[indexPath.item]
         dummyCell.layoutIfNeeded()
         
-        let targetSize = CGSize(width: view.frame.width  , height: 1000)
-        let estimatedSize = dummyCell.systemLayoutSizeFitting(targetSize)
+        //let targetSize = CGSize(width: view.frame.width  , height: 1000)
+        //let estimatedSize = dummyCell.systemLayoutSizeFitting(targetSize)
         
         let height = CGFloat(56.0)
         return CGSize(width: view.frame.width - 30, height: height)
     }
-
+    
     
     override func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, minimumLineSpacingForSectionAt section: Int) -> CGFloat {
         return 7
@@ -171,11 +235,12 @@ class NotificationViewController: MDCCollectionViewController , NotificationDele
     
     override func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: cellId, for: indexPath) as! NotificationPostCell
-        let notification = self.allNotifications[indexPath.item]
+        //let notification = self.allNotifications[indexPath.item]
+        //let notification = self.allNotifications
+        let notificationObj = notificationsFire[indexPath.item]
+        // Database.fetchUserWithUID(uid: notification.interactionUser, completion: { (user) in
         cell.delegate = self
-        Database.fetchUserWithUID(uid: notification.sender, completion: { (user) in
-            cell.populateContent(from: user, text: notification.content, date: notification.date, index: indexPath.item, isDryRun: false )
-        })
+        cell.populateCell(from: notificationObj , isDryRun: false )
         return cell
     }
     
@@ -189,7 +254,7 @@ class NotificationViewController: MDCCollectionViewController , NotificationDele
         tabBarController?.tabBar.isHidden = false
     }
     
-  
+    
     override var canBecomeFirstResponder: Bool {
         return true
     }
@@ -207,23 +272,23 @@ class NotificationViewController: MDCCollectionViewController , NotificationDele
     }
     
     fileprivate func fetchNotification() {
-    if let uid = Auth.auth().currentUser?.uid {
-    //            Firestore.fetchNotifications(uid: uid) { _ in (notification)
-    //
-    //
-    //            }
+        if let uid = Auth.auth().currentUser?.uid {
+            //            Firestore.fetchNotifications(uid: uid) { _ in (notification)
+            //
+            //
+            //            }
         }
     }
     
     fileprivate func removeNotification(_ item: Int) {
-        let uid = userId ?? (Auth.auth().currentUser?.uid ?? "")
-        Database.removeNotification(uid, allNotifications[item]) { message in
-            if message == "success" {
-                NotificationCenter.default.post(name: NSNotification.Name(rawValue : "Badge Changed"), object: nil)
-            }
-        }
-        notifications.remove(at: item)
-        self.allNotifications = notifications
+//        let uid = userId ?? (Auth.auth().currentUser?.uid ?? "")
+//        Database.removeNotification(uid, allNotifications[item]) { message in
+//            if message == "success" {
+//                NotificationCenter.default.post(name: NSNotification.Name(rawValue : "Badge Changed"), object: nil)
+//            }
+//        }
+//        notifications.remove(at: item)
+//        self.allNotifications = notifications
         self.collectionView?.reloadData()
     }
     
@@ -280,6 +345,6 @@ class NotificationViewController: MDCCollectionViewController , NotificationDele
         }
         
     }
-
+    
 }
 

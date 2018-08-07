@@ -89,7 +89,7 @@ class EditPostController:
    
     var post: FSPost? {
         didSet {
-            title =  "Where to find it ..."
+            title =  "Find it ..."
             locations.removeAll()
             setupAttributedCaption()
             let iconGenerator = GMUDefaultClusterIconGenerator()

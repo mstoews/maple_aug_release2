@@ -63,6 +63,10 @@ static const CGFloat kMaxAnchorLengthQuickSwipe = 25;
 // view finishes decelerating with the header partially shifted.
 static const CGFloat kMinimumVisibleProportion = 0.25;
 
+// KVO contexts
+static char *const kKVOContextMDCFlexibleHeaderView =
+    "kKVOContextMDCFlexibleHeaderView";
+
 static inline MDCFlexibleHeaderShiftBehavior ShiftBehaviorForCurrentAppContext(
     MDCFlexibleHeaderShiftBehavior intendedShiftBehavior) {
   if ([[[NSBundle mainBundle] bundlePath] hasSuffix:@".appex"] &&
@@ -204,6 +208,9 @@ static inline MDCFlexibleHeaderShiftBehavior ShiftBehaviorForCurrentAppContext(
                                                   action:@selector(fhv_scrollViewDidPan:)];
 #endif
   [[NSNotificationCenter defaultCenter] removeObserver:self];
+  if (self.observesTrackingScrollViewScrollEvents) {
+    [self fhv_stopObservingContentOffset];
+  }
 }
 
 - (instancetype)initWithFrame:(CGRect)frame {
@@ -1114,7 +1121,7 @@ static inline MDCFlexibleHeaderShiftBehavior ShiftBehaviorForCurrentAppContext(
   // Notably, UITableViewController's .view _is_ the tableView, so there is no way to add a flexible
   // header other than as a subview to the scroll view. This is the most common case to which the
   // following logic has been written.
-  if (self.superview == self.trackingScrollView) {
+  if (self.superview && self.superview == self.trackingScrollView) {
     if (self.superview.subviews.lastObject != self) {
       [self.superview bringSubviewToFront:self];
     }
@@ -1147,6 +1154,63 @@ static inline MDCFlexibleHeaderShiftBehavior ShiftBehaviorForCurrentAppContext(
   }
 
   [self fhv_updateLayout];
+}
+
+#pragma mark KVO
+
+- (void)observeValueForKeyPath:(NSString *)keyPath
+                      ofObject:(id)object
+                        change:(NSDictionary *)change
+                       context:(void *)context {
+  if (context == kKVOContextMDCFlexibleHeaderView) {
+    void (^mainThreadWork)(void) = ^{
+      if (object == self.trackingScrollView) {
+        [self fhv_contentOffsetDidChange];
+      }
+    };
+
+    // Ensure that UIKit modifications occur on the main thread.
+    if ([NSThread isMainThread]) {
+      mainThreadWork();
+    } else {
+      [[NSOperationQueue mainQueue] addOperationWithBlock:mainThreadWork];
+    }
+
+  } else {
+    [super observeValueForKeyPath:keyPath ofObject:object change:change context:context];
+  }
+}
+
+#pragma mark Content offset observation
+
+- (void)fhv_startObservingContentOffset {
+  [self.trackingScrollView addObserver:self
+                            forKeyPath:NSStringFromSelector(@selector(contentOffset))
+                               options:NSKeyValueObservingOptionNew
+                               context:kKVOContextMDCFlexibleHeaderView];
+}
+
+- (void)fhv_stopObservingContentOffset {
+  [self.trackingScrollView removeObserver:self
+                               forKeyPath:NSStringFromSelector(@selector(contentOffset))
+                                  context:kKVOContextMDCFlexibleHeaderView];
+}
+
+- (void)setObservesTrackingScrollViewScrollEvents:(BOOL)observesTrackingScrollViewScrollEvents {
+  NSAssert(self.shiftBehavior == MDCFlexibleHeaderShiftBehaviorDisabled
+           || !observesTrackingScrollViewScrollEvents,
+           @"Please set shiftBehavior to disabled prior to enabling this property.");
+
+  if (_observesTrackingScrollViewScrollEvents == observesTrackingScrollViewScrollEvents) {
+    return;
+  }
+  _observesTrackingScrollViewScrollEvents = observesTrackingScrollViewScrollEvents;
+
+  if (observesTrackingScrollViewScrollEvents) {
+    [self fhv_startObservingContentOffset];
+  } else {
+    [self fhv_stopObservingContentOffset];
+  }
 }
 
 #pragma mark Gestures
@@ -1235,6 +1299,10 @@ static BOOL isRunningiOS10_3OrAbove() {
 #endif  // #if 0
 #endif  // #if DEBUG
 
+  if (self.observesTrackingScrollViewScrollEvents) {
+    [self fhv_stopObservingContentOffset];
+  }
+
   UIScrollView *oldTrackingScrollView = _trackingScrollView;
 
   BOOL wasTrackingScrollView = _trackingScrollView != nil;
@@ -1253,6 +1321,10 @@ static BOOL isRunningiOS10_3OrAbove() {
   _trackingInfo = [_trackedScrollViews objectForKey:_trackingScrollView];
 
   [self fhv_enforceInsetsForScrollView:_trackingScrollView];
+
+  if (self.observesTrackingScrollViewScrollEvents) {
+    [self fhv_startObservingContentOffset];
+  }
 
   void (^animate)(void) = ^{
     [self fhv_updateLayout];
@@ -1278,10 +1350,18 @@ static BOOL isRunningiOS10_3OrAbove() {
 }
 
 - (void)trackingScrollViewDidScroll {
+  NSAssert(!self.observesTrackingScrollViewScrollEvents,
+           @"Do not manually forward tracking scroll view events when"
+           @" observesTrackingScrollViewScrollEvents is enabled.");
+
   [self fhv_contentOffsetDidChange];
 }
 
 - (void)trackingScrollViewDidEndDraggingWillDecelerate:(BOOL)willDecelerate {
+  NSAssert(!self.observesTrackingScrollViewScrollEvents,
+           @"Do not manually forward tracking scroll view events when"
+           @" observesTrackingScrollViewScrollEvents is enabled.");
+
   if (![self fhv_canShiftOffscreen]) {
     _wantsToBeHidden = NO;
   }
@@ -1292,6 +1372,10 @@ static BOOL isRunningiOS10_3OrAbove() {
 }
 
 - (void)trackingScrollViewDidEndDecelerating {
+  NSAssert(!self.observesTrackingScrollViewScrollEvents,
+           @"Do not manually forward tracking scroll view events when"
+           @" observesTrackingScrollViewScrollEvents is enabled.");
+
   // This event can be invoked after two different forms of user interaction:
   //
   // 1. When the tracking scroll view was tossed and then came to rest.
@@ -1330,6 +1414,12 @@ static BOOL isRunningiOS10_3OrAbove() {
 }
 
 - (void)setShiftBehavior:(MDCFlexibleHeaderShiftBehavior)shiftBehavior {
+  NSAssert((self.observesTrackingScrollViewScrollEvents
+           && shiftBehavior == MDCFlexibleHeaderShiftBehaviorDisabled)
+           || !self.observesTrackingScrollViewScrollEvents,
+           @"Flexible Header shift behavior must be disabled before content offset observation is"
+           @" enabled.");
+
   shiftBehavior = ShiftBehaviorForCurrentAppContext(shiftBehavior);
   if (_shiftBehavior == shiftBehavior) {
     return;
@@ -1518,6 +1608,10 @@ static BOOL isRunningiOS10_3OrAbove() {
 
 - (BOOL)trackingScrollViewWillEndDraggingWithVelocity:(__unused CGPoint)velocity
                                   targetContentOffset:(inout CGPoint *)targetContentOffset {
+  NSAssert(!self.observesTrackingScrollViewScrollEvents,
+           @"Do not manually forward tracking scroll view events when"
+           @" observesTrackingScrollViewScrollEvents is enabled.");
+
 #if DEBUG
   _didAdjustTargetContentOffset = YES;
 #endif

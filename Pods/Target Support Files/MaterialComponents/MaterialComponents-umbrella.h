@@ -20,6 +20,7 @@
 #import "MaterialAppBar.h"
 #import "MDCAppBar.h"
 #import "MDCAppBarContainerViewController.h"
+#import "MDCAppBarNavigationController.h"
 #import "MaterialAppBar+ColorThemer.h"
 #import "MDCAppBarColorThemer.h"
 #import "MaterialAppBar+TypographyThemer.h"

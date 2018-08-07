@@ -53,7 +53,7 @@ class MapCollectionCell: MDCCardCollectionCell {
     
     let mapImageView : CustomImageView = {
         let iv = CustomImageView()
-        iv.image = UIImage(named: "pin")
+        iv.image = #imageLiteral(resourceName: "ic_navigation")
         iv.contentMode = .scaleAspectFit
         iv.clipsToBounds = true
         return iv

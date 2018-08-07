@@ -100,7 +100,7 @@ class ShareShowSettings: NSObject, UICollectionViewDataSource, UICollectionViewD
             
         }) { (completed: Bool) in
             if setting.name != .Cancel {
-                self.homeController?.showControllerForSetting(setting)
+                //self.homeController?.showControllerForSetting(setting)
             }
         }
     }

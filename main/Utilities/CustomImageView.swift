@@ -38,16 +38,16 @@ class CustomImageView: UIImageView {
     }
     
     func loadImageWithCompletionHandler(imageURL: URL, _ completion: @escaping (_ image: UIImage?, _ error: Error?) -> ()) {
-            KingfisherManager.shared.retrieveImage(with: ImageResource(downloadURL: imageURL), options: nil, progressBlock: nil, completionHandler: { (image, error, cacheType, url) in
-                completion(image, error)
-            })
+        KingfisherManager.shared.retrieveImage(with: ImageResource(downloadURL: imageURL), options: nil, progressBlock: nil, completionHandler: { (image, error, cacheType, url) in
+            completion(image, error)
+        })
     }
 }
 
 
 
 extension UIImageView{
-
+    
     func setImageWith(color: UIColor)
     {
         image = image?.withRenderingMode(.alwaysTemplate)
@@ -73,3 +73,4 @@ extension UIImageView{
     
     
 }
+

@@ -154,7 +154,6 @@ extension SharePhotoController
             self.mapObjects.removeAll()
             self.Products.text?.removeAll()
             self.Description.text?.removeAll()
-            self.CategoryDesc.text?.removeAll()
             self.imageCollectionView.reloadData()
             self.locationCollectionView.reloadData()
             print("main queue updated")

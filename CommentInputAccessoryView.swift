@@ -35,7 +35,7 @@ class UIImageEditFilter : UIImageView {
 
     fileprivate let filterButton: UIButton = {
         let sb = UIButton(type: .system)
-        sb.setImage(#imageLiteral(resourceName: "icons8-photo-editor-50"), for: .normal)
+        sb.setImage(#imageLiteral(resourceName: "ic_filter"), for: .normal)
         sb.setTitleColor(.black, for: .normal)
         sb.titleLabel?.font = UIFont.boldSystemFont(ofSize: 14)
         sb.addTarget(self, action: #selector(handleFilter), for: .touchUpInside)
@@ -44,7 +44,7 @@ class UIImageEditFilter : UIImageView {
     
     lazy var deleteButton: UIButton = {
         let button = UIButton(type: .system)
-        button.setImage(#imageLiteral(resourceName: "Cancel"), for: .normal)
+        button.setImage(#imageLiteral(resourceName: "ic_delete"), for: .normal)
         button.sizeToFit()
         button.addTarget(self, action: #selector(handleDelete), for: .touchUpInside)
         return button

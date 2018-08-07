@@ -56,13 +56,13 @@ class SharePhotoController:
     UITableViewDelegate,
     UISearchBarDelegate,
     UISearchResultsUpdating,
-    UITabBarDelegate,
+    //UITabBarDelegate,
     SearchProgressDelegate,
     //ImagePickerDelegate,
     LightboxControllerDismissalDelegate,
     GalleryControllerDelegate,
-    UIImagePickerControllerDelegate,
-    UINavigationControllerDelegate,
+    //UIImagePickerControllerDelegate,
+    //UINavigationControllerDelegate,
     CropViewControllerDelegate,
     ShareHeaderCellDelegate
 {

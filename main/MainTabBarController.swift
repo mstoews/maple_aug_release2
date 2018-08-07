@@ -68,47 +68,44 @@ class MainTabBarController: UITabBarController, AuthUIDelegate  {
     lazy var appDelegate = UIApplication.shared.delegate as! AppDelegate
     
     
-
+    deinit {
+        listener?.remove()
+    }
     
-    private func observeBadges(ObserveChild : String, BarItem : Int, StartAt: Int) -> Int
+    private var listener: ListenerRegistration?
+    
+    fileprivate func observeNotifications()
     {
-        var iCount = StartAt
+        stopObserving()
+        
         if let uid = Auth.auth().currentUser?.uid {
-            //let uid = "ygyHgVCY5BPfSsIr98O5c1hxtsK2"
-            
-            Database.fetchNotification(uid: uid) { message in
-                if message == "success" {
-                    iCount = notifications.count
-                    if iCount > 0 {
-                        let strComments = "\(iCount)\n"
-                        self.tabBar.items?[BarItem].badgeValue = strComments
-                    }
-                    else
-                    {
-                        self.tabBar.items?[3].badgeValue = nil
-                    }
-                    
-                    NotificationCenter.default.post(name: NSNotification.Name(rawValue : "Got Values"), object: nil)
-                }
+            self.listener =
+                Firestore.firestore().collection("users").document(uid).collection("Events")
+                    .addSnapshotListener{  (snapshot, error) in
+                        guard let snapshot = snapshot else {
+                            print("Error fetching snapshot results: \(error!)")
+                            return
+                        }
+                        self.setNotificationBadgeCount(count: snapshot.count)
             }
         }
-        
-        return iCount
     }
     
-    @objc func resetBadges() {
-        let iNoticifations = notifications.count
-        if iNoticifations > 0 {
-            let strComments = "\(iNoticifations)\n"
-            self.tabBar.items?[3].badgeValue = strComments
-        }
-        else
-        {
-            self.tabBar.items?[3].badgeValue = nil
-        }
+    fileprivate func stopObserving() {
+        listener?.remove()
     }
-  
-        
+    
+    
+    @objc func setNotificationBadgeCount(count: Int)
+    {
+        if count == 0 {
+            self.tabBar.items?[3].badgeValue = nil
+            return
+        }
+        let strNotificationCount = "\(count)"
+        self.tabBar.items?[3].badgeValue = strNotificationCount
+    }
+    
     func setTabBarHome() {
         tabBar.selectedItem = tabBar.items![0] as UITabBarItem
         tabBar.tintColor = UIColor.red
@@ -135,7 +132,9 @@ class MainTabBarController: UITabBarController, AuthUIDelegate  {
         let providers: [FUIAuthProvider] = [FUIGoogleAuth(), FUIFacebookAuth()]
         authUI?.providers = providers
         
-        NotificationCenter.default.addObserver(self, selector: #selector(resetBadges), name: NSNotification.Name(rawValue : "Badge Changed"), object: nil)
+        observeNotifications()
+        
+        //NotificationCenter.default.addObserver(self, selector: #selector(resetBadges), name: NSNotification.Name(rawValue : "Badge Changed"), object: nil)
     }
     
     override func viewDidAppear(_ animated: Bool) {

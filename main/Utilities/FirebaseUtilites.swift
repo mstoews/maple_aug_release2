@@ -8,6 +8,7 @@
 
 import Foundation
 import Firebase
+import FirebaseFirestore
 import GoogleMaps
 import GooglePlaces
 
@@ -15,13 +16,27 @@ import GooglePlaces
 extension Database {
     
     static func fetchUserWithUID(uid: String, completion: @escaping (MapleUser) -> ()) {
+        
+            let docRef = Firestore.firestore().collection("users").document(uid).collection("profile").document(uid)
+        
+            docRef.getDocument { (document, error) in
+            if let document = document, document.exists {
+                let user = MapleUser(uid: uid,  dictionary: document.data()!)
+                 completion(user)
+            } else {
+                print("Document  nb bbbbbdoes not exist")
+            }
+        }
+        
+          /*
             Database.database().reference().child("users").child(uid).observeSingleEvent(of: .value, with: { (snapshot) in
                     guard let userDictionary = snapshot.value as? [String: Any] else { return }
                     let user = MapleUser(uid: uid, dictionary: userDictionary)
                     completion(user)
-        }) { (err) in
+            }) { (err) in
             print("Failed to fetch user for posts:", err)
-        }
+            }
+         */
     }
     
    

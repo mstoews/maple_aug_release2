@@ -33,7 +33,7 @@ class AlgoliaManager: NSObject {
         
         posts = client.index(withName: "posts")
         users = client.index(withName: "users")
-        location = client.index(withName: "location")
+        location = client.index(withName: "locations")
         category = client.index(withName: "category")
     }
 }

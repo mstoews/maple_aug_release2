@@ -54,29 +54,6 @@ class CommentsController: MDCCollectionViewController, CommentInputAccessoryView
         sender.endRefreshing()
     }
     
-    fileprivate func fetchCommentsFirebase() {
-        comments.removeAll()
-        
-        guard let postId = self.post?.id else { return }
-        let ref = Database.database().reference().child("comments").child(postId)
-        ref.observe(.childAdded, with: { (snapshot) in
-            
-            guard let dictionary = snapshot.value as? [String: Any] else { return }
-            
-            guard let uid = dictionary["uid"] as? String else { return }
-            
-            Database.fetchUserWithUID(uid: uid, completion: { (user) in
-                
-                let comment = Comment(user: user, dictionary: dictionary)
-                self.comments.append(comment)
-                self.collectionView?.reloadData()
-            })
-            
-        }) { (err) in
-            print("Failed to observe comments")
-        }
-    }
-    
     
     fileprivate func fetchComments() {
         comments.removeAll()
@@ -164,20 +141,21 @@ class CommentsController: MDCCollectionViewController, CommentInputAccessoryView
         return CGSize(width: view.frame.width - 30, height: height)
     }
     
-//    override func collectionView(_ collectionView: UICollectionView, cellHeightAt indexPath: IndexPath) -> CGFloat {
-//        let comment = self.comments[indexPath.item]
-//        sizingCell.populateContent(from: comment.user, text: comment.text, date: comment.creationDate, index: indexPath.item, isDryRun: true )
-//        sizingCell.setNeedsUpdateConstraints()
-//        sizingCell.updateConstraintsIfNeeded()
-//        sizingCell.contentView.setNeedsLayout()
-//        sizingCell.contentView.layoutIfNeeded()
-//
-//        var fittingSize = UILayoutFittingCompressedSize
-//        fittingSize.width = sizingCell.frame.width
-//        let size = sizingCell.contentView.systemLayoutSizeFitting(fittingSize)
-//        return size.height
-//    }
-//
+
+    override func collectionView(_ collectionView: UICollectionView, cellHeightAt indexPath: IndexPath) -> CGFloat {
+        let comment = self.comments[indexPath.item]
+        sizingCell.populateContent(from: comment.user, text: comment.text, date: comment.creationDate, index: indexPath.item, isDryRun: true )
+        sizingCell.setNeedsUpdateConstraints()
+        sizingCell.updateConstraintsIfNeeded()
+        sizingCell.contentView.setNeedsLayout()
+        sizingCell.contentView.layoutIfNeeded()
+
+        var fittingSize = UILayoutFittingCompressedSize
+        fittingSize.width = sizingCell.frame.width
+        let size = sizingCell.contentView.systemLayoutSizeFitting(fittingSize)
+        return size.height
+    }
+
     
     
     override func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, minimumLineSpacingForSectionAt section: Int) -> CGFloat {

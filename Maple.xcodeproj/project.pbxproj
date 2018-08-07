@@ -10,17 +10,14 @@
 		0225F32620FE0F7300137084 /* UserImageCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0225F2E120FE0F7300137084 /* UserImageCell.swift */; };
 		0225F32F20FE131200137084 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 484F862E20FDB56D00FAF6AA /* LaunchScreen.storyboard */; };
 		0225F33120FE13C500137084 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 0225F32D20FE11FB00137084 /* LaunchScreen.storyboard */; };
-		023F0FDA20FA14A1003CAC3F /* SharePhotoController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 023F0FD920FA14A1003CAC3F /* SharePhotoController.swift */; };
 		024EDBC02078EFF50069C77F /* HomeHeaderCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 02DC63492004E5C500AE9662 /* HomeHeaderCell.swift */; };
 		024EDBC32078EFFA0069C77F /* CommentCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 48B4450C1FE7342200DFD412 /* CommentCell.swift */; };
 		024EDBC52078EFFD0069C77F /* CommentInputAccessoryView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 02DC63432001BDD600AE9662 /* CommentInputAccessoryView.swift */; };
-		024EDBC62078EFFE0069C77F /* HomeViewPostController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 02F88632202C836900F047BF /* HomeViewPostController.swift */; };
+		027A81702119481C00A21E62 /* SharePhotoControllerMD.swift in Sources */ = {isa = PBXBuildFile; fileRef = 027A816F2119481C00A21E62 /* SharePhotoControllerMD.swift */; };
 		02DC63442001BDD600AE9662 /* CommentInputAccessoryView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 02DC63432001BDD600AE9662 /* CommentInputAccessoryView.swift */; };
 		02DC63462001BE7600AE9662 /* CommentInputTextView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 02DC63452001BE7600AE9662 /* CommentInputTextView.swift */; };
 		02DC634A2004E5C500AE9662 /* HomeHeaderCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 02DC63492004E5C500AE9662 /* HomeHeaderCell.swift */; };
-		02F88633202C836900F047BF /* HomeViewPostController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 02F88632202C836900F047BF /* HomeViewPostController.swift */; };
 		482FC10020DE15D900E23DAE /* SharePhotoCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 482FC0F720DE15BD00E23DAE /* SharePhotoCell.swift */; };
-		482FC10120DE15D900E23DAE /* ModifyPhotoController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 482FC0F820DE15C000E23DAE /* ModifyPhotoController.swift */; };
 		482FC10220DE15D900E23DAE /* ProductFooterCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 482FC0F920DE15C400E23DAE /* ProductFooterCell.swift */; };
 		482FC10420DE15D900E23DAE /* PreviewPhotoContainerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 482FC0FB20DE15C800E23DAE /* PreviewPhotoContainerView.swift */; };
 		482FC10520DE15D900E23DAE /* SharePhotoController+Save.swift in Sources */ = {isa = PBXBuildFile; fileRef = 482FC0FC20DE15CC00E23DAE /* SharePhotoController+Save.swift */; };
@@ -182,17 +179,15 @@
 /* Begin PBXFileReference section */
 		0225F2E120FE0F7300137084 /* UserImageCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UserImageCell.swift; sourceTree = "<group>"; };
 		0225F32D20FE11FB00137084 /* LaunchScreen.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; name = LaunchScreen.storyboard; path = "maple-release/LaunchScreen.storyboard"; sourceTree = SOURCE_ROOT; };
-		023F0FD920FA14A1003CAC3F /* SharePhotoController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SharePhotoController.swift; sourceTree = "<group>"; };
 		024EDB9F2078EE760069C77F /* maple_release.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; name = maple_release.app; path = Maple_release.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		025D70DF20B53AD4004E967B /* FlexibleHeader.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FlexibleHeader.swift; sourceTree = "<group>"; };
+		027A816F2119481C00A21E62 /* SharePhotoControllerMD.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SharePhotoControllerMD.swift; sourceTree = "<group>"; };
 		02DC63432001BDD600AE9662 /* CommentInputAccessoryView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CommentInputAccessoryView.swift; sourceTree = "<group>"; };
 		02DC63452001BE7600AE9662 /* CommentInputTextView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CommentInputTextView.swift; sourceTree = "<group>"; };
 		02DC63492004E5C500AE9662 /* HomeHeaderCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeHeaderCell.swift; sourceTree = "<group>"; };
-		02F88632202C836900F047BF /* HomeViewPostController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeViewPostController.swift; sourceTree = "<group>"; };
 		1A37A2AC267FCAB8BAC6A37F /* Pods-Maple.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Maple.debug.xcconfig"; path = "Pods/Target Support Files/Pods-Maple/Pods-Maple.debug.xcconfig"; sourceTree = "<group>"; };
 		20978D14CE748FB57EE87399 /* Pods-Maple.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Maple.release.xcconfig"; path = "Pods/Target Support Files/Pods-Maple/Pods-Maple.release.xcconfig"; sourceTree = "<group>"; };
 		482FC0F720DE15BD00E23DAE /* SharePhotoCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SharePhotoCell.swift; sourceTree = "<group>"; };
-		482FC0F820DE15C000E23DAE /* ModifyPhotoController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ModifyPhotoController.swift; sourceTree = "<group>"; };
 		482FC0F920DE15C400E23DAE /* ProductFooterCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ProductFooterCell.swift; sourceTree = "<group>"; };
 		482FC0FB20DE15C800E23DAE /* PreviewPhotoContainerView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PreviewPhotoContainerView.swift; sourceTree = "<group>"; };
 		482FC0FC20DE15CC00E23DAE /* SharePhotoController+Save.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "SharePhotoController+Save.swift"; sourceTree = "<group>"; };
@@ -622,10 +617,9 @@
 		4876BB0820DA14790057E5E0 /* Share */ = {
 			isa = PBXGroup;
 			children = (
-				023F0FD920FA14A1003CAC3F /* SharePhotoController.swift */,
 				482FC0FC20DE15CC00E23DAE /* SharePhotoController+Save.swift */,
+				027A816F2119481C00A21E62 /* SharePhotoControllerMD.swift */,
 				482FC0FD20DE15D000E23DAE /* MapCell.swift */,
-				482FC0F820DE15C000E23DAE /* ModifyPhotoController.swift */,
 				482FC14020DE29CF00E23DAE /* SearchTableCell.swift */,
 				482FC0FE20DE15D400E23DAE /* PostImageCell.swift */,
 				482FC0FB20DE15C800E23DAE /* PreviewPhotoContainerView.swift */,
@@ -833,7 +827,6 @@
 				02DC63452001BE7600AE9662 /* CommentInputTextView.swift */,
 				48B4450C1FE7342200DFD412 /* CommentCell.swift */,
 				02DC63432001BDD600AE9662 /* CommentInputAccessoryView.swift */,
-				02F88632202C836900F047BF /* HomeViewPostController.swift */,
 			);
 			name = Home;
 			path = ..;
@@ -1244,6 +1237,7 @@
 				"${BUILT_PRODUCTS_DIR}/Gallery/Gallery.framework",
 				"${BUILT_PRODUCTS_DIR}/GoogleAPIClientForREST/GoogleAPIClientForREST.framework",
 				"${BUILT_PRODUCTS_DIR}/GoogleToolboxForMac/GoogleToolboxForMac.framework",
+				"${BUILT_PRODUCTS_DIR}/GoogleUtilities/GoogleUtilities.framework",
 				"${BUILT_PRODUCTS_DIR}/Hue/Hue.framework",
 				"${BUILT_PRODUCTS_DIR}/INSPhotoGallery/INSPhotoGallery.framework",
 				"${BUILT_PRODUCTS_DIR}/ImagePicker/ImagePicker.framework",
@@ -1289,6 +1283,7 @@
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/Gallery.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/GoogleAPIClientForREST.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/GoogleToolboxForMac.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/GoogleUtilities.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/Hue.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/INSPhotoGallery.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/ImagePicker.framework",
@@ -1332,7 +1327,6 @@
 				024EDBC02078EFF50069C77F /* HomeHeaderCell.swift in Sources */,
 				024EDBC32078EFFA0069C77F /* CommentCell.swift in Sources */,
 				024EDBC52078EFFD0069C77F /* CommentInputAccessoryView.swift in Sources */,
-				024EDBC62078EFFE0069C77F /* HomeViewPostController.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1396,9 +1390,7 @@
 				4876BCA120DA16280057E5E0 /* PhotoSelectorHeader.swift in Sources */,
 				4876BD0220DA164E0057E5E0 /* MapLocationSearchController.swift in Sources */,
 				48482FC220DA18A00031EBFF /* DataModel.swift in Sources */,
-				023F0FDA20FA14A1003CAC3F /* SharePhotoController.swift in Sources */,
 				482FC13620DE236D00E23DAE /* PostRecord.swift in Sources */,
-				02F88633202C836900F047BF /* HomeViewPostController.swift in Sources */,
 				482FC13B20DE236D00E23DAE /* PostCollectionCell.swift in Sources */,
 				482FC10620DE15D900E23DAE /* MapCell.swift in Sources */,
 				482FC12620DE168200E23DAE /* UserProfileHeader.swift in Sources */,
@@ -1461,6 +1453,7 @@
 				4876BD1320DA164E0057E5E0 /* BackgroundMapViewController.swift in Sources */,
 				4876BD1D20DA164E0057E5E0 /* ShadowView.swift in Sources */,
 				482FC10220DE15D900E23DAE /* ProductFooterCell.swift in Sources */,
+				027A81702119481C00A21E62 /* SharePhotoControllerMD.swift in Sources */,
 				4876BCA820DA16290057E5E0 /* FirebaseUtilites.swift in Sources */,
 				4876BD1920DA164E0057E5E0 /* MapController.swift in Sources */,
 				48482FC420DA18A00031EBFF /* Comment.swift in Sources */,
@@ -1470,7 +1463,6 @@
 				48482FC320DA18A00031EBFF /* LocalCollection.swift in Sources */,
 				4876BCA520DA16290057E5E0 /* FirestoreUtilities.swift in Sources */,
 				482FC12320DE168200E23DAE /* UserProfilePhotoCell.swift in Sources */,
-				482FC10120DE15D900E23DAE /* ModifyPhotoController.swift in Sources */,
 				4876BC9920DA16280057E5E0 /* HRToast+UIView.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
