@@ -123,7 +123,7 @@ class PostImageObject: MDCCardCollectionCell
     let imageView: CustomImageView = {
         let iv = CustomImageView()
         iv.contentMode = .scaleAspectFill
-        iv.layer.masksToBounds = true
+        //iv.layer.masksToBounds = true
         return iv
     }()
 }

@@ -1,10 +1,22 @@
 //
+//  PhotoShare.swift
+//  Maple
+//
+//  Created by Murray Toews on 2018/08/08.
+//  Copyright © 2018 Murray Toews. All rights reserved.
+//
+
+//
 //  SharePhotoController.swift
 //  maple products database
 //
-//  Created by Murray Toews on Aug 07, 2018.
-//  Copyright © 2018 maple.com
-
+//  Created by Murray Toews on 6/3/17.
+//  Copyright © 2017 maple.com
+/*
+ <unknown>:0: error: filename "UserImageCell.swift" used twice: '/Users/mst/Documents/maple20180618/main/User/UserImageCell.swift' and '/Users/mst/Documents/mapleMD/mapleMD/UserImageCell.swift'
+ <unknown>:0: error: filename "HomeController.swift" used twice: '/Users/mst/Documents/maple20180618/HomeController.swift' and '/Users/mst/Documents/mapleMD/mapleMD/supplemental/HomeController.swift'
+ <unknown>:0: error: filename "SettingCell.swift" used twice: '/Users/mst/Documents/mapleMD/mapleMD/SettingCell.swift' and '/Users/mst/Documents/maple20180618/main/User/SettingCell.swift'
+ */
 
 import UIKit
 import Photos
@@ -32,7 +44,6 @@ import AVKit
 import SVProgressHUD
 import CropViewController
 
-
 enum  CT {
     case PIC
     case MAP
@@ -43,6 +54,31 @@ protocol  SharePhotoDelegate {
 }
 
 
+//class ShadowViewCollection : UICollectionView {
+//    override init(frame: CGRect, collectionViewLayout layout: UICollectionViewLayout)
+//     {
+//        super.init(frame: frame, collectionViewLayout: layout)
+//    }
+//
+//    required init?(coder aDecoder: NSCoder) {
+//        fatalError("init(coder:) has not been implemented")
+//    }
+//
+//    override class var layerClass: AnyClass {
+//        return MDCShadowLayer.self
+//    }
+//
+//    func setDefaultElevation() {
+//        self.shadowLayer.elevation = .cardResting
+//    }
+//    var shadowLayer: MDCShadowLayer {
+//        return self.layer as! MDCShadowLayer
+//    }
+//
+//    func setElevation(points: CGFloat) {
+//        self.shadowLayer.elevation = ShadowElevation(rawValue: points)
+//    }
+//}
 class SharePhotoController:
     UIViewController,
     UIScrollViewDelegate,
@@ -57,47 +93,19 @@ class SharePhotoController:
     UITableViewDelegate,
     UISearchBarDelegate,
     UISearchResultsUpdating,
-    //UITabBarDelegate,
+    UITabBarDelegate,
     SearchProgressDelegate,
     //ImagePickerDelegate,
     LightboxControllerDismissalDelegate,
     GalleryControllerDelegate,
-    //UIImagePickerControllerDelegate,
-    //UINavigationControllerDelegate,
+    UIImagePickerControllerDelegate,
+    UINavigationControllerDelegate,
     CropViewControllerDelegate,
     ShareHeaderCellDelegate
 {
     
     private var croppedRect = CGRect.zero
     private var croppedAngle = 0
-    
-    
-    var shareDelegate :SharePhotoDelegate?
-    var searchController: UISearchController!
-    var searchProgressController: SearchProgressController!
-    
-    var postSearcher: Searcher!
-    var postHits: [JSONObject] = []
-    var originIsLocal: Bool = true
-    var user: MapleUser!
-    
-    var mapObjects = [locObject]()
-    var imageArray = [UIImage]()
-    var imageUrlArray = [String]()
-    let imageCellId = "imageCellId"
-    let mapCellId = "mapCellId"
-    var isMapCell = false
-    var mapViewController: BackgroundMapViewController?
-    var UIMapController: UIViewController?
-    var presentWindow : UIWindow?
-    
-    let attributeTitle = [NSAttributedStringKey.font: UIFont.mdc_preferredFont(forMaterialTextStyle: .title)]
-    let attributeCaption = [NSAttributedStringKey.font: UIFont.mdc_preferredFont(forMaterialTextStyle: .body2 )]
-    let attributeSubline = [NSAttributedStringKey.font: UIFont.mdc_preferredFont(forMaterialTextStyle:  .subheadline )]
-    
-    public var imageConstraint: NSLayoutConstraint?
-    public var imageWidthConstraint: NSLayoutConstraint?
-
     
     public func cropViewController(_ cropViewController: CropViewController, didCropToImage image: UIImage, withRect cropRect: CGRect, angle: Int) {
         self.croppedRect = cropRect
@@ -189,12 +197,12 @@ class SharePhotoController:
         let option = PHImageRequestOptions()
         var thumbnail = UIImage()
         
-        let width = asset.pixelWidth
-        let height = asset.pixelHeight
+        let width = asset.pixelWidth/5
+        let height = asset.pixelHeight/5
         
         let size = CGSize(width: width, height: height)
         option.isSynchronous = true
-        manager.requestImage(for: asset, targetSize: PHImageManagerMaximumSize, contentMode: .aspectFit, options: option, resultHandler: {(result, info)->Void in
+        manager.requestImage(for: asset, targetSize: size, contentMode: .aspectFit, options: option, resultHandler: {(result, info)->Void in
             thumbnail = result!
         })
         return thumbnail
@@ -259,11 +267,26 @@ class SharePhotoController:
         imagePicker.present(lightbox, animated: true, completion: nil)
     }
     
+    //    func doneButtonDidPress(_ imagePicker: ImagePickerController, images: [UIImage]) {
+    //        imageArray = imageAssets
+    //        if imageArray.count > 0 {
+    //            imageCollectionView.reloadData()
+    //        }
+    //        imagePicker.dismiss(animated: true, completion: nil)
+    //    }
+    
+    //    func cancelButtonDidPress(_ imagePicker: ImagePickerController) {
+    //        imagePicker.dismiss(animated: true, completion: nil)
+    //    }
     
     var gallery: GalleryController!
     let editor: VideoEditing = VideoEditor()
     
     /*******************************/
+    
+    let ref = Database.database().reference()
+    var fullmetadata: StorageMetadata?
+    var thumbmetadata:  StorageMetadata?
     
     let myGroup = DispatchGroup()
     
@@ -307,9 +330,37 @@ class SharePhotoController:
         }
     }
     
+    var shareDelegate :SharePhotoDelegate?
+    var searchController: UISearchController!
+    var searchProgressController: SearchProgressController!
     
-
+    var postSearcher: Searcher!
+    var categorySearcher: Searcher!
+    var postHits: [JSONObject] = []
+    var originIsLocal: Bool = true
+    var user: MapleUser!
+    
+    
+    var mapObjects = [locObject]()
+    var imageArray = [UIImage]()
+    var imageUrlArray = [String]()
+    let imageCellId = "imageCellId"
+    let mapCellId = "mapCellId"
+    var isMapCell = false
+    var mapViewController: BackgroundMapViewController?
+    var UIMapController: UIViewController?
+    var presentWindow : UIWindow?
+    
+    let attributeTitle = [NSAttributedStringKey.font: UIFont.mdc_preferredFont(forMaterialTextStyle: .title)]
+    let attributeCaption = [NSAttributedStringKey.font: UIFont.mdc_preferredFont(forMaterialTextStyle: .body2 )]
+    let attributeSubline = [NSAttributedStringKey.font: UIFont.mdc_preferredFont(forMaterialTextStyle:  .subheadline )]
+    
+    public var imageConstraint: NSLayoutConstraint?
+    public var imageWidthConstraint: NSLayoutConstraint?
+    
+    
     func updateConstraints() {
+        
         let constant = MDCCeil((self.view.frame.width - 2) * 0.65)
         let widthConstant = MDCCeil((self.view.frame.width - 2) * 0.9)
         if imageConstraint == nil {
@@ -323,7 +374,7 @@ class SharePhotoController:
         imageConstraint?.constant = constant
         imageWidthConstraint?.constant = widthConstant
     }
-
+    
     
     //var post : Post?
     
@@ -333,6 +384,8 @@ class SharePhotoController:
     // var tableView : UITableView
     
     let searchTableCellId = "searchTableCellId"
+    let categoryTableCellId = "searchCategoryCellId"
+    
     
     func updateSearchResults(for searchController: UISearchController) {
         postSearcher.params.query = searchController.searchBar.text
@@ -343,6 +396,12 @@ class SharePhotoController:
         postSearcher.params.query = productTextField.text
         postSearcher.search()
     }
+    
+    func updateCategorySearchResults(for categoryDescTextField: UITextField) {
+        categorySearcher.params.query = categoryDescTextField.text
+        categorySearcher.search()
+    }
+    
     
     override func observeValue(forKeyPath keyPath: String?, of object: Any?, change: [NSKeyValueChangeKey : Any]?, context: UnsafeMutableRawPointer?) {
     }
@@ -381,9 +440,12 @@ class SharePhotoController:
         navigationItem.title = "Post Product"
         
         Products.delegate = self
+        CategoryDesc.delegate = self
         Description.textView?.delegate = self
         tableProductsView.delegate = self
         tableProductsView.dataSource =  self
+        tableCategoryView.delegate = self
+        tableCategoryView.dataSource =  self
         
         setupImageAndTextViews()
         setNavigationButtons()
@@ -399,7 +461,7 @@ class SharePhotoController:
         let tapImageCollectionView = UITapGestureRecognizer(target: self, action: #selector(imageCollectionViewTapped(tapGestureRecognizer: )))
         imageCollectionView.isUserInteractionEnabled = true
         imageCollectionView.addGestureRecognizer(tapImageCollectionView)
-        view.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(dissmissKeyboard)))
+        //view.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(dissmissKeyboard)))
         /****** End Gestures           ******/
         
         
@@ -411,8 +473,18 @@ class SharePhotoController:
         postSearcher.params.attributesToHighlight = ["product"]
         tableProductsView.tableHeaderView?.isHidden = true
         
+        
+        /******  Algolia Search Categories ******/
+        tableCategoryView.register(SearchTableCell.self, forCellReuseIdentifier: searchTableCellId)
+        categorySearcher = Searcher(index: AlgoliaManager.sharedInstance.category, resultHandler: self.handleSearchResults)
+        categorySearcher.params.hitsPerPage = 15
+        categorySearcher.params.attributesToRetrieve = ["*" ]
+        categorySearcher.params.attributesToHighlight = ["category"]
+        tableCategoryView.tableHeaderView?.isHidden = true
+        
         definesPresentationContext = true
         updateSearchResults(for: Products)
+        updateCategorySearchResults(for: CategoryDesc)
         
         
         NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillShow), name: NSNotification.Name.UIKeyboardWillShow, object: nil)
@@ -490,6 +562,79 @@ class SharePhotoController:
     }
     
     
+    //    @objc func uploadPressed(_ sender: Any) {
+    //        spinner = displaySpinner()
+    //        let uid = Auth.auth().currentUser!.uid
+    //
+    //        for image in imageArray {
+    //        let postRef = ref.child("posts").childByAutoId()
+    //        let postId = postRef.key
+    //        guard let resizedImageData = UIImageJPEGRepresentation(image, 0.9) else { return }
+    //        guard let thumbnailImageData = image.resizeImage(640, with: 0.7) else { return }
+    //        let fullFilePath = "\(uid)/full/\(postId)/jpeg"
+    //        let thumbFilePath = "\(uid)/thumb/\(postId)/jpeg"
+    //        let metadata = StorageMetadata()
+    //        let uid = Auth.auth().currentUser!.uid
+    //
+    //        metadata.contentType = "image/jpeg"
+    //        let storageRef = Storage.storage().reference()
+    //        let message = MDCSnackbarMessage()
+    //        let myGroup = DispatchGroup()
+    //        myGroup.enter()
+    //        storageRef.child(fullFilePath).putData(resizedImageData, metadata: metadata) { fullmetadata, error in
+    //            if let error = error {
+    //                message.text = "Error uploading image"
+    //                MDCSnackbarManager.show(message)
+    //                //self.button.isEnabled = true
+    //                print("Error uploading image: \(error.localizedDescription)")
+    //                return
+    //            }
+    //            self.fullmetadata = fullmetadata
+    //            myGroup.leave()
+    //        }
+    //        myGroup.enter()
+    //        storageRef.child(thumbFilePath).putData(thumbnailImageData, metadata: metadata) { thumbmetadata, error in
+    //            if let error = error {
+    //                message.text = "Error uploading thumbnail"
+    //                MDCSnackbarManager.show(message)
+    //                //self.button.isEnabled = true
+    //                print("Error uploading thumbnail: \(error.localizedDescription)")
+    //                return
+    //            }
+    //
+    //            myGroup.leave()
+    //        }
+    //
+    //
+    //
+    //
+    //
+    //        myGroup.notify(queue: .main) {
+    //            if let spinner = self.spinner {
+    //                self.removeSpinner(spinner)
+    //            }
+    //
+    //            let fullUrl = self.fullmetadata?.downloadURLs?[0].absoluteString
+    //            let fullstorageUri = storageRef.child((self.fullmetadata?.path!)!).description
+    //            let thumbUrl = self.thumbmetadata?.downloadURLs?[0].absoluteString
+    //            let thumbstorageUri = storageRef.child((self.thumbmetadata?.path!)!).description
+    //            let trimmedComment = self.Description.text?.trimmingCharacters(in: CharacterSet.whitespaces)
+    //            let data = ["full_url": fullUrl ?? "",
+    //                        "full_storage_uri": fullstorageUri,
+    //                        "thumb_url": thumbUrl ?? "",
+    //                        "thumb_storage_uri": thumbstorageUri,
+    //                        "text": trimmedComment ?? "",
+    //                        "author": Auth.auth().currentUser?.uid as Any,
+    //                        "timestamp": ServerValue.timestamp()] as [String: Any]
+    //            postRef.setValue(data)
+    //            postRef.root.updateChildValues(["people/\(uid)/posts/\(postId)": true, "feed/\(uid)/\(postId)": true])
+    //            self.navigationController?.popViewController(animated: true)
+    //            message.text = "Upload completed successfully"
+    //            MDCSnackbarManager.show(message)
+    //        }
+    //      }
+    //    }
+    //
     var urlThumbArray = [String]()
     var urlOriginalArray = [String]()
     
@@ -502,8 +647,6 @@ class SharePhotoController:
     
     @objc func imageCollectionViewTapped(tapGestureRecognizer: UITapGestureRecognizer){
         view.endEditing(true)
-        handleAddPhotos()
-        
     }
     
     @objc func dissmissKeyboard(){
@@ -521,6 +664,15 @@ class SharePhotoController:
         return tv
     }()
     
+    let tableCategoryView : UITableView = {
+        let tv = UITableView()
+        tv.isHidden = true
+        tv.tableFooterView?.isHidden = true
+        tv.tableHeaderView?.isHidden = true
+        tv.tableHeaderView=nil
+        tv.tableFooterView=nil
+        return tv
+    }()
     
     let buttonMenus = UIView()
     
@@ -551,12 +703,6 @@ class SharePhotoController:
         
         //docRef = Firestore.firestore().document("maplefirebase/posts")
         
-        
-        
-        let productsHeight = CGFloat(45.0)
-        let paddingSize = CGFloat(7.0)
-        let paddingTopBottom = CGFloat(7.0)
-        
         imageCollectionView.dataSource = self
         imageCollectionView.delegate = self
         
@@ -571,14 +717,7 @@ class SharePhotoController:
         let imageCard = MDCCard()
         imageCard.setShadowElevation(ShadowElevation.menu, for: UIControlState.normal)
         imageCard.addSubview(imageCollectionView)
-        imageCollectionView.anchor(top: imageCard.topAnchor, left: imageCard.leftAnchor, bottom: imageCard.bottomAnchor , right: imageCard.rightAnchor,
-                                   paddingTop: paddingTopBottom,
-                                   paddingLeft: paddingSize,
-                                   paddingBottom: paddingTopBottom,
-                                   paddingRight: paddingSize,
-                                   width: 0 , height: (imageConstraint?.constant)!)
-        
-        
+        imageCollectionView.anchor(top: imageCard.topAnchor, left: imageCard.leftAnchor, bottom: imageCard.bottomAnchor, right: imageCard.rightAnchor)
         
         let containerView = MDCCard()
         containerView.setShadowElevation(ShadowElevation.cardResting, for: UIControlState.normal)
@@ -597,8 +736,8 @@ class SharePhotoController:
         locationCard.addGestureRecognizer(tapLocation)
         
         let tapPhotos = UITapGestureRecognizer(target: self, action: #selector(userTappedPhotoCollection(tapGestureRecognizer: )))
-        imageCollectionView.isUserInteractionEnabled = true
-        imageCollectionView.addGestureRecognizer(tapPhotos)
+        imageCard.isUserInteractionEnabled = true
+        imageCard.addGestureRecognizer(tapPhotos)
         
         
         //let stackButtonsVerical = UIStackView(arrangedSubviews: [addPhotos,filterPhotos,erasePhotos])
@@ -611,19 +750,24 @@ class SharePhotoController:
         
         view.addSubview(containerView)
         
+        //containerView.addSubView()
         containerView.addSubview(imageCard)
         containerView.addSubview(Products)
         containerView.addSubview(Description)
         containerView.addSubview(DescriptionLabel)
+        containerView.addSubview(CategoryDesc)
         containerView.addSubview(locationCard)
         containerView.addSubview(RunningCountLabel)
         containerView.addSubview(tableProductsView)
+        containerView.addSubview(tableCategoryView)
         containerView.addSubview(buttonMenus)
         containerView.addSubview(mapLabel)
         containerView.addSubview(Photos)
         
         
-     
+        let productsHeight = CGFloat(45.0)
+        let paddingSize = CGFloat(7.0)
+        let paddingTopBottom = CGFloat(7.0)
         
         
         if #available(iOS 11.0, *) {
@@ -641,7 +785,6 @@ class SharePhotoController:
         
         self.pictureSize = containerView.frame.size.width
         
-        let heightCollectionView = imageConstraint?.constant
         
         imageCard.anchor(top: containerView.topAnchor, left: containerView.leftAnchor, bottom: nil , right: containerView.rightAnchor,
                          paddingTop: paddingTopBottom,
@@ -650,21 +793,24 @@ class SharePhotoController:
                          paddingRight: paddingSize,
                          width: 0 , height: (imageConstraint?.constant)!)
         
-        //let bounds = UIScreen.main.bounds
-        //let width = bounds.size.width - (2 * (paddingSize + 8) )
+        let bounds = UIScreen.main.bounds
+        let width = bounds.size.width - (2 * (paddingSize + 8) )
         
-        
-        Products.anchor(top:  imageCard.bottomAnchor,
-                        left: containerView.leftAnchor, bottom: nil ,
-                        right: containerView.rightAnchor ,
-    
+        Products.anchor(top:  imageCard.bottomAnchor, left: containerView.leftAnchor, bottom: nil ,
+                        //right: containerView.rightAnchor ,
+            right: nil,
             paddingTop: paddingTopBottom,
             paddingLeft: paddingSize,
             paddingBottom: paddingTopBottom,
             paddingRight: paddingSize,
-            //width: width / 2   , height: productsHeight)
-            width: 0 , height: productsHeight)
+            width: width / 2   , height: productsHeight)
         
+        CategoryDesc.anchor(top: imageCard.bottomAnchor, left: Products.rightAnchor, bottom: nil , right: containerView.rightAnchor,
+                            paddingTop: paddingTopBottom ,
+                            paddingLeft: paddingSize,
+                            paddingBottom: paddingTopBottom,
+                            paddingRight: paddingSize,
+                            width: 0 , height: productsHeight)
         
         
         locationCard.anchor(top: Products.bottomAnchor, left: containerView.leftAnchor, bottom: nil, right: containerView.rightAnchor ,
@@ -687,14 +833,22 @@ class SharePhotoController:
         
         
         
-        //stackButtonsVerical.anchor(top: buttonMenus.topAnchor, left: buttonMenus.leftAnchor, bottom: buttonMenus.bottomAnchor, right: buttonMenus.rightAnchor)
+        stackButtonsVerical.anchor(top: buttonMenus.topAnchor, left: buttonMenus.leftAnchor, bottom: buttonMenus.bottomAnchor, right: buttonMenus.rightAnchor)
         
-        //buttonMenus.anchor(top: imageCard.topAnchor, left: nil, bottom: nil, right: containerView.rightAnchor, paddingTop: 10, paddingLeft: 5, paddingBottom: 0, paddingRight: 15, width: 40, height: 120)
-        //buttonMenus.isHidden = true
+        buttonMenus.anchor(top: imageCard.topAnchor, left: nil, bottom: nil, right: imageCard.rightAnchor, paddingTop: 10, paddingLeft: 5, paddingBottom: 0, paddingRight: 15, width: 40, height: 120)
         
-        tableProductsView.anchor(top: Products.bottomAnchor, left: Products.leftAnchor, bottom: Description.bottomAnchor , right: Products.rightAnchor)
-     }
+        tableProductsView.anchor(top: Products.bottomAnchor, left: Products.leftAnchor, bottom: containerView.bottomAnchor , right: Products.rightAnchor)
+        
+        tableCategoryView.anchor(top: CategoryDesc.bottomAnchor, left: CategoryDesc.leftAnchor, bottom: containerView.bottomAnchor, right: CategoryDesc.rightAnchor)
+    }
     
+    /*
+     let textFieldFloating = MDCMultilineTextField()
+     scrollView.addSubview(textFieldFloating)
+     textFieldFloating.placeholder = "Full Name"
+     textFieldFloating.textView.delegate = self
+     textFieldControllerFloating = MDCTextInputControllerUnderline(input: textFieldFloating) // Hold on as a property
+     */
     
     var textFieldControllerFloating : MDCTextInputController?
     
@@ -714,6 +868,20 @@ class SharePhotoController:
         return TextField
     }()
     
+    let CategoryDesc: MDCTextField = {
+        let TextField = MDCTextField()
+        TextField.placeholder = "Category"
+        TextField.font = UIFont.systemFont(ofSize: 15)
+        TextField.autocorrectionType = UITextAutocorrectionType.yes
+        TextField.keyboardType = UIKeyboardType.default
+        TextField.clearButtonMode = UITextFieldViewMode.whileEditing;
+        TextField.contentVerticalAlignment = UIControlContentVerticalAlignment.center
+        TextField.backgroundColor =  UIColor.collectionCell()
+        TextField.addTarget(self, action: #selector(textCategoryFieldChanged(_:)), for: .editingChanged)
+        TextField.tag = 3
+        return TextField
+    }()
+    
     let Description:  MDCMultilineTextField = {
         let TextField =  MDCMultilineTextField()
         TextField.placeholder = "Description"
@@ -729,24 +897,13 @@ class SharePhotoController:
     let imageCollectionView:  UICollectionView = {
         let layout = UICollectionViewFlowLayout()
         layout.scrollDirection = .horizontal
-        layout.itemSize = CGSize(width: 345, height: 230)
         let collectionView = UICollectionView(frame: .zero, collectionViewLayout: layout)
         collectionView.backgroundColor = UIColor.collectionCell()
+        //collectionView.shadowLayer.isShadowMaskEnabled = true
+        //collectionView.setDefaultElevation()
         collectionView.translatesAutoresizingMaskIntoConstraints = false
-        collectionView.contentInsetAdjustmentBehavior = .never
         return collectionView
     }()
-    
-    
-    let LocationLabel : UILabel = {
-        let ui = UILabel()
-        ui.text = "Location"
-        return ui
-    }()
-    
-    //let backGroundView: = UIView{}()
-    //backGroundView.addSubview(LocationLabel)
-    //collectionView.backgroundView = backGroundView
     
     
     let locationCollectionView: UICollectionView = {
@@ -754,7 +911,6 @@ class SharePhotoController:
         layout.scrollDirection = .horizontal
         let collectionView = UICollectionView(frame: .zero, collectionViewLayout: layout)
         collectionView.backgroundColor = UIColor.collectionCell()
-        collectionView.backgroundView = UIView()
         collectionView.translatesAutoresizingMaskIntoConstraints = false
         return collectionView
     }()
@@ -882,6 +1038,7 @@ class SharePhotoController:
                         self.imageArray.removeAll()
                         self.mapObjects.removeAll()
                         self.Products.text?.removeAll()
+                        self.CategoryDesc.text?.removeAll()
                         self.Description.text?.removeAll()
                         self.imageCollectionView.reloadData()
                         self.locationCollectionView.reloadData()
@@ -960,6 +1117,13 @@ class SharePhotoController:
             tableProductsView.isHidden = true
             dissmissKeyboard()
         }
+        
+        if CategoryDesc.tag == 3 {
+            let Post = PostRecord(json: postHits[indexPath.row])
+            CategoryDesc.text = Post.product
+            tableProductsView.isHidden = true
+            dissmissKeyboard()
+        }
     }
     
     
@@ -995,6 +1159,19 @@ class SharePhotoController:
         return iCount
     }
     
+    //    override func collectionView(_ collectionView: UICollectionView,
+    //                        cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
+    //        let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "Cell", for: indexPath) as! MDCCardCollectionCell
+    //        // If you wanted to have the card show the selected state when tapped
+    //        // then you need to turn isSelectable to true, otherwise the default is false.
+    //        cell.isSelectable = true
+    //
+    //        cell.selectedImageTintColor = .blue
+    //        cell.cornerRadius = 8
+    //        cell.setShadowElevation(6, for: .selected)
+    //        cell.setShadowColor(UIColor.black, for: .highlighted)
+    //        return cell
+    //    }
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         let item = indexPath.item
@@ -1022,7 +1199,7 @@ class SharePhotoController:
         case CT.PIC:
             let cell = collectionView.dequeueReusableCell(withReuseIdentifier: imageCellId, for: indexPath) as! PostImageObject
             if imageArray.count > 0 {
-                cell.imageObject = (imageArray[indexPath.item])
+                cell.imageObject = (imageArray[indexPath.item]) as UIImage
                 cell.isSelectable = true
                 
                 //cell.selectedImageTintColor = .blue
@@ -1199,35 +1376,17 @@ class SharePhotoController:
     
     //let imagePicker = ImagePickerController()
     
-    
     @objc func handleAddPhotos(){
         CellType = CT.PIC
-//        imagePicker.expandGalleryView()
-//        imagePicker.delegate = self
-//        imagePicker.imageLimit = 5
-//        imagePicker.doneButtonTitle = "Select"
-//     
+        //imagePicker.expandGalleryView()
+        //imagePicker.delegate = self
+        //imagePicker.imageLimit = 5
+        //imagePicker.doneButtonTitle = "Select"
+        
         gallery = GalleryController()
         gallery.delegate = self
         present(gallery, animated: true, completion: nil)
     }
-    
-    
-//    @objc func handleAddPhotos(){
-//        CellType = CT.PIC
-//        let pickerController = DKImagePickerController()
-//        //self.imageArray.removeAll()
-//        pickerController.didSelectAssets = { (assets: [DKAsset]) in
-//            for asset in assets {
-//                asset.fetchOriginalImage(true, completeBlock: { image, info in
-//                    self.imageArray.append(image!)
-//                })
-//                self.imageCollectionView.reloadData()
-//            }
-//        }
-//        self.present(pickerController, animated: true) {}
-//    }
-    
     
     // public var imageAssets : [UIImage] {
     //    return AssetManager.resolveAssets(imagePicker.stack.assets)
@@ -1263,9 +1422,18 @@ class SharePhotoController:
         
     }
     
+    
+    @objc func textCategoryFieldChanged(_ textField: UITextField) {
+        updateCategorySearchResults(for: textField)
+        tableCategoryView.isHidden = false
+    }
+    
+    
+    
     func textFieldShouldReturn(_ textField: UITextField) -> Bool {
         Products.resignFirstResponder()
         Description.resignFirstResponder()
+        CategoryDesc.resignFirstResponder()
         return true
     }
     
@@ -1295,6 +1463,9 @@ class SharePhotoController:
         if textField.tag == 1 {
             tableProductsView.isHidden = true
         }
+        if textField.tag == 3 {
+            tableCategoryView.isHidden = true
+        }
     }
     
     func textFieldDidBeginEditing(_ textField: UITextField) {
@@ -1302,6 +1473,9 @@ class SharePhotoController:
             tableProductsView.isHidden = false
         }
         
+        if textField.tag == 3 {
+            tableCategoryView.isHidden = false
+        }
     }
     
     func textSearchPairing(_ textField: UITextView)
@@ -1381,7 +1555,4 @@ extension SharePhotoController : GMSPlacePickerViewControllerDelegate {
         dismiss(animated: true, completion: nil)
     }
 }
-
-
-
 

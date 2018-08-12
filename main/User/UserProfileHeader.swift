@@ -29,35 +29,26 @@
         var bSet = false
         
         fileprivate func getNumberOfPostsWithId(userId: String) {
-            Database.getNumberOfPosts(userId: userId, { (iProducts) in
-                 let attributedText = NSMutableAttributedString(string: "Posts : \(iProducts)", attributes: [NSAttributedStringKey.font: UIFont.boldSystemFont(ofSize: 14)])
-                self.postsLabel.attributedText = attributedText
-            })
-            return
-        }
+            if let postCount = userView?.postCount {
+                self.postsLabel.attributedText = NSMutableAttributedString(string:     "Posts\t\t : \(postCount)" , attributes: [NSAttributedStringKey.font: UIFont.boldSystemFont(ofSize: 14)])
+            }}
         
         fileprivate func getNumberOfFollowersWithId(userId: String)
         {
             // Followers
-            Database.getNumberOfFollowers(userId: userId,  { (iFollowers) in
-               let attributedText = NSMutableAttributedString(string: "Followers : \(iFollowers)" , attributes: [NSAttributedStringKey.font: UIFont.boldSystemFont(ofSize: 14)])
-               self.followersLabel.attributedText = attributedText
-            print("Followers: ", Int32((iFollowers)))
-            })
-            return
+            if let followersCount = userView?.followersCount {
+                self.followersLabel.attributedText = NSMutableAttributedString(string: "Followers\t : \(followersCount)" , attributes: [NSAttributedStringKey.font: UIFont.boldSystemFont(ofSize: 14)])
+            }
         }
         
         
         fileprivate func getNumberOfFollowingWithId(userId: String)
         {
             // Following
-            Database.getNumberOfFollowing(userId: userId, { (iFollowing) in
-            let attributedText = NSMutableAttributedString(string: "Following : \(iFollowing)" , attributes: [NSAttributedStringKey.font: UIFont.boldSystemFont(ofSize: 14)])
-            self.followingLabel.attributedText = attributedText
-            })
-            return
+            if let followingCount = userView?.followedCount {
+                self.followingLabel.attributedText = NSMutableAttributedString(string: "Followed\t : \(followingCount)" , attributes: [NSAttributedStringKey.font: UIFont.boldSystemFont(ofSize: 14)])
+            }
         }
-        
         
         var userView: MapleUser? {
             didSet {
@@ -83,8 +74,8 @@
             
             if let userId = userView?.uid {
                 if uid == userId {
-                    self.editProfileFollowButton.isHidden = true
-                    self.editProfileFollowedButton.isHidden = true
+                    self.editProfileFollowButton.isHidden = false
+                    self.editProfileFollowedButton.isHidden = false
                     getNumberOfFollowersWithId(userId: uid)
                     getNumberOfPostsWithId(userId: uid)
                     getNumberOfFollowingWithId(userId: uid)
@@ -107,15 +98,18 @@
         func userIsFollowed()
         {
             self.editProfileFollowButton.isHidden = false
-            self.editProfileFollowedButton.isHidden = true
+            self.editProfileFollowedButton.isHidden = false
         }
         
         func userIsNotFollowed() {
             
-            self.editProfileFollowButton.isHidden = true
+            self.editProfileFollowButton.isHidden = false
             self.editProfileFollowedButton.isHidden = false
             
         }
+        
+        
+      
         
         @objc func handleEditProfileOrFollow() {
             print("Execute edit profile / follow / unfollow logic...")
@@ -123,8 +117,8 @@
             guard let uid = Auth.auth().currentUser?.uid else { return }
             
             if uid == userView?.uid {
-                self.editProfileFollowedButton.isHidden = true
-                self.editProfileFollowButton.isHidden = true
+                self.editProfileFollowedButton.isHidden = false
+                self.editProfileFollowButton.isHidden = false
                 return
             }
             /*
@@ -141,23 +135,19 @@
                 Database.updateFollowers(userId: userId, followingUserId: uid, follow: 1)
                 Database.updateFollowing(userId: uid , followingUserId: userId, follow: 1)
                 
-                self.editProfileFollowedButton.isHidden = true
+                self.editProfileFollowedButton.isHidden = false
                 self.editProfileFollowButton.isHidden = false
-                
                 
             } else {
                 //follow
                 Database.updateFollowers(userId: userId, followingUserId: uid, follow: 0)
                 Database.updateFollowing(userId: uid , followingUserId: userId, follow: 0)
                 self.editProfileFollowedButton.isHidden = false
-                self.editProfileFollowButton.isHidden = true
+                self.editProfileFollowButton.isHidden = false
             }
         }
         
-        fileprivate func setupFollowStyle() {
-            // self.editProfileFollowButton.setImage(#imageLiteral(resourceName: "cameraButtonHighlighted"), for: .normal)
-        }
-        
+       
         let profileImageView: CustomImageView = {
             let iv = CustomImageView()
             return iv
@@ -183,6 +173,43 @@
         {
             //delegate?.didOpenProductsList()
         }
+        
+        lazy var editProfileFollowButton: UIButton = {
+            let button = UIButton(type: .system)
+            button.setTitle("FOLLOW\t", for: .normal)
+            button.setImage(#imageLiteral(resourceName: "ic_favorite_border"), for: .normal )
+            button.tintColor = .white
+            button.backgroundColor = UIColor.themeColor()
+            button.addTarget(self, action: #selector(handleFollow), for: .touchUpInside)
+            return button
+        }()
+        
+        lazy var editProfileFollowedButton: UIButton = {
+            let button = UIButton(type: .system)
+            button.setTitle("FOLLOWED\t", for: .normal)
+            button.setImage(#imageLiteral(resourceName: "ic_favorite"), for: .normal )
+            button.tintColor = .white
+            button.backgroundColor = UIColor.themeColor()
+            button.addTarget(self, action: #selector(handleFollowed), for: .touchUpInside)
+            return button
+        }()
+        
+        
+        @objc func handleFollow(){
+            print("Following")
+            self.editProfileFollowedButton.isHidden = false
+            self.editProfileFollowButton.isHidden = true
+            
+        }
+        
+        @objc func handleFollowed() {
+            print("Followed")
+            self.editProfileFollowedButton.isHidden = true
+            self.editProfileFollowButton.isHidden = false
+            
+        }
+        
+        
         
         lazy var gridButton: UIButton = {
             let button = UIButton(type: .system)
@@ -288,7 +315,7 @@
         let usernameLabel: UILabel = {
             let label = UILabel()
             label.text = "username"
-            label.font = UIFont.boldSystemFont(ofSize: 14)
+            label.font = UIFont.boldSystemFont(ofSize: 24)
             return label
         }()
         
@@ -296,7 +323,6 @@
             let label = UILabel()
             var strPosts =  "0\n"
             let attributedText = NSMutableAttributedString(string: "Posts : \(strPosts)" , attributes: [NSAttributedStringKey.font: UIFont.boldSystemFont(ofSize: 14)])
-            //attributedText.append(NSAttributedString(string: "posts", attributes: [NSAttributedStringKey.foregroundColor: UIColor.lightGray, NSAttributedStringKey.font: UIFont.systemFont(ofSize: 14)]))
             label.attributedText = attributedText
             label.textAlignment = .left
             label.numberOfLines = 0
@@ -325,24 +351,7 @@
         }()
         
         
-        lazy var editProfileFollowButton: MDCRaisedButton = {
-            let button = MDCRaisedButton()
-            button.translatesAutoresizingMaskIntoConstraints = false
-            button.setTitle("FOLLOW", for: .normal)
-            button.addTarget(self, action: #selector(handleEditProfileOrFollow), for: .touchUpInside)
-            return button
-        }()
-        
-        lazy var editProfileFollowedButton: MDCRaisedButton = {
-            let button = MDCRaisedButton()
-            button.translatesAutoresizingMaskIntoConstraints = false
-            button.setTitle("FOLLOWED", for: .normal)
-            button.addTarget(self, action: #selector(handleEditProfileOrFollow), for: .touchUpInside)
-            return button
-        }()
-        
-         //setupEditFollowButton()
-        
+       
         override init(frame: CGRect) {
             super.init(frame: frame)
             
@@ -356,20 +365,30 @@
             profileImageView.anchor(top: usernameLabel.bottomAnchor, left: leftAnchor, bottom: nil, right: nil, paddingTop: 15, paddingLeft: 10 , paddingBottom: 0, paddingRight: 0, width: Width, height: Width)
             profileImageView.layer.cornerRadius = Width / 2
             profileImageView.clipsToBounds = true
-            let tapRecognizer = UITapGestureRecognizer(target: self, action: #selector(imageTapped(tapGestureRecognizer:)))
             
+            let tapRecognizer = UITapGestureRecognizer(target: self, action: #selector(imageTapped(tapGestureRecognizer:)))
             //Add the recognizer to your view.
             profileImageView.isUserInteractionEnabled = true
             profileImageView.addGestureRecognizer(tapRecognizer)
             
-            editProfileFollowButton.anchor(top: usernameLabel.bottomAnchor, left: profileImageView.rightAnchor, bottom: nil, right: nil, paddingTop: 30, paddingLeft: 150, paddingBottom: 0, paddingRight: 0, width: 120, height: 30)
-            
-            editProfileFollowedButton.anchor(top: usernameLabel.bottomAnchor, left: profileImageView.rightAnchor, bottom: nil, right: nil, paddingTop: 30, paddingLeft: 150, paddingBottom: 0, paddingRight: 0, width: 120, height: 30)
-            
-            editProfileFollowedButton.isHidden = false
-            
+            setupFavoriteButtons()
             setupBottomToolbar()
             setupUserStatsView()
+        }
+        
+        fileprivate func setupFavoriteButtons()
+        {
+            let stackView = UIStackView(arrangedSubviews: [editProfileFollowButton, editProfileFollowedButton])
+            
+            stackView.axis = .vertical;
+            stackView.distribution = .equalSpacing;
+            stackView.alignment = .leading;
+            stackView.spacing = 10;
+            
+            self.addSubview(stackView)
+            stackView.anchor(top: usernameLabel.bottomAnchor, left: profileImageView.rightAnchor, bottom: nil, right: nil, paddingTop: 10, paddingLeft: 170, paddingBottom: 0, paddingRight: 0, width: 120, height: 0)
+            
+            
         }
         
         fileprivate func setupUserStatsView() {
@@ -382,7 +401,7 @@
             stackView.spacing = 10;
         
             addSubview(stackView)
-            stackView.anchor(top: profileImageView.topAnchor, left: profileImageView.rightAnchor, bottom: profileImageView.bottomAnchor, right: rightAnchor, paddingTop: 0, paddingLeft: 10, paddingBottom: 0, paddingRight: 0, width: 0, height: 0)
+            stackView.anchor(top: profileImageView.topAnchor, left: profileImageView.rightAnchor, bottom: profileImageView.bottomAnchor, right: nil, paddingTop: 0, paddingLeft: 10, paddingBottom: 0, paddingRight: 0, width: 120, height: 0)
             
             let tapFollowers = UITapGestureRecognizer(target: self, action: #selector(followersTapped(tapGestureRecognizer: )))
             followersLabel.isUserInteractionEnabled = true

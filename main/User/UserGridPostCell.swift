@@ -274,23 +274,19 @@ class UserGridPostCell: MDCCardCollectionCell , UICollectionViewDataSource, UICo
                 }
             }
             
-            if let postId = post?.id {
-                Firestore.getPostCollectionCount(collection: "likes", postId: postId,  { (totalLikes) in
-                    self.putNumberOfLikes(likes: totalLikes )
-                })
+            if let likes = post?.noOfLikes {
+                    self.putNumberOfLikes(likes: likes )
             }
             
-            if let postId = post?.id {
-                Firestore.getPostCollectionCount(collection: "comments", postId: postId,  { (commentCount) in
-                    self.putNumberOfComments(likes: commentCount)
-                })
+            if let comments = post?.noOfLikes {
+                    self.putNumberOfComments(likes: comments)
             }
             
-            if let postId = post?.id {
-                Firestore.getPostCollectionCount(collection: "bookmarked", postId: postId,  { (bookmarkCount) in
-                    self.putNumberOfBookmarks(likes: bookmarkCount)
-                })
-            }
+//            if let postId = post?.id {
+//                Firestore.getPostCollectionCount(collection: "bookmarked", postId: postId,  { (bookmarkCount) in
+//                    self.putNumberOfBookmarks(likes: bookmarkCount)
+//                })
+//            }
             
             if let description = post?.description {
                 let attributedText = NSMutableAttributedString(string: description, attributes: attributeCaption)
@@ -570,7 +566,7 @@ class UserGridPostCell: MDCCardCollectionCell , UICollectionViewDataSource, UICo
     
     @objc func handleBookmark() {
         print("Handle the bookmarks ...")
-        bookmarkButton.setImage(post?.hasBookmark == true ? #imageLiteral(resourceName: "bookmarkFilled").withRenderingMode(.alwaysOriginal) : #imageLiteral(resourceName: "bookmark").withRenderingMode(.alwaysOriginal), for: .normal)
+        bookmarkButton.setImage(post?.hasBookmark == true ? #imageLiteral(resourceName: "ic_bookmark").withRenderingMode(.alwaysOriginal) : #imageLiteral(resourceName: "ic_check").withRenderingMode(.alwaysOriginal), for: .normal)
         delegate?.didTapBookmark(for: self)
     }
     

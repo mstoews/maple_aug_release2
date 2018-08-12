@@ -43,7 +43,7 @@ class ShareShowSettings: NSObject, UICollectionViewDataSource, UICollectionViewD
     }()
     
     let cellId = "cellId"
-    let cellHeight: CGFloat = 50
+    let cellHeight: CGFloat = 100
     
     let shareSettings: [ShareSetting] = {
         let settingsSetting = ShareSetting(name: .Settings, imageName: "ic_settings")

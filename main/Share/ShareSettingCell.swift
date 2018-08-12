@@ -44,7 +44,7 @@ class ShareSettingCell: BaseCell {
     let iconImageView: UIImageView = {
         let imageView = UIImageView()
         imageView.image = UIImage(named: "ic_settings")
-        imageView.contentMode = .scaleAspectFill
+        imageView.contentMode = .scaleAspectFit
         return imageView
     }()
     

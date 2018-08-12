@@ -8,7 +8,7 @@
 import UIKit
 import Firebase
 import FirebaseUI
-import PromiseKit
+//import PromiseKit
 import AlgoliaSearch
 import InstantSearchCore
 import Kingfisher
@@ -306,11 +306,8 @@ class HomeController: MDCCollectionViewController, HomePostCellDelegate,  HomeHe
     
     static let updateFeedNotificationName = NSNotification.Name(rawValue: "handleRefresh")
     
-    
-    
     override func viewDidLoad() {
         
-        backgroundView.image = UIImage(named: "Instagram_logo_white")!
         super.viewDidLoad()
         NotificationCenter.default.addObserver(self, selector: #selector(handleUpdateFeed), name: HomeController.updateFeedNotificationName, object: nil)
         collectionView?.backgroundColor = UIColor.collectionBackGround()
@@ -320,6 +317,7 @@ class HomeController: MDCCollectionViewController, HomePostCellDelegate,  HomeHe
         
         collectionView?.refreshControl = refreshControl
         collectionView?.backgroundView = nil
+        //Firestore.updateDocCounts()
         setupNavigationItems()
         observeQuery()
         
@@ -334,19 +332,9 @@ class HomeController: MDCCollectionViewController, HomePostCellDelegate,  HomeHe
     }
     
     @objc func handleRefresh() {
-
-        refreshControl.beginRefreshing()
-//        refreshPageNationation += 5
-//        didShowAllPosts()
-       refreshControl.endRefreshing()
-        //        print("Handling refresh..")
-        //        if (FETCH_TYPE == FetchType.ALL){
-        //            fetchAllPosts()
-        //        }
-        //        else {
-        //            FETCH_TYPE = FetchType.USER
-        //
-        //        }
+      refreshControl.beginRefreshing()
+        
+      refreshControl.endRefreshing()
     }
     
     
@@ -367,13 +355,13 @@ class HomeController: MDCCollectionViewController, HomePostCellDelegate,  HomeHe
         }
     }
     
-    func IsLiked(postid: String, uid: String) -> Promise<Int> {
-        var intLiked = 0
-        Database.IsPostLiked(postid, uid) { (liked) in
-            intLiked = liked
-        }
-        return Promise(value: intLiked)
-    }
+//    func IsLiked(postid: String, uid: String) -> Promise<Int> {
+//        var intLiked = 0
+//        Database.IsPostLiked(postid, uid) { (liked) in
+//            intLiked = liked
+//        }
+//        return Promise(value: intLiked)
+//    }
     
     
     func updateFireStore (post: Post)
@@ -441,45 +429,27 @@ class HomeController: MDCCollectionViewController, HomePostCellDelegate,  HomeHe
         }
     }
     
-    enum Result<T>{
-        case success(result: T)
-        case failure(error: Error)
-    }
+//    enum Result<T>{
+//        case success(result: T)
+//        case failure(error: Error)
+//    }
+//
+//    func wrap<T>(_ body: (@escaping (Result<T>) -> Void) throws -> Void) -> Promise<T>  {
+//        return Promise { fulfill, reject in
+//            try body { result in
+//                switch result{
+//                case .success(let result):
+//                    fulfill(result)
+//                    break
+//                case .failure(let error):
+//                    reject(error)
+//                    break
+//                }
+//            }
+//        }
+//    }
+//
     
-    func wrap<T>(_ body: (@escaping (Result<T>) -> Void) throws -> Void) -> Promise<T>  {
-        return Promise { fulfill, reject in
-            try body { result in
-                switch result{
-                case .success(let result):
-                    fulfill(result)
-                    break
-                case .failure(let error):
-                    reject(error)
-                    break
-                }
-            }
-        }
-    }
-    
-    
-    func getFirestorePostsByUserId(uid: String)
-    {
-        Database.fetchUserWithUID(uid: uid, completion: { (user) in
-            self.db.collection("maplefirebase/users/\(uid)")
-                .getDocuments() { (querySnapshot, err) in
-                    if let err = err {
-                        print("Error getting documents: \(err)")
-                    } else {
-                        for document in querySnapshot!.documents {
-                            let docData = document.data()
-                            //let post = Post(user : user , dictionary: docData)
-                            //self.posts.append(post)
-                            //print("\(document.documentID) => \(post)")
-                        }
-                    }
-            }
-        })
-    }
     
     internal func cleanCollectionView() {
         if collectionView!.numberOfItems(inSection: 0) > 0 {
@@ -620,24 +590,18 @@ class HomeController: MDCCollectionViewController, HomePostCellDelegate,  HomeHe
         
     }
     
-    
     func didTapBookmark(for cell: HomePostCell) {
         guard let indexPath = collectionView?.indexPath(for: cell) else { return }
         var post = self.fs_posts[indexPath.item]
-        if let postId = post.id {
-            if let uid = Auth.auth().currentUser?.uid {
-                
-                if (post.hasBookmark == true) {
+                 if (post.hasBookmark == true) {
                     post.hasBookmark = false
-                    Firestore.didBookmarkedPost(postId: postId, uidLiked: uid, didLike: post.hasBookmark)
+                    Firestore.didBookmarkedPost(post: post, didBookmark: false)
                 }
                 else
                 {
                     post.hasBookmark = true
-                    Firestore.didBookmarkedPost(postId: postId, uidLiked: uid, didLike: post.hasBookmark)
+                    Firestore.didBookmarkedPost(post: post, didBookmark: true)
                 }
-            }
-        }
         self.fs_posts[indexPath.item] = post
         self.collectionView?.reloadItems(at: [indexPath])
     }

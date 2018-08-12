@@ -92,16 +92,34 @@ extension Firestore {
     
     
     /*******  didBookMarkPost  *******/
-    static func didBookmarkedPost(postId: String, uidLiked: String, didLike: Bool) {
+    static func didBookmarkedPost(post: FSPost, didBookmark: Bool) {
       
-        let values = [ "BookMark" : didLike, "uid" : uidLiked] as [String: Any]
-        
-        firestore().collection("posts").document(postId).collection("bookmarked").document(uidLiked).setData(values)
-        { err in
-            if let err = err {
-                print("Error writing document: \(err)")
-            } else {
-                print("Did successfully bookmark : \(postId) for user \(uidLiked)")
+        if let postId = post.id {
+            let values =
+                [
+                    "creationDate": post.creationDate,
+                    "description": post.description,
+                    "name" : post.userName,
+                    "numberOfComments": post.noOfComments,
+                    "numberOfLikes": post.noOfLikes,
+                    "postid": post.id!,
+                    "product": post.product,
+                    "profileUrl": post.profileURL,
+                    "thumbImages": post.imageUrlArray,
+                    "uid": post.uid
+                    ]
+                    as [String: Any]
+            
+            if let uid = Auth.auth().currentUser?.uid  {
+                
+                firestore().collection("users").document(uid).collection("bookmarked").document(postId).setData(values)
+                { err in
+                    if let err = err {
+                        print("Error writing document: \(err)")
+                    } else {
+                        print("Did successfully bookmark : \(postId) for user \(post.uid)")
+                    }
+                }
             }
         }
     }
@@ -236,6 +254,36 @@ extension Firestore {
                     }
                 }
             })
+        }
+    }
+    
+    
+    static func updateDocCounts()
+    {
+        
+        firestore().collection("posts").getDocuments() {
+            (querySnapshot, err) in
+            if let err = err  {
+                print("Error getting documents: \(err)");
+            }
+            else  {
+                var likeCount = 0
+                var commentCount = 0
+                for document in querySnapshot!.documents {
+                    let post = FSPost(dictionary: document.data(), postId: document.documentID)
+                    if let postId = post?.id {
+                        getPostCollectionCount(collection: "likes", postId: postId,  { (likes) in
+                            likeCount = likes
+                            
+                            getPostCollectionCount(collection: "comments", postId: postId,  { (comments) in
+                                commentCount = comments
+                                
+                            })
+                        })
+                        
+                    }
+                }
+            }
         }
     }
     

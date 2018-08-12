@@ -47,6 +47,7 @@ class UserProfileController: MDCCollectionViewController,
     //var posts = [Post]()
    
     private var fs_posts: [FSPost] = []
+    private var fs_bookmarks: [FSPost] = []
     private var documents: [DocumentSnapshot] = []
     
     private var fs_locations : [LocationObject] = []
@@ -128,39 +129,42 @@ class UserProfileController: MDCCollectionViewController,
     {
         stopBookMarkObserving()
         
-        self.bookMarkListener = self.db.collection("posts")
-            .document("bookmarked")
-            .collection(uid)
-            .whereField("uid", isEqualTo: "test")
-            .addSnapshotListener{  (snapshot, error) in
-                guard let snapshot = snapshot else {
-                    print("Error fetching snapshot results: \(error!)")
-                    return
-                }
-                
-                let models = snapshot.documents.map { (document) -> FSPost in
-                    print(document)
-                    if let model = FSPost(dictionary: document.data(), postId: document.documentID) {
-                        return model
+        if let uid = Auth.auth().currentUser?.uid {
+            
+            self.bookMarkListener =
+            self.db.collection("users")
+                .document(uid)
+                .collection("bookmarked")
+                 .addSnapshotListener{  (snapshot, error) in
+                    guard let snapshot = snapshot else {
+                        print("Error fetching snapshot results: \(error!)")
+                        return
                     }
-                    else {
-                        // Don't use fatalError here in a real app.
-                        fatalError("Unable to initialize type \(FSPost.self) with dictionary \(document.data())")
+                    
+                    let models = snapshot.documents.map { (document) -> FSPost in
+                        print(document)
+                        if let model = FSPost(dictionary: document.data(), postId: document.documentID) {
+                            return model
+                        }
+                        else {
+                            // Don't use fatalError here in a real app.
+                            fatalError("Unable to initialize type \(FSPost.self) with dictionary \(document.data())")
+                        }
                     }
-                }
-                
-                self.fs_posts = models
-                self.documents = snapshot.documents
-                
-                if self.documents.count > 0 {
-                    //print("Number of posts: \(self.documents.count)")
-                    self.collectionView?.backgroundView = nil
-                }
-                else
-                {
-                    self.collectionView?.backgroundView = nil
-                }
-                self.collectionView?.reloadData()
+                    
+                    self.fs_bookmarks = models
+                    self.documents = snapshot.documents
+                    
+                    if self.documents.count > 0 {
+                        //print("Number of posts: \(self.documents.count)")
+                        self.collectionView?.backgroundView = nil
+                    }
+                    else
+                    {
+                        self.collectionView?.backgroundView = nil
+                    }
+                    self.collectionView?.reloadData()
+            }
         }
     }
     
@@ -180,20 +184,15 @@ class UserProfileController: MDCCollectionViewController,
     func didTapBookmark(for cell: UserGridPostCell) {
         guard let indexPath = collectionView?.indexPath(for: cell) else { return }
         var post = self.fs_posts[indexPath.item]
-        if let postId = post.id {
-            if let uid = Auth.auth().currentUser?.uid {
-                
                 if (post.hasBookmark == true) {
                     post.hasBookmark = false
-                    Firestore.didBookmarkedPost(postId: postId, uidLiked: uid, didLike: post.hasBookmark)
+                    Firestore.didBookmarkedPost(post: post, didBookmark: post.hasBookmark)
                 }
                 else
                 {
                     post.hasBookmark = true
-                    Firestore.didBookmarkedPost(postId: postId, uidLiked: uid, didLike: post.hasBookmark)
+                    Firestore.didBookmarkedPost(post: post, didBookmark: post.hasBookmark)
                 }
-            }
-        }
         self.fs_posts[indexPath.item] = post
         self.collectionView?.reloadItems(at: [indexPath])
     }
@@ -297,7 +296,9 @@ class UserProfileController: MDCCollectionViewController,
          print ("didTapUserNameLabel")
     }
     
-
+    private let refreshControl = UIRefreshControl()
+    
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         
@@ -308,7 +309,6 @@ class UserProfileController: MDCCollectionViewController,
         collectionView?.register(UserListPostCell.self, forCellWithReuseIdentifier: userListCellId)
         collectionView?.register(MapViewCell.self, forCellWithReuseIdentifier: mapViewCell)
         
-        let refreshControl = UIRefreshControl()
         refreshControl.addTarget(self, action: #selector(handleRefresh), for: .valueChanged)
         collectionView?.refreshControl = refreshControl
                
@@ -318,7 +318,9 @@ class UserProfileController: MDCCollectionViewController,
     
     @objc func handleRefresh()
     {
-        //fetchUser()
+        refreshControl.beginRefreshing()
+        fetchUser()
+        refreshControl.endRefreshing()
     }
     
     // MARK :  SharePhotoControllerUpdateDelegate.refreshUsers()
@@ -477,15 +479,18 @@ class UserProfileController: MDCCollectionViewController,
         
     }
     
+    // MARK:- Open Bookmarks
+    
     // Open the favourites window called from the UserProfileHeader
     func didFavoritesOpen()
     {
         print("didFavouriteOpen")
         cellType = CellType.BKMK
-        //fetchBookmarkedPosts()
         observeBookmarkedPosts(uid: user!.uid)
         collectionView?.reloadData()
     }
+    
+    
     
     func setTransition(){
         
@@ -608,7 +613,7 @@ class UserProfileController: MDCCollectionViewController,
         switch cellType
         {
             case CellType.BKMK :
-                rc = fs_posts.count
+                rc = fs_bookmarks.count
                 break
        
             case CellType.GRID :
@@ -635,7 +640,7 @@ class UserProfileController: MDCCollectionViewController,
         {
             case CellType.BKMK :
                 let cell = collectionView.dequeueReusableCell(withReuseIdentifier: userGridCellId, for: indexPath) as! UserGridPostCell
-                cell.post = fs_posts[indexPath.item]
+                cell.post = fs_bookmarks[indexPath.item]
                 cell.delegate = self
                 rc = cell
                 break
@@ -745,7 +750,7 @@ class UserProfileController: MDCCollectionViewController,
             let approximateWidthOfBioTextView = view.frame.width
             let size = CGSize(width: approximateWidthOfBioTextView, height: 1200)
             let attributes = [NSAttributedStringKey.font : UIFont.systemFont(ofSize: CGFloat(15))]
-            let post = fs_posts[indexPath.item]
+            let post = fs_bookmarks[indexPath.item]
             let estimatedFrame = NSString(string: post.description).boundingRect(with: size, options: .usesLineFragmentOrigin, attributes: attributes, context: nil)
             rc = CGSize(width: view.frame.width - 15 , height: estimatedFrame.height + view.frame.width - 60 )
             break

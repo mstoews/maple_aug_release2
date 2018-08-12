@@ -131,7 +131,7 @@ class MainTabBarController: UITabBarController, AuthUIDelegate  {
         authUI?.isSignInWithEmailHidden = false
         let providers: [FUIAuthProvider] = [FUIGoogleAuth(), FUIFacebookAuth()]
         authUI?.providers = providers
-        
+        setupViewControllers()
         observeNotifications()
         
         //NotificationCenter.default.addObserver(self, selector: #selector(resetBadges), name: NSNotification.Name(rawValue : "Badge Changed"), object: nil)
@@ -141,8 +141,9 @@ class MainTabBarController: UITabBarController, AuthUIDelegate  {
         super.viewDidAppear(animated)
         if !isUserSignedIn() {
             showLoginView()
+            setupViewControllers()
         }
-        setupViewControllers()
+        
         
     }
     

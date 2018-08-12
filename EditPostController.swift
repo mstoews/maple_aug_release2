@@ -289,7 +289,7 @@ class EditPostController:
         }
         infoWindow.center = mapView.projection.point(for: location)
         infoWindow.center.y = infoWindow.center.y - sizeForOffset(view: infoWindow)
-        self.view.addSubview(infoWindow)
+        mapView.addSubview(infoWindow)
         
         return false
     }

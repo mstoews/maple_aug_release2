@@ -201,23 +201,32 @@ class HomePostCell: MDCCardCollectionCell , UICollectionViewDataSource, UICollec
                 }
             }
             
-            if let postId = fs_post?.id {
-               Firestore.getPostCollectionCount(collection: "likes", postId: postId,  { (totalLikes) in
-                    self.putNumberOfLikes(likes: totalLikes )
-                })
+            if let likeCount = fs_post?.likeCount {
+                self.putNumberOfLikes(likes: likeCount)
             }
             
-            if let postId = fs_post?.id {
-                Firestore.getPostCollectionCount(collection: "comments", postId: postId,  { (commentCount) in
-                    self.putNumberOfComments(likes: commentCount)
-                })
+            if let commentCount = fs_post?.commentCount {
+                self.putNumberOfComments(likes: commentCount)
             }
             
-            if let postId = fs_post?.id {
-               Firestore.getPostCollectionCount(collection: "bookmarked", postId: postId,  { (bookmarkCount) in
-                    self.putNumberOfBookmarks(likes: bookmarkCount)
-                })
-            }
+            
+//            if let postId = fs_post?.id {
+//               Firestore.getPostCollectionCount(collection: "likes", postId: postId,  { (totalLikes) in
+//                    self.putNumberOfLikes(likes: totalLikes )
+//                })
+//            }
+            
+//            if let postId = fs_post?.id {
+//                Firestore.getPostCollectionCount(collection: "comments", postId: postId,  { (commentCount) in
+//                    self.putNumberOfComments(likes: commentCount)
+//                })
+//            }
+//
+//            if let postId = fs_post?.id {
+//               Firestore.getPostCollectionCount(collection: "bookmarked", postId: postId,  { (bookmarkCount) in
+//                    self.putNumberOfBookmarks(likes: bookmarkCount)
+//                })
+//            }
             
             if let description = fs_post?.description {
                 let attributedText = NSMutableAttributedString(string: description, attributes: attributeCaption)

@@ -334,7 +334,7 @@ class NotificationViewController: MDCCollectionViewController , NotificationDele
                 if let postId = Post.id {
                     if postId.count > 0 {
                         //todo
-                        //commentsController.post = Post
+                        commentsController.post = Post
                         self.navigationController?.pushViewController(commentsController, animated: true)
                     }
                 }

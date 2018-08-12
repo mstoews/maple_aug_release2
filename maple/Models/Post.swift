@@ -260,6 +260,7 @@ struct FSPost {
     var isBookmarked = false
     var mine = false
     var likeCount = 0
+    var commentCount = 0
    
     var uid: String
     
@@ -279,6 +280,8 @@ extension FSPost: DocumentSerializable {
         self.creationDate = Date(timeIntervalSince1970: secondsFrom1970)
         self.profileURL = dictionary["profileUrl"] as? String ??  ""
         self.category = dictionary["category"] as? String ?? "General"
+        self.likeCount = dictionary["numberOfLikes"] as? Int ?? 0
+        self.commentCount = dictionary["numberOfComments"] as? Int ?? 0
         
         dictionary.forEach({ (key, value) in
             guard let dict = value as? [String] else { return }

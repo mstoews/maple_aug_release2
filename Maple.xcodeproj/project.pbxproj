@@ -13,7 +13,7 @@
 		024EDBC02078EFF50069C77F /* HomeHeaderCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 02DC63492004E5C500AE9662 /* HomeHeaderCell.swift */; };
 		024EDBC32078EFFA0069C77F /* CommentCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 48B4450C1FE7342200DFD412 /* CommentCell.swift */; };
 		024EDBC52078EFFD0069C77F /* CommentInputAccessoryView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 02DC63432001BDD600AE9662 /* CommentInputAccessoryView.swift */; };
-		027A81702119481C00A21E62 /* SharePhotoControllerMD.swift in Sources */ = {isa = PBXBuildFile; fileRef = 027A816F2119481C00A21E62 /* SharePhotoControllerMD.swift */; };
+		02C40A4A211A8F9300A73B51 /* SharePhotoControllerMD.swift in Sources */ = {isa = PBXBuildFile; fileRef = 02C40A49211A8F9300A73B51 /* SharePhotoControllerMD.swift */; };
 		02DC63442001BDD600AE9662 /* CommentInputAccessoryView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 02DC63432001BDD600AE9662 /* CommentInputAccessoryView.swift */; };
 		02DC63462001BE7600AE9662 /* CommentInputTextView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 02DC63452001BE7600AE9662 /* CommentInputTextView.swift */; };
 		02DC634A2004E5C500AE9662 /* HomeHeaderCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 02DC63492004E5C500AE9662 /* HomeHeaderCell.swift */; };
@@ -181,7 +181,7 @@
 		0225F32D20FE11FB00137084 /* LaunchScreen.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; name = LaunchScreen.storyboard; path = "maple-release/LaunchScreen.storyboard"; sourceTree = SOURCE_ROOT; };
 		024EDB9F2078EE760069C77F /* maple_release.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; name = maple_release.app; path = Maple_release.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		025D70DF20B53AD4004E967B /* FlexibleHeader.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FlexibleHeader.swift; sourceTree = "<group>"; };
-		027A816F2119481C00A21E62 /* SharePhotoControllerMD.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SharePhotoControllerMD.swift; sourceTree = "<group>"; };
+		02C40A49211A8F9300A73B51 /* SharePhotoControllerMD.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SharePhotoControllerMD.swift; sourceTree = "<group>"; };
 		02DC63432001BDD600AE9662 /* CommentInputAccessoryView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CommentInputAccessoryView.swift; sourceTree = "<group>"; };
 		02DC63452001BE7600AE9662 /* CommentInputTextView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CommentInputTextView.swift; sourceTree = "<group>"; };
 		02DC63492004E5C500AE9662 /* HomeHeaderCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeHeaderCell.swift; sourceTree = "<group>"; };
@@ -617,8 +617,8 @@
 		4876BB0820DA14790057E5E0 /* Share */ = {
 			isa = PBXGroup;
 			children = (
+				02C40A49211A8F9300A73B51 /* SharePhotoControllerMD.swift */,
 				482FC0FC20DE15CC00E23DAE /* SharePhotoController+Save.swift */,
-				027A816F2119481C00A21E62 /* SharePhotoControllerMD.swift */,
 				482FC0FD20DE15D000E23DAE /* MapCell.swift */,
 				482FC14020DE29CF00E23DAE /* SearchTableCell.swift */,
 				482FC0FE20DE15D400E23DAE /* PostImageCell.swift */,
@@ -1349,6 +1349,7 @@
 				4878C0B820F6D0DD0054F227 /* ShareSettingsController.swift in Sources */,
 				4876BD1F20DA164E0057E5E0 /* RoundedButton.swift in Sources */,
 				48443E74210990AE00A21FC4 /* GMUPlacemark.m in Sources */,
+				02C40A4A211A8F9300A73B51 /* SharePhotoControllerMD.swift in Sources */,
 				482FC11C20DE168200E23DAE /* UserProfileController.swift in Sources */,
 				48443E6A210990AE00A21FC4 /* GMUNonHierarchicalDistanceBasedAlgorithm.m in Sources */,
 				482FC12120DE168200E23DAE /* UserGridCell.swift in Sources */,
@@ -1453,7 +1454,6 @@
 				4876BD1320DA164E0057E5E0 /* BackgroundMapViewController.swift in Sources */,
 				4876BD1D20DA164E0057E5E0 /* ShadowView.swift in Sources */,
 				482FC10220DE15D900E23DAE /* ProductFooterCell.swift in Sources */,
-				027A81702119481C00A21E62 /* SharePhotoControllerMD.swift in Sources */,
 				4876BCA820DA16290057E5E0 /* FirebaseUtilites.swift in Sources */,
 				4876BD1920DA164E0057E5E0 /* MapController.swift in Sources */,
 				48482FC420DA18A00031EBFF /* Comment.swift in Sources */,
