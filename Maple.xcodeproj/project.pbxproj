@@ -112,7 +112,7 @@
 		4876BCA320DA16280057E5E0 /* PhotoSelectorController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4876BC8B20DA16280057E5E0 /* PhotoSelectorController.swift */; };
 		4876BCA520DA16290057E5E0 /* FirestoreUtilities.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4876BC8D20DA16280057E5E0 /* FirestoreUtilities.swift */; };
 		4876BCA820DA16290057E5E0 /* FirebaseUtilites.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4876BC9020DA16280057E5E0 /* FirebaseUtilites.swift */; };
-		4876BCAA20DA16290057E5E0 /* EditPostController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4876BC9220DA16280057E5E0 /* EditPostController.swift */; };
+		4876BCAA20DA16290057E5E0 /* PostViewerController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4876BC9220DA16280057E5E0 /* PostViewerController.swift */; };
 		4876BCAB20DA16290057E5E0 /* PhotoSelectorCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4876BC9320DA16280057E5E0 /* PhotoSelectorCell.swift */; };
 		4876BCAC20DA16290057E5E0 /* FirebaseUtilities+Notifications.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4876BC9420DA16280057E5E0 /* FirebaseUtilities+Notifications.swift */; };
 		4876BCAD20DA16290057E5E0 /* CustomImageView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4876BC9520DA16280057E5E0 /* CustomImageView.swift */; };
@@ -144,7 +144,6 @@
 		4876BD1B20DA164E0057E5E0 /* MapCollectionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4876BCEE20DA164E0057E5E0 /* MapCollectionView.swift */; };
 		4876BD1C20DA164E0057E5E0 /* CGRect+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4876BCEF20DA164E0057E5E0 /* CGRect+Extensions.swift */; };
 		4876BD1D20DA164E0057E5E0 /* ShadowView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4876BCF320DA164E0057E5E0 /* ShadowView.swift */; };
-		4876BD1E20DA164E0057E5E0 /* SDKDemoAPIKey.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4876BCFB20DA164E0057E5E0 /* SDKDemoAPIKey.swift */; };
 		4876BD1F20DA164E0057E5E0 /* RoundedButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4876BCFC20DA164E0057E5E0 /* RoundedButton.swift */; };
 		4876BD2320DA16B20057E5E0 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4876BD2220DA16B20057E5E0 /* AppDelegate.swift */; };
 		4878C0B820F6D0DD0054F227 /* ShareSettingsController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4878C0B720F6D0DD0054F227 /* ShareSettingsController.swift */; };
@@ -324,7 +323,7 @@
 		4876BC8B20DA16280057E5E0 /* PhotoSelectorController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PhotoSelectorController.swift; sourceTree = "<group>"; };
 		4876BC8D20DA16280057E5E0 /* FirestoreUtilities.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FirestoreUtilities.swift; sourceTree = "<group>"; };
 		4876BC9020DA16280057E5E0 /* FirebaseUtilites.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FirebaseUtilites.swift; sourceTree = "<group>"; };
-		4876BC9220DA16280057E5E0 /* EditPostController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = EditPostController.swift; sourceTree = "<group>"; };
+		4876BC9220DA16280057E5E0 /* PostViewerController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PostViewerController.swift; sourceTree = "<group>"; };
 		4876BC9320DA16280057E5E0 /* PhotoSelectorCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PhotoSelectorCell.swift; sourceTree = "<group>"; };
 		4876BC9420DA16280057E5E0 /* FirebaseUtilities+Notifications.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "FirebaseUtilities+Notifications.swift"; sourceTree = "<group>"; };
 		4876BC9520DA16280057E5E0 /* CustomImageView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CustomImageView.swift; sourceTree = "<group>"; };
@@ -393,7 +392,6 @@
 		4876BCF820DA164E0057E5E0 /* nl */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = nl; path = nl.lproj/Localizable.strings; sourceTree = "<group>"; };
 		4876BCF920DA164E0057E5E0 /* th */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = th; path = th.lproj/Localizable.strings; sourceTree = "<group>"; };
 		4876BCFA20DA164E0057E5E0 /* pt */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = pt; path = pt.lproj/Localizable.strings; sourceTree = "<group>"; };
-		4876BCFB20DA164E0057E5E0 /* SDKDemoAPIKey.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SDKDemoAPIKey.swift; sourceTree = "<group>"; };
 		4876BCFC20DA164E0057E5E0 /* RoundedButton.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RoundedButton.swift; sourceTree = "<group>"; };
 		4876BCFD20DA164E0057E5E0 /* ro */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = ro; path = ro.lproj/Localizable.strings; sourceTree = "<group>"; };
 		4876BCFE20DA164E0057E5E0 /* hr */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = hr; path = hr.lproj/Localizable.strings; sourceTree = "<group>"; };
@@ -724,7 +722,6 @@
 				4876BCD420DA164E0057E5E0 /* ViewControllers */,
 				4876BCE920DA164E0057E5E0 /* Support */,
 				4876BCF320DA164E0057E5E0 /* ShadowView.swift */,
-				4876BCFB20DA164E0057E5E0 /* SDKDemoAPIKey.swift */,
 				4876BCFC20DA164E0057E5E0 /* RoundedButton.swift */,
 			);
 			name = GoogleMapPicker;
@@ -820,7 +817,7 @@
 				4838EA0E2108A025008EB234 /* Maple-Bridging-Header.h */,
 				48B444F51FE7341D00DFD412 /* HomeController.swift */,
 				48B444DF1FE7341700DFD412 /* HomePostCell.swift */,
-				4876BC9220DA16280057E5E0 /* EditPostController.swift */,
+				4876BC9220DA16280057E5E0 /* PostViewerController.swift */,
 				025D70DF20B53AD4004E967B /* FlexibleHeader.swift */,
 				02DC63492004E5C500AE9662 /* HomeHeaderCell.swift */,
 				48B4451A1FE7342600DFD412 /* CommentsController.swift */,
@@ -1429,7 +1426,7 @@
 				482FC13920DE236D00E23DAE /* InstantSearch.swift in Sources */,
 				4876BD1B20DA164E0057E5E0 /* MapCollectionView.swift in Sources */,
 				4876BCA220DA16280057E5E0 /* Extensions.swift in Sources */,
-				4876BCAA20DA16290057E5E0 /* EditPostController.swift in Sources */,
+				4876BCAA20DA16290057E5E0 /* PostViewerController.swift in Sources */,
 				4878C0FE20F6D5400054F227 /* ShareSettingCell.swift in Sources */,
 				482FC13E20DE295700E23DAE /* HomeController.swift in Sources */,
 				482FC10020DE15D900E23DAE /* SharePhotoCell.swift in Sources */,
@@ -1458,7 +1455,6 @@
 				4876BD1920DA164E0057E5E0 /* MapController.swift in Sources */,
 				48482FC420DA18A00031EBFF /* Comment.swift in Sources */,
 				482FC13420DE236D00E23DAE /* PostSearchCollectionHeader.swift in Sources */,
-				4876BD1E20DA164E0057E5E0 /* SDKDemoAPIKey.swift in Sources */,
 				482FC11D20DE168200E23DAE /* SettingCell.swift in Sources */,
 				48482FC320DA18A00031EBFF /* LocalCollection.swift in Sources */,
 				4876BCA520DA16290057E5E0 /* FirestoreUtilities.swift in Sources */,

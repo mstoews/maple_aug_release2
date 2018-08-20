@@ -15,6 +15,7 @@ import GooglePlaces
 import MaterialComponents
 import Lightbox
 import GoogleSignIn
+import UserNotifications
 
 private let kFirebaseTermsOfService = URL(string: "https://mapleon.com/terms/")!
 
@@ -28,49 +29,19 @@ class MainTabBarController: UITabBarController, AuthUIDelegate  {
     
     lazy var uid = Auth.auth().currentUser!.uid
     var notificationGranted = false
+    let imageView = CustomImageView()
     
-    
-    
-    var floatingButtonOffset: CGFloat = 0.0
-    var spinner: UIView?
-    static let postsPerLoad: Int = 3
-    static let postsLimit: UInt = 4
-    var lightboxCurrentPage: Int?
-    
-    let emptyHomeLabel: UILabel = {
-        let messageLabel = UILabel()
-        messageLabel.text = "This feed will be populated as you follow more people."
-        messageLabel.textColor = UIColor.black
-        messageLabel.numberOfLines = 0
-        messageLabel.textAlignment = .center
-        messageLabel.font = UIFont.preferredFont(forTextStyle: .title3)
-        messageLabel.sizeToFit()
-        return messageLabel
-    }()
-    
-    var query: DatabaseReference!
     var posts = [Post]()
-    var loadingPostCount = 0
-    var nextEntry: String?
     //var sizingCell: FPCardCollectionViewCell!
-    let bottomBarView = MDCBottomAppBarView()
-    var followingRef: DatabaseReference?
-    let blue = MDCPalette.red
     var observers = [DatabaseQuery]()
-    var newPost = false
-    var followChanged = false
-    var isFirstOpen = true
-    lazy var database = Database.database()
-    lazy var ref = self.database.reference()
-    lazy var postsRef = self.database.reference(withPath: "posts")
-    lazy var commentsRef = self.database.reference(withPath: "comments")
-    lazy var likesRef = self.database.reference(withPath: "likes")
     lazy var appDelegate = UIApplication.shared.delegate as! AppDelegate
     
     
     deinit {
         listener?.remove()
     }
+    
+    
     
     private var listener: ListenerRegistration?
     
@@ -80,13 +51,22 @@ class MainTabBarController: UITabBarController, AuthUIDelegate  {
         
         if let uid = Auth.auth().currentUser?.uid {
             self.listener =
-                Firestore.firestore().collection("users").document(uid).collection("Events")
+                  Firestore.firestore().collection("users").document(uid).collection("events")
+                    //.whereField("deleted", isEqualTo: false)
                     .addSnapshotListener{  (snapshot, error) in
                         guard let snapshot = snapshot else {
                             print("Error fetching snapshot results: \(error!)")
                             return
                         }
+                        let application = UIApplication.shared
+                        let center = UNUserNotificationCenter.current()
+                        center.requestAuthorization(options:[.badge, .alert, .sound]) { (granted, error) in
+                            // Enable or disable features based on authorization.
+                        }
+                        application.registerForRemoteNotifications()
+                        application.applicationIconBadgeNumber = snapshot.count
                         self.setNotificationBadgeCount(count: snapshot.count)
+                        
             }
         }
     }
@@ -94,7 +74,6 @@ class MainTabBarController: UITabBarController, AuthUIDelegate  {
     fileprivate func stopObserving() {
         listener?.remove()
     }
-    
     
     @objc func setNotificationBadgeCount(count: Int)
     {
@@ -147,8 +126,6 @@ class MainTabBarController: UITabBarController, AuthUIDelegate  {
         
     }
     
-    
-   
     let followersLabel: UILabel = {
         var label = UILabel()
         var iPosts = 0
@@ -258,22 +235,63 @@ extension MainTabBarController: FUIAuthDelegate {
      }
 
     func signed(in user: User) {
- 
-        //Storage.storage()
-
-        var values: [String: Any] = ["profileImageUrl": user.photoURL?.absoluteString ?? "",
-                                     "username": user.displayName ?? "",
-                                     "_search_index": ["full_name": user.displayName?.lowercased(),
-                                                       "reversed_full_name": user.displayName?.components(separatedBy: " ")
-                                                        .reversed().joined(separator: "")]]
-
-        if notificationGranted {
-            values["notificationEnabled"] = true
-            notificationGranted = false
-        }
-        //database.reference(withPath: "users/\(user.uid)").updateChildValues(values)
-        Firestore.firestore().collection("users").document(user.uid).collection("profile").document(user.uid).updateData(values)
+        
+        Firestore.updateUserProfile(user: user)
+       // downloadImage(url: user.photoURL!, user: user)
+       // savePhotoImage(user: user)
     }
+    
+    func downloadImage(url: URL, user: User) {
+        getDataFromUrl(url: url) { (data, response, error)  in
+            guard let data = data, error == nil else { return }
+            print(response?.suggestedFilename ?? url.lastPathComponent)
+            print("Download Finished")
+            DispatchQueue.main.async() { () -> Void in
+                self.imageView.image = UIImage(data: data)
+            }
+        }
+    }
+
+    func getDataFromUrl(url: URL, completion: @escaping (_ data: Data?, _  response: URLResponse?, _ error: Error?) -> Void) {
+        URLSession.shared.dataTask(with: url) {
+            (data, response, error) in
+            completion(data, response, error)
+            }.resume()
+    }
+    
+    func savePhotoImage(user: User)
+    {
+        //self.imageView.loadImage(urlString: (user.photoURL?.absoluteString)!)
+        if let image = self.imageView.image {
+            let size = CGSize(width: 320.0, height: 320)
+            let uploadData = image.RBResizeImage(image: image, targetSize: size)
+            
+            let filename = NSUUID().uuidString
+            let metadata = StorageMetadata()
+            metadata.contentType = "image/jpeg"
+            let storeRef = Storage.storage().reference().child("profile_images").child(filename).child(filename)
+            storeRef.putData(uploadData.sd_imageData()!, metadata: metadata) { (metadata, err) in
+                if let err = err {
+                    self.navigationItem.rightBarButtonItem?.isEnabled = true
+                    print("Failed to upload post image:", err)
+                    return
+                }
+                
+                storeRef.downloadURL { (url, err)  in
+                    if let err = err {
+                        self.navigationItem.rightBarButtonItem?.isEnabled = true
+                        print("Failed to upload post image:", err)
+                        return
+                    }
+                    if let url = url {
+                         let values: [String: Any] = ["profileImageUrl": url]
+                        Firestore.firestore().collection("users").document(user.uid).collection("profile").document(user.uid).updateData(values)
+                    }
+                }
+            }
+        }
+    }
+    
 }
 
 

@@ -79,7 +79,6 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         return true
     }
     
-    
     func showAlert(_ userInfo: [AnyHashable: Any]) {
         let apsKey = "aps"
         let gcmMessage = "alert"

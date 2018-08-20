@@ -23,8 +23,8 @@ class ShareSetting: NSObject {
 
 enum ShareSettingName: String {
     case Cancel = "Cancel & Dismiss Completely"
-    case Settings = "Settings"
-    case TermsPrivacy = "Terms & privacy policy"
+    case Settings = "Picture"
+    case Navigation = "Navigation"
     case SendFeedback = "Send Feedback"
     case Help = "Help"
     case SwitchAccount = "Switch Account"
@@ -43,14 +43,14 @@ class ShareShowSettings: NSObject, UICollectionViewDataSource, UICollectionViewD
     }()
     
     let cellId = "cellId"
-    let cellHeight: CGFloat = 100
+    let cellHeight: CGFloat = 50
     
     let shareSettings: [ShareSetting] = {
         let settingsSetting = ShareSetting(name: .Settings, imageName: "ic_settings")
         
         let cancelSetting = ShareSetting(name: .Cancel, imageName: "ic_cancel")
         return [settingsSetting,
-                ShareSetting(name: .TermsPrivacy, imageName: "ic_security"),
+                ShareSetting(name: .Navigation, imageName: "ic_navigation"),
                 ShareSetting(name: .SendFeedback, imageName: "ic_feedback"),
                 ShareSetting(name: .Help, imageName: "ic_help"),
                 ShareSetting(name: .SwitchAccount, imageName: "ic_account_circle"), cancelSetting]
@@ -58,6 +58,7 @@ class ShareShowSettings: NSObject, UICollectionViewDataSource, UICollectionViewD
     
     
     var homeController: SharePhotoController?
+    var headerView: UserProfileHeader?
     
     func showSettings() {
         //show menu
@@ -72,14 +73,14 @@ class ShareShowSettings: NSObject, UICollectionViewDataSource, UICollectionViewD
             
             window.addSubview(collectionView)
             
-            let height: CGFloat = CGFloat(shareSettings.count) * cellHeight
+            let height: CGFloat = CGFloat(shareSettings.count-1) * cellHeight + cellHeight + 50
             let y = window.frame.height - height
             collectionView.frame = CGRect(x: 0, y: window.frame.height, width: window.frame.width, height: height)
             
             blackView.frame = window.frame
             blackView.alpha = 0
             
-            UIView.animate(withDuration: 0.5, delay: 0, usingSpringWithDamping: 1, initialSpringVelocity: 1, options: .curveEaseOut, animations: {
+            UIView.animate(withDuration: 0.3, delay: 0, usingSpringWithDamping: 1, initialSpringVelocity: 1, options: .curveEaseOut, animations: {
                 
                 self.blackView.alpha = 1
                 
@@ -105,7 +106,7 @@ class ShareShowSettings: NSObject, UICollectionViewDataSource, UICollectionViewD
         }
     }
     
-    
+     let headerCellId = "headerCellId"
     
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
         return shareSettings.count
@@ -121,7 +122,13 @@ class ShareShowSettings: NSObject, UICollectionViewDataSource, UICollectionViewD
     }
     
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
-        return CGSize(width: collectionView.frame.width, height: cellHeight)
+        var size = CGSize(width: collectionView.frame.width, height: cellHeight)
+        
+        if indexPath.item == 0 {
+            size = CGSize(width: collectionView.frame.width, height: 80)
+        }
+        
+        return size
     }
     
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, minimumLineSpacingForSectionAt section: Int) -> CGFloat {
@@ -133,13 +140,27 @@ class ShareShowSettings: NSObject, UICollectionViewDataSource, UICollectionViewD
         handleDismiss(share)
     }
     
+    func collectionView(_ collectionView: UICollectionView, viewForSupplementaryElementOfKind kind: String, at indexPath: IndexPath) -> UICollectionReusableView {
+        let header = collectionView.dequeueReusableSupplementaryView(ofKind: kind, withReuseIdentifier: headerCellId , for: indexPath) as! UserProfileHeader
+        if indexPath.section == 0 {
+            header.inkView.removeFromSuperview()
+            headerView = header
+            //headerView?.userView = self.user
+            //headerView?.delegate = self
+            return header
+        }
+        //header.userView = self.user
+        //header.delegate = self
+        return header
+    }
+    
     override init() {
         super.init()
         
         collectionView.dataSource = self
         collectionView.delegate = self
-        
         collectionView.register(ShareSettingCell.self, forCellWithReuseIdentifier: cellId)
+        collectionView.register(UserProfileHeader.self, forSupplementaryViewOfKind: UICollectionElementKindSectionHeader, withReuseIdentifier: headerCellId)
     }
     
 }

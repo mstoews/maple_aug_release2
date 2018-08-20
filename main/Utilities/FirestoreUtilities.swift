@@ -16,22 +16,165 @@ import GooglePlaces
 
 extension Firestore {
     
+    static func getFollowedCount (user: User) -> Int {
+        var followedCount = 0
+        
+        let followRef = firestore().collection("users").document(user.uid).collection("followed").whereField("isFollowed", isEqualTo: true)
+        followRef.getDocuments()
+            { (querySnapshot, err) in
+            if let err = err {
+                print("Error getting documents: \(err)")
+            } else {
+                followedCount = querySnapshot!.documents.count
+                if followedCount > 0 {
+                    let values: [String: Any] = ["followedCount": followedCount as Int]
+                    firestore().collection("users").document(user.uid).collection("profile").document(user.uid).updateData(values)
+                    { err in
+                        if let err = err {
+                            print("Error writing document: \(err)")
+                        } else {
+                            print("Did successfully update from getFollowedCount : \(values) for user \(user.uid)")
+                        }
+                    }
+                }
+            }
+        }
+        return followedCount
+    }
+    
+    static func removeNotification (notificationItem: Int) -> Bool {
+        if notificationsFire.count > 0 {
+            let notificationObj = notificationsFire[notificationItem]
+            if let uid = Auth.auth().currentUser?.uid {
+                let docRef = firestore().collection("users").document(uid).collection("events").whereField("interactionRef", isEqualTo: notificationObj.interactionRef)
+                docRef.getDocuments()
+                    { (querySnapshot, err) in
+                        if let err = err {
+                            print("Error getting documents: \(err)")
+                        } else {
+                            if querySnapshot!.count > 0 {
+                                for document in querySnapshot!.documents {
+                                    let docID = document.documentID
+                                    print(docID)
+                                     let values: [String: Any] = ["deleted": true as Bool]
+                                    firestore().collection("users").document(uid).collection("events").document(document.documentID).updateData(values)
+                                }
+                                    
+                            }
+                        }
+                }
+               return true
+            }
+        }
+        return false
+    }
+    
+    static func getFollowerCount (user: User) -> Int {
+        var followerCount = 0
+        let followRef = firestore().collection("users").document(user.uid).collection("following").whereField("isFollower", isEqualTo: true)
+        followRef.getDocuments() { (querySnapshot, err) in
+            if let err = err {
+                print("Error getting documents: \(err)")
+            } else {
+                followerCount = querySnapshot!.documents.count
+                if followerCount > 0 {
+                    let values: [String: Any] = ["followerCount": followerCount as Int]
+                    firestore().collection("users").document(user.uid).collection("profile").document(user.uid).updateData(values)
+                    { err in
+                        if let err = err {
+                            print("Error writing document: \(err)")
+                        } else {
+                            print("Did successfully update from getFollowerCount : \(values) for user \(user.uid)")
+                        }
+                    }
+                    
+                }
+            }
+        }
+        return followerCount
+    }
+    
+    
+    static func getPostCount (user: User) -> Int {
+        var postCount = 0
+        let followRef = firestore().collection("posts").whereField("uid", isEqualTo: user.uid)
+        followRef.getDocuments() { (querySnapshot, err) in
+            if let err = err {
+                print("Error getting documents: \(err)")
+            } else {
+                postCount = querySnapshot!.documents.count
+                if postCount > 0 {
+                    let values: [String: Any] = ["postCount": postCount as Int]
+                    firestore().collection("users").document(user.uid).collection("profile").document(user.uid).updateData(values)
+                    { err in
+                        if let err = err {
+                            print("Error writing document: \(err)")
+                        } else {
+                            print("Did successfully update from getPostCount : \(values) for user \(user.uid)")
+                        }
+                    }
+                    
+                }
+            }
+        }
+        return postCount
+    }
+    
     /*******  updateUserProfile  *******/
     static func updateUserProfile(user: User) {
+        var bDocExists  = false
+        
+        var followedCount = 0
+        var followerCount = 0
+        var postCount = 0
+        
+        
+
+            
         let values: [String: Any] = ["profileImageUrl": user.photoURL?.absoluteString ?? "",
                                      "username": user.displayName ?? "",
+                                     "followCount": followedCount as Int,
+                                     "followerCount": followerCount as Int ,
+                                     "postCount": postCount as Int,
                                      "_search_index": ["full_name": user.displayName?.lowercased(),
                                                        "reversed_full_name": user.displayName?.components(separatedBy: " ")
                                                         .reversed().joined(separator: "")]]
         
-      firestore().collection("users").document(user.uid).collection("profile").document(user.uid).setData(values)
-        { err in
-            if let err = err {
-                print("Error writing document: \(err)")
+        let docRef = firestore().collection("users").document(user.uid).collection("profile").document(user.uid)
+        docRef.getDocument { (document, error) in
+            if let document = document, document.exists {
+                bDocExists = true
             } else {
-                print("Did successfully like : \(values) for user \(user.uid)")
+                bDocExists = false
             }
         }
+        if bDocExists == true {
+            firestore().collection("users").document(user.uid).collection("profile").document(user.uid).updateData(values)
+            { err in
+                if let err = err {
+                    print("Error writing document: \(err)")
+                } else {
+                    print("Did successfully like : \(values) for user \(user.uid)")
+                }
+            }
+        }
+        else
+        {
+            firestore().collection("users").document(user.uid).collection("profile").document(user.uid).setData(values)
+            { err in
+                if let err = err {
+                    print("Error writing document: \(err)")
+                } else {
+                    print("Did successfully like : \(values) for user \(user.uid)")
+                }
+            }
+        }
+        
+        followedCount = getFollowedCount(user: user)
+        followerCount = getFollowerCount(user: user)
+        postCount = getPostCount(user: user)
+        
+        
     }
     
     static func fetchLocationByUserId(uid: String, _ completion: @escaping ([LocationObject]) -> () ){
@@ -55,6 +198,33 @@ extension Firestore {
         }
         
     }
+    
+    /*******  didFollowUser  *******/
+    static func didFollowUser(uid: String, uidFollow: String, didFollow: Bool) {
+        let followedData = [
+            "uid" : uid,
+            "followUid" : uidFollow,
+            "isFollowed" : didFollow
+            ]
+            as [String: Any]
+        firestore().collection("users").document(uid).collection("followed").document(uidFollow).setData(followedData)
+        { err in
+            if let err = err {
+                print("Error writing document: \(err)")
+            } else {
+                print("Did successfully like : \(uid) for user \(uidFollow)")
+            }
+        }
+        let followerData = [
+            "uid" : uidFollow ,
+            "followerUid" :uid,
+            "isFollower" : didFollow
+            ]
+            as [String: Any]
+        firestore().collection("users").document(uidFollow).collection("following").document(uid).setData(followerData)
+        
+    }
+    
     
 
     
@@ -325,6 +495,7 @@ extension Firestore {
             }
         }
     }
-
+    
+   
 }
 

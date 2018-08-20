@@ -244,6 +244,12 @@ class UserGridPostCell: MDCCardCollectionCell , UICollectionViewDataSource, UICo
                 }
             }
             
+            if let uid = post?.uid {
+                if uid != Auth.auth().currentUser?.uid {
+                    self.editButton.isHidden = true
+                }
+            }
+            
             post?.isLiked = isLikedByUid
             post?.isBookmarked = isBookMarkedByUid
             self.hideLikesBadge(0)

@@ -8,7 +8,7 @@
 import UIKit
 import MaterialComponents
 
-class CommentCell: MDCCardCollectionCell {
+class CommentCell: MDCCardCollectionCell , UIGestureRecognizerDelegate{
     
     var comment: Comment? {
         didSet {
@@ -41,6 +41,9 @@ class CommentCell: MDCCardCollectionCell {
         return textView
     }()
 
+    var pan: UIPanGestureRecognizer!
+    var deleteLabel1: UILabel!
+    var deleteLabel2: UILabel!
     
     
     let profileImageView: CustomImageView = {
@@ -56,6 +59,15 @@ class CommentCell: MDCCardCollectionCell {
     }
 
     
+    func gestureRecognizer(_ gestureRecognizer: UIGestureRecognizer, shouldRecognizeSimultaneouslyWith otherGestureRecognizer: UIGestureRecognizer) -> Bool {
+        return true
+    }
+    
+    override func gestureRecognizerShouldBegin(_ gestureRecognizer: UIGestureRecognizer) -> Bool {
+        return abs((pan.velocity(in: pan.view)).x) > abs((pan.velocity(in: pan.view)).y)
+    }
+    
+    
     override init(frame: CGRect) {
         super.init(frame: frame)
         
@@ -66,31 +78,82 @@ class CommentCell: MDCCardCollectionCell {
         profileImageView.layer.cornerRadius = 40 / 2
         textView.anchor(top: topAnchor, left: profileImageView.rightAnchor, bottom: bottomAnchor, right: rightAnchor, paddingTop: 4, paddingLeft: 4, paddingBottom: 4, paddingRight: 5, width: 0, height: 0)
         backgroundColor = .white
+        
+        deleteLabel1 = UILabel()
+        deleteLabel1.text = "Delete"
+        deleteLabel1.adjustsFontSizeToFitWidth = true
+        deleteLabel1.textColor = UIColor.white
+        deleteLabel1.backgroundColor = UIColor.themeColor()
+        self.insertSubview(deleteLabel1, belowSubview: self.contentView)
+        
+        deleteLabel2 = UILabel()
+        deleteLabel2.text = "Delete"
+        deleteLabel2.textColor = UIColor.white
+        deleteLabel2.backgroundColor = UIColor.themeColor()
+        self.insertSubview(deleteLabel2, belowSubview: self.contentView)
+        
+        pan = UIPanGestureRecognizer(target: self, action: #selector(onPan(_:)))
+        pan.delegate = self
+        self.addGestureRecognizer(pan)
     }
     
     let attributes = [NSAttributedStringKey.font: UIFont.mdc_preferredFont(forMaterialTextStyle: .body2)]
     let captionAttr = [NSAttributedStringKey.font: UIFont.mdc_preferredFont(forMaterialTextStyle: .caption)]
     
-    func populateContent(from: MapleUser, text: String, date: Date, index: Int, isDryRun: Bool)
+    func populateContent(username: String, profileImageUrl: String, text: String, date: Date, index: Int, isDryRun: Bool)
     {
-        let attrText = NSMutableAttributedString(string: from.username , attributes: attributes)
+        let attrText = NSMutableAttributedString(string: username , attributes: attributes)
         attrText.append(NSAttributedString(string: " " + text , attributes: captionAttr))
         attrText.addAttribute(.paragraphStyle, value: CommentCell.paragraphStyle, range: NSMakeRange(0, attrText.length))
         attrText.append(NSAttributedString(string: "\n" + date.timeAgoDisplay() , attributes: captionAttr))
         
         if !isDryRun {
-            profileImageView.accessibilityLabel = from.username
+            profileImageView.accessibilityLabel = username
             profileImageView.accessibilityHint = "Double-tap to open profile."
-            profileImageView.loadImage(urlString: from.profileImageUrl)
+            profileImageView.loadImage(urlString: profileImageUrl)
             profileImageView.tag = 1
             textView.tag = 1
-            profileImageView.loadImage(urlString: from.profileImageUrl)
+            profileImageView.loadImage(urlString: profileImageUrl)
         }
-        textView.accessibilityLabel = "\(from.username) said, \(text)"
+        textView.accessibilityLabel = "\(username) said, \(text)"
         textView.attributedText = attrText
         print(textView.text!)
     }
+    
+    override func layoutSubviews() {
+        super.layoutSubviews()
+        
+        if (pan.state == UIGestureRecognizerState.changed) {
+            let p: CGPoint = pan.translation(in: self)
+            let width = self.contentView.frame.width
+            let height = self.contentView.frame.height
+            self.contentView.frame = CGRect(x: p.x,y: 0, width: width, height: height);
+           //self.deleteLabel1.frame = CGRect(x: p.x - deleteLabel1.frame.size.width-10, y: 0, width: 100, height: height)
+            self.deleteLabel2.frame = CGRect(x: p.x + width + deleteLabel2.frame.size.width, y: 0, width: 100, height: height)
+        }
+        
+    }
+    
+    @objc func onPan(_ pan: UIPanGestureRecognizer) {
+        if pan.state == UIGestureRecognizerState.began {
+            
+        } else if pan.state == UIGestureRecognizerState.changed {
+            self.setNeedsLayout()
+        } else {
+            if abs(pan.velocity(in: self).x) > 500 {
+                let collectionView: UICollectionView = self.superview as! UICollectionView
+                let indexPath: IndexPath = collectionView.indexPathForItem(at: self.center)!
+                collectionView.delegate?.collectionView!(collectionView, performAction: #selector(onPan(_:)), forItemAt: indexPath, withSender: nil)
+            } else {
+                UIView.animate(withDuration: 0.2, animations: {
+                    self.setNeedsLayout()
+                    self.layoutIfNeeded()
+                })
+            }
+        }
+    }
 }
+
 
 extension CommentCell {
     static let paragraphStyle = { () -> NSMutableParagraphStyle in

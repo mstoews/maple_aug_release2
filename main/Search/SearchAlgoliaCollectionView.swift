@@ -333,7 +333,7 @@ class SearchAlgoliaCollectionView: MDCCollectionViewController , UISearchBarDele
                         
                             let data = document.data() as! [String: Any]
                             let post = FSPost(dictionary: data, postId: postId)
-                            let editPostController = EditPostController()
+                            let editPostController = PostViewerController()
                             editPostController.post = post
                             self.navigationController?.pushViewController( editPostController, animated: true)
                         

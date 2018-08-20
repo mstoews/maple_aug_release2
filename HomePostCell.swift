@@ -95,44 +95,6 @@ class HomePostCell: MDCCardCollectionCell , UICollectionViewDataSource, UICollec
         imageWidthContraint?.constant = widthConstant
     }
     
-    
-    deinit {
-        postCountListener?.remove()
-    }
-    
-    private var postCountListener: ListenerRegistration?
-    
-    fileprivate func observeQuery()
-    {
-        stopObserving()
-        
-        self.postCountListener = Firestore.firestore().collection("posts")
-            .whereField("uid", isEqualTo: uid)
-            .addSnapshotListener{  (snapshot, error) in
-                guard let snapshot = snapshot else {
-                    print("Error fetching snapshot results: \(error!)")
-                    return
-                }
-                
-                let models = snapshot.documents.map { (document) -> FSPost in
-                    if let model = FSPost(dictionary: document.data(), postId: document.documentID) {
-                        //Firestore.updateAlgoliaPost(post: model)
-                        return model
-                    }
-                    else {
-                        // Don't use fatalError here in a real app.
-                        fatalError("Unable to initialize type \(FSPost.self) with dictionary \(document.data())")
-                    }
-                }
-        }
-    }
-    
-    
-    fileprivate func stopObserving() {
-        postCountListener?.remove()
-    }
-    
-    
     var fs_post: FSPost? {
         
         didSet {
@@ -209,24 +171,6 @@ class HomePostCell: MDCCardCollectionCell , UICollectionViewDataSource, UICollec
                 self.putNumberOfComments(likes: commentCount)
             }
             
-            
-//            if let postId = fs_post?.id {
-//               Firestore.getPostCollectionCount(collection: "likes", postId: postId,  { (totalLikes) in
-//                    self.putNumberOfLikes(likes: totalLikes )
-//                })
-//            }
-            
-//            if let postId = fs_post?.id {
-//                Firestore.getPostCollectionCount(collection: "comments", postId: postId,  { (commentCount) in
-//                    self.putNumberOfComments(likes: commentCount)
-//                })
-//            }
-//
-//            if let postId = fs_post?.id {
-//               Firestore.getPostCollectionCount(collection: "bookmarked", postId: postId,  { (bookmarkCount) in
-//                    self.putNumberOfBookmarks(likes: bookmarkCount)
-//                })
-//            }
             
             if let description = fs_post?.description {
                 let attributedText = NSMutableAttributedString(string: description, attributes: attributeCaption)

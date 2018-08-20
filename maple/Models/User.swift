@@ -26,7 +26,7 @@ struct MapleUser {
         self.lastName = dictionary["lastName"] as? String ?? ""
         self.email = dictionary["email"] as? String ?? ""
         self.followedCount = dictionary["followedCount"] as? Int  ?? 0
-        self.followersCount = dictionary["followersCount"] as? Int  ?? 0
+        self.followersCount = dictionary["followerCount"] as? Int  ?? 0
         self.postCount = dictionary["postCount"] as? Int ?? 0
     }
 }

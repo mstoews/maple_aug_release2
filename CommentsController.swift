@@ -12,6 +12,7 @@ class CommentsController: MDCCollectionViewController, CommentInputAccessoryView
     var docRef : DocumentReference!
     let db = Firestore.firestore()
     
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         
@@ -25,9 +26,9 @@ class CommentsController: MDCCollectionViewController, CommentInputAccessoryView
         collectionView?.register(CommentCell.self, forCellWithReuseIdentifier: cellId)
         sizingCell = CommentCell()
         styler.cellStyle = .card
-        styler.gridColumnCount = 1
+        styler.gridColumnCount = 2
         styler.cellLayoutType = .grid
-        styler.gridPadding = 8
+        styler.gridPadding = 4
         
         let insets = self.collectionView(collectionView!,
                                          layout: collectionViewLayout,
@@ -42,6 +43,8 @@ class CommentsController: MDCCollectionViewController, CommentInputAccessoryView
                                      action: #selector(refreshOptions(sender:)),
                                      for: .valueChanged)
             collectionView?.refreshControl = refreshControl
+            
+            
         }
         
         //fetchComments()
@@ -50,35 +53,37 @@ class CommentsController: MDCCollectionViewController, CommentInputAccessoryView
     
     
     @objc private func refreshOptions(sender: UIRefreshControl) {
-        fetchComments()
+        sender.beginRefreshing()
+        observeComments()
         sender.endRefreshing()
     }
     
     
-    fileprivate func fetchComments() {
-        comments.removeAll()
-        if let postId = self.post?.id {
-            Firestore.firestore().collection("posts").document(postId).collection("comments").getDocuments() {
-                (querySnapshot, err) in
-                if let err = err  {
-                    print("Error getting documents: \(err)");
-                }
-                else  {
-                    
-                    for document in querySnapshot!.documents {
-                        let uid = document["uid"] as! String
-                        Database.fetchUserWithUID(uid: uid, completion: { (user) in
-                            let comment = Comment(user: user, dictionary: document.data())
-                            self.comments.append(comment)
-                            self.collectionView?.reloadData()
-                        })
-                    }
-                }
-            }
-        }
-    }
+//    fileprivate func fetchComments() {
+//        comments.removeAll()
+//        if let postId = self.post?.id {
+//            Firestore.firestore().collection("posts").document(postId).collection("comments").getDocuments() {
+//                (querySnapshot, err) in
+//                if let err = err  {
+//                    print("Error getting documents: \(err)");
+//                }
+//                else  {
+//                    
+//                    for document in querySnapshot!.documents {
+//                        let uid = document["uid"] as! String
+//                        Database.fetchUserWithUID(uid: uid, completion: { (user) in
+//                            let comment = Comment(user: user, dictionary: document.data())
+//                            self.comments.append(comment)
+//                        })
+//                        self.collectionView?.reloadData()
+//                    }
+//                }
+//            }
+//        }
+//    }
+//    
     
-    
+   
     deinit {
         listener?.remove()
     }
@@ -89,24 +94,23 @@ class CommentsController: MDCCollectionViewController, CommentInputAccessoryView
     {
         stopObserving()
         comments.removeAll()
+        self.collectionView?.reloadData()
         if let postId = self.post?.id {
             self.listener =
                 db.collection("posts").document(postId).collection("comments")
-                .order(by: "creationDate", descending: true)
-                .addSnapshotListener{  (snapshot, error) in
-                    guard let snapshot = snapshot else {
-                        print("Error fetching snapshot results: \(error!)")
-                        return
-                    }
-                    
-                    for document in snapshot.documents {
-                         let uid = document["uid"] as! String
-                        Database.fetchUserWithUID(uid: uid, completion: { (user) in
-                            let comment = Comment(user: user, dictionary: document.data())
+                    .order(by: "creationDate", descending: true)
+                    .addSnapshotListener{  (snapshot, error) in
+                        guard let snapshot = snapshot else {
+                            print("Error fetching snapshot results: \(error!)")
+                            return
+                        }
+                        self.comments.removeAll()
+                        for document in snapshot.documents {
+                            let comment = Comment(dictionary: document.data())
                             self.comments.append(comment)
                             self.collectionView?.reloadData()
-                        })
-                    }
+                        }
+                        
             }
         }
     }
@@ -117,6 +121,10 @@ class CommentsController: MDCCollectionViewController, CommentInputAccessoryView
     }
     
     
+    override func collectionView(_ collectionView: UICollectionView, performAction action: Selector, forItemAt indexPath: IndexPath, withSender sender: Any?) {
+        comments.remove(at: indexPath.row)
+        collectionView.deleteItems(at: [indexPath])
+    }
     
     override func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
         return comments.count
@@ -144,7 +152,7 @@ class CommentsController: MDCCollectionViewController, CommentInputAccessoryView
 
     override func collectionView(_ collectionView: UICollectionView, cellHeightAt indexPath: IndexPath) -> CGFloat {
         let comment = self.comments[indexPath.item]
-        sizingCell.populateContent(from: comment.user, text: comment.text, date: comment.creationDate, index: indexPath.item, isDryRun: true )
+        sizingCell.populateContent(username: comment.username, profileImageUrl: comment.profileImageUrl , text: comment.text, date: comment.creationDate, index: indexPath.item, isDryRun: true )
         sizingCell.setNeedsUpdateConstraints()
         sizingCell.updateConstraintsIfNeeded()
         sizingCell.contentView.setNeedsLayout()
@@ -165,13 +173,13 @@ class CommentsController: MDCCollectionViewController, CommentInputAccessoryView
     override func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: cellId, for: indexPath) as! CommentCell
         let comment = self.comments[indexPath.item]
-        cell.populateContent(from: comment.user, text: comment.text, date: comment.creationDate, index: indexPath.item, isDryRun: false )
+        cell.populateContent(username: comment.username, profileImageUrl: comment.profileImageUrl , text: comment.text, date: comment.creationDate, index: indexPath.item, isDryRun: false)
         return cell
     }
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
-        tabBarController?.tabBar.isHidden = true
+        tabBarController?.tabBar.isHidden = false 
     }
     
     override func viewWillDisappear(_ animated: Bool) {
@@ -187,42 +195,31 @@ class CommentsController: MDCCollectionViewController, CommentInputAccessoryView
     }()
     
     func didSubmit(for comment: String) {
-        if comment.count == 0 {
-            return
-        }
-        print("Trying to insert comment into Firebase")
-        guard let uid = Auth.auth().currentUser?.uid else { return }
-        
-        print("post id:", self.post?.id ?? "")
-        
-        print("Inserting comment:", comment)
-        
-        let postId = self.post?.id ?? ""
-        let values = ["text": comment,
-                      "creationDate": Date().timeIntervalSince1970,
-                      "uid": uid] as [String : Any]
-        
-        Database.database().reference().child("comments").child(postId).childByAutoId().updateChildValues(values) { (err, ref) in
+        if comment.count > 0 {
+            guard let uid = Auth.auth().currentUser?.uid else { return }
+            let postId = self.post?.id ?? ""
             
-            if let err = err {
-                print("Failed to insert comment:", err)
-                return
-            }
-            
-            print("Successfully inserted comment.")
-            
-            self.containerView.clearCommentTextField()
-        }
-        
-        
-        db.collection("posts").document(postId).collection("comments").document().setData(values)
-        {
-            err in
-            if let err = err {
-                print("Error writing document: \(err)")
-            } else {
-                print("Document successfully postId: " + postId)
-            }
+            Database.fetchUserWithUID(uid: uid ,  completion: { (mapleUser) in
+                let values = ["text": comment,
+                              "creationDate": Date().timeIntervalSince1970,
+                              "postUid" : self.post?.uid ?? "uid",
+                              "username" : mapleUser.username,
+                              "imageProfileUrl" : mapleUser.profileImageUrl,
+                              "uid": uid,
+                              "postId" : self.post?.id ?? ""
+                    ]
+                    as [String : Any]
+                
+                self.db.collection("posts").document(postId).collection("comments").document().setData(values)
+                {
+                    err in
+                    if let err = err {
+                        print("Error writing document: \(err)")
+                    } else {
+                        print("Document successfully postId: " + postId)
+                    }
+                }
+            })
         }
     }
     

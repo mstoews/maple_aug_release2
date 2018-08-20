@@ -19,6 +19,7 @@
         func didOpenFollowingList()
         func didOpenProductsList()
         func didEditPost()
+        func didOpenSettings()
     }
     
     class UserProfileHeader: MDCCardCollectionCell {
@@ -66,6 +67,34 @@
         }
         
         
+        
+        @objc func handleFollow(){
+            print("Following")
+            userIsFollowed()
+             guard let uid = Auth.auth().currentUser?.uid else { return }
+             if let userId = userView?.uid {
+                if userId == uid {
+                    return
+                }
+             Firestore.didFollowUser(uid: uid , uidFollow: userId, didFollow: true)
+              
+            }
+            
+        }
+        
+        @objc func handleFollowed() {
+            print("Followed")
+            userIsNotFollowed()
+            guard let uid = Auth.auth().currentUser?.uid else { return }
+            if let userId = userView?.uid {
+                if uid == userId {
+                    return
+                }
+                Firestore.didFollowUser(uid: uid , uidFollow: userId, didFollow: false)
+            }
+        }
+        
+        
         fileprivate func setupEditFollowButton() {
             guard let uid = Auth.auth().currentUser?.uid else { return }
             
@@ -74,8 +103,8 @@
             
             if let userId = userView?.uid {
                 if uid == userId {
-                    self.editProfileFollowButton.isHidden = false
-                    self.editProfileFollowedButton.isHidden = false
+                    self.editProfileFollowButton.isHidden = true
+                    self.editProfileFollowedButton.isHidden = true
                     getNumberOfFollowersWithId(userId: uid)
                     getNumberOfPostsWithId(userId: uid)
                     getNumberOfFollowingWithId(userId: uid)
@@ -98,12 +127,12 @@
         func userIsFollowed()
         {
             self.editProfileFollowButton.isHidden = false
-            self.editProfileFollowedButton.isHidden = false
+            self.editProfileFollowedButton.isHidden = true
         }
         
         func userIsNotFollowed() {
             
-            self.editProfileFollowButton.isHidden = false
+            self.editProfileFollowButton.isHidden = true
             self.editProfileFollowedButton.isHidden = false
             
         }
@@ -134,7 +163,7 @@
                 
                 Database.updateFollowers(userId: userId, followingUserId: uid, follow: 1)
                 Database.updateFollowing(userId: uid , followingUserId: userId, follow: 1)
-                
+                self.editProfileSetupButton.isHidden = false
                 self.editProfileFollowedButton.isHidden = false
                 self.editProfileFollowButton.isHidden = false
                 
@@ -142,6 +171,7 @@
                 //follow
                 Database.updateFollowers(userId: userId, followingUserId: uid, follow: 0)
                 Database.updateFollowing(userId: uid , followingUserId: userId, follow: 0)
+                self.editProfileSetupButton.isHidden = false
                 self.editProfileFollowedButton.isHidden = false
                 self.editProfileFollowButton.isHidden = false
             }
@@ -178,8 +208,8 @@
             let button = UIButton(type: .system)
             button.setTitle("FOLLOW\t", for: .normal)
             button.setImage(#imageLiteral(resourceName: "ic_favorite_border"), for: .normal )
-            button.tintColor = .white
-            button.backgroundColor = UIColor.themeColor()
+            button.tintColor = UIColor.themeColor()
+            button.backgroundColor = .white
             button.addTarget(self, action: #selector(handleFollow), for: .touchUpInside)
             return button
         }()
@@ -188,27 +218,29 @@
             let button = UIButton(type: .system)
             button.setTitle("FOLLOWED\t", for: .normal)
             button.setImage(#imageLiteral(resourceName: "ic_favorite"), for: .normal )
-            button.tintColor = .white
-            button.backgroundColor = UIColor.themeColor()
+            button.tintColor = UIColor.themeColor()
+            button.backgroundColor = .white
+            
+            //button.tintColor = .white
+            //button.backgroundColor = UIColor.themeColor()
             button.addTarget(self, action: #selector(handleFollowed), for: .touchUpInside)
             return button
         }()
         
-        
-        @objc func handleFollow(){
-            print("Following")
-            self.editProfileFollowedButton.isHidden = false
-            self.editProfileFollowButton.isHidden = true
-            
+        lazy var editProfileSetupButton: UIButton = {
+            let button = UIButton(type: .system)
+            button.setTitle("Settings\t", for: .normal)
+            button.setImage(#imageLiteral(resourceName: "ic_settings"), for: .normal )
+            button.tintColor = UIColor.black
+            button.backgroundColor = .white
+            button.addTarget(self, action: #selector(handleSettings), for: .touchUpInside)
+            return button
+        }()
+      
+        @objc func handleSettings()
+        {
+            delegate?.didOpenSettings()
         }
-        
-        @objc func handleFollowed() {
-            print("Followed")
-            self.editProfileFollowedButton.isHidden = true
-            self.editProfileFollowButton.isHidden = false
-            
-        }
-        
         
         
         lazy var gridButton: UIButton = {
@@ -360,6 +392,7 @@
             addSubview(profileImageView)
             addSubview(editProfileFollowButton)
             addSubview(editProfileFollowedButton)
+            addSubview(editProfileSetupButton)
             
             usernameLabel.anchor(top: topAnchor, left: leftAnchor, bottom: nil , right: rightAnchor, paddingTop: 15, paddingLeft: 10 , paddingBottom: 0, paddingRight: 0, width: 0, height: 0)
             profileImageView.anchor(top: usernameLabel.bottomAnchor, left: leftAnchor, bottom: nil, right: nil, paddingTop: 15, paddingLeft: 10 , paddingBottom: 0, paddingRight: 0, width: Width, height: Width)
@@ -378,15 +411,20 @@
         
         fileprivate func setupFavoriteButtons()
         {
-            let stackView = UIStackView(arrangedSubviews: [editProfileFollowButton, editProfileFollowedButton])
+            //let stackView = UIStackView(arrangedSubviews: [editProfileSetupButton, editProfileFollowButton, editProfileFollowedButton])
             
-            stackView.axis = .vertical;
-            stackView.distribution = .equalSpacing;
-            stackView.alignment = .leading;
-            stackView.spacing = 10;
+//            stackView.axis = .vertical;
+//            stackView.distribution = .equalSpacing;
+//            stackView.alignment = .leading;
+//            stackView.spacing = 10;
             
-            self.addSubview(stackView)
-            stackView.anchor(top: usernameLabel.bottomAnchor, left: profileImageView.rightAnchor, bottom: nil, right: nil, paddingTop: 10, paddingLeft: 170, paddingBottom: 0, paddingRight: 0, width: 120, height: 0)
+            self.addSubview(editProfileSetupButton)
+            self.addSubview(editProfileFollowButton)
+            self.addSubview(editProfileFollowedButton)
+            
+            editProfileSetupButton.anchor(top: usernameLabel.bottomAnchor, left: profileImageView.rightAnchor, bottom: nil, right: nil, paddingTop: 10, paddingLeft: 170, paddingBottom: 0, paddingRight: 0, width: 120, height: 0)
+            editProfileFollowButton.anchor(top: usernameLabel.bottomAnchor, left: profileImageView.rightAnchor, bottom: nil, right: nil, paddingTop: 10, paddingLeft: 170, paddingBottom: 0, paddingRight: 0, width: 120, height: 0)
+            editProfileFollowedButton.anchor(top: usernameLabel.bottomAnchor, left: profileImageView.rightAnchor, bottom: nil, right: nil, paddingTop: 10, paddingLeft: 170, paddingBottom: 0, paddingRight: 0, width: 120, height: 0)
             
             
         }

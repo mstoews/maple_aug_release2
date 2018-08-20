@@ -28,7 +28,7 @@ class HomeController: MDCCollectionViewController, HomePostCellDelegate,  HomeHe
     
     func didTapModify(post: FSPost) {
         print("Did tap modify ... ")
-        let editPostController = EditPostController()
+        let editPostController = PostViewerController()
         editPostController.post = post
         navigationController?.pushViewController(editPostController, animated: true)
     }
@@ -539,7 +539,7 @@ class HomeController: MDCCollectionViewController, HomePostCellDelegate,  HomeHe
     func didModifyOptions(for cell: HomePostCell)
     {
         print("Did modify options")
-        let editPostController = EditPostController()
+        let editPostController = PostViewerController()
         editPostController.post = cell.fs_post
         navigationController?.pushViewController(editPostController, animated: true)
     }

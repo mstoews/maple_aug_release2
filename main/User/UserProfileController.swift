@@ -30,6 +30,10 @@ class UserProfileController: MDCCollectionViewController,
     ChangeSignPhotoControllerDelegate,
     UserGridPostCellDelegate
 {
+    func didOpenSettings() {
+        didChangeSignUpFoto()
+    }
+    
 
     let db = Firestore.firestore()
     let cellId = "cellId"
@@ -336,7 +340,7 @@ class UserProfileController: MDCCollectionViewController,
         if let uid = Auth.auth().currentUser?.uid {
             Database.fetchUserWithUID(uid: uid) { (user) in
                 self.user = user
-                self.navigationItem.title = (self.user?.username)!
+                self.navigationItem.title = "User Page"
                 self.isCurrentUser = true
                 
             }
@@ -358,7 +362,7 @@ class UserProfileController: MDCCollectionViewController,
                 } else {
                     Database.fetchUserWithUID(uid: uid) { (user) in
                         self.user = user
-                        self.navigationItem.title = (self.user?.username)!
+                        self.navigationItem.title = "User Page"
                         self.observeQuery(uid: user.uid)
                         self.isCurrentUser = true
                     }
@@ -529,7 +533,7 @@ class UserProfileController: MDCCollectionViewController,
     
     override func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
         setTransition()
-        let editPostController = EditPostController()
+        let editPostController = PostViewerController()
         let index = indexPath.item
         editPostController.post = self.fs_posts[index]
         navigationController?.pushViewController(editPostController, animated: false)
@@ -553,7 +557,7 @@ class UserProfileController: MDCCollectionViewController,
     fileprivate func setupSettingsButton() {
         //guard let currentLoggedInUserId = Auth.auth().currentUser?.uid else { return }
         //guard let userId = user?.uid else { return }
-        navigationItem.rightBarButtonItem = UIBarButtonItem(image: #imageLiteral(resourceName: "ic_settings").withRenderingMode(.alwaysOriginal), style: .plain, target: self, action: #selector(didChangeSignUpFoto))
+        //navigationItem.rightBarButtonItem = UIBarButtonItem(image: #imageLiteral(resourceName: "ic_settings").withRenderingMode(.alwaysOriginal), style: .plain, target: self, action: #selector(didChangeSignUpFoto))
       
     }
     
@@ -701,14 +705,6 @@ class UserProfileController: MDCCollectionViewController,
             headerView = header
             headerView?.userView = self.user
             headerView?.delegate = self
-//            if profile.uid == uid {
-//                header.editProfileFollowButton.isHidden = true
-//                header.editProfileFollowedButton.isHidden = true
-//             } else {
-//                header.editProfileFollowButton.isHidden = false
-//                header.editProfileFollowedButton.isHidden = false
-//            }
-            //header.profileImageView.sd_setImage(with: NSURL(profile.profileImageUrl), completed: nil)
             return header
         }
         header.userView = self.user

@@ -240,18 +240,20 @@ class ChangeSignPhotoController: UIViewController, UIImagePickerControllerDelega
                 let values = [uid: dictionaryValues]
                 print (values)
                 
-                Database.database().reference().child("users").updateChildValues(values, withCompletionBlock: { (err, ref) in
+                Firestore.firestore().collection("users").document(uid).collection("profile").document(uid).updateData(dictionaryValues)
+                {
+                    err in
                     if let err = err {
-                        print("Failed to save user info into db:", err)
-                        return
+                        print("Error writing document: \(err)")
+                    } else {
+                       
+                        if let spinner = self.spinner {
+                            self.removeSpinner(spinner)
+                        }
+                        self.delegate?.didChangeSignUpPhoto()
+                        _ = self.navigationController?.popViewController(animated: true)
                     }
-                    self.delegate?.didChangeSignUpPhoto()
-                    
-                    if let spinner = self.spinner {
-                        self.removeSpinner(spinner)
-                    }
-                    _ = self.navigationController?.popViewController(animated: true)
-                })
+                   }
                 }
             }
         }

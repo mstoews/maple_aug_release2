@@ -158,6 +158,7 @@ class CommentInputAccessoryView: UIView {
     @objc func handleSubmit() {
         guard let commentText = commentTextView.text else { return }
         delegate?.didSubmit(for: commentText)
+        clearCommentTextField() 
     }
     
     required init?(coder aDecoder: NSCoder) {

@@ -20,7 +20,7 @@ protocol NotificationDelegate {
 }
 
 
-class NotificationPostCell: MDCCardCollectionCell {
+class NotificationPostCell: MDCCardCollectionCell , UIGestureRecognizerDelegate{
     
     var notification: NotificationFireObject? {
         didSet {
@@ -39,6 +39,16 @@ class NotificationPostCell: MDCCardCollectionCell {
     }
     
     var delegate: NotificationDelegate?
+    
+    var pan: UIPanGestureRecognizer!
+    
+    func gestureRecognizer(_ gestureRecognizer: UIGestureRecognizer, shouldRecognizeSimultaneouslyWith otherGestureRecognizer: UIGestureRecognizer) -> Bool {
+        return true
+    }
+    
+    override func gestureRecognizerShouldBegin(_ gestureRecognizer: UIGestureRecognizer) -> Bool {
+        return abs((pan.velocity(in: pan.view)).x) > abs((pan.velocity(in: pan.view)).y)
+    }
     
     let profileImageView: CustomImageView = {
         let iv = CustomImageView()
@@ -59,6 +69,8 @@ class NotificationPostCell: MDCCardCollectionCell {
         let label = UILabel()
         label.text = "Content"
         label.textColor = .darkGray
+        label.lineBreakMode = .byWordWrapping // notice the 'b' instead of 'B'
+        label.numberOfLines = 0
         label.font = UIFont.systemFont(ofSize: 12)
         return label
     }()
@@ -98,34 +110,65 @@ class NotificationPostCell: MDCCardCollectionCell {
     let attributes = [NSAttributedStringKey.font: UIFont.mdc_preferredFont(forMaterialTextStyle: .body2)]
     let captionAttr = [NSAttributedStringKey.font: UIFont.mdc_preferredFont(forMaterialTextStyle: .caption)]
     
-    func populateContent(from: MapleUser, text: String, date: Double, index: Int, isDryRun: Bool)
+    func populateContent(from: MapleUser, text: String, date: Date, index: Int, isDryRun: Bool)
     {
-        let dateCreated = Date(timeIntervalSince1970: date)
+        //let dateCreated = Date(timeIntervalSince1970: date)
         
-        let commentText =  NSMutableAttributedString(string: text, attributes: attributes)
-        commentText.addAttribute(.paragraphStyle, value: NotificationPostCell.paragraphStyle, range: NSMakeRange(0, commentText.length))
-        //commentText.append(NSAttributedString(string: "\n" + dateCreated.timeAgoDisplay() , attributes: captionAttr))
+        var msg : String?
         
-        contentLabel.attributedText = commentText
-        timeLabel.text = dateCreated.timeAgoDisplay()
-        
-        
-        if !isDryRun {
-            profileImageView.accessibilityLabel = from.username
-            profileImageView.accessibilityHint = "Double-tap to open profile."
-            profileImageView.loadImage(urlString: from.profileImageUrl)
-            profileImageView.tag = 1
-            contentLabel.tag = 1
-            profileImageView.loadImage(urlString: from.profileImageUrl)
+        if text == "comment" {
+            msg = from.username + " commented on your post."
         }
-    
+        else
+        {
+            msg = text
+        }
+        
+        if let msg = msg {
+            let commentText =  NSMutableAttributedString(string: msg , attributes: attributes)
+            commentText.addAttribute(.paragraphStyle, value: NotificationPostCell.paragraphStyle, range: NSMakeRange(0, commentText.length))
+            //commentText.append(NSAttributedString(string: "\n" + date , attributes: captionAttr))
+            
+            contentLabel.attributedText = commentText
+            timeLabel.text = date.description
+            
+            
+            if !isDryRun {
+                profileImageView.accessibilityLabel = from.username
+                profileImageView.accessibilityHint = "Double-tap to open profile."
+                profileImageView.loadImage(urlString: from.profileImageUrl)
+                profileImageView.tag = 1
+                contentLabel.tag = 1
+                profileImageView.loadImage(urlString: from.profileImageUrl)
+            }
+            
+        }
     }
+    
 
     func populateCell(from: NotificationFireObject, isDryRun: Bool)
     {
+        var NotificationText : String!
+         switch from.kind {
+            case "comment":
+                print ("Comment Event")
+                NotificationText = from.interactionUserUsername + " commented on your post."
+                break
+            case "like" :
+                print ("Like Event")
+                NotificationText = from.interactionUserUsername + " liked your post."
+                break
+            case "follow" :
+                print ("follow Event")
+                NotificationText = from.interactionUserUsername + " is now following you."
+                break
+            default:
+                print("unknown event " + from.kind)
+         }
+        
         let dateCreated = from.timestamp
         
-        let commentText =  NSMutableAttributedString(string: from.kind, attributes: attributes)
+        let commentText =  NSMutableAttributedString(string: NotificationText, attributes: attributes)
         commentText.addAttribute(.paragraphStyle, value: NotificationPostCell.paragraphStyle, range: NSMakeRange(0, commentText.length))
         
         contentLabel.attributedText = commentText
@@ -143,15 +186,15 @@ class NotificationPostCell: MDCCardCollectionCell {
         
     }
     
+    var deleteLabel1 : UILabel!
     
-
     override init(frame: CGRect) {
         super.init(frame: frame)
         self.contentView.addSubview(profileImageView)
         //self.contentView.addSubview(usernameLabel)
         self.contentView.addSubview(contentLabel)
         self.contentView.addSubview(timeLabel)
-        self.contentView.addSubview(clearButton)
+        //self.contentView.addSubview(clearButton)
         self.contentView.addSubview(saveButton)
         
         
@@ -160,19 +203,68 @@ class NotificationPostCell: MDCCardCollectionCell {
         
         profileImageView.centerYAnchor.constraint(equalTo: centerYAnchor).isActive = true
         
-
+        
         contentLabel.anchor(top: contentView.topAnchor, left: profileImageView.rightAnchor, bottom: nil,
                             right: contentView.rightAnchor, paddingTop: 0, paddingLeft: 8,
-                            paddingBottom: 5, paddingRight: 60, width: 0, height: 40)
+                            paddingBottom: 5, paddingRight: 10, width: 0, height: 45)
         
         
-        clearButton.anchor(top: contentLabel.topAnchor, left: nil, bottom: nil,
-                               right: contentView.rightAnchor, paddingTop: 0, paddingLeft: 2,
-                               paddingBottom: 5, paddingRight: 2, width: 25, height: 25)
+        //clearButton.anchor(top: contentLabel.topAnchor, left: nil, bottom: nil,
+        //                   right: contentView.rightAnchor, paddingTop: 0, paddingLeft: 2,
+        //                   paddingBottom: 5, paddingRight: 2, width: 25, height: 25)
         
         timeLabel.anchor(top: contentLabel.bottomAnchor, left:  profileImageView.rightAnchor, bottom: nil, right: nil, paddingTop: 0, paddingLeft: 8,
                          paddingBottom: 0, paddingRight: 0, width: 0, height: 10)
         
+        
+        self.insertSubview(clearButton, belowSubview: self.contentView)
+        
+//        deleteLabel1 = UILabel()
+//        deleteLabel1.text = "Delete"
+//        deleteLabel1.adjustsFontSizeToFitWidth = true
+//        deleteLabel1.textColor = UIColor.white
+//        deleteLabel1.backgroundColor = UIColor.themeColor()
+//        self.insertSubview(deleteLabel1, belowSubview: self.contentView)
+        
+        pan = UIPanGestureRecognizer(target: self, action: #selector(onPan(_:)))
+        pan.delegate = self
+        self.addGestureRecognizer(pan)
+
+    }
+    
+    override func layoutSubviews() {
+        super.layoutSubviews()
+        
+        if (pan.state == UIGestureRecognizerState.changed) {
+            let p: CGPoint = pan.translation(in: self)
+            let width = self.contentView.frame.width
+            let height = self.contentView.frame.height
+            self.contentView.frame = CGRect(x: p.x,y: 0, width: width, height: height);
+            //self.deleteLabel1.frame = CGRect(x: p.x - deleteLabel1.frame.size.width-10, y: 0, width: 100, height: height)
+            //self.clearButton.frame = CGRect(x: p.x + width + deleteLabel1.frame.size.width, y: 0, width: 100, height: height)
+            self.clearButton.frame = CGRect(x: p.x + width + clearButton.frame.size.width, y: 0, width: 70, height: height)
+        }
+        
+    }
+    
+
+    @objc func onPan(_ pan: UIPanGestureRecognizer) {
+        if pan.state == UIGestureRecognizerState.began {
+            
+        } else if pan.state == UIGestureRecognizerState.changed {
+            self.setNeedsLayout()
+        } else {
+            if abs(pan.velocity(in: self).x) > 500 {
+                let collectionView: UICollectionView = self.superview as! UICollectionView
+                let indexPath: IndexPath = collectionView.indexPathForItem(at: self.center)!
+                collectionView.delegate?.collectionView!(collectionView, performAction: #selector(onPan(_:)), forItemAt: indexPath, withSender: nil)
+            } else {
+                UIView.animate(withDuration: 0.2, animations: {
+                    self.setNeedsLayout()
+                    self.layoutIfNeeded()
+                })
+            }
+        }
     }
     
     required init?(coder aDecoder: NSCoder) {

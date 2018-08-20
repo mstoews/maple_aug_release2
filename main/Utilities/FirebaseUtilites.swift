@@ -484,16 +484,8 @@ extension Database {
     
     static func updateFollowers(userId: String, followingUserId: String, follow: Int)
     {
-        let ref = Database.database().reference().child("followers").child(userId)
         
-        let values = [followingUserId: follow]
-        ref.updateChildValues(values) { (err, ref) in
-            if let err = err {
-                print("Failed to follow user:", err)
-                return
-            }
-            print("Successfully \(userId) is following : \(followingUserId)")
-        }
+      let values = [followingUserId: follow]
         
         Firestore.firestore().collection("users").document(userId).setData(values)
         { err in
