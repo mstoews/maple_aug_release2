@@ -60,7 +60,7 @@ class PostsImage: BaseCell
     
 }
 
-class EditPostController:
+class PostViewerController:
     UIViewController,
     CLLocationManagerDelegate,
     UICollectionViewDataSource,
@@ -280,17 +280,16 @@ class EditPostController:
         }
         
         // Needed to create the custom info window
-        locationMarker = marker
-        infoWindow.removeFromSuperview()
-        infoWindow = loadNiB()
-        guard let location = locationMarker?.position else {
-            print("locationMarker is nil")
-            return false
-        }
-        infoWindow.center = mapView.projection.point(for: location)
-        infoWindow.center.y = infoWindow.center.y - sizeForOffset(view: infoWindow)
-        mapView.addSubview(infoWindow)
-        
+//        locationMarker = marker
+//        infoWindow.removeFromSuperview()
+//        infoWindow = loadNiB()
+//        guard let location = locationMarker?.position else {
+//            print("locationMarker is nil")
+//            return false
+//        }
+//        infoWindow.center = mapView.projection.point(for: location)
+//        infoWindow.center.y = infoWindow.center.y - sizeForOffset(view: infoWindow)
+//        mapView.addSubview(infoWindow)
         return false
     }
     
@@ -301,13 +300,18 @@ class EditPostController:
                 print("locationMarker is nil")
                 return
             }
-            infoWindow.center = mapView.projection.point(for: location)
-            infoWindow.center.y = infoWindow.center.y - sizeForOffset(view: infoWindow)
+            // shareShowSettings.showSettings()
+            
+            print ("did change position")
+            
+            //infoWindow.center = mapView.projection.point(for: location)
+            //infoWindow.center.y = infoWindow.center.y - sizeForOffset(view: infoWindow)
         }
     }
     
     // MARK: Needed to create the custom info window
     func mapView(_ mapView: GMSMapView, markerInfoWindow marker: GMSMarker) -> UIView? {
+        handleEditMenu()
         return UIView()
     }
     
@@ -325,6 +329,15 @@ class EditPostController:
         }
     }
     
+
+    let  shareShowSettings = ShareShowSettings()
+    
+    @objc func handleEditMenu()
+    {
+        shareShowSettings.showSettings()
+        print ("Handle Edit Menu")
+        
+    }
     
     func didTapImageCell(for cell: UserImageCell, post: Post) {
         
@@ -451,17 +464,17 @@ class EditPostController:
         containerView.addSubview(imageCollectionView)
         let mapMenu = setMapMenu()
     
-        let stackVerticalMapButtons = UIStackView(arrangedSubviews: [mapGoHome,mapSetType])
-        stackVerticalMapButtons.axis = .vertical
-        stackVerticalMapButtons.distribution = .fillEqually
-        mapMenu.addSubview(stackVerticalMapButtons)
+        //let stackVerticalMapButtons = UIStackView(arrangedSubviews: [mapGoHome,mapSetType])
+        //stackVerticalMapButtons.axis = .vertical
+        //stackVerticalMapButtons.distribution = .fillEqually
+        //mapMenu.addSubview(stackVerticalMapButtons)
         
         containerView.backgroundColor = UIColor.collectionCell()
         view.addSubview(containerView)
         containerView.addSubview(prodIcon)
         containerView.addSubview(productLabel)
         containerView.addSubview(mapView)
-        containerView.addSubview(mapMenu)
+        //containerView.addSubview(mapMenu)
         
         if #available(iOS 11.0, *) {
             containerView.anchor(top: view.safeAreaLayoutGuide.topAnchor,
@@ -522,8 +535,8 @@ class EditPostController:
                        paddingRight: 5,
                        width: 0, height: 0)
         
-        stackVerticalMapButtons.anchor(top: mapView.topAnchor, left: mapMenu.leftAnchor, bottom: mapMenu.bottomAnchor, right: mapMenu.rightAnchor)
-        mapMenu.anchor(top: mapView.topAnchor, left: mapView.leftAnchor, bottom: nil, right: nil, paddingTop: 3, paddingLeft: 3, paddingBottom: 0, paddingRight: 0, width: 40, height: 100)
+        //stackVerticalMapButtons.anchor(top: mapView.topAnchor, left: mapMenu.leftAnchor, bottom: mapMenu.bottomAnchor, right: mapMenu.rightAnchor)
+        //mapMenu.anchor(top: mapView.topAnchor, left: mapView.leftAnchor, bottom: nil, right: nil, paddingTop: 3, paddingLeft: 3, paddingBottom: 0, paddingRight: 0, width: 40, height: 100)
         
     }
     
@@ -545,13 +558,6 @@ class EditPostController:
     
     let  editShowSettings = UserPostSettingsController()
     
-    func handleEditMenu()
-    {
-        editShowSettings.showSettings()
-        print ("Handle Edit Menu")
-        
-    }
-
     
     func showControllerForSetting(_ setting: Setting) {
         let dummySettingsViewController = UIViewController()
@@ -695,7 +701,7 @@ class EditPostController:
     
 }
 
-extension EditPostController: GMSAutocompleteResultsViewControllerDelegate {
+extension PostViewerController: GMSAutocompleteResultsViewControllerDelegate {
     func resultsController(_ resultsController: GMSAutocompleteResultsViewController,
                            didAutocompleteWith place: GMSPlace) {
         searchController.isActive = false
