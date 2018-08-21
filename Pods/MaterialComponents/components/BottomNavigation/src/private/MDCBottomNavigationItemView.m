@@ -39,6 +39,7 @@ static NSString *const kMDCBottomNavigationItemViewTabString = @"tab";
 @property(nonatomic, strong) MDCBottomNavigationItemBadge *badge;
 @property(nonatomic, strong) UIImageView *iconImageView;
 @property(nonatomic, strong) UILabel *label;
+@property(nonatomic) BOOL shouldPretendToBeATab;
 
 @end
 
@@ -47,6 +48,17 @@ static NSString *const kMDCBottomNavigationItemViewTabString = @"tab";
 - (instancetype)initWithFrame:(CGRect)frame {
   self = [super initWithFrame:frame];
   if (self) {
+#if defined(__IPHONE_10_0) && (__IPHONE_OS_VERSION_MAX_ALLOWED >= __IPHONE_10_0)
+#pragma clang diagnostic push
+#pragma clang diagnostic ignored "-Wunguarded-availability"
+#pragma clang diagnostic ignored "-Wtautological-pointer-compare"
+    if (&UIAccessibilityTraitTabBar == NULL) {
+      _shouldPretendToBeATab = YES;
+    }
+#pragma clang diagnostic pop
+#else
+    _shouldPretendToBeATab = YES;
+#endif
     _titleBelowIcon = YES;
     [self commonMDCBottomNavigationItemViewInit];
   }
@@ -253,14 +265,16 @@ static NSString *const kMDCBottomNavigationItemViewTabString = @"tab";
     [labelComponents addObject:title];
   }
 
-  NSString *key =
-      kMaterialBottomNavigationStringTable[kStr_MaterialBottomNavigationTabElementAccessibilityLabel];
-  NSString *tabString =
-      NSLocalizedStringFromTableInBundle(key,
-                                         kMaterialBottomNavigationStringsTableName,
-                                         [[self class] bundle],
-                                         kMDCBottomNavigationItemViewTabString);
-  [labelComponents addObject:tabString];
+  if (self.shouldPretendToBeATab) {
+    NSString *key =
+        kMaterialBottomNavigationStringTable[kStr_MaterialBottomNavigationTabElementAccessibilityLabel];
+    NSString *tabString =
+        NSLocalizedStringFromTableInBundle(key,
+                                           kMaterialBottomNavigationStringsTableName,
+                                           [[self class] bundle],
+                                           kMDCBottomNavigationItemViewTabString);
+    [labelComponents addObject:tabString];
+  }
 
   // Speak components with a pause in between.
   return [labelComponents componentsJoinedByString:@", "];
@@ -333,7 +347,7 @@ static NSString *const kMDCBottomNavigationItemViewTabString = @"tab";
     badgeValue = nil;
   }
   self.badge.badgeValue = badgeValue;
-  if (self.accessibilityValue == nil || self.accessibilityValue.length == 0) {
+  if ([super accessibilityValue] == nil || [self accessibilityValue].length == 0) {
     self.button.accessibilityValue = badgeValue;
   }
   if (badgeValue == nil || badgeValue.length == 0) {
@@ -376,6 +390,7 @@ static NSString *const kMDCBottomNavigationItemViewTabString = @"tab";
 }
 
 -(void)setAccessibilityValue:(NSString *)accessibilityValue {
+  [super setAccessibilityValue:accessibilityValue];
   self.button.accessibilityValue = accessibilityValue;
 }
 

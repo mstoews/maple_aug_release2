@@ -128,8 +128,7 @@ class HomeController: MDCCollectionViewController, HomePostCellDelegate,  HomeHe
         stopObserving()
         
         self.listener = self.db.collection("posts")
-            //.whereField("product", isEqualTo: "TEST 12334")
-            .order(by: "creationDate", descending: true)
+            .order(by: "creationDate", descending: true).limit(to: 60)
             .addSnapshotListener{  (snapshot, error) in
                 guard let snapshot = snapshot else {
                     print("Error fetching snapshot results: \(error!)")
@@ -148,6 +147,7 @@ class HomeController: MDCCollectionViewController, HomePostCellDelegate,  HomeHe
                 }
                 
                 self.fs_posts = models
+                
                 self.documents = snapshot.documents
                 
                 if self.documents.count > 0 {
@@ -167,86 +167,41 @@ class HomeController: MDCCollectionViewController, HomePostCellDelegate,  HomeHe
         listener?.remove()
     }
     
-    
-    
-    
-    func didShowAllPosts(){
+    func didShowTopPosts(){
         stopObserving()
-        
-        db.collection("posts").limit(to: 50).order(by: "createDate").getDocuments() { (querySnapshot, err) in
-            if let err = err {
-                print("Error getting documents: \(err)")
-            } else {
-                let models = querySnapshot?.documents.map { (document) -> FSPost in
+        self.listener = self.db.collection("posts")
+            .order(by: "creationDate", descending: false).limit(to: 5)
+            .addSnapshotListener{  (snapshot, error) in
+                guard let snapshot = snapshot else {
+                    print("Error fetching snapshot results: \(error!)")
+                    return
+                }
+                
+                let models = snapshot.documents.map { (document) -> FSPost in
                     if let model = FSPost(dictionary: document.data(), postId: document.documentID) {
                         return model
-                    } else {
+                    }
+                    else {
                         // Don't use fatalError here in a real app.
                         fatalError("Unable to initialize type \(FSPost.self) with dictionary \(document.data())")
                     }
                 }
-                self.fs_posts = models!
-                self.documents = (querySnapshot?.documents)!
-            }
-            
-            
-            if self.documents.count > 0 {
-                self.collectionView?.reloadData()
-                self.collectionView?.backgroundView = nil
-            }
-            else
-            {
-                self.collectionView?.backgroundView = nil
-            }
-        }
-        observeQuery()
-    }
-    
-    
-    func didShowTopPosts(){
-        stopObserving()
-        Database.fetchUserFollowersByUserId(userId: self.uid) { (usersList) in
-            for usr in usersList {
-                self.listener = self.db.collection("posts")
-                    .whereField("uid", isEqualTo: usr)
-                    .order(by: "uid", descending: true).limit(to: 10)
-                    .addSnapshotListener{  (snapshot, error) in
-                        guard let snapshot = snapshot else {
-                            print("Error fetching snapshot results: \(error!)")
-                            return
-                        }
-                        
-                        let models = snapshot.documents.map { (document) -> FSPost in
-                            if let model = FSPost(dictionary: document.data(), postId: document.documentID) {
-                                return model
-                            }
-                            else {
-                                // Don't use fatalError here in a real app.
-                                fatalError("Unable to initialize type \(FSPost.self) with dictionary \(document.data())")
-                            }
-                        }
-                        
-                        self.fs_posts = models
-                        self.documents = snapshot.documents
-                        
-                        if self.documents.count > 0 {
-                            //print("Number of posts: \(self.documents.count)")
-                            self.collectionView?.backgroundView = nil
-                            self.collectionView?.reloadData()
-                        }
-                        else
-                        {
-                            self.collectionView?.backgroundView = nil
-                        }
-                        
+                
+                self.fs_posts = models
+                self.documents = snapshot.documents
+                
+                if self.documents.count > 0 {
+                    //print("Number of posts: \(self.documents.count)")
+                    self.collectionView?.backgroundView = nil
+                    self.collectionView?.reloadData()
                 }
-            }
+                else
+                {
+                    self.collectionView?.backgroundView = nil
+                }
+                
         }
-        observeQuery()
     }
-    
-    
-    
     
     fileprivate func baseQuery() -> Firebase.Query {
         return db.collection("posts").limit(to: 50)

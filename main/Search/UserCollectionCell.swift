@@ -18,6 +18,8 @@ import MaterialComponents
 class UserCollectionCell: MDCCardCollectionCell {
     
     static let placeholder = UIImage(named: "placeholder")!
+    var userId : String!
+    
     
     public var imageConstraint: NSLayoutConstraint?
     public var imageWidthContraint: NSLayoutConstraint?
@@ -30,11 +32,22 @@ class UserCollectionCell: MDCCardCollectionCell {
         super.init(frame: frame)
         
         backgroundColor = UIColor.collectionCell()
-        addSubview(posterImageView)
+        addSubview(profileImageView)
         addSubview(usernameLabel)
         
-        posterImageView.anchor(top: topAnchor , left: leftAnchor, bottom: nil, right: nil,paddingTop: 5, paddingLeft: 5, paddingBottom: 5, paddingRight: 0, width: 50, height: 50)
-        usernameLabel.anchor(top: topAnchor, left: posterImageView.rightAnchor, bottom: nil, right: nil,paddingTop: 5, paddingLeft: 5, paddingBottom: 5, paddingRight: 0, width: 0, height: 40)
+        let stackView = UIStackView(arrangedSubviews: [postsLabel, followersLabel, followingLabel])
+        
+        stackView.axis = .horizontal;
+        stackView.distribution = .equalSpacing;
+        stackView.alignment = .leading;
+        stackView.spacing = 10;
+        
+        addSubview(stackView)
+        stackView.anchor(top: profileImageView.topAnchor, left: profileImageView.rightAnchor, bottom: profileImageView.bottomAnchor, right: nil, paddingTop: 0, paddingLeft: 10, paddingBottom: 0, paddingRight: 0, width: 120, height: 0)
+        
+        profileImageView.anchor(top: topAnchor , left: leftAnchor, bottom: nil, right: nil,paddingTop: 5, paddingLeft: 5, paddingBottom: 5, paddingRight: 0, width: 50, height: 50)
+        usernameLabel.anchor(top: topAnchor, left: profileImageView.rightAnchor, bottom: nil, right: nil,paddingTop: 5, paddingLeft: 5, paddingBottom: 5, paddingRight: 0, width: 0, height: 40)
+        stackView.anchor(top: usernameLabel.bottomAnchor, left: profileImageView.rightAnchor, bottom: nil, right: nil  , paddingTop: 0, paddingLeft: 0, paddingBottom: 0, paddingRight: 0, width: 200, height: 30)
         
     }
     
@@ -49,7 +62,19 @@ class UserCollectionCell: MDCCardCollectionCell {
         super.init(coder: aDecoder)
     }
     
-    let posterImageView : CustomImageView = {
+    var userView: MapleUser? {
+        didSet {
+            guard let profileImageUrl = userView?.profileImageUrl else { return }
+            profileImageView.loadImage(urlString: profileImageUrl)
+            usernameLabel.text = userView?.username
+            if let uid = userView?.uid  {
+                userId = uid
+            }
+        }
+    }
+    
+    
+    let profileImageView : CustomImageView = {
         let iv = CustomImageView()
         iv.contentMode = .scaleAspectFill
         iv.clipsToBounds = true
@@ -64,11 +89,66 @@ class UserCollectionCell: MDCCardCollectionCell {
         return label
     }()
     
+    
+    fileprivate func getNumberOfPosts() {
+        if let postCount = userView?.postCount {
+            self.postsLabel.attributedText = NSMutableAttributedString(string:     "Posts\t\t : \(postCount)" , attributes: [NSAttributedStringKey.font: UIFont.boldSystemFont(ofSize: 14)])
+        }}
+    
+    fileprivate func getNumberOfFollowers()
+    {
+        // Followers
+        if let followersCount = userView?.followersCount {
+            self.followersLabel.attributedText = NSMutableAttributedString(string: "Followers\t : \(followersCount)" , attributes: [NSAttributedStringKey.font: UIFont.boldSystemFont(ofSize: 14)])
+        }
+    }
+    
+    
+    fileprivate func getNumberOfFollowing()
+    {
+        // Following
+        if let followingCount = userView?.followedCount {
+            self.followingLabel.attributedText = NSMutableAttributedString(string: "Followed\t : \(followingCount)" , attributes: [NSAttributedStringKey.font: UIFont.boldSystemFont(ofSize: 14)])
+        }
+    }
+    
+    
     /*
      Possibly it would be good to have number of posts for each user which could be added in the backend for number of likes etc.
      This would give people and indication of the activity of the users.
      */
     
+    
+    let postsLabel: UILabel = {
+        let label = UILabel()
+        var strPosts =  "0\n"
+        let attributedText = NSMutableAttributedString(string: "Posts : \(strPosts)" , attributes: [NSAttributedStringKey.font: UIFont.boldSystemFont(ofSize: 14)])
+        label.attributedText = attributedText
+        label.textAlignment = .left
+        label.numberOfLines = 0
+        return label
+    }()
+    
+    // Return number of posts from : getNumberOfPosts()
+    
+    let followersLabel: UILabel = {
+        let label = UILabel()
+        let attributedText = NSMutableAttributedString(string: "Followers : 0", attributes: [NSAttributedStringKey.font: UIFont.boldSystemFont(ofSize: 14)])
+        label.attributedText = attributedText
+        
+        label.textAlignment = .left
+        label.numberOfLines = 0
+        return label
+    }()
+    
+    let followingLabel: UILabel  = {
+        let label  = UILabel()
+        let attributedText = NSMutableAttributedString(string: "Following : 0", attributes: [NSAttributedStringKey.font: UIFont.boldSystemFont(ofSize: 14)])
+        label.attributedText = attributedText
+        label.numberOfLines = 0
+        label.textAlignment = .left
+        return label
+    }()
     
     var userRecord: UserRecord? {
         didSet {
@@ -78,7 +158,7 @@ class UserCollectionCell: MDCCardCollectionCell {
             }
             
             if let imageUrl = userRecord?.profileURL {
-                posterImageView.loadImage(urlString: imageUrl)
+                profileImageView.loadImage(urlString: imageUrl)
             }
             
         }

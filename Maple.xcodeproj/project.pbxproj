@@ -221,7 +221,6 @@
 		482FC14020DE29CF00E23DAE /* SearchTableCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SearchTableCell.swift; sourceTree = "<group>"; };
 		482FC14220DE2B7F00E23DAE /* ProductController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ProductController.swift; sourceTree = "<group>"; };
 		482FC14420DE2DC100E23DAE /* Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
-		4838EA0E2108A025008EB234 /* Maple-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "Maple-Bridging-Header.h"; sourceTree = "<group>"; };
 		48443E21210990AE00A21FC4 /* GMUClusterManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GMUClusterManager.m; sourceTree = "<group>"; };
 		48443E22210990AE00A21FC4 /* GMUStaticCluster.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GMUStaticCluster.h; sourceTree = "<group>"; };
 		48443E23210990AE00A21FC4 /* GMUMarkerClustering.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GMUMarkerClustering.h; sourceTree = "<group>"; };
@@ -462,6 +461,7 @@
 			isa = PBXGroup;
 			children = (
 				482FC14420DE2DC100E23DAE /* Info.plist */,
+				4878C22B20F85D520054F227 /* maple-release-Bridging-Header.h */,
 			);
 			path = maple_release;
 			sourceTree = "<group>";
@@ -635,6 +635,7 @@
 			isa = PBXGroup;
 			children = (
 				482FC10D20DE165B00E23DAE /* UserProfileController.swift */,
+				482FC11720DE168200E23DAE /* UserProfileHeader.swift */,
 				482FC11220DE166E00E23DAE /* UserGridCell.swift */,
 				482FC13C20DE23C800E23DAE /* UserFollowingController.swift */,
 				482FC11120DE166B00E23DAE /* ChangeSignPhotoController.swift */,
@@ -647,7 +648,6 @@
 				482FC11020DE166700E23DAE /* UserGridPostCell.swift */,
 				482FC11320DE167200E23DAE /* UserPostSettingsController.swift */,
 				482FC10B20DE165300E23DAE /* UserProfileGridCell.swift */,
-				482FC11720DE168200E23DAE /* UserProfileHeader.swift */,
 				482FC11420DE167600E23DAE /* UserProfilePhotoCell.swift */,
 				4876BB2620DA14880057E5E0 /* Amaranth-Bold.otf */,
 			);
@@ -804,7 +804,6 @@
 		4878C22C20F85DE20054F227 /* maple-release */ = {
 			isa = PBXGroup;
 			children = (
-				4878C22B20F85D520054F227 /* maple-release-Bridging-Header.h */,
 			);
 			path = "maple-release";
 			sourceTree = "<group>";
@@ -814,7 +813,6 @@
 			children = (
 				48443E802109FB6100A21FC4 /* InfoWindow.swift */,
 				48443E7E2109FB0F00A21FC4 /* MapInfoWindowView.xib */,
-				4838EA0E2108A025008EB234 /* Maple-Bridging-Header.h */,
 				48B444F51FE7341D00DFD412 /* HomeController.swift */,
 				48B444DF1FE7341700DFD412 /* HomePostCell.swift */,
 				4876BC9220DA16280057E5E0 /* PostViewerController.swift */,
@@ -1811,7 +1809,8 @@
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = com.mapleon.maple;
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				SWIFT_OBJC_BRIDGING_HEADER = "maple-release/maple-release-Bridging-Header.h";
+				SWIFT_INSTALL_OBJC_HEADER = YES;
+				SWIFT_OBJC_BRIDGING_HEADER = "maple_release/maple-release-Bridging-Header.h";
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
 				SWIFT_VERSION = 4.0;
 				TARGETED_DEVICE_FAMILY = 1;
@@ -1865,7 +1864,8 @@
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = com.mapleon.maple;
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				SWIFT_OBJC_BRIDGING_HEADER = "maple-release/maple-release-Bridging-Header.h";
+				SWIFT_INSTALL_OBJC_HEADER = YES;
+				SWIFT_OBJC_BRIDGING_HEADER = "maple_release/maple-release-Bridging-Header.h";
 				SWIFT_VERSION = 4.0;
 				TARGETED_DEVICE_FAMILY = 1;
 			};

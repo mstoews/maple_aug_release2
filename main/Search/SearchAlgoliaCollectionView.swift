@@ -342,8 +342,6 @@ class SearchAlgoliaCollectionView: MDCCollectionViewController , UISearchBarDele
                     } else {
                         print("Document does not exist in cache")
                     }
-                    
-                    
             }
         }
     }
@@ -351,12 +349,25 @@ class SearchAlgoliaCollectionView: MDCCollectionViewController , UISearchBarDele
     
     func openLocationSelected(locationRecord: LocationRecord)
     {
-        let postId = locationRecord.objectID
-        Database.fetchLocationByPostId(postId) { (Post) in
-                    //let ppc = ProductPageController()
-                    //ppc.post = Post
-                    //self.navigationController?.pushViewController( ppc, animated: true)
-                }
+          let postId = locationRecord.objectID
+            let docRef = db.collection("posts").document(postId)
+            docRef.getDocument()
+                { (document, error) in
+                    if let document = document {
+                        if let dataDescription = document.data().map(String.init(describing:)) {
+                            
+                            let data = document.data() as! [String: Any]
+                            let post = FSPost(dictionary: data, postId: postId)
+                            let editPostController = PostViewerController()
+                            editPostController.post = post
+                            self.navigationController?.pushViewController( editPostController, animated: true)
+                            
+                            print("Cached document data: \(dataDescription)")
+                        }
+                    } else {
+                        print("Document does not exist in cache")
+                    }
+            }
     }
         
     func openUserSelected(userRecord: UserRecord)

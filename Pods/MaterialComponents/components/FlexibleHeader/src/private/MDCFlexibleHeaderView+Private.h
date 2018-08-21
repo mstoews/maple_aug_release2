@@ -36,4 +36,21 @@
  */
 - (void)extractTopSafeAreaInset;
 
+/**
+ The height of the top safe area guide.
+ */
+@property(nonatomic, readonly) CGFloat topSafeAreaGuideHeight;
+
+#pragma mark - WebKit compatibility
+
+/**
+ Returns YES if the trackingScrollView is a scroll view of a WKWebView instance.
+ */
+- (BOOL)trackingScrollViewIsWebKit;
+
+/**
+ See MDCFlexibleHeaderViewController.h for documentation on this flag.
+ */
+@property(nonatomic) BOOL useAdditionalSafeAreaInsetsForWebKitScrollViews;
+
 @end

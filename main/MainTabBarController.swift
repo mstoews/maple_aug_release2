@@ -41,8 +41,6 @@ class MainTabBarController: UITabBarController, AuthUIDelegate  {
         listener?.remove()
     }
     
-    
-    
     private var listener: ListenerRegistration?
     
     fileprivate func observeNotifications()
@@ -137,6 +135,13 @@ class MainTabBarController: UITabBarController, AuthUIDelegate  {
     }()
     
     
+    lazy var FAB :  MDCFloatingButton = {
+        let fb = MDCFloatingButton()
+        return fb
+        }()
+    
+    
+    
     func setupViewControllers() {
         
         let homeNavController = templateNavController(unselectedImage: #imageLiteral(resourceName: "ic_home_white"), selectedImage: #imageLiteral(resourceName: "ic_home"), rootViewController: HomeController(collectionViewLayout: UICollectionViewFlowLayout()))
@@ -161,6 +166,16 @@ class MainTabBarController: UITabBarController, AuthUIDelegate  {
                 userProfileController.user = user
             }
         }
+        
+        let plusImage = UIImage(named: "plus")?.withRenderingMode(.alwaysTemplate)
+        let button = MDCFloatingButton()
+        button.setImage(plusImage, for: .normal)
+        //MDCFloatingActionButtonThemer.applyScheme(buttonScheme, to: button)
+        
+        tabBar.addSubview(button)
+        
+        button.anchor(top: tabBar.bottomAnchor, left: nil, bottom: nil, right: view.rightAnchor, paddingTop: 10, paddingLeft: 0, paddingBottom: 100, paddingRight: 10, width: 50, height: 50)
+        
         
         tabBar.tintColor = UIColor.red
         

@@ -20,6 +20,8 @@
 //  WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR
 //  IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 
+#include <math.h>
+
 #import "TOCropView.h"
 #import "TOCropOverlayView.h"
 #import "TOCropScrollView.h"
@@ -216,6 +218,12 @@ typedef NS_ENUM(NSInteger, TOCropViewOverlayEdge) {
     self.foregroundImageView.layer.minificationFilter = kCAFilterTrilinear;
     [self.foregroundContainerView addSubview:self.foregroundImageView];
     
+    // Disable colour inversion for the image views
+    if (@available(iOS 11.0, *)) {
+        self.foregroundImageView.accessibilityIgnoresInvertColors = YES;
+        self.backgroundImageView.accessibilityIgnoresInvertColors = YES;
+    }
+    
     // The following setup isn't needed during circular cropping
     if (circularMode) {
         UIBezierPath *circlePath = [UIBezierPath bezierPathWithOvalInRect:(CGRect){0,0,kTOCropViewCircularPathRadius, kTOCropViewCircularPathRadius}];
@@ -318,11 +326,12 @@ typedef NS_ENUM(NSInteger, TOCropViewOverlayEdge) {
     self.scrollView.zoomScale = self.scrollView.minimumZoomScale;
     self.scrollView.contentSize = scaledSize;
     
-    // If we ended up with a smaller crop box than the content, offset it in the middle
+    // If we ended up with a smaller crop box than the content, line up the content so its center
+    // is in the center of the cropbox
     if (frame.size.width < scaledSize.width - FLT_EPSILON || frame.size.height < scaledSize.height - FLT_EPSILON) {
         CGPoint offset = CGPointZero;
-        offset.x = -floorf((CGRectGetWidth(self.scrollView.frame) - scaledSize.width) * 0.5f);
-        offset.y = -floorf((CGRectGetHeight(self.scrollView.frame) - scaledSize.height) * 0.5f);
+        offset.x = -floorf(CGRectGetMidX(bounds) - (scaledSize.width * 0.5f));
+        offset.y = -floorf(CGRectGetMidY(bounds) - (scaledSize.height * 0.5f));
         self.scrollView.contentOffset = offset;
     }
 
@@ -964,13 +973,15 @@ typedef NS_ENUM(NSInteger, TOCropViewOverlayEdge) {
 
 - (void)setCropBoxFrame:(CGRect)cropBoxFrame
 {
-    if (CGRectEqualToRect(cropBoxFrame, _cropBoxFrame))
+    if (CGRectEqualToRect(cropBoxFrame, _cropBoxFrame)) {
         return;
+    }
     
-    //Upon init, sometimes the box size is still 0, which can result in CALayer issues
-    if (cropBoxFrame.size.width < FLT_EPSILON || cropBoxFrame.size.height < FLT_EPSILON)
-        return;
-    
+    // Upon init, sometimes the box size is still 0 (or NaN), which can result in CALayer issues
+    CGSize frameSize = cropBoxFrame.size;
+    if (frameSize.width < FLT_EPSILON || frameSize.height < FLT_EPSILON) { return; }
+    if (isnan(frameSize.width) || isnan(frameSize.height)) { return; }
+
     //clamp the cropping region to the inset boundaries of the screen
     CGRect contentFrame = self.contentBounds;
     CGFloat xOrigin = ceilf(contentFrame.origin.x);
@@ -1053,33 +1064,29 @@ typedef NS_ENUM(NSInteger, TOCropViewOverlayEdge) {
     CGRect cropBoxFrame = self.cropBoxFrame;
     CGPoint contentOffset = self.scrollView.contentOffset;
     UIEdgeInsets edgeInsets = self.scrollView.contentInset;
+    CGFloat scale = MIN(imageSize.width / contentSize.width, imageSize.height / contentSize.height);
     
     CGRect frame = CGRectZero;
+    
+    // Calculate the normalized origin
     frame.origin.x = floorf((floorf(contentOffset.x) + edgeInsets.left) * (imageSize.width / contentSize.width));
     frame.origin.x = MAX(0, frame.origin.x);
     
     frame.origin.y = floorf((floorf(contentOffset.y) + edgeInsets.top) * (imageSize.height / contentSize.height));
     frame.origin.y = MAX(0, frame.origin.y);
     
-    frame.size.width = ceilf(cropBoxFrame.size.width * (imageSize.width / contentSize.width));
+    // Calculate the normalized width
+    frame.size.width = ceilf(cropBoxFrame.size.width * scale);
     frame.size.width = MIN(imageSize.width, frame.size.width);
-    
-     if (cropBoxFrame.size.width == cropBoxFrame.size.height) {
-         frame.size.height = frame.size.width;
-     } else {
-         frame.size.height = ceilf(cropBoxFrame.size.height * (imageSize.height / contentSize.height));
-         frame.size.height = MIN(imageSize.height, frame.size.height);
-     }
 
-    // if frame goes beyond boundaries of the image, we move it back
-    // so it is within the boundaries.
-    if (frame.origin.x + frame.size.width > imageSize.width) {
-        frame.origin.x = imageSize.width - frame.size.width;
+    // Calculate normalized height
+    if (floor(cropBoxFrame.size.width) == floor(cropBoxFrame.size.height)) {
+        frame.size.height = frame.size.width;
+    } else {
+        frame.size.height = ceilf(cropBoxFrame.size.height * scale);
+        frame.size.height = MIN(imageSize.height, frame.size.height);
     }
-
-    if (frame.origin.y + frame.size.height > imageSize.height) {
-        frame.origin.y = imageSize.height - frame.size.height;
-    }
+    frame.size.height = MIN(imageSize.height, frame.size.height);
 
     return frame;
 }

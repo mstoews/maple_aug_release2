@@ -25,6 +25,7 @@
 #endif  // #ifndef MDC_SUBCLASSING_RESTRICTED
 
 @class MDCAppBar;
+@class MDCAppBarViewController;
 @class MDCAppBarNavigationController;
 
 /**
@@ -47,6 +48,29 @@
  be invoked.
  */
 - (void)appBarNavigationController:(nonnull MDCAppBarNavigationController *)navigationController
+       willAddAppBarViewController:(nonnull MDCAppBarViewController *)appBarViewController
+           asChildOfViewController:(nonnull UIViewController *)viewController;
+
+#pragma mark - Will be deprecated
+
+/**
+ Informs the receiver that the given App Bar will be added as a child of the given view controller.
+
+ This event is primarily intended to allow any configuration or theming of the App Bar to occur
+ before it becomes part of the view controller hierarchy.
+
+ By the time this event has fired, the navigation controller will already have attempted to infer
+ the tracking scroll view from the provided view controller.
+
+ @note This method will only be invoked if a new App Bar instance is about to be added to the view
+ controller. If a flexible header is already present in the view controller, this method will not
+ be invoked.
+
+ @warning This method will soon be deprecated. Please use
+ -appBarNavigationController:willAddAppBarViewController:asChildOfViewController: instead. Learn
+ more at components/AppBar/docs/migration-guide-appbar-appbarviewcontroller.md
+ */
+- (void)appBarNavigationController:(nonnull MDCAppBarNavigationController *)navigationController
                      willAddAppBar:(nonnull MDCAppBar *)appBar
            asChildOfViewController:(nonnull UIViewController *)viewController;
 
@@ -61,6 +85,10 @@
 
  To theme the injected App Bar, implement the delegate's
  -appBarNavigationController:willAddAppBar:asChildOfViewController: API.
+
+ @note If you use the initWithRootViewController: API you will not have been able to provide a
+ delegate yet. In this case, use the -appBarForViewController: API to retrieve the injected App Bar
+ for your root view controller and execute your delegate logic on the returned result, if any.
  */
 MDC_SUBCLASSING_RESTRICTED
 @interface MDCAppBarNavigationController : UINavigationController
@@ -72,10 +100,24 @@ MDC_SUBCLASSING_RESTRICTED
  */
 @property(nonatomic, weak, nullable) id<MDCAppBarNavigationControllerDelegate> delegate;
 
-#pragma mark - Getting App Bar instances
+#pragma mark - Getting App Bar view controller instances
+
+/**
+ Returns the injected App Bar view controller for a given view controller, if an App Bar was
+ injected.
+ */
+- (nullable MDCAppBarViewController *)appBarViewControllerForViewController:
+    (nonnull UIViewController *)viewController;
+
+@end
+
+@interface MDCAppBarNavigationController (ToBeDeprecated)
 
 /**
  Returns the injected App Bar for a given view controller, if an App Bar was injected.
+
+ @warning This method will eventually be deprecated. Use -appBarViewControllerForViewController:
+ instead. Learn more at components/AppBar/docs/migration-guide-appbar-appbarviewcontroller.md
  */
 - (nullable MDCAppBar *)appBarForViewController:(nonnull UIViewController *)viewController;
 

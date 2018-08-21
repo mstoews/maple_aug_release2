@@ -29,12 +29,12 @@
         var userPhotoURL = "USER PHOTO URL"
         var bSet = false
         
-        fileprivate func getNumberOfPostsWithId(userId: String) {
+        fileprivate func getNumberOfPosts() {
             if let postCount = userView?.postCount {
                 self.postsLabel.attributedText = NSMutableAttributedString(string:     "Posts\t\t : \(postCount)" , attributes: [NSAttributedStringKey.font: UIFont.boldSystemFont(ofSize: 14)])
             }}
         
-        fileprivate func getNumberOfFollowersWithId(userId: String)
+        fileprivate func getNumberOfFollowers()
         {
             // Followers
             if let followersCount = userView?.followersCount {
@@ -43,7 +43,7 @@
         }
         
         
-        fileprivate func getNumberOfFollowingWithId(userId: String)
+        fileprivate func getNumberOfFollowing()
         {
             // Following
             if let followingCount = userView?.followedCount {
@@ -69,21 +69,21 @@
         
         
         @objc func handleFollow(){
-            print("Following")
+            print("User has not been followed yet, so follow")
             userIsFollowed()
              guard let uid = Auth.auth().currentUser?.uid else { return }
              if let userId = userView?.uid {
                 if userId == uid {
                     return
                 }
-             Firestore.didFollowUser(uid: uid , uidFollow: userId, didFollow: true)
+                Firestore.didFollowUser(uid: uid , uidFollow: userId, didFollow: true)
               
             }
             
         }
         
         @objc func handleFollowed() {
-            print("Followed")
+            print("User has been followed already so unfollow")
             userIsNotFollowed()
             guard let uid = Auth.auth().currentUser?.uid else { return }
             if let userId = userView?.uid {
@@ -97,17 +97,10 @@
         
         fileprivate func setupEditFollowButton() {
             guard let uid = Auth.auth().currentUser?.uid else { return }
-            
-            //self.editProfileFollowButton.setImage(#imageLiteral(resourceName: "ic_favorite"), for: .normal) // solid heart
-            //self.editProfileFollowedButton.setImage(#imageLiteral(resourceName: "ic_favorite_border"), for: .normal) // heart outline
-            
             if let userId = userView?.uid {
                 if uid == userId {
                     self.editProfileFollowButton.isHidden = true
                     self.editProfileFollowedButton.isHidden = true
-                    getNumberOfFollowersWithId(userId: uid)
-                    getNumberOfPostsWithId(userId: uid)
-                    getNumberOfFollowingWithId(userId: uid)
                 } else {
                     Database.isUserBeingFollowedByUser(userId: uid, userFollowing: userId , { (isFollowed) in
                         if isFollowed.isEmpty {
@@ -117,67 +110,34 @@
                         self.userIsNotFollowed()
                     }
                 })
-                    getNumberOfFollowersWithId(userId: userId)
-                    getNumberOfPostsWithId(userId: userId)
-                    getNumberOfFollowingWithId(userId: userId)
                 }
+                getNumberOfFollowers()
+                getNumberOfPosts()
+                getNumberOfFollowing()
             }
         }
         
         func userIsFollowed()
         {
-            self.editProfileFollowButton.isHidden = false
-            self.editProfileFollowedButton.isHidden = true
+            self.editProfileFollowButton.isHidden = true
+            self.editProfileFollowedButton.isHidden = false
+            self.editProfileSetupButton.isHidden = true
         }
         
         func userIsNotFollowed() {
             
+            self.editProfileFollowButton.isHidden = false
+            self.editProfileFollowedButton.isHidden = true
+            self.editProfileSetupButton.isHidden = true
+        }
+        
+        func userIsThisUser()
+        {
             self.editProfileFollowButton.isHidden = true
-            self.editProfileFollowedButton.isHidden = false
-            
+            self.editProfileFollowedButton.isHidden = true
+            self.editProfileSetupButton.isHidden = false
         }
         
-        
-      
-        
-        @objc func handleEditProfileOrFollow() {
-            print("Execute edit profile / follow / unfollow logic...")
-            
-            guard let uid = Auth.auth().currentUser?.uid else { return }
-            
-            if uid == userView?.uid {
-                self.editProfileFollowedButton.isHidden = false
-                self.editProfileFollowButton.isHidden = false
-                return
-            }
-            /*
-             If the id has been 'followed' then set to 'Unfollowed' and change the button to can 'follow'
-             then vice versa.
-             The button should be not shown if the user opens his own profile ...
-             Check whether we are following or not and just change it the other way...
-             if hidden turn the button on and vice versa
-             */
-            
-            /* User is already followed so follow now */
-            if editProfileFollowButton.isHidden == true {
-                
-                Database.updateFollowers(userId: userId, followingUserId: uid, follow: 1)
-                Database.updateFollowing(userId: uid , followingUserId: userId, follow: 1)
-                self.editProfileSetupButton.isHidden = false
-                self.editProfileFollowedButton.isHidden = false
-                self.editProfileFollowButton.isHidden = false
-                
-            } else {
-                //follow
-                Database.updateFollowers(userId: userId, followingUserId: uid, follow: 0)
-                Database.updateFollowing(userId: uid , followingUserId: userId, follow: 0)
-                self.editProfileSetupButton.isHidden = false
-                self.editProfileFollowedButton.isHidden = false
-                self.editProfileFollowButton.isHidden = false
-            }
-        }
-        
-       
         let profileImageView: CustomImageView = {
             let iv = CustomImageView()
             return iv
