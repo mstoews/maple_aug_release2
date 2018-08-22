@@ -309,7 +309,18 @@ class SearchAlgoliaCollectionView: MDCCollectionViewController , UISearchBarDele
         case SearchType.USR :
             return CGSize(width: view.frame.width - 15 , height: 70)
         case SearchType.LOC :
-           return CGSize(width: view.frame.width - 15 , height: 100)
+            let approximateWidthOfBioTextView = view.frame.width
+            let size = CGSize(width: approximateWidthOfBioTextView, height: 60)
+            let attributes = [NSAttributedStringKey.font : UIFont.systemFont(ofSize: CGFloat(15))]
+            
+            if locationHits.count > 0 {
+                let location = locationHits[indexPath.item]
+                let estimatedFrame = NSString(string: location.description ).boundingRect(with: size, options: .usesLineFragmentOrigin, attributes: attributes, context: nil)
+                return CGSize(width: view.frame.width - 15 , height: estimatedFrame.height + 55)
+            }
+            else {
+                return CGSize(width: view.frame.width - 15 , height: 120)
+            }
         case SearchType.PRD :
             let approximateWidthOfBioTextView = view.frame.width
             let size = CGSize(width: approximateWidthOfBioTextView, height: 60)

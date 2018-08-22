@@ -98,7 +98,7 @@ class CommentsController: MDCCollectionViewController, CommentInputAccessoryView
         if let postId = self.post?.id {
             self.listener =
                 db.collection("posts").document(postId).collection("comments")
-                    .order(by: "creationDate", descending: true)
+                    .order(by: "creationDate", descending: false)
                     .addSnapshotListener{  (snapshot, error) in
                         guard let snapshot = snapshot else {
                             print("Error fetching snapshot results: \(error!)")

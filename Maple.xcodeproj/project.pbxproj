@@ -660,17 +660,17 @@
 		4876BB5420DA14B70057E5E0 /* Search */ = {
 			isa = PBXGroup;
 			children = (
+				482FC12820DE234800E23DAE /* SearchAlgoliaCollectionView.swift */,
 				0225F2E120FE0F7300137084 /* UserImageCell.swift */,
 				482FC12B20DE235500E23DAE /* AlgoliaManager.swift */,
 				482FC12F20DE236500E23DAE /* InstantSearch.swift */,
-				482FC12920DE234D00E23DAE /* LocationRecord.swift */,
 				482FC13020DE236900E23DAE /* MapCollectionCell.swift */,
-				482FC13120DE236D00E23DAE /* PostCollectionCell.swift */,
-				482FC12C20DE235900E23DAE /* PostRecord.swift */,
-				482FC12A20DE235100E23DAE /* PostSearchCollectionHeader.swift */,
-				482FC12820DE234800E23DAE /* SearchAlgoliaCollectionView.swift */,
 				482FC12D20DE235D00E23DAE /* UserCollectionCell.swift */,
+				482FC13120DE236D00E23DAE /* PostCollectionCell.swift */,
+				482FC12A20DE235100E23DAE /* PostSearchCollectionHeader.swift */,
+				482FC12C20DE235900E23DAE /* PostRecord.swift */,
 				482FC12E20DE236100E23DAE /* UserRecord.swift */,
+				482FC12920DE234D00E23DAE /* LocationRecord.swift */,
 			);
 			name = Search;
 			path = main/Search;

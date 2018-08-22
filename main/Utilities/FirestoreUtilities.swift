@@ -16,6 +16,25 @@ import GooglePlaces
 
 extension Firestore {
     
+    //MARK:- Notification
+    static func fetchNotifications(uid : String, completion: @escaping ([NotificationObject]) -> () )
+    {
+        var notificationArray = [NotificationObject]()
+        let docRef = firestore().collection("notification").whereField("uid", isEqualTo: uid)
+        docRef.getDocuments() { (querySnapshot, err) in
+            if let err = err {
+                print("Error getting documents: \(err)")
+            } else {
+                for document in querySnapshot!.documents {
+                    if let obj = NotificationObject(dictionary: document.data(), postId: document.documentID) {
+                        notificationArray.append(obj)
+                    }
+                }
+                completion(notificationArray)
+            }
+        }
+    }
+    
     
     static func removeNotification (notificationItem: Int) -> Bool {
         if notificationsFire.count > 0 {
@@ -386,24 +405,7 @@ extension Firestore {
         return postCount
     }
     
-    static func fetchNotifications(uid : String, completion: @escaping ([NotificationObject]) -> () )
-    {
-        var notificationArray = [NotificationObject]()
-        let docRef = firestore().collection("notification").whereField("uid", isEqualTo: uid)
-        docRef.getDocuments() { (querySnapshot, err) in
-            if let err = err {
-                print("Error getting documents: \(err)")
-            } else {
-                for document in querySnapshot!.documents {
-                    if let obj = NotificationObject(dictionary: document.data(), postId: document.documentID) {
-                        notificationArray.append(obj)
-                    }
-                }
-                completion(notificationArray)
-            }
-        }
-    }
-    
+   
     
     //MARK:- Algolia
     static func updateAlgoliaPost(postId: String) {
@@ -456,7 +458,7 @@ extension Firestore {
         }
     }
     
-    
+    //MARK:- DocCounts
     static func updateDocCounts()
     {
         
