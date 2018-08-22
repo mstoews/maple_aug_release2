@@ -23,6 +23,7 @@
 
 #import "GMUClusterIconGenerator.h"
 #import "GMUWrappingDictionaryKey.h"
+#import "MarkerManager.h"
 
 // Clusters smaller than this threshold will be expanded.
 static const NSUInteger kGMUMinClusterSize = 4;
@@ -100,6 +101,49 @@ static const double kGMUAnimationDuration = 0.5;  // seconds.
     _markers = [[NSMutableArray<GMSMarker *> alloc] init];
     [self addOrUpdateClusters:clusters animated:NO];
   }
+}
+
+- (GMSMarker *)markerWithPosition:(CLLocationCoordinate2D)position
+                             from:(CLLocationCoordinate2D)from
+                         userData:(id)userData
+                      clusterIcon:(UIImage *)clusterIcon
+                         animated:(BOOL)animated {
+    GMSMarker *marker = [self markerForObject:userData];
+    CLLocationCoordinate2D initialPosition = animated ? from : position;
+    marker.position = initialPosition;
+    marker.userData = userData;
+    if (clusterIcon != nil) {
+        marker.icon = clusterIcon;
+        marker.groundAnchor = CGPointMake(0.5, 0.5);
+    }
+    //added
+    else {
+        MarkerManager *data = userData;
+        if(data != nil) {
+            marker.icon = data.marker.icon;
+        }
+    }
+    //ends here
+    
+    marker.zIndex = _zIndex;
+    
+    if ([_delegate respondsToSelector:@selector(renderer:willRenderMarker:)]) {
+        [_delegate renderer:self willRenderMarker:marker];
+    }
+    marker.map = _mapView;
+    
+    if (animated) {
+        [CATransaction begin];
+        [CATransaction setAnimationDuration:kGMUAnimationDuration];
+        marker.layer.latitude = position.latitude;
+        marker.layer.longitude = position.longitude;
+        [CATransaction commit];
+    }
+    
+    if ([_delegate respondsToSelector:@selector(renderer:didRenderMarker:)]) {
+        [_delegate renderer:self didRenderMarker:marker];
+    }
+    return marker;
 }
 
 - (void)renderAnimatedClusters:(NSArray<id<GMUCluster>> *)clusters {
@@ -308,6 +352,7 @@ static const double kGMUAnimationDuration = 0.5;  // seconds.
 
 // Returns a marker at final position of |position| with attached |userData|.
 // If animated is YES, animates from the closest point from |points|.
+/*
 - (GMSMarker *)markerWithPosition:(CLLocationCoordinate2D)position
                              from:(CLLocationCoordinate2D)from
                          userData:(id)userData
@@ -341,7 +386,7 @@ static const double kGMUAnimationDuration = 0.5;  // seconds.
   }
   return marker;
 }
-
+*/
 // Returns clusters which should be rendered and is inside the camera visible region.
 - (NSArray<id<GMUCluster>> *)visibleClustersFromClusters:(NSArray<id<GMUCluster>> *)clusters {
   NSMutableArray *visibleClusters = [[NSMutableArray alloc] init];

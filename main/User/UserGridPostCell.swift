@@ -288,12 +288,6 @@ class UserGridPostCell: MDCCardCollectionCell , UICollectionViewDataSource, UICo
                     self.putNumberOfComments(likes: comments)
             }
             
-//            if let postId = post?.id {
-//                Firestore.getPostCollectionCount(collection: "bookmarked", postId: postId,  { (bookmarkCount) in
-//                    self.putNumberOfBookmarks(likes: bookmarkCount)
-//                })
-//            }
-            
             if let description = post?.description {
                 let attributedText = NSMutableAttributedString(string: description, attributes: attributeCaption)
                 captionLabel.attributedText = attributedText

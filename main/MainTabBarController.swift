@@ -250,7 +250,6 @@ extension MainTabBarController: FUIAuthDelegate {
      }
 
     func signed(in user: User) {
-        
         Firestore.updateUserProfile(user: user)
        // downloadImage(url: user.photoURL!, user: user)
        // savePhotoImage(user: user)

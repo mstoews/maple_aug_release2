@@ -64,7 +64,17 @@ class MapViewCell: UICollectionViewCell,
     
     private func generateClusterItems() {
         for location in locations {
-            let item = POIItem(position: CLLocationCoordinate2DMake(location.latitude!, location.longitude!), name: (location.place?.name)!)
+            let doubleLat = Double(location.latitude!)
+            let doubleLong = Double(location.longitude!)
+            let latitude = CLLocationDegrees(doubleLat)
+            let longitude = CLLocationDegrees(doubleLong)
+            let position = CLLocationCoordinate2DMake(latitude, longitude)
+            let marker = GMSMarker(position: position)
+            let item = POIItem(position: CLLocationCoordinate2DMake(
+                location.latitude!,
+                location.longitude!),
+                name: (location.place?.name)!,
+                marker: marker)
             clusterManager.add(item)
         }
     }
@@ -215,15 +225,18 @@ class MapViewCell: UICollectionViewCell,
         if let uid = Auth.auth().currentUser?.uid {
             Firestore.fetchLocationByUserId(uid: uid) { (locationObjects) in
                 for location in locationObjects {
-                    let lat = location.latitude
-                    let lng = location.longitude
+                    let lat = Double(location.latitude!)
+                    let lng = Double(location.longitude!)
+                    let latitude = CLLocationDegrees(lat)
+                    let longitude = CLLocationDegrees(lng)
+                    let position = CLLocationCoordinate2DMake(latitude, longitude)
+                    let marker = GMSMarker(position: position)
                     self.locations.append(location)
                     if let product = location.types {
-                        if let desc = location.address {
-                            let item = POIItem(position: CLLocationCoordinate2DMake(lat!, lng!), name: product)
+                        //if let desc = location.address {
+                            let item = POIItem(position: position, name: product, marker: marker)
                             self.clusterManager.add(item)
-                            //self.markerByLocation(location, desc, product)
-                        }
+                        //}
                     }
                 }
             }

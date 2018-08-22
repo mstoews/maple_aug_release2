@@ -301,6 +301,7 @@
 		48482FBE20DA18A00031EBFF /* SinglePhotoPost.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SinglePhotoPost.swift; sourceTree = "<group>"; };
 		484F862E20FDB56D00FAF6AA /* LaunchScreen.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = LaunchScreen.storyboard; sourceTree = "<group>"; };
 		484F88D520DE327D0083D226 /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
+		485EF5D4212D11C600ACD44A /* MarkerManager.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = MarkerManager.h; sourceTree = "<group>"; };
 		4876BB2620DA14880057E5E0 /* Amaranth-Bold.otf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Amaranth-Bold.otf"; sourceTree = "<group>"; };
 		4876BB8620DA14CC0057E5E0 /* Notification.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Notification.swift; sourceTree = "<group>"; };
 		4876BB8720DA14CC0057E5E0 /* NotificationViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NotificationViewController.swift; sourceTree = "<group>"; };
@@ -521,6 +522,7 @@
 				48443E36210990AE00A21FC4 /* GMUDefaultClusterIconGenerator.m */,
 				48443E37210990AE00A21FC4 /* GMUDefaultClusterRenderer.h */,
 				48443E38210990AE00A21FC4 /* GMUDefaultClusterIconGenerator+Testing.h */,
+				485EF5D4212D11C600ACD44A /* MarkerManager.h */,
 			);
 			path = View;
 			sourceTree = "<group>";

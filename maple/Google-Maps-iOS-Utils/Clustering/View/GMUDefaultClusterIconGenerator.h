@@ -21,6 +21,7 @@
 NS_ASSUME_NONNULL_BEGIN
 
 /**
+ GMUDefaultClusterRenderer
  * This class places clusters into range-based buckets of size to avoid having too many distinct
  * cluster icons. For example a small cluster of 1 to 9 items will have a icon with a text label
  * of 1 to 9. Whereas clusters with a size of 100 to 199 items will be placed in the 100+ bucket

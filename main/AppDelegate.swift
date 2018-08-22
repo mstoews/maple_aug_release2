@@ -93,7 +93,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     func showContent(_ content: UNNotificationContent) {
         mdcMessage.text = content.body
         mdcAction.title = content.title
-        mdcMessage.duration = 10_000
+        mdcMessage.duration = 3
         mdcAction.handler = {
             guard let feed = self.window?.rootViewController?.childViewControllers[0] as? MainTabBarController else { return }
             let userId = content.categoryIdentifier.components(separatedBy: "/user/")[1]
