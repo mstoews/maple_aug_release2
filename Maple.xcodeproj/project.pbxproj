@@ -9,7 +9,6 @@
 /* Begin PBXBuildFile section */
 		0225F32620FE0F7300137084 /* UserImageCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0225F2E120FE0F7300137084 /* UserImageCell.swift */; };
 		0225F32F20FE131200137084 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 484F862E20FDB56D00FAF6AA /* LaunchScreen.storyboard */; };
-		0225F33120FE13C500137084 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 0225F32D20FE11FB00137084 /* LaunchScreen.storyboard */; };
 		024EDBC02078EFF50069C77F /* HomeHeaderCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 02DC63492004E5C500AE9662 /* HomeHeaderCell.swift */; };
 		024EDBC32078EFFA0069C77F /* CommentCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 48B4450C1FE7342200DFD412 /* CommentCell.swift */; };
 		024EDBC52078EFFD0069C77F /* CommentInputAccessoryView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 02DC63432001BDD600AE9662 /* CommentInputAccessoryView.swift */; };
@@ -92,6 +91,8 @@
 		48482FCC20DA18A00031EBFF /* Post.swift in Sources */ = {isa = PBXBuildFile; fileRef = 48482FBC20DA18A00031EBFF /* Post.swift */; };
 		48482FCE20DA18A00031EBFF /* SinglePhotoPost.swift in Sources */ = {isa = PBXBuildFile; fileRef = 48482FBE20DA18A00031EBFF /* SinglePhotoPost.swift */; };
 		484F88D620DE327D0083D226 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 484F88D520DE327D0083D226 /* GoogleService-Info.plist */; };
+		485EF5DC212E412000ACD44A /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 485EF5DE212E412000ACD44A /* LaunchScreen.storyboard */; };
+		485EF5DF212E45AA00ACD44A /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 4878C18E20F844C70054F227 /* Assets.xcassets */; };
 		4876BB3D20DA14880057E5E0 /* Amaranth-Bold.otf in Resources */ = {isa = PBXBuildFile; fileRef = 4876BB2620DA14880057E5E0 /* Amaranth-Bold.otf */; };
 		4876BB8A20DA14CC0057E5E0 /* Notification.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4876BB8620DA14CC0057E5E0 /* Notification.swift */; };
 		4876BB8B20DA14CC0057E5E0 /* NotificationViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4876BB8720DA14CC0057E5E0 /* NotificationViewController.swift */; };
@@ -177,7 +178,6 @@
 
 /* Begin PBXFileReference section */
 		0225F2E120FE0F7300137084 /* UserImageCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UserImageCell.swift; sourceTree = "<group>"; };
-		0225F32D20FE11FB00137084 /* LaunchScreen.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; name = LaunchScreen.storyboard; path = "maple-release/LaunchScreen.storyboard"; sourceTree = SOURCE_ROOT; };
 		024EDB9F2078EE760069C77F /* maple_release.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; name = maple_release.app; path = Maple_release.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		025D70DF20B53AD4004E967B /* FlexibleHeader.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FlexibleHeader.swift; sourceTree = "<group>"; };
 		02C40A49211A8F9300A73B51 /* SharePhotoControllerMD.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SharePhotoControllerMD.swift; sourceTree = "<group>"; };
@@ -302,6 +302,7 @@
 		484F862E20FDB56D00FAF6AA /* LaunchScreen.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = LaunchScreen.storyboard; sourceTree = "<group>"; };
 		484F88D520DE327D0083D226 /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
 		485EF5D4212D11C600ACD44A /* MarkerManager.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = MarkerManager.h; sourceTree = "<group>"; };
+		485EF5DD212E412000ACD44A /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		4876BB2620DA14880057E5E0 /* Amaranth-Bold.otf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Amaranth-Bold.otf"; sourceTree = "<group>"; };
 		4876BB8620DA14CC0057E5E0 /* Notification.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Notification.swift; sourceTree = "<group>"; };
 		4876BB8720DA14CC0057E5E0 /* NotificationViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NotificationViewController.swift; sourceTree = "<group>"; };
@@ -860,9 +861,9 @@
 			isa = PBXGroup;
 			children = (
 				48443DBE21098C6500A21FC4 /* Google-Maps-iOS-Utils */,
-				0225F32D20FE11FB00137084 /* LaunchScreen.storyboard */,
 				4878C22920F85C940054F227 /* maple_release */,
 				4876BD2220DA16B20057E5E0 /* AppDelegate.swift */,
+				485EF5DE212E412000ACD44A /* LaunchScreen.storyboard */,
 				4876BBB520DA14EF0057E5E0 /* Localizable.strings */,
 				4876BBB120DA14EF0057E5E0 /* Main.storyboard */,
 				4876BBB620DA14EF0057E5E0 /* MainTabBarController.swift */,
@@ -1100,6 +1101,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				485EF5DF212E45AA00ACD44A /* Assets.xcassets in Resources */,
 				0225F32F20FE131200137084 /* LaunchScreen.storyboard in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -1108,11 +1110,11 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				0225F33120FE13C500137084 /* LaunchScreen.storyboard in Resources */,
 				4876BD1020DA164E0057E5E0 /* PlaceNameHeader.xib in Resources */,
 				4876BB3D20DA14880057E5E0 /* Amaranth-Bold.otf in Resources */,
 				4876BD0C20DA164E0057E5E0 /* PlaceDetailViewController.xib in Resources */,
 				4876BD0920DA164E0057E5E0 /* PickAPlaceViewController.xib in Resources */,
+				485EF5DC212E412000ACD44A /* LaunchScreen.storyboard in Resources */,
 				48443E7F2109FB0F00A21FC4 /* MapInfoWindowView.xib in Resources */,
 				4876BD0120DA164E0057E5E0 /* Localizable.strings in Resources */,
 				4876BBBB20DA14F00057E5E0 /* Localizable.strings in Resources */,
@@ -1495,6 +1497,14 @@
 /* End PBXTargetDependency section */
 
 /* Begin PBXVariantGroup section */
+		485EF5DE212E412000ACD44A /* LaunchScreen.storyboard */ = {
+			isa = PBXVariantGroup;
+			children = (
+				485EF5DD212E412000ACD44A /* Base */,
+			);
+			name = LaunchScreen.storyboard;
+			sourceTree = "<group>";
+		};
 		4876BCB120DA164E0057E5E0 /* Localizable.strings */ = {
 			isa = PBXVariantGroup;
 			children = (
@@ -1769,7 +1779,6 @@
 			baseConfigurationReference = 1A37A2AC267FCAB8BAC6A37F /* Pods-Maple.debug.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
-				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = "LaunchImage-2";
 				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_ENTITLEMENTS = "maple-release.entitlements";
 				CODE_SIGN_STYLE = Automatic;
@@ -1824,7 +1833,6 @@
 			baseConfigurationReference = 20978D14CE748FB57EE87399 /* Pods-Maple.release.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
-				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = "LaunchImage-2";
 				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_ENTITLEMENTS = "maple-release.entitlements";
 				CODE_SIGN_STYLE = Automatic;
