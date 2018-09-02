@@ -22,12 +22,9 @@ class ShareSetting: NSObject {
 
 
 enum ShareSettingName: String {
-    case Cancel = "Cancel & Dismiss Completely"
+    case Cancel = "Close"
     case Settings = "Picture"
-    case Navigation = "Navigation"
-    case SendFeedback = "Send Feedback"
-    case Help = "Help"
-    case SwitchAccount = "Switch Account"
+    case Navigation = "Navigate"
 }
 
 
@@ -46,19 +43,20 @@ class ShareShowSettings: NSObject, UICollectionViewDataSource, UICollectionViewD
     let cellHeight: CGFloat = 50
     
     let shareSettings: [ShareSetting] = {
-        let settingsSetting = ShareSetting(name: .Settings, imageName: "ic_settings")
+        let settingsSetting = ShareSetting(name: .Settings, imageName: "ic_shopping_cart")
         
         let cancelSetting = ShareSetting(name: .Cancel, imageName: "ic_cancel")
+        
+        let navigation = ShareSetting(name: .Navigation, imageName : "ic_navigation")
+        
         return [settingsSetting,
-                ShareSetting(name: .Navigation, imageName: "ic_navigation"),
-                ShareSetting(name: .SendFeedback, imageName: "ic_feedback"),
-                ShareSetting(name: .Help, imageName: "ic_help"),
-                ShareSetting(name: .SwitchAccount, imageName: "ic_account_circle"), cancelSetting]
+                navigation,
+                cancelSetting]
     }()
-    
     
     var homeController: SharePhotoController?
     var headerView: UserProfileHeader?
+    let pictureCellHeight = CGFloat(250.0)
     
     func showSettings() {
         //show menu
@@ -73,7 +71,7 @@ class ShareShowSettings: NSObject, UICollectionViewDataSource, UICollectionViewD
             
             window.addSubview(collectionView)
             
-            let height: CGFloat = CGFloat(shareSettings.count-1) * cellHeight + cellHeight + 50
+            let height: CGFloat = CGFloat(shareSettings.count) * cellHeight + pictureCellHeight
             let y = window.frame.height - height
             collectionView.frame = CGRect(x: 0, y: window.frame.height, width: window.frame.width, height: height)
             
@@ -125,7 +123,7 @@ class ShareShowSettings: NSObject, UICollectionViewDataSource, UICollectionViewD
         var size = CGSize(width: collectionView.frame.width, height: cellHeight)
         
         if indexPath.item == 0 {
-            size = CGSize(width: collectionView.frame.width, height: 80)
+            size = CGSize(width: collectionView.frame.width, height: pictureCellHeight)
         }
         
         return size
