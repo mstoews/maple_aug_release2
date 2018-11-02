@@ -18,8 +18,8 @@ import FirebaseFirestore
 import GoogleMaps
 import GooglePlaces
 import GooglePlacePicker
-import DKImagePickerController
-import Sharaku
+//import DKImagePickerController
+//import Sharaku
 import os.log
 import AlgoliaSearch
 import InstantSearchCore
@@ -52,7 +52,7 @@ class SharePhotoController:
     UITextViewDelegate,
     UITextFieldDelegate,
     UITableViewDataSource,
-    SHViewControllerDelegate,
+    //SHViewControllerDelegate,
     UIImageEditFilterDelegate,
     UITableViewDelegate,
     UISearchBarDelegate,
@@ -1048,11 +1048,11 @@ class SharePhotoController:
                     if item >= 0  {
                         if let img = self.imageArray[item] as UIImage? {
                             // let image = img.images![indexPath.item]
-                            let vc = SHViewController(image: img)
-                            vc.delegate = self as SHViewControllerDelegate
-                            self.currentImageItem = item
-                            os_log("Filtering an item", log: OSLog.default, type: .debug)
-                            self.present(vc, animated: true, completion: nil)
+//                            let vc = SHViewController(image: img)
+//                            vc.delegate = self as SHViewControllerDelegate
+//                            self.currentImageItem = item
+//                            os_log("Filtering an item", log: OSLog.default, type: .debug)
+//                            self.present(vc, animated: true, completion: nil)
                         }
                     }
                 }
@@ -1127,11 +1127,11 @@ class SharePhotoController:
                 let item = indexPath.item
                 if item >= 0  {
                     if let img = imageArray[item] as UIImage? {
-                        let vc = SHViewController(image: img)
-                        vc.delegate = self as SHViewControllerDelegate
-                        currentImageItem = item
-                        os_log("Filtering an item", log: OSLog.default, type: .debug)
-                        present(vc, animated: true, completion: nil)
+                        //let vc = SHViewController(image: img)
+                        //vc.delegate = self as SHViewControllerDelegate
+                        //currentImageItem = item
+                        //os_log("Filtering an item", log: OSLog.default, type: .debug)
+                        //present(vc, animated: true, completion: nil)
                     }
                 }
             }

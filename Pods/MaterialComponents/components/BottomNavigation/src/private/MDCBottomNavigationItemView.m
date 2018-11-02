@@ -1,18 +1,16 @@
-/*
- Copyright 2017-present the Material Components for iOS authors. All Rights Reserved.
-
- Licensed under the Apache License, Version 2.0 (the "License");
- you may not use this file except in compliance with the License.
- You may obtain a copy of the License at
-
- http://www.apache.org/licenses/LICENSE-2.0
-
- Unless required by applicable law or agreed to in writing, software
- distributed under the License is distributed on an "AS IS" BASIS,
- WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- See the License for the specific language governing permissions and
- limitations under the License.
- */
+// Copyright 2017-present the Material Components for iOS authors. All Rights Reserved.
+//
+// Licensed under the Apache License, Version 2.0 (the "License");
+// you may not use this file except in compliance with the License.
+// You may obtain a copy of the License at
+//
+// http://www.apache.org/licenses/LICENSE-2.0
+//
+// Unless required by applicable law or agreed to in writing, software
+// distributed under the License is distributed on an "AS IS" BASIS,
+// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+// See the License for the specific language governing permissions and
+// limitations under the License.
 #import <CoreGraphics/CoreGraphics.h>
 
 #import "MDCBottomNavigationItemView.h"
@@ -26,6 +24,7 @@
 
 static const CGFloat MDCBottomNavigationItemViewInkOpacity = 0.150f;
 static const CGFloat MDCBottomNavigationItemViewTitleFontSize = 12.f;
+static const CGFloat kMDCBottomNavigationItemViewBadgeYOffset = 4.f;
 
 // The duration of the selection transition animation.
 static const NSTimeInterval kMDCBottomNavigationItemViewTransitionDuration = 0.180f;
@@ -40,6 +39,7 @@ static NSString *const kMDCBottomNavigationItemViewTabString = @"tab";
 @property(nonatomic, strong) UIImageView *iconImageView;
 @property(nonatomic, strong) UILabel *label;
 @property(nonatomic) BOOL shouldPretendToBeATab;
+- (CGPoint)badgeCenterFromIconFrame:(CGRect)iconFrame isRTL:(BOOL)isRTL;
 
 @end
 
@@ -169,7 +169,6 @@ static NSString *const kMDCBottomNavigationItemViewTabString = @"tab";
 
 - (void)centerLayoutAnimated:(BOOL)animated {
   CGRect contentBoundingRect = UIEdgeInsetsInsetRect(self.bounds, self.contentInsets);
-  CGRect iconBounds = self.iconImageView.bounds;
   CGFloat centerY = CGRectGetMidY(contentBoundingRect);
   CGFloat centerX = CGRectGetMidX(contentBoundingRect);
   UIUserInterfaceLayoutDirection layoutDirection = self.mdf_effectiveUserInterfaceLayoutDirection;
@@ -190,18 +189,13 @@ static NSString *const kMDCBottomNavigationItemViewTabString = @"tab";
     }
     CGPoint iconImageViewCenter =
         CGPointMake(centerX, centerY - totalContentHeight / 2 + iconHeight / 2);
-    CGPoint badgeCenter =
-        CGPointMake(iconImageViewCenter.x + CGRectGetMidX(iconBounds) * (isRTL ? -1 : 1),
-                    iconImageViewCenter.y - CGRectGetMidY(iconBounds));
     self.label.center = CGPointMake(centerX, centerY + totalContentHeight / 2 - labelHeight / 2);
     if (animated) {
       [UIView animateWithDuration:kMDCBottomNavigationItemViewTransitionDuration animations:^(void) {
         self.iconImageView.center = iconImageViewCenter;
-        self.badge.center = badgeCenter;
       }];
     } else {
       self.iconImageView.center = iconImageViewCenter;
-      self.badge.center = badgeCenter;
     }
     self.label.textAlignment = NSTextAlignmentCenter;
   } else {
@@ -214,9 +208,6 @@ static NSString *const kMDCBottomNavigationItemViewTabString = @"tab";
       CGFloat labelCenterX =
           iconImageViewCenter.x + contentsWidth / 2 + self.contentHorizontalMargin;
       self.label.center = CGPointMake(labelCenterX, centerY);
-      self.badge.center =
-          CGPointMake(iconImageViewCenter.x + CGRectGetMidX(iconBounds),
-                      iconImageViewCenter.y - CGRectGetMidY(iconBounds));
       self.label.textAlignment = NSTextAlignmentLeft;
     } else {
       CGPoint iconImageViewCenter =
@@ -225,12 +216,11 @@ static NSString *const kMDCBottomNavigationItemViewTabString = @"tab";
       CGFloat labelCenterX =
           iconImageViewCenter.x - contentsWidth / 2 - self.contentHorizontalMargin;
       self.label.center = CGPointMake(labelCenterX, centerY);
-      self.badge.center =
-          CGPointMake(iconImageViewCenter.x - CGRectGetMidX(iconBounds),
-                      iconImageViewCenter.y - CGRectGetMidY(iconBounds));
       self.label.textAlignment = NSTextAlignmentRight;
     }
   }
+  self.badge.center = [self badgeCenterFromIconFrame:CGRectStandardize(self.iconImageView.frame)
+                                               isRTL:isRTL];
 }
 
 - (void)updateLabelVisibility {
@@ -280,6 +270,15 @@ static NSString *const kMDCBottomNavigationItemViewTabString = @"tab";
   return [labelComponents componentsJoinedByString:@", "];
 }
 
+- (CGPoint)badgeCenterFromIconFrame:(CGRect)iconFrame isRTL:(BOOL)isRTL {
+  if (isRTL) {
+    return CGPointMake(CGRectGetMinX(iconFrame),
+                       CGRectGetMinY(iconFrame) + kMDCBottomNavigationItemViewBadgeYOffset);
+  }
+  return CGPointMake(CGRectGetMaxX(iconFrame),
+                     CGRectGetMinY(iconFrame) + kMDCBottomNavigationItemViewBadgeYOffset);
+}
+
 - (NSString *)badgeValue {
   return self.badge.badgeValue;
 }
@@ -314,9 +313,10 @@ static NSString *const kMDCBottomNavigationItemViewTabString = @"tab";
   if (self.selected) {
     self.iconImageView.tintColor = self.selectedItemTintColor;
     self.label.textColor = self.selectedItemTitleColor;
-    self.inkView.inkColor =
-        [self.selectedItemTintColor colorWithAlphaComponent:MDCBottomNavigationItemViewInkOpacity];
   }
+  self.inkView.inkColor =
+      [self.selectedItemTintColor colorWithAlphaComponent:MDCBottomNavigationItemViewInkOpacity];
+
 }
 
 - (void)setUnselectedItemTintColor:(UIColor *)unselectedItemTintColor {
@@ -324,8 +324,6 @@ static NSString *const kMDCBottomNavigationItemViewTabString = @"tab";
   if (!self.selected) {
     self.iconImageView.tintColor = self.unselectedItemTintColor;
     self.label.textColor = self.unselectedItemTintColor;
-    self.inkView.inkColor =
-        [self.selectedItemTintColor colorWithAlphaComponent:MDCBottomNavigationItemViewInkOpacity];
   }
 }
 

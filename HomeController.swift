@@ -12,7 +12,7 @@ import FirebaseUI
 import AlgoliaSearch
 import InstantSearchCore
 import Kingfisher
-import INSPhotoGallery
+//import INSPhotoGallery
 import GoogleSignIn
 //import GoogleInvites
 import GoogleToolboxForMac
@@ -218,8 +218,8 @@ class HomeController: MDCCollectionViewController, HomePostCellDelegate,  HomeHe
         }
         
         let currentPhoto = photos[0]
-        let galleryPreview = INSPhotosViewController(photos: photos, initialPhoto: currentPhoto, referenceView: cell)
-        present(galleryPreview, animated: true, completion: nil)
+        //let galleryPreview = INSPhotosViewController(photos: photos, initialPhoto: currentPhoto, referenceView: cell)
+        //present(galleryPreview, animated: true, completion: nil)
         
     }
     
@@ -540,8 +540,8 @@ class HomeController: MDCCollectionViewController, HomePostCellDelegate,  HomeHe
             }
         }
         let currentPhoto = photos[0]
-        let galleryPreview = INSPhotosViewController(photos: photos, initialPhoto: currentPhoto, referenceView: cell)
-        present(galleryPreview, animated: true, completion: nil)
+        //let galleryPreview = INSPhotosViewController(photos: photos, initialPhoto: currentPhoto, referenceView: cell)
+        //present(galleryPreview, animated: true, completion: nil)
         
     }
     

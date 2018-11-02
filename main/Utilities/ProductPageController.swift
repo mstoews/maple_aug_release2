@@ -11,7 +11,7 @@ import Firebase
 import GoogleMaps
 import GooglePlaces
 import Kingfisher
-import INSPhotoGallery
+//import INSPhotoGallery
 import MaterialComponents
 
 enum ProductView {
@@ -165,8 +165,8 @@ class ProductPageController:  UIViewController, CLLocationManagerDelegate,  UICo
         }
         
         let currentPhoto = photos[0]
-        let galleryPreview = INSPhotosViewController(photos: photos, initialPhoto: currentPhoto, referenceView: cell)
-        present(galleryPreview, animated: true, completion: nil)
+        //let galleryPreview = INSPhotosViewController(photos: photos, initialPhoto: currentPhoto, referenceView: cell)
+        //present(galleryPreview, animated: true, completion: nil)
         
     }
     
@@ -259,8 +259,8 @@ class ProductPageController:  UIViewController, CLLocationManagerDelegate,  UICo
         }
         
         let currentPhoto = photos[0]
-        let galleryPreview = INSPhotosViewController(photos: photos, initialPhoto: currentPhoto, referenceView: cell)
-        present(galleryPreview, animated: true, completion: nil)
+        //let galleryPreview = INSPhotosViewController(photos: photos, initialPhoto: currentPhoto, referenceView: cell)
+        //present(galleryPreview, animated: true, completion: nil)
         
     }
     

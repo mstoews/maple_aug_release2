@@ -12,7 +12,7 @@ import FirebaseFirestore
 import GoogleMaps
 import GooglePlaces
 import GooglePlacePicker
-import DKImagePickerController
+//import DKImagePickerController
 import os.log
 import AlgoliaSearch
 import InstantSearchCore

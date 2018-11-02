@@ -118,6 +118,9 @@ class Reader {
   explicit Reader(leveldb::Slice src) : src_(src), ok_(true) {
   }
 
+  explicit Reader(absl::string_view src) : Reader{MakeSlice(src)} {
+  }
+
   /** Returns true if the Reader has encountered no errors. */
   bool ok() const {
     return ok_;
@@ -586,7 +589,7 @@ std::string LevelDbMutationKey::Key(absl::string_view user_id,
   return writer.result();
 }
 
-bool LevelDbMutationKey::Decode(leveldb::Slice key) {
+bool LevelDbMutationKey::Decode(absl::string_view key) {
   Reader reader{key};
   reader.ReadTableNameMatching(kMutationsTable);
   user_id_ = reader.ReadUserId();
@@ -629,7 +632,7 @@ std::string LevelDbDocumentMutationKey::Key(absl::string_view user_id,
   return writer.result();
 }
 
-bool LevelDbDocumentMutationKey::Decode(leveldb::Slice key) {
+bool LevelDbDocumentMutationKey::Decode(absl::string_view key) {
   Reader reader{key};
   reader.ReadTableNameMatching(kDocumentMutationsTable);
   user_id_ = reader.ReadUserId();
@@ -720,7 +723,7 @@ std::string LevelDbQueryTargetKey::Key(absl::string_view canonical_id,
   return writer.result();
 }
 
-bool LevelDbQueryTargetKey::Decode(leveldb::Slice key) {
+bool LevelDbQueryTargetKey::Decode(absl::string_view key) {
   Reader reader{key};
   reader.ReadTableNameMatching(kQueryTargetsTable);
   canonical_id_ = reader.ReadCanonicalId();
@@ -752,7 +755,7 @@ std::string LevelDbTargetDocumentKey::Key(model::TargetId target_id,
   return writer.result();
 }
 
-bool LevelDbTargetDocumentKey::Decode(leveldb::Slice key) {
+bool LevelDbTargetDocumentKey::Decode(absl::string_view key) {
   Reader reader{key};
   reader.ReadTableNameMatching(kTargetDocumentsTable);
   target_id_ = reader.ReadTargetId();
@@ -785,7 +788,28 @@ std::string LevelDbDocumentTargetKey::Key(const DocumentKey& document_key,
   return writer.result();
 }
 
-bool LevelDbDocumentTargetKey::Decode(leveldb::Slice key) {
+std::string LevelDbDocumentTargetKey::SentinelKey(
+    const DocumentKey& document_key) {
+  return Key(document_key, kInvalidTargetId);
+}
+
+std::string LevelDbDocumentTargetKey::EncodeSentinelValue(
+    model::ListenSequenceNumber sequence_number) {
+  std::string encoded;
+  OrderedCode::WriteSignedNumIncreasing(&encoded, sequence_number);
+  return encoded;
+}
+
+model::ListenSequenceNumber LevelDbDocumentTargetKey::DecodeSentinelValue(
+    absl::string_view slice) {
+  model::ListenSequenceNumber decoded;
+  if (!OrderedCode::ReadSignedNumIncreasing(&slice, &decoded)) {
+    HARD_FAIL("Failed to read sequence number from a sentinel row");
+  }
+  return decoded;
+}
+
+bool LevelDbDocumentTargetKey::Decode(absl::string_view key) {
   Reader reader{key};
   reader.ReadTableNameMatching(kDocumentTargetsTable);
   document_key_ = reader.ReadDocumentKey();
@@ -816,7 +840,7 @@ std::string LevelDbRemoteDocumentKey::Key(const DocumentKey& key) {
   return writer.result();
 }
 
-bool LevelDbRemoteDocumentKey::Decode(leveldb::Slice key) {
+bool LevelDbRemoteDocumentKey::Decode(absl::string_view key) {
   Reader reader{key};
   reader.ReadTableNameMatching(kRemoteDocumentsTable);
   document_key_ = reader.ReadDocumentKey();

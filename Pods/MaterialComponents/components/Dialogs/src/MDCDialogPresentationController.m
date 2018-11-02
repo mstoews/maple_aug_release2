@@ -1,22 +1,21 @@
-/*
- Copyright 2016-present the Material Components for iOS authors. All Rights Reserved.
-
- Licensed under the Apache License, Version 2.0 (the "License");
- you may not use this file except in compliance with the License.
- You may obtain a copy of the License at
-
- http://www.apache.org/licenses/LICENSE-2.0
-
- Unless required by applicable law or agreed to in writing, software
- distributed under the License is distributed on an "AS IS" BASIS,
- WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- See the License for the specific language governing permissions and
- limitations under the License.
- */
+// Copyright 2016-present the Material Components for iOS authors. All Rights Reserved.
+//
+// Licensed under the Apache License, Version 2.0 (the "License");
+// you may not use this file except in compliance with the License.
+// You may obtain a copy of the License at
+//
+// http://www.apache.org/licenses/LICENSE-2.0
+//
+// Unless required by applicable law or agreed to in writing, software
+// distributed under the License is distributed on an "AS IS" BASIS,
+// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+// See the License for the specific language governing permissions and
+// limitations under the License.
 
 #import "MDCDialogPresentationController.h"
 
 #import "MaterialKeyboardWatcher.h"
+#import "MaterialShadowLayer.h"
 #import "private/MDCDialogShadowedView.h"
 
 static CGFloat MDCDialogMinimumWidth = 280.0f;
@@ -32,7 +31,7 @@ static UIEdgeInsets MDCDialogEdgeInsets = {24, 20, 24, 20};
 
 // Tracking view that adds a shadow under the presented view. This view's frame should always match
 // the presented view's.
-@property(nonatomic) UIView *trackingView;
+@property(nonatomic) MDCDialogShadowedView *trackingView;
 
 @end
 
@@ -62,13 +61,29 @@ static UIEdgeInsets MDCDialogEdgeInsets = {24, 20, 24, 20};
   return _trackingView.layer.cornerRadius;
 }
 
+- (void)setScrimColor:(UIColor *)scrimColor {
+  self.dimmingView.backgroundColor = scrimColor;
+}
+
+- (UIColor *)scrimColor {
+  return self.dimmingView.backgroundColor;
+}
+
+- (void)setDialogElevation:(MDCShadowElevation)dialogElevation {
+  _trackingView.elevation = dialogElevation;
+}
+
+- (CGFloat)dialogElevation {
+  return _trackingView.elevation;
+}
+
 - (instancetype)initWithPresentedViewController:(UIViewController *)presentedViewController
                        presentingViewController:(UIViewController *)presentingViewController {
   self = [super initWithPresentedViewController:presentedViewController
                        presentingViewController:presentingViewController];
   if (self) {
     _dimmingView = [[UIView alloc] initWithFrame:CGRectZero];
-    _dimmingView.backgroundColor = [UIColor colorWithWhite:0.0f alpha:0.4f];
+    _dimmingView.backgroundColor = [UIColor colorWithWhite:0.0f alpha:0.32f];
     _dimmingView.alpha = 0.0f;
     _dismissGestureRecognizer =
         [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(dismiss:)];
@@ -91,11 +106,9 @@ static UIEdgeInsets MDCDialogEdgeInsets = {24, 20, 24, 20};
 
   // For pre iOS 11 devices, we are assuming a safeAreaInset of UIEdgeInsetsZero
   UIEdgeInsets containerSafeAreaInsets = UIEdgeInsetsZero;
-#if defined(__IPHONE_11_0) && (__IPHONE_OS_VERSION_MAX_ALLOWED >= __IPHONE_11_0)
   if (@available(iOS 11.0, *)) {
     containerSafeAreaInsets = self.containerView.safeAreaInsets;
   }
-#endif
 
   // Take the larger of the Safe Area insets and the Material specified insets.
   containerSafeAreaInsets.top = MAX(containerSafeAreaInsets.top, MDCDialogEdgeInsets.top);

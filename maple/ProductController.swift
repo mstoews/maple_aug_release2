@@ -16,7 +16,7 @@ import PromiseKit
 import AlgoliaSearch
 import InstantSearchCore
 import Kingfisher
-import INSPhotoGallery
+//import INSPhotoGallery
 import GoogleSignIn
 import GoogleToolboxForMac
 import GoogleMaps
@@ -93,8 +93,8 @@ class ProductController: UICollectionViewController, ProductCellDelegate, Produc
             }
         }
         let currentPhoto = photos[0]
-        let galleryPreview = INSPhotosViewController(photos: photos, initialPhoto: currentPhoto, referenceView: cell)
-        present(galleryPreview, animated: true, completion: nil)
+        //let galleryPreview = INSPhotosViewController(photos: photos, initialPhoto: currentPhoto, referenceView: cell)
+        //present(galleryPreview, animated: true, completion: nil)
         
     }
 
@@ -108,8 +108,8 @@ class ProductController: UICollectionViewController, ProductCellDelegate, Produc
         }
         
         let currentPhoto = photos[0]
-        let galleryPreview = INSPhotosViewController(photos: photos, initialPhoto: currentPhoto, referenceView: cell)
-        present(galleryPreview, animated: true, completion: nil)
+        //let galleryPreview = INSPhotosViewController(photos: photos, initialPhoto: currentPhoto, referenceView: cell)
+        //present(galleryPreview, animated: true, completion: nil)
     }
     
     var headerViewController = MDCFlexibleHeaderViewController()

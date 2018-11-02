@@ -1,18 +1,16 @@
-/*
- Copyright 2017-present the Material Components for iOS authors. All Rights Reserved.
-
- Licensed under the Apache License, Version 2.0 (the "License");
- you may not use this file except in compliance with the License.
- You may obtain a copy of the License at
-
- http://www.apache.org/licenses/LICENSE-2.0
-
- Unless required by applicable law or agreed to in writing, software
- distributed under the License is distributed on an "AS IS" BASIS,
- WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- See the License for the specific language governing permissions and
- limitations under the License.
- */
+// Copyright 2017-present the Material Components for iOS authors. All Rights Reserved.
+//
+// Licensed under the Apache License, Version 2.0 (the "License");
+// you may not use this file except in compliance with the License.
+// You may obtain a copy of the License at
+//
+// http://www.apache.org/licenses/LICENSE-2.0
+//
+// Unless required by applicable law or agreed to in writing, software
+// distributed under the License is distributed on an "AS IS" BASIS,
+// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+// See the License for the specific language governing permissions and
+// limitations under the License.
 
 #import "MDCTextInputControllerBase.h"
 #import "private/MDCTextInputControllerBase+Subclassing.h"
@@ -437,7 +435,7 @@ static UITextFieldViewMode _underlineViewModeDefault = UITextFieldViewModeWhileE
                            ? self.errorColor
                            : nonErrorColor;
   } else {
-    placeholderColor = self.textInput.isEditing ? self.activeColor : self.inlinePlaceholderColor;
+    placeholderColor = self.inlinePlaceholderColor;
   }
   if (!self.textInput.isEnabled) {
     placeholderColor = self.disabledColor;
@@ -1578,11 +1576,7 @@ static UITextFieldViewMode _underlineViewModeDefault = UITextFieldViewModeWhileE
     valueString = [valueString stringByAppendingString:@"."];
 
     self.textInput.accessibilityValue = valueString;
-    NSString *leadingUnderlineLabelText = self.textInput.leadingUnderlineLabel.text;
-    self.textInput.leadingUnderlineLabel.accessibilityLabel =
-        [NSString stringWithFormat:@"Error: %@.",
-                                   leadingUnderlineLabelText ? leadingUnderlineLabelText : @""];
-    UIAccessibilityPostNotification(UIAccessibilityLayoutChangedNotification, self.textInput.leadingUnderlineLabel);
+    self.textInput.leadingUnderlineLabel.accessibilityLabel = announcementString;
   } else {
     self.textInput.accessibilityValue = nil;
     if ([self.textInput.leadingUnderlineLabel.text isEqualToString:self.helperText]) {
@@ -1591,6 +1585,8 @@ static UITextFieldViewMode _underlineViewModeDefault = UITextFieldViewModeWhileE
       self.textInput.leadingUnderlineLabel.accessibilityLabel = nil;
     }
   }
+  UIAccessibilityPostNotification(UIAccessibilityLayoutChangedNotification,
+                                  self.textInput.leadingUnderlineLabel);
 }
 
 -(void)setHelperText:(NSString *)helperText

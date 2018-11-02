@@ -12,7 +12,7 @@
         import GooglePlaces
         
         import Kingfisher
-        import INSPhotoGallery
+//        import INSPhotoGallery
         import MaterialComponents
         
         
@@ -214,8 +214,8 @@
                 }
                 
                 let currentPhoto = photos[0]
-                let galleryPreview = INSPhotosViewController(photos: photos, initialPhoto: currentPhoto, referenceView: cell)
-                present(galleryPreview, animated: true, completion: nil)
+                //let galleryPreview = INSPhotosViewController(photos: photos, initialPhoto: currentPhoto, referenceView: cell)
+                //present(galleryPreview, animated: true, completion: nil)
                 
             }
             
@@ -415,8 +415,8 @@
                 }
                 
                 let currentPhoto = photos[0]
-                let galleryPreview = INSPhotosViewController(photos: photos, initialPhoto: currentPhoto, referenceView: cell)
-                present(galleryPreview, animated: true, completion: nil)
+                //let galleryPreview = INSPhotosViewController(photos: photos, initialPhoto: currentPhoto, referenceView: cell)
+                //present(galleryPreview, animated: true, completion: nil)
                 
             }
             

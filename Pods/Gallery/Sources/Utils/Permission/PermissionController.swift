@@ -66,11 +66,12 @@ class PermissionController: UIViewController {
   // MARK: - Action
 
   @objc func settingButtonTouched(_ button: UIButton) {
-    DispatchQueue.main.async {
-      if let settingsURL = URL(string: UIApplicationOpenSettingsURLString) {
-        UIApplication.shared.openURL(settingsURL)
-      }
-    }
+    //DispatchQueue.main.async {
+        //if let settingsURL = URL(string: UIApplication.openURL(<#T##UIApplication#>))
+        //{
+        //UIApplication.shared.openURL(settingsURL)
+      //}
+    //}
   }
 
   @objc func closeButtonTouched(_ button: UIButton) {

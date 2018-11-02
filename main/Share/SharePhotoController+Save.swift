@@ -340,8 +340,8 @@ extension SharePhotoController
             }
             print("Successfully saved post to DB")
         }
-        print("postid : \(ref.key)")
-        completion(ref.key)
+        print("postid : \(String(describing: ref.key))")
+        completion(ref.key!)
     }
     
     
