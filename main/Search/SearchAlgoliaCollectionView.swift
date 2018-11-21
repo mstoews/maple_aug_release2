@@ -301,13 +301,12 @@ class SearchAlgoliaCollectionView: MDCCollectionViewController , UISearchBarDele
     }
     
     
-    
     override func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
         
         switch TYPE
         {
         case SearchType.USR :
-            return CGSize(width: view.frame.width - 15 , height: 70)
+            return CGSize(width: view.frame.width - 15 , height: 110)
         case SearchType.LOC :
             let approximateWidthOfBioTextView = view.frame.width
             let size = CGSize(width: approximateWidthOfBioTextView, height: 60)
@@ -327,7 +326,7 @@ class SearchAlgoliaCollectionView: MDCCollectionViewController , UISearchBarDele
             let attributes = [NSAttributedStringKey.font : UIFont.systemFont(ofSize: CGFloat(15))]
             let post = postHits[indexPath.item]
             let estimatedFrame = NSString(string: post.description).boundingRect(with: size, options: .usesLineFragmentOrigin, attributes: attributes, context: nil)
-            return CGSize(width: view.frame.width - 15 , height: estimatedFrame.height + 45)
+            return CGSize(width: view.frame.width - 15 , height: estimatedFrame.height + 60)
         }
     }
     

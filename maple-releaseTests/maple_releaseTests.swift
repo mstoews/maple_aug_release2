@@ -7,7 +7,7 @@
 //
 
 import XCTest
-@testable import maple_release
+
 
 class maple_releaseTests: XCTestCase {
     

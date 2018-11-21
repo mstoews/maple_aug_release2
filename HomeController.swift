@@ -8,13 +8,11 @@
 import UIKit
 import Firebase
 import FirebaseUI
-//import PromiseKit
 import AlgoliaSearch
 import InstantSearchCore
 import Kingfisher
-//import INSPhotoGallery
+import Lightbox
 import GoogleSignIn
-//import GoogleInvites
 import GoogleToolboxForMac
 import MaterialComponents
 
@@ -65,7 +63,6 @@ class HomeController: MDCCollectionViewController, HomePostCellDelegate,  HomeHe
         
     }
     
-    
     var FETCH_TYPE = FetchType.USER
     let db = Firestore.firestore()
     let cellId = "cellId"
@@ -84,9 +81,6 @@ class HomeController: MDCCollectionViewController, HomePostCellDelegate,  HomeHe
     var refreshPageNationation = 20
     
     lazy var uid = Auth.auth().currentUser!.uid
-    
-    //    lazy var database = Database.database()
-    //    lazy var ref = self.database.reference()
     lazy var appDelegate = UIApplication.shared.delegate as! AppDelegate
     
     let red = MDCPalette.red.tint600
@@ -217,9 +211,7 @@ class HomeController: MDCCollectionViewController, HomePostCellDelegate,  HomeHe
             photos.append(pt)
         }
         
-        let currentPhoto = photos[0]
-        //let galleryPreview = INSPhotosViewController(photos: photos, initialPhoto: currentPhoto, referenceView: cell)
-        //present(galleryPreview, animated: true, completion: nil)
+        
         
     }
     
@@ -309,14 +301,6 @@ class HomeController: MDCCollectionViewController, HomePostCellDelegate,  HomeHe
             }
         }
     }
-    
-//    func IsLiked(postid: String, uid: String) -> Promise<Int> {
-//        var intLiked = 0
-//        Database.IsPostLiked(postid, uid) { (liked) in
-//            intLiked = liked
-//        }
-//        return Promise(value: intLiked)
-//    }
     
     
     func updateFireStore (post: Post)
@@ -507,8 +491,7 @@ class HomeController: MDCCollectionViewController, HomePostCellDelegate,  HomeHe
     }
     
     func didTapImage(for cell: PostImage, post: FSPost) {
-        var photos: [PhotoViewModel] = []
-        
+        /* var photos: [PhotoViewModel] = []
         
         if post.largeUrlArray.count > 0 {
             for url in post.largeUrlArray {
@@ -539,10 +522,27 @@ class HomeController: MDCCollectionViewController, HomePostCellDelegate,  HomeHe
                 }
             }
         }
-        let currentPhoto = photos[0]
-        //let galleryPreview = INSPhotosViewController(photos: photos, initialPhoto: currentPhoto, referenceView: cell)
-        //present(galleryPreview, animated: true, completion: nil)
+       */
         
+        var images : [LightboxImage] = []
+        if post.imageUrlArray.count > 0 {
+            for url in post.imageUrlArray {
+                //let pt = PhotoViewModel(imageURL: URL(string: url),thumbnailImageURL: URL(string: url))
+                //pt.caption = post.product + "\n" + post.description
+                //photos.append(pt)
+                let lightbox = LightboxImage(imageURL: URL(string: url)! )
+                lightbox.text = post.product + "\n" + post.description
+                images.append( lightbox)
+                
+            }
+        }
+        
+        if images.count > 0 {
+            let controller = LightboxController(images: images)
+            controller.dynamicBackground = true
+            present(controller, animated: true, completion: nil)
+        }
+       
     }
     
     func didTapBookmark(for cell: HomePostCell) {

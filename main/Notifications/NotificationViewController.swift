@@ -140,7 +140,7 @@ class NotificationViewController: MDCCollectionViewController , NotificationDele
     
     override func collectionView(_ collectionView: UICollectionView, performAction action: Selector, forItemAt indexPath: IndexPath, withSender sender: Any?) {
         if Firestore.removeNotification(notificationItem: indexPath.item) == true {
-            notificationsFire.remove(at: indexPath.item)
+            // notificationsFire.remove(at: indexPath.item)
             collectionView.deleteItems(at: [indexPath])
         }
     }
@@ -158,7 +158,7 @@ class NotificationViewController: MDCCollectionViewController , NotificationDele
         if let uid = Auth.auth().currentUser?.uid {
             self.listener =
                  Firestore.firestore().collection("users").document(uid).collection("events")
-                    //.whereField("deleted", isEqualTo: false)
+                 // Firestore.firestore().collection("users").document(uid).collection("events").whereField("deleted", isEqualTo: false)
                     .addSnapshotListener{  (snapshot, error) in
                         guard let snapshot = snapshot else {
                             print("Error fetching snapshot results: \(error!)")
@@ -183,7 +183,13 @@ class NotificationViewController: MDCCollectionViewController , NotificationDele
 
     override func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
         let mainTabBarController = UIApplication.shared.keyWindow?.rootViewController as? MainTabBarController
-        mainTabBarController?.setNotificationBadgeCount(count: notificationsFire.count)
+        
+        //mainTabBarController?.setNotificationBadgeCount(count: notificationsFire.count)
+        
+        // immediately clear all the notifications that were currently observed
+        // mark the new notifications with a new mark of some kind
+        
+        mainTabBarController?.setNotificationBadgeCount(count: 0)
         return  notificationsFire.count
     }
     
@@ -198,14 +204,11 @@ class NotificationViewController: MDCCollectionViewController , NotificationDele
         dummyCell.notification = notificationsFire[indexPath.item]
         dummyCell.layoutIfNeeded()
         
-        //let targetSize = CGSize(width: view.frame.width  , height: 1000)
-        //let estimatedSize = dummyCell.systemLayoutSizeFitting(targetSize)
+        if Firestore.removeNotification(notificationItem: indexPath.item) == true {
+            print("Removed")
+        }
         
-        //let notificationObj = notificationsFire[indexPath.item]
-        
-        //cell.populateCell(from: notificationObj , isDryRun: true )
-        
-        let height = CGFloat(56.0)
+         let height = CGFloat(56.0)
         return CGSize(width: view.frame.width - 30, height: height)
     }
     
@@ -216,10 +219,7 @@ class NotificationViewController: MDCCollectionViewController , NotificationDele
     
     override func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: cellId, for: indexPath) as! NotificationPostCell
-        //let notification = self.allNotifications[indexPath.item]
-        //let notification = self.allNotifications
         let notificationObj = notificationsFire[indexPath.item]
-        // Database.fetchUserWithUID(uid: notification.interactionUser, completion: { (user) in
         cell.delegate = self
         cell.populateCell(from: notificationObj , isDryRun: false )
         return cell
@@ -252,7 +252,7 @@ class NotificationViewController: MDCCollectionViewController , NotificationDele
         }
     }
     
-    func openUserProfile(_ senderUid: String, _ notification: NotificationObject){
+    func openUserProfile(_ senderUid: String, _ notificationType: String){
         
         let backItem = UIBarButtonItem(title: "Back", style: .plain , target: nil, action: nil)
         navigationItem.backBarButtonItem = backItem
@@ -265,7 +265,7 @@ class NotificationViewController: MDCCollectionViewController , NotificationDele
         _ = self.navigationController?.popToRootViewController(animated: false)
         
         
-        switch notification.type {
+        switch notificationType {
         case "following":
             let userProfileController = UserProfileController(collectionViewLayout: UICollectionViewFlowLayout())
             Database.fetchUserWithUID(uid: senderUid, completion: { (user) in
@@ -290,7 +290,7 @@ class NotificationViewController: MDCCollectionViewController , NotificationDele
         case "comments":
             let commentsController = CommentsController(collectionViewLayout: UICollectionViewFlowLayout())
             
-            Database.fetchPostByUidPostId(uid: senderUid, postId: notification.postid, completion: { (Post) in
+            Database.fetchPostByUidPostId(uid: senderUid, postId: notificationType, completion: { (Post) in
                 if let postId = Post.id {
                     if postId.count > 0 {
                         //todo
@@ -305,6 +305,14 @@ class NotificationViewController: MDCCollectionViewController , NotificationDele
         }
         
     }
+    
+    override func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
+       
+        if let uid = Auth.auth().currentUser?.uid {
+            openUserProfile(uid, "comment" )
+        }
+    }
+    
     
 }
 

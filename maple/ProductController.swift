@@ -92,7 +92,7 @@ class ProductController: UICollectionViewController, ProductCellDelegate, Produc
                 }
             }
         }
-        let currentPhoto = photos[0]
+        //let currentPhoto = photos[0]
         //let galleryPreview = INSPhotosViewController(photos: photos, initialPhoto: currentPhoto, referenceView: cell)
         //present(galleryPreview, animated: true, completion: nil)
         
@@ -107,7 +107,7 @@ class ProductController: UICollectionViewController, ProductCellDelegate, Produc
             photos.append(pt)
         }
         
-        let currentPhoto = photos[0]
+        //let currentPhoto = photos[0]
         //let galleryPreview = INSPhotosViewController(photos: photos, initialPhoto: currentPhoto, referenceView: cell)
         //present(galleryPreview, animated: true, completion: nil)
     }

@@ -18,8 +18,6 @@ import FirebaseFirestore
 import GoogleMaps
 import GooglePlaces
 import GooglePlacePicker
-//import DKImagePickerController
-//import Sharaku
 import os.log
 import AlgoliaSearch
 import InstantSearchCore
@@ -52,18 +50,13 @@ class SharePhotoController:
     UITextViewDelegate,
     UITextFieldDelegate,
     UITableViewDataSource,
-    //SHViewControllerDelegate,
     UIImageEditFilterDelegate,
     UITableViewDelegate,
     UISearchBarDelegate,
     UISearchResultsUpdating,
-    //UITabBarDelegate,
     SearchProgressDelegate,
-    //ImagePickerDelegate,
     LightboxControllerDismissalDelegate,
     GalleryControllerDelegate,
-    //UIImagePickerControllerDelegate,
-    //UINavigationControllerDelegate,
     CropViewControllerDelegate,
     ShareHeaderCellDelegate
 {
@@ -94,6 +87,36 @@ class SharePhotoController:
     let attributeTitle = [NSAttributedStringKey.font: UIFont.mdc_preferredFont(forMaterialTextStyle: .title)]
     let attributeCaption = [NSAttributedStringKey.font: UIFont.mdc_preferredFont(forMaterialTextStyle: .body2 )]
     let attributeSubline = [NSAttributedStringKey.font: UIFont.mdc_preferredFont(forMaterialTextStyle:  .subheadline )]
+    
+    var gallery: GalleryController!
+    let editor: VideoEditing = VideoEditor()
+    
+    /*******************************/
+    
+    let myGroup = DispatchGroup()
+    
+    /*******************************/
+    
+    
+    var bottomConstraint: NSLayoutConstraint!
+    var heightConstraint: NSLayoutConstraint!
+    var inputBottomConstraint: NSLayoutConstraint!
+    var sendBottomConstraint: NSLayoutConstraint!
+    var insets: UIEdgeInsets!
+    
+    var bottomAreaInset: CGFloat = 0
+    var isEditingComment = false
+    var CellType = CT.PIC
+    
+    var referenceURL: URL!
+    
+    var spinner : UIView!
+    
+    var urlArray = [String]()
+    
+    var docRef : DocumentReference!
+    let db = Firestore.firestore()
+    
     
     public var imageConstraint: NSLayoutConstraint?
     public var imageWidthConstraint: NSLayoutConstraint?
@@ -159,8 +182,6 @@ class SharePhotoController:
             self?.showLightbox(images: resolvedImages.compactMap({ $0 }))
         })
     }
-    
-    
     
     public func updateImageViewWithImage(_ image: UIImage, fromCropViewController cropViewController: CropViewController) {
         imageView.image = image
@@ -260,34 +281,7 @@ class SharePhotoController:
     }
     
     
-    var gallery: GalleryController!
-    let editor: VideoEditing = VideoEditor()
-    
-    /*******************************/
-    
-    let myGroup = DispatchGroup()
-    
-    /*******************************/
-    
-    
-    var bottomConstraint: NSLayoutConstraint!
-    var heightConstraint: NSLayoutConstraint!
-    var inputBottomConstraint: NSLayoutConstraint!
-    var sendBottomConstraint: NSLayoutConstraint!
-    var insets: UIEdgeInsets!
-    
-    var bottomAreaInset: CGFloat = 0
-    var isEditingComment = false
-    var CellType = CT.PIC
-    
-    var referenceURL: URL!
-    
-    var spinner : UIView!
-    
-    var urlArray = [String]()
-    
-    var docRef : DocumentReference!
-    let db = Firestore.firestore()
+   
     
     var post: Post? {
         didSet {
@@ -363,8 +357,9 @@ class SharePhotoController:
         
         
         Gallery.Config.VideoEditor.savesEditedVideoToLibrary = true
-        
-        
+        Gallery.Config.initialTab = Gallery.Config.GalleryTab.imageTab
+        Gallery.Config.tabsToShow = [Gallery.Config.GalleryTab.imageTab, Gallery.Config.GalleryTab.cameraTab]
+    
         updateConstraints()
         
         /***** Set up toasts *****/
@@ -583,7 +578,7 @@ class SharePhotoController:
         let containerView = MDCCard()
         containerView.setShadowElevation(ShadowElevation.cardResting, for: UIControlState.normal)
         
-        containerView.inkView.inkColor = UIColor.themeColor()
+        containerView.inkView.inkColor = .lightGray
         containerView.backgroundColor = UIColor.collectionBackGround()
         
         buttonMenus.backgroundColor = UIColor.rgb(red: 240, green: 240, blue: 240)
@@ -621,11 +616,9 @@ class SharePhotoController:
         containerView.addSubview(buttonMenus)
         containerView.addSubview(mapLabel)
         containerView.addSubview(Photos)
+        containerView.addSubview(FloatingPlusButton)
         
-        
-     
-        
-        
+    
         if #available(iOS 11.0, *) {
             containerView.anchor(top: view.safeAreaLayoutGuide.topAnchor , left: view.leftAnchor, bottom: view.safeAreaLayoutGuide.bottomAnchor, right: view.rightAnchor,
                                  paddingTop: 7,
@@ -693,8 +686,21 @@ class SharePhotoController:
         //buttonMenus.isHidden = true
         
         tableProductsView.anchor(top: Products.bottomAnchor, left: Products.leftAnchor, bottom: Description.bottomAnchor , right: Products.rightAnchor)
+        
+        FloatingPlusButton.anchor(top: Description.bottomAnchor, left: nil, bottom: nil, right: containerView.rightAnchor, paddingTop: 100, paddingLeft: 0, paddingBottom: 0, paddingRight: 10, width: 0, height: 0)
+        
+        
+   
      }
     
+    
+    let FloatingPlusButton : MDCFloatingButton = {
+        let fb = MDCFloatingButton()
+        fb.backgroundColor = UIColor.themeColor()
+        fb.setImage(#imageLiteral(resourceName: "ic_add_to_photos_white"), for: .normal)
+        fb.addTarget(self, action: #selector(handleShareAll(_:)), for: .touchUpInside)
+        return fb
+    }()
     
     var textFieldControllerFloating : MDCTextInputController?
     
@@ -822,7 +828,7 @@ class SharePhotoController:
     
     lazy var addPhotos: UIButton = {
         let button = UIButton(type: .system)
-        button.setImage(#imageLiteral(resourceName: "ic_camera"), for: .normal)
+        //button.setImage(#imageLiteral(resourceName: "ic_camera"), for: .normal)
         button.sizeToFit()
         button.tintColor = UIColor.themeColor()
         button.addTarget(self, action: #selector(handleAddPhotos), for: .touchUpInside)
@@ -857,10 +863,10 @@ class SharePhotoController:
         rightButton.tintColor = UIColor.themeColor()
         navigationItem.rightBarButtonItem = rightButton
         
-        let leftImage = UIImage(named: "ic_menu")?.withRenderingMode(.automatic)
-        let leftButton = UIBarButtonItem(image: leftImage, style: .done , target: self, action: #selector(handleEditMenu))
-        leftButton.tintColor = UIColor.themeColor()
-        navigationItem.leftBarButtonItem = leftButton
+//        let leftImage = UIImage(named: "ic_menu")?.withRenderingMode(.automatic)
+//        let leftButton = UIBarButtonItem(image: leftImage, style: .done , target: self, action: #selector(handleEditMenu))
+//        leftButton.tintColor = UIColor.themeColor()
+//        navigationItem.leftBarButtonItem = leftButton
     }
     
     let noneText = NSLocalizedString("PlaceDetails.MissingValue", comment: "The value of a property which is missing")
@@ -1197,41 +1203,13 @@ class SharePhotoController:
         present(navController, animated: true, completion: nil)
     }
     
-    //let imagePicker = ImagePickerController()
-    
-    
     @objc func handleAddPhotos(){
         CellType = CT.PIC
-//        imagePicker.expandGalleryView()
-//        imagePicker.delegate = self
-//        imagePicker.imageLimit = 5
-//        imagePicker.doneButtonTitle = "Select"
-//     
         gallery = GalleryController()
         gallery.delegate = self
         present(gallery, animated: true, completion: nil)
     }
     
-    
-//    @objc func handleAddPhotos(){
-//        CellType = CT.PIC
-//        let pickerController = DKImagePickerController()
-//        //self.imageArray.removeAll()
-//        pickerController.didSelectAssets = { (assets: [DKAsset]) in
-//            for asset in assets {
-//                asset.fetchOriginalImage(true, completeBlock: { image, info in
-//                    self.imageArray.append(image!)
-//                })
-//                self.imageCollectionView.reloadData()
-//            }
-//        }
-//        self.present(pickerController, animated: true) {}
-//    }
-    
-    
-    // public var imageAssets : [UIImage] {
-    //    return AssetManager.resolveAssets(imagePicker.stack.assets)
-    // }
     
     let RunningCountLabel: UILabel = {
         let TextField = UILabel()

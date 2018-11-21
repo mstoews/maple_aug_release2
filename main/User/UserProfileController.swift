@@ -14,7 +14,7 @@ import FBSDKLoginKit
 import GoogleMaps
 import GooglePlaces
 import Kingfisher
-//import INSPhotoGallery
+import Lightbox
 import MaterialComponents
 
 
@@ -225,41 +225,25 @@ class UserProfileController: MDCCollectionViewController,
     
     
     func didTapImageCell(for cell: UserImageCell, post: FSPost) {
-
-        var photos: [PhotoViewModel] = []
-
-        if post.largeUrlArray.count > 0 {
-            for url in post.largeUrlArray {
-                let pt = PhotoViewModel(imageURL: URL(string: url),thumbnailImageURL: URL(string: url))
-                pt.caption = post.product  + "\n" + post.description
-                photos.append(pt)
+        
+        var images : [LightboxImage] = []
+        if post.imageUrlArray.count > 0 {
+            for url in post.imageUrlArray {
+                //let pt = PhotoViewModel(imageURL: URL(string: url),thumbnailImageURL: URL(string: url))
+                //pt.caption = post.product + "\n" + post.description
+                //photos.append(pt)
+                let lightbox = LightboxImage(imageURL: URL(string: url)! )
+                lightbox.text = post.product + "\n" + post.description
+                images.append( lightbox)
+                
             }
         }
         
-        if post.largeUrlArray.count > 0 {
-            var count : Int
-            count = 0
-            if post.imageUrlArray.count > 0 {
-                for url in post.imageUrlArray {
-                    photos[count].thumbnailImageURL = URL(string: url)
-                    count = count + 1
-                }
-            }
+        if images.count > 0 {
+            let controller = LightboxController(images: images)
+            controller.dynamicBackground = true
+            present(controller, animated: true, completion: nil)
         }
-        else
-        {
-            if post.imageUrlArray.count > 0 {
-                for url in post.imageUrlArray {
-                    let pt = PhotoViewModel(imageURL: URL(string: url),thumbnailImageURL: URL(string: url))
-                    pt.caption = post.product + "\n" + post.description
-                    photos.append(pt)
-                }
-            }
-        }
-        let currentPhoto = photos[0]
-        //let galleryPreview = INSPhotosViewController(photos: photos, initialPhoto: currentPhoto, referenceView: cell)
-        //present(galleryPreview, animated: true, completion: nil)
-        
     }
     
     func didTapImage(for cell: PostImage, post: FSPost) {

@@ -12,7 +12,6 @@ import FirebaseFirestore
 import GoogleMaps
 import GooglePlaces
 import GooglePlacePicker
-//import DKImagePickerController
 import os.log
 import AlgoliaSearch
 import InstantSearchCore
@@ -35,11 +34,12 @@ class PostImageObject: MDCCardCollectionCell
         let buttonMenus = UIView()
         buttonMenus.backgroundColor = UIColor.themeColor()
         buttonMenus.layer.cornerRadius = 10
-        buttonMenus.backgroundColor = UIColor(displayP3Red: 255, green: 200, blue: 150, alpha: 0.3)
+        buttonMenus.backgroundColor = UIColor(displayP3Red: 255, green: 200, blue: 150, alpha: 1.3)
         buttonMenus.layer.borderWidth = 2
         buttonMenus.layer.borderColor = UIColor.black.cgColor
         
-        let stackButtonsVerical = UIStackView(arrangedSubviews: [deleteButton,filterButton,editButton])
+        //let stackButtonsVerical = UIStackView(arrangedSubviews: [deleteButton,filterButton,editButton])
+        let stackButtonsVerical = UIStackView(arrangedSubviews: [deleteButton,editButton])
         stackButtonsVerical.axis = .vertical
         stackButtonsVerical.distribution = .fillEqually
         
@@ -51,7 +51,7 @@ class PostImageObject: MDCCardCollectionCell
         imageView.anchor(top: topAnchor, left: leftAnchor, bottom: bottomAnchor, right: rightAnchor)
         
         stackButtonsVerical.anchor(top: buttonMenus.topAnchor, left: buttonMenus.leftAnchor, bottom: buttonMenus.bottomAnchor, right: buttonMenus.rightAnchor)
-        buttonMenus.anchor(top: topAnchor, left: leftAnchor, bottom: nil , right: nil, paddingTop: 20, paddingLeft: 5, paddingBottom: 0, paddingRight: 20,  width: 40, height: 120)
+        buttonMenus.anchor(top: topAnchor, left: leftAnchor, bottom: nil , right: nil, paddingTop: 20, paddingLeft: 5, paddingBottom: 0, paddingRight: 20,  width: 40, height: 80)
     }
     
     var delegate: UIImageEditFilterDelegate?

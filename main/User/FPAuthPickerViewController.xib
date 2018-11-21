@@ -1,10 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="14109" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="14313.18" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES">
     <device id="retina5_9" orientation="portrait">
         <adaptation id="fullscreen"/>
     </device>
     <dependencies>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="14088"/>
+        <deployment identifier="iOS"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="14283.14"/>
         <capability name="Named colors" minToolsVersion="9.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
@@ -21,7 +22,7 @@
             <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
             <subviews>
                 <label opaque="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="By signing up, you agree to our Terms &amp; Privacy Policy." textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="COI-gL-6Ql">
-                    <rect key="frame" x="16" y="770.66666666666663" width="343" height="13.333333333333371"/>
+                    <rect key="frame" x="16" y="771" width="343" height="13"/>
                     <gestureRecognizers/>
                     <fontDescription key="fontDescription" style="UICTFontTextStyleCaption2"/>
                     <color key="textColor" red="1" green="0.38026782009999999" blue="0.24897895219999999" alpha="0.79834653249999998" colorSpace="custom" customColorSpace="displayP3"/>
@@ -30,9 +31,12 @@
                         <outletCollection property="gestureRecognizers" destination="nwX-ex-rCz" appends="YES" id="ZHN-MZ-B84"/>
                     </connections>
                 </label>
-                <imageView opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" fixedFrame="YES" insetsLayoutMarginsFromSafeArea="NO" image="maple_start_image" translatesAutoresizingMaskIntoConstraints="NO" id="cNs-n7-XBH">
+                <imageView opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" insetsLayoutMarginsFromSafeArea="NO" image="maple_start_image" translatesAutoresizingMaskIntoConstraints="NO" id="cNs-n7-XBH">
                     <rect key="frame" x="118" y="229" width="138" height="170"/>
-                    <autoresizingMask key="autoresizingMask"/>
+                    <constraints>
+                        <constraint firstAttribute="width" constant="138" id="RIp-9a-G7U"/>
+                        <constraint firstAttribute="height" constant="170" id="Wo6-HK-UHk"/>
+                    </constraints>
                 </imageView>
             </subviews>
             <color key="backgroundColor" name="Color"/>
@@ -41,8 +45,10 @@
                 <accessibilityTraits key="traits" image="YES"/>
             </accessibility>
             <constraints>
+                <constraint firstItem="cNs-n7-XBH" firstAttribute="centerX" secondItem="COI-gL-6Ql" secondAttribute="centerX" id="40g-bM-f1e"/>
                 <constraint firstAttribute="bottom" secondItem="COI-gL-6Ql" secondAttribute="bottom" constant="28" id="7ux-nK-kLk"/>
                 <constraint firstAttribute="trailing" secondItem="COI-gL-6Ql" secondAttribute="trailing" constant="16" id="Iny-kB-e8f"/>
+                <constraint firstItem="cNs-n7-XBH" firstAttribute="top" secondItem="i5M-Pr-FkT" secondAttribute="top" constant="229" id="MLq-nG-UFz"/>
                 <constraint firstItem="COI-gL-6Ql" firstAttribute="leading" secondItem="i5M-Pr-FkT" secondAttribute="leading" constant="16" id="ZJV-mR-8mW"/>
             </constraints>
             <point key="canvasLocation" x="34.5" y="53"/>

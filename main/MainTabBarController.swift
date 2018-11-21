@@ -8,7 +8,6 @@
 import UIKit
 import Firebase
 import FirebaseUI
-
 import FBSDKLoginKit
 import GoogleMaps
 import GooglePlaces
@@ -49,7 +48,7 @@ class MainTabBarController: UITabBarController, AuthUIDelegate  {
         
         if let uid = Auth.auth().currentUser?.uid {
             self.listener =
-                  Firestore.firestore().collection("users").document(uid).collection("events")
+                  Firestore.firestore().collection("users").document(uid).collection("events").whereField("deleted", isEqualTo: false)
                     //.whereField("deleted", isEqualTo: false)
                     .addSnapshotListener{  (snapshot, error) in
                         guard let snapshot = snapshot else {
@@ -190,6 +189,8 @@ class MainTabBarController: UITabBarController, AuthUIDelegate  {
         for item in items {
             item.imageInsets = UIEdgeInsets(top: 4, left: 0, bottom: -4, right: 0)
         }
+        
+        
     }
     
     

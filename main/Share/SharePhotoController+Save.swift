@@ -68,6 +68,18 @@ extension SharePhotoController
         let message = MDCSnackbarMessage()
         MDCSnackbarManager.snackbarMessageViewBackgroundColor  = UIColor.themeColor()
         
+        
+        if imageArray.count == 0 {
+            message.text = "Select at least one image ..."
+            let action = MDCSnackbarMessageAction()
+            action.handler = actionGoToSelectImages
+            action.title = "OK"
+            message.action = action
+            MDCSnackbarManager.show(message)
+            return
+        }
+        
+        
         guard let product = Products.text, product.count > 0  else {
             message.text = "Please enter a product name ..."
             MDCSnackbarManager.show(message)
@@ -91,16 +103,7 @@ extension SharePhotoController
             return
         }
         
-        if imageArray.count == 0 {
-            message.text = "Select at least one image ..."
-            let action = MDCSnackbarMessageAction()
-            action.handler = actionGoToSelectImages
-            action.title = "OK"
-            message.action = action
-            MDCSnackbarManager.show(message)
-            return
-        }
-        
+       
        
         
         navigationItem.rightBarButtonItem?.isEnabled = false

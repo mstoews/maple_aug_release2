@@ -46,7 +46,7 @@ class PostCollectionCell: MDCCardCollectionCell  {
         addSubview(detailLabel)
         addSubview(usernameLabel)
         
-        posterImageView.anchor(top: topAnchor , left: leftAnchor, bottom: nil, right: nil,paddingTop: 5, paddingLeft: 5, paddingBottom: 5, paddingRight: 0, width: 50, height: 50)
+        posterImageView.anchor(top: topAnchor , left: leftAnchor, bottom: nil, right: nil,paddingTop: 5, paddingLeft: 5, paddingBottom: 5, paddingRight: 0, width: 100, height: 100)
         titleLabel.anchor(top: topAnchor, left: posterImageView.rightAnchor, bottom: nil, right: nil ,paddingTop: 5, paddingLeft: 5, paddingBottom: 5, paddingRight: 0, width: 0, height: 25)
         usernameLabel.anchor(top: titleLabel.bottomAnchor, left: posterImageView.rightAnchor, bottom: nil, right: nil,paddingTop: 5, paddingLeft: 5, paddingBottom: 5, paddingRight: 0, width: 0, height: 15)
         detailLabel.anchor(top: usernameLabel.bottomAnchor, left: posterImageView.rightAnchor, bottom: bottomAnchor, right: rightAnchor ,paddingTop: 5, paddingLeft: 5, paddingBottom: 5, paddingRight: 0, width: 0, height: 0)
@@ -107,7 +107,7 @@ class PostCollectionCell: MDCCardCollectionCell  {
     var post: PostRecord? {
         didSet {
             if let name = post?.name {
-                usernameLabel.attributedText = NSMutableAttributedString(string: "User Name : \(name)" , attributes: attributeCaption)
+                usernameLabel.attributedText = NSMutableAttributedString(string: "\(name)" , attributes: attributeCaption)
             }
             
             if let product = post?.product {

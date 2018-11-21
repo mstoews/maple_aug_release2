@@ -24,6 +24,7 @@ class SharePhotoCell: MDCCardCollectionCell {
     let photoImageView: CustomImageView = {
         let iv = CustomImageView()
         iv.contentMode = .scaleAspectFill
+        iv.loadImage(urlString: "ic_camera")
         iv.clipsToBounds = true
         return iv
     }()

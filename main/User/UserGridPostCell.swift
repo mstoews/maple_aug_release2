@@ -566,7 +566,7 @@ class UserGridPostCell: MDCCardCollectionCell , UICollectionViewDataSource, UICo
     
     @objc func handleBookmark() {
         print("Handle the bookmarks ...")
-        bookmarkButton.setImage(post?.hasBookmark == true ? #imageLiteral(resourceName: "ic_bookmark").withRenderingMode(.alwaysOriginal) : #imageLiteral(resourceName: "ic_check").withRenderingMode(.alwaysOriginal), for: .normal)
+        bookmarkButton.setImage(post?.hasBookmark == true ? #imageLiteral(resourceName: "ic_bookmark").withRenderingMode(.alwaysOriginal) : #imageLiteral(resourceName: "ic_bookmark_border").withRenderingMode(.alwaysOriginal), for: .normal)
         delegate?.didTapBookmark(for: self)
     }
     
@@ -613,9 +613,6 @@ class UserGridPostCell: MDCCardCollectionCell , UICollectionViewDataSource, UICo
         delegate?.didTapModify(post: post)
     }
     
-   
-
-
   
     
     func setupCollectionCell ()
