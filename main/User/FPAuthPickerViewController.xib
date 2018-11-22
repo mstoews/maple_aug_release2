@@ -32,10 +32,9 @@
                     </connections>
                 </label>
                 <imageView opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" insetsLayoutMarginsFromSafeArea="NO" image="maple_start_image" translatesAutoresizingMaskIntoConstraints="NO" id="cNs-n7-XBH">
-                    <rect key="frame" x="118" y="229" width="138" height="170"/>
+                    <rect key="frame" x="74" y="74" width="219" height="227"/>
                     <constraints>
-                        <constraint firstAttribute="width" constant="138" id="RIp-9a-G7U"/>
-                        <constraint firstAttribute="height" constant="170" id="Wo6-HK-UHk"/>
+                        <constraint firstAttribute="height" constant="227" id="Xd2-Z7-fDU"/>
                     </constraints>
                 </imageView>
             </subviews>
@@ -45,13 +44,14 @@
                 <accessibilityTraits key="traits" image="YES"/>
             </accessibility>
             <constraints>
-                <constraint firstItem="cNs-n7-XBH" firstAttribute="centerX" secondItem="COI-gL-6Ql" secondAttribute="centerX" id="40g-bM-f1e"/>
                 <constraint firstAttribute="bottom" secondItem="COI-gL-6Ql" secondAttribute="bottom" constant="28" id="7ux-nK-kLk"/>
                 <constraint firstAttribute="trailing" secondItem="COI-gL-6Ql" secondAttribute="trailing" constant="16" id="Iny-kB-e8f"/>
-                <constraint firstItem="cNs-n7-XBH" firstAttribute="top" secondItem="i5M-Pr-FkT" secondAttribute="top" constant="229" id="MLq-nG-UFz"/>
+                <constraint firstItem="cNs-n7-XBH" firstAttribute="top" secondItem="i5M-Pr-FkT" secondAttribute="top" constant="74" id="Vfz-CC-rOO"/>
+                <constraint firstAttribute="trailing" secondItem="cNs-n7-XBH" secondAttribute="trailing" constant="82" id="X09-Jp-bc2"/>
                 <constraint firstItem="COI-gL-6Ql" firstAttribute="leading" secondItem="i5M-Pr-FkT" secondAttribute="leading" constant="16" id="ZJV-mR-8mW"/>
+                <constraint firstItem="cNs-n7-XBH" firstAttribute="leading" secondItem="i5M-Pr-FkT" secondAttribute="leading" constant="74" id="dS1-zN-cE6"/>
             </constraints>
-            <point key="canvasLocation" x="34.5" y="53"/>
+            <point key="canvasLocation" x="34.399999999999999" y="52.463054187192121"/>
         </view>
         <tapGestureRecognizer id="nwX-ex-rCz">
             <connections>
