@@ -11,6 +11,7 @@ import FirebaseFirestore
 import BadgeSwift
 import MaterialComponents
 
+
 protocol HomePostCellDelegate {
     func didTapComment(post: FSPost)
     func didLike(for cell: HomePostCell)
@@ -417,9 +418,14 @@ class HomePostCell: MDCCardCollectionCell , UICollectionViewDataSource, UICollec
     let imageCollectionView: UICollectionView = {
         let layout = UICollectionViewFlowLayout()
         layout.scrollDirection = .horizontal
+        layout.minimumInteritemSpacing = 0
+        layout.minimumLineSpacing = 0
+    
         let collectionView = UICollectionView(frame: .zero, collectionViewLayout: layout)
         collectionView.backgroundColor = UIColor.collectionCell()
         collectionView.translatesAutoresizingMaskIntoConstraints = false
+        collectionView.isPagingEnabled = true
+        collectionView.showsHorizontalScrollIndicator = false
         return collectionView
     }()
     
@@ -452,8 +458,10 @@ class HomePostCell: MDCCardCollectionCell , UICollectionViewDataSource, UICollec
         let topDividerView = UIView()
         topDividerView.backgroundColor = UIColor.collectionCell()
         
-        let bottomDividerView = UIView()
-        bottomDividerView.backgroundColor = UIColor.collectionCell()
+        /*
+         let bottomDividerView = UIView()
+         bottomDividerView.backgroundColor = UIColor.collectionCell()
+        */
         
         imageCollectionView.dataSource = self
         imageCollectionView.delegate = self
@@ -474,7 +482,7 @@ class HomePostCell: MDCCardCollectionCell , UICollectionViewDataSource, UICollec
         addSubview(bookmarkButton)
         addSubview(mapButton)
         addSubview(topDividerView)
-        addSubview(bottomDividerView)
+        //addSubview(bottomDividerView)
         addSubview(captionLabel)
         addSubview(likeBadge)
         addSubview(bookMarkBadge)
@@ -510,7 +518,9 @@ class HomePostCell: MDCCardCollectionCell , UICollectionViewDataSource, UICollec
         bookMarkBadge.anchor(top: topDividerView.topAnchor, left: bookmarkButton.rightAnchor, bottom: nil, right: nil, paddingTop: 2, paddingLeft: -22, paddingBottom: 0, paddingRight: 0 , width: 0, height: 0)
         
         captionLabel.anchor(top: likeButton.bottomAnchor, left: leftAnchor, bottom: bottomAnchor, right: rightAnchor, paddingTop: 0, paddingLeft: 8, paddingBottom: 0, paddingRight: 8, width: 0, height: 0)
-        bottomDividerView.anchor(top: captionLabel.bottomAnchor, left: leftAnchor, bottom: nil, right: rightAnchor,paddingTop: 5 , paddingLeft: 0, paddingBottom: 0, paddingRight: 5, width: 0, height: 0.5)
+        //bottomDividerView.anchor(top: captionLabel.bottomAnchor, left: leftAnchor, bottom: nil, right: rightAnchor,paddingTop: 5 , paddingLeft: 0, paddingBottom: 0, paddingRight: 5, width: 0, height: 0.5)
+        
+        /* Place a component here to view the last three comments if any ... if none hide the component */
        
 
     }

@@ -35,14 +35,14 @@ struct PostRecord {
     var productImagineUrl : String? {
         var dict = "URL"
         var bFound = false
-        if let dictionaryURL = json["urlArray"] as? [String] {
+        if let dictionaryURL = json["thumbImages"] as? [String] {
             if dictionaryURL.count > 0 {
                 dict = dictionaryURL[0]
                 bFound = true
             }
         }
         if bFound == false {
-            if let imagesUrl = json["imagesUrl"] as? [String: Any]
+            if let imagesUrl = json["thumbImages"] as? [String: Any]
             {
                 if imagesUrl.count > 0 {
                     imagesUrl.forEach ({ (key, value) in

@@ -11,7 +11,6 @@ import Firebase
 import FirebaseFirestore
 import FirebaseUI
 //import FirebaseAuthUI
-import PromiseKit
 //import FirebaseInvites
 import AlgoliaSearch
 import InstantSearchCore
@@ -444,13 +443,6 @@ class ProductController: UICollectionViewController, ProductCellDelegate, Produc
         }
     }
     
-    func IsLiked(postid: String, uid: String) -> Promise<Int> {
-        var intLiked = 0
-        Database.IsPostLiked(postid, uid) { (liked) in
-            intLiked = liked
-        }
-        return Promise(value: intLiked)
-    }
     
     func updateFireStore (post: Post)
     {
@@ -463,8 +455,8 @@ class ProductController: UICollectionViewController, ProductCellDelegate, Produc
                 "originalImages" : post.largeUrlArray,
                 "thumbImages" : post.imageUrlArray,
                 "creationDate": Date().timeIntervalSince1970,
-                "numberOfLikes": "1",
-                "numberOfComments" : "4"]
+                "numberOfLikes": 1,
+                "numberOfComments" : 4]
             
             db.collection("posts").document(postid).setData(values)
             { err in
@@ -564,26 +556,26 @@ class ProductController: UICollectionViewController, ProductCellDelegate, Produc
         }
     }
     
-    enum Result<T>{
-        case success(result: T)
-        case failure(error: Error)
-    }
-    
-    func wrap<T>(_ body: (@escaping (Result<T>) -> Void) throws -> Void) -> Promise<T>  {
-        return Promise { fulfill, reject in
-            try body { result in
-                switch result{
-                case .success(let result):
-                    fulfill(result)
-                    break
-                case .failure(let error):
-                    reject(error)
-                    break
-                }
-            }
-        }
-    }
-    
+//    enum Result<T>{
+//        case success(result: T)
+//        case failure(error: Error)
+//    }
+//    
+//    func wrap<T>(_ body: (@escaping (Result<T>) -> Void) throws -> Void) -> Promise<T>  {
+//        return Promise { fulfill, reject in
+//            try body { result in
+//                switch result{
+//                case .success(let result):
+//                    fulfill(result)
+//                    break
+//                case .failure(let error):
+//                    reject(error)
+//                    break
+//                }
+//            }
+//        }
+//    }
+//    
    
     func fetchChildWithUser ()
     {

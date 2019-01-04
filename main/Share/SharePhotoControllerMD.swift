@@ -687,7 +687,7 @@ class SharePhotoController:
         
         tableProductsView.anchor(top: Products.bottomAnchor, left: Products.leftAnchor, bottom: Description.bottomAnchor , right: Products.rightAnchor)
         
-        FloatingPlusButton.anchor(top: Description.bottomAnchor, left: nil, bottom: nil, right: containerView.rightAnchor, paddingTop: 100, paddingLeft: 0, paddingBottom: 0, paddingRight: 10, width: 0, height: 0)
+        FloatingPlusButton.anchor(top: Description.bottomAnchor, left: nil, bottom: nil, right: containerView.rightAnchor, paddingTop: 80, paddingLeft: 0, paddingBottom: 0, paddingRight: 10, width: 0, height: 0)
         
         
    

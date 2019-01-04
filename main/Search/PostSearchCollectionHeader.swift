@@ -12,9 +12,8 @@ import MaterialComponents
 
 
 protocol SearchHeaderDelegate {
-    func didSearchLocation()
-    func didSearchUser()
-    func didSearchProducts()
+ 
+    func didSearch(index: String, name: String)
 }
 
 
@@ -58,7 +57,7 @@ class PostSearchCollectionHeader: UICollectionViewCell  {
         print("Search Users")
         resetButtons()
         userButton.tintColor = UIColor.themeColor()
-        delegate?.didSearchUser()
+        delegate?.didSearch(index: "user", name: "FetchUsers")
     }
     
     
@@ -67,14 +66,14 @@ class PostSearchCollectionHeader: UICollectionViewCell  {
         print("Seach Locations")
         resetButtons()
         mapButton.tintColor = UIColor.themeColor()
-        delegate?.didSearchLocation()
+        delegate?.didSearch(index: "location", name: "FetchLocations")
     }
     
     @objc func handlePrdButton() {
         print("Search Products")
         resetButtons()
         prdButton.tintColor = UIColor.themeColor()
-        delegate?.didSearchProducts()
+        delegate?.didSearch(index: "product", name: "FetchPosts")
     }
     
     override init(frame: CGRect) {

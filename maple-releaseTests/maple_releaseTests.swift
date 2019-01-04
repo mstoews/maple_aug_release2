@@ -9,7 +9,7 @@
 import XCTest
 
 
-class maple_releaseTests: XCTestCase {
+class mapleTests: XCTestCase {
     
     override func setUp() {
         super.setUp()

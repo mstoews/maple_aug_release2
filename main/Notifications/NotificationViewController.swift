@@ -287,19 +287,26 @@ class NotificationViewController: MDCCollectionViewController , NotificationDele
                 self.navigationController?.pushViewController(userProfileController, animated: true)
             })
             break
-        case "comments":
-            let commentsController = CommentsController(collectionViewLayout: UICollectionViewFlowLayout())
+        case "comment":
             
-            Database.fetchPostByUidPostId(uid: senderUid, postId: notificationType, completion: { (Post) in
-                if let postId = Post.id {
-                    if postId.count > 0 {
-                        //todo
-                        commentsController.post = Post
-                        self.navigationController?.pushViewController(commentsController, animated: true)
-                    }
-                }
+            let userProfileController = UserProfileController(collectionViewLayout: UICollectionViewFlowLayout())
+            Database.fetchUserWithUID(uid: senderUid, completion: { (user) in
+                userProfileController.user = user
+                self.navigationController?.pushViewController(userProfileController, animated: true)
             })
             break
+//            let commentsController = CommentsController(collectionViewLayout: UICollectionViewFlowLayout())
+//
+//            Database.fetchPostByUidPostId(uid: senderUid, postId: notificationType, completion: { (Post) in
+//                if let postId = Post.id {
+//                    if postId.count > 0 {
+//                        //todo
+//                        commentsController.post = Post
+//                        self.navigationController?.pushViewController(commentsController, animated: true)
+//                    }
+//                }
+//            })
+//            break
         default:
             return
         }
@@ -308,8 +315,12 @@ class NotificationViewController: MDCCollectionViewController , NotificationDele
     
     override func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
        
+        let notification = notificationsFire[indexPath.item]
+        
+        print(notification.kind)
+        
         if let uid = Auth.auth().currentUser?.uid {
-            openUserProfile(uid, "comment" )
+            openUserProfile(notification.interactionUser, notification.kind)
         }
     }
     

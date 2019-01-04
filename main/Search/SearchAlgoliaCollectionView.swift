@@ -13,6 +13,7 @@ import FirebaseFirestore
 import MaterialComponents
 import AlgoliaSearch
 import InstantSearchCore
+import JGProgressHUD
 
 
 enum SearchType {
@@ -40,6 +41,10 @@ class SearchAlgoliaCollectionView: MDCCollectionViewController , UISearchBarDele
     
     @objc func didSearchLocation() {
         print("SearchAlgoliaCollectionView::didSearchLocation")
+        let hud = JGProgressHUD(style: .dark)
+        hud.textLabel.text = NSLocalizedString("FetchLocations", comment: "Fetching Locations")
+        hud.show(in: view)
+        
         //spinner = displaySpinner()
         TYPE = SearchType.LOC
         fullTextSearch = Searcher(index: AlgoliaManager.sharedInstance.location, resultHandler: self.handleLocationResults)
@@ -54,6 +59,7 @@ class SearchAlgoliaCollectionView: MDCCollectionViewController , UISearchBarDele
         updateSearchResults(for: searchController)
         
         // refresh with Location seach
+         hud.dismiss(afterDelay: 1)
         
     }
     
@@ -61,6 +67,10 @@ class SearchAlgoliaCollectionView: MDCCollectionViewController , UISearchBarDele
     
     @objc func didSearchUser() {
         print("SearchAlgoliaCollectionView::didSearchUser")
+        let hud = JGProgressHUD(style: .dark)
+        hud.textLabel.text = NSLocalizedString("FetchUsers", comment: "Fetching Users")
+        hud.show(in: view)
+        
         TYPE = SearchType.USR
         // refresh with Users Search
         fullTextSearch = Searcher(index: AlgoliaManager.sharedInstance.users, resultHandler: self.handleUserResults)
@@ -73,10 +83,16 @@ class SearchAlgoliaCollectionView: MDCCollectionViewController , UISearchBarDele
         searchProgressController = SearchProgressController(searcher: fullTextSearch)
         searchProgressController.delegate = self
         updateSearchResults(for: searchController)
+        hud.dismiss(afterDelay: 1)
     }
     
     @objc func didSearchProducts() {
         print("SearchAlgoliaCollectionView::didSearchProducts")
+        
+        let hud = JGProgressHUD(style: .dark)
+        hud.textLabel.text = NSLocalizedString("FetchProd", comment: "Fetch Products")
+        hud.show(in: view)
+        
         TYPE = SearchType.PRD
         //spinner = displaySpinner()
         //refresh with products search
@@ -90,7 +106,55 @@ class SearchAlgoliaCollectionView: MDCCollectionViewController , UISearchBarDele
         searchProgressController = SearchProgressController(searcher: fullTextSearch)
         searchProgressController.delegate = self
         updateSearchResults(for: searchController)
+        hud.dismiss(afterDelay: 1)
     }
+    
+    @objc func didSearch(index: String, name: String)
+    {
+        print("SearchAlgoliaCollectionView::didSearch")
+        
+        var algoIndex = AlgoliaManager.sharedInstance.posts
+        fullTextSearch = Searcher(index: algoIndex  , resultHandler: self.handleSearchResults)
+        
+        let hud = JGProgressHUD(style: .dark)
+        hud.textLabel.text = NSLocalizedString(name, comment: name)
+        hud.show(in: view)
+        
+        switch index {
+             case "product" :
+                 TYPE = SearchType.PRD
+                 algoIndex = AlgoliaManager.sharedInstance.posts
+                 fullTextSearch = Searcher(index: algoIndex  , resultHandler: self.handleSearchResults)
+                 fullTextSearch.params.attributesToHighlight = [index]
+                 break
+            case "user":
+                 TYPE = SearchType.USR
+                 algoIndex = AlgoliaManager.sharedInstance.users
+                 fullTextSearch = Searcher(index: algoIndex  , resultHandler: self.handleUserResults)
+                break
+            case "location":
+                 TYPE = SearchType.LOC
+                 algoIndex = AlgoliaManager.sharedInstance.location
+                 fullTextSearch = Searcher(index: algoIndex  , resultHandler: self.handleLocationResults)
+                break
+            default:
+            TYPE = SearchType.PRD
+        }
+        
+        
+        fullTextSearch.params.hitsPerPage = 15
+        
+        fullTextSearch.params.attributesToRetrieve = ["*" ]
+        fullTextSearch.params.attributesToHighlight = [index]
+        
+        // Configure search progress monitoring.
+        searchProgressController = SearchProgressController(searcher: fullTextSearch)
+        searchProgressController.delegate = self
+        updateSearchResults(for: searchController)
+        hud.dismiss(afterDelay: 1)
+        
+    }
+    
 
     var TYPE = SearchType.PRD
     var searchProgressController: SearchProgressController!
@@ -164,7 +228,7 @@ class SearchAlgoliaCollectionView: MDCCollectionViewController , UISearchBarDele
         searchController.definesPresentationContext = true
         
         // Search controller
-        didSearchProducts()
+        didSearch(index: "products", name: "FetchProd")
         // First load
         self.navigationItem.title = "Search"
     }
@@ -359,19 +423,19 @@ class SearchAlgoliaCollectionView: MDCCollectionViewController , UISearchBarDele
     
     func openLocationSelected(locationRecord: LocationRecord)
     {
+         // should be pointing to the location entry that contains a post id. 
+        
           let postId = locationRecord.objectID
             let docRef = db.collection("posts").document(postId)
             docRef.getDocument()
                 { (document, error) in
                     if let document = document {
                         if let dataDescription = document.data().map(String.init(describing:)) {
-                            
                             let data = document.data() as! [String: Any]
                             let post = FSPost(dictionary: data, postId: postId)
                             let editPostController = PostViewerController()
                             editPostController.post = post
                             self.navigationController?.pushViewController( editPostController, animated: true)
-                            
                             print("Cached document data: \(dataDescription)")
                         }
                     } else {

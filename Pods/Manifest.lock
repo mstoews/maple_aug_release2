@@ -268,6 +268,7 @@ PODS:
     - Cache (~> 5.0)
   - InstantSearch-Core-Swift (3.2.1):
     - AlgoliaSearch-Client-Swift (~> 5.0)
+  - JGProgressHUD (2.0.3)
   - Kingfisher (4.8.0)
   - leveldb-library (1.20)
   - Lightbox (2.3.0):
@@ -780,17 +781,6 @@ PODS:
     - nanopb/encode (= 0.3.901)
   - nanopb/decode (0.3.901)
   - nanopb/encode (0.3.901)
-  - PromiseKit (4.5.2):
-    - PromiseKit/Foundation (= 4.5.2)
-    - PromiseKit/QuartzCore (= 4.5.2)
-    - PromiseKit/UIKit (= 4.5.2)
-  - PromiseKit/CorePromise (4.5.2)
-  - PromiseKit/Foundation (4.5.2):
-    - PromiseKit/CorePromise
-  - PromiseKit/QuartzCore (4.5.2):
-    - PromiseKit/CorePromise
-  - PromiseKit/UIKit (4.5.2):
-    - PromiseKit/CorePromise
   - Protobuf (3.6.1)
   - Reachability (3.2)
   - SDWebImage (4.4.2):
@@ -819,10 +809,10 @@ DEPENDENCIES:
   - Hue
   - ImagePicker
   - InstantSearch-Core-Swift
+  - JGProgressHUD (~> 2.0.3)
   - Kingfisher (= 4.8.0)
   - Lightbox
   - MaterialComponents
-  - PromiseKit (~> 4.4)
   - Reachability (~> 3.2)
   - SDWebImage
   - SVProgressHUD
@@ -874,6 +864,7 @@ SPEC REPOS:
     - ImagePicker
     - Imaginary
     - InstantSearch-Core-Swift
+    - JGProgressHUD
     - Kingfisher
     - leveldb-library
     - Lightbox
@@ -884,7 +875,6 @@ SPEC REPOS:
     - MotionInterchange
     - MotionTransitioning
     - nanopb
-    - PromiseKit
     - Protobuf
     - Reachability
     - SDWebImage
@@ -938,6 +928,7 @@ SPEC CHECKSUMS:
   ImagePicker: db1fd7626337b2577c523bef5f499bbbe5a37079
   Imaginary: dae33d06dbc2ada22f98afef5eb45cc061311a2c
   InstantSearch-Core-Swift: 0863a6bf3ebf46ae334341d89cf63c9710ccec71
+  JGProgressHUD: 12b20a8f4ffe05258f8635c1ab92816e451f904d
   Kingfisher: 976d828df2b24834c6a3f2fc4d82cdbd26552be1
   leveldb-library: 08cba283675b7ed2d99629a4bc5fd052cd2bb6a5
   Lightbox: d317750e4132bfb871a5307cfe0a2c7d6a583c65
@@ -948,7 +939,6 @@ SPEC CHECKSUMS:
   MotionInterchange: ead0e3ae1f3a5fb539e289debbc7ae036160a10d
   MotionTransitioning: 23d25edc2f4606efb922403cbac6d81af37aa33a
   nanopb: 2901f78ea1b7b4015c860c2fdd1ea2fee1a18d48
-  PromiseKit: 743e497a5f505a470d3bbbf4ce0663c1268af0a4
   Protobuf: 1eb9700044745f00181c136ef21b8ff3ad5a0fd5
   Reachability: 33e18b67625424e47b6cde6d202dce689ad7af96
   SDWebImage: 624d6e296c69b244bcede364c72ae0430ac14681
@@ -956,6 +946,6 @@ SPEC CHECKSUMS:
   TwitterCore: 8cbc9ad34d91c63a0035ea05bfbfc0d7ca72a28c
   TwitterKit: 054005edf5350aa9074af74b41456e5a61e3f322
 
-PODFILE CHECKSUM: 926c06c64196e6bf8d2cd1bd82af1e892d08718d
+PODFILE CHECKSUM: 2c485384242dff9d94305352a91e946be370562c
 
 COCOAPODS: 1.5.3

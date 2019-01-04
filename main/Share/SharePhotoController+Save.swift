@@ -11,6 +11,8 @@ import FirebaseFirestore
 import AlgoliaSearch
 import InstantSearchCore
 import MaterialComponents
+import JGProgressHUD
+
 
 extension SharePhotoController
     
@@ -53,6 +55,7 @@ extension SharePhotoController
     
     
     @objc func handleShareAll(_ sender: UIButton) {
+        
         
         let docRef =  db.collection("posts")
         guard let uid = Auth.auth().currentUser?.uid else { return }
@@ -104,7 +107,16 @@ extension SharePhotoController
         }
         
        
-       
+        /*
+         
+         let values = [ "url": url.absoluteString,
+         "creationDate": Date().timeIntervalSince1970,
+         "fileName": filename,
+         "bucket": storeRef.bucket,
+         "fullPath":storeRef.fullPath] as [String : Any]
+         
+         */
+        
         
         navigationItem.rightBarButtonItem?.isEnabled = false
         var docId = docRef.document().documentID
@@ -117,8 +129,8 @@ extension SharePhotoController
                 "uid" : uid,
                 "profileUrl" : user.profileImageUrl,
                 "product": product,
-                "numberOfLikes": "0",
-                "numberOfComments" : "0",
+                "numberOfLikes": 0,
+                "numberOfComments" : 0,
                 "creationDate": Date().timeIntervalSince1970
             ]
             self.db.collection("posts").document(docId).setData(values)
@@ -132,7 +144,7 @@ extension SharePhotoController
         }
         
         
-        spinner = displaySpinner()
+     
 //        myGroup.enter()
 //        self.saveImages(postid: docId, typeName: "originalImages", imageSize: 640 , images: self.imageArray) { (imgId) in
 //            docId = imgId
@@ -140,6 +152,11 @@ extension SharePhotoController
 //            myGroup.leave()
 //        }
 //
+        
+        let hud = JGProgressHUD(style: .dark)
+        hud.textLabel.text = "Updating post ..."
+        hud.show(in: view)
+        
         myGroup.enter()
         saveImages(postid: docId, typeName: "thumbImages", imageSize: 320, images: self.imageArray)
         
@@ -162,11 +179,12 @@ extension SharePhotoController
             print("main queue updated")
             message.text = "Upload completed successfully"
             MDCSnackbarManager.show(message)
-            self.tabBarController?.selectedIndex = 0
+            //self.tabBarController?.selectedIndex = 0
+            hud.dismiss()
             self.navigationItem.rightBarButtonItem?.isEnabled = true
-            
         }
         
+        hud.dismiss()
     }
     
     func saveImages( postid: String,  typeName: String, imageSize: CGFloat, images: [UIImage] ) {
@@ -180,12 +198,15 @@ extension SharePhotoController
                     let size = CGSize(width: 320.0, height: 320)
                     uploadData = image.RBResizeImage(image: image, targetSize: size)
                 }
-                else{ uploadData = image.resizeImage(imageSize) }
+                else {
+                    uploadData = image.resizeImage(imageSize)
+                }
+                
                 let filename = NSUUID().uuidString
                 let metadata = StorageMetadata()
                 metadata.contentType = "image/jpeg"
                 
-                let storeRef = Storage.storage().reference().child(uid).child(typeName).child(filename)
+                let storeRef = Storage.storage().reference().child(uid).child(postid).child(filename)
                 storeRef.putData(uploadData.sd_imageData()!, metadata: metadata) { (metadata, err) in
                     if let err = err {
                         self.navigationItem.rightBarButtonItem?.isEnabled = true
@@ -203,7 +224,14 @@ extension SharePhotoController
                             urlArray.append(url.absoluteString)
                             //imageUrl = url.absoluteString
                             
-                            let values = [ "url": url.absoluteString, "creationDate": Date().timeIntervalSince1970] as [String : Any]
+                            //let values = [ "url": url.absoluteString, "creationDate": Date().timeIntervalSince1970] as [String : Any]
+                            
+                            let values = [ "url": url.absoluteString,
+                                           "creationDate": Date().timeIntervalSince1970,
+                                           "fileName": filename,
+                                           "bucket": storeRef.bucket,
+                                           "fullPath":storeRef.fullPath] as [String : Any]
+                            
                             self.db.collection("posts").document(postid).collection(typeName).document().setData(values) { err in
                                 if let err = err {
                                     print("Error writing document: \(err)")
@@ -249,7 +277,7 @@ extension SharePhotoController
                 let metadata = StorageMetadata()
                 metadata.contentType = "image/jpeg"
                 
-                let storeRef = Storage.storage().reference().child(uid).child(typeName).child(filename)
+                let storeRef = Storage.storage().reference().child(uid).child(postid).child(typeName).child(filename)
                 storeRef.putData(uploadData.sd_imageData()!, metadata: metadata) { (metadata, err) in
                     if let err = err {
                         self.navigationItem.rightBarButtonItem?.isEnabled = true
@@ -306,8 +334,8 @@ extension SharePhotoController
                 "originalImages" : post.largeUrlArray,
                 "thumbImages" : post.imageUrlArray,
                 "creationDate": Date().timeIntervalSince1970,
-                "numberOfLikes": "0",
-                "numberOfComments" : "0"]
+                "numberOfLikes": 0,
+                "numberOfComments" : 0]
             
             db.collection("posts").document(postid).setData(values)
             { err in

@@ -15,6 +15,7 @@ import Lightbox
 import GoogleSignIn
 import GoogleToolboxForMac
 import MaterialComponents
+import JGProgressHUD
 
 
 enum  FetchType {
@@ -121,6 +122,10 @@ class HomeController: MDCCollectionViewController, HomePostCellDelegate,  HomeHe
     {
         stopObserving()
         
+        let hud = JGProgressHUD(style: .dark)
+        hud.textLabel.text = "Fetching Posts"
+        hud.show(in: view)
+        
         self.listener = self.db.collection("posts")
             .order(by: "creationDate", descending: true).limit(to: 60)
             .addSnapshotListener{  (snapshot, error) in
@@ -154,6 +159,7 @@ class HomeController: MDCCollectionViewController, HomePostCellDelegate,  HomeHe
                 }
                 self.collectionView?.reloadData()
         }
+         hud.dismiss()
     }
     
     
@@ -316,8 +322,8 @@ class HomeController: MDCCollectionViewController, HomePostCellDelegate,  HomeHe
                 "originalImages" : post.largeUrlArray,
                 "thumbImages" : post.imageUrlArray,
                 "creationDate": Date().timeIntervalSince1970,
-                "numberOfLikes": "1",
-                "numberOfComments" : "4"]
+                "numberOfLikes": 1,
+                "numberOfComments" : 4]
             
             db.collection("posts").document(postid).setData(values)
             { err in
