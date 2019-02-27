@@ -16,14 +16,12 @@ import FirebaseFirestore
 
 struct LocationRecord {
     
-    
     private let json: [String: Any]
     
     init(json: [String : Any]) {
         self.json = json
     }
 
-    
     var objectID : String {
         return (json["objectID"] as? String)!
     }
@@ -62,6 +60,10 @@ struct LocationRecord {
     
     var types : String? {
     return json["types"] as? String
+    }
+    
+    var postId : String? {
+        return json["postId"] as? String
     }
 }
 

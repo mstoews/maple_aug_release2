@@ -9,10 +9,20 @@
 			<key>orderHint</key>
 			<integer>71</integer>
 		</dict>
+		<key>Maple.xcscheme_^#shared#^_</key>
+		<dict>
+			<key>orderHint</key>
+			<integer>68</integer>
+		</dict>
 		<key>Maple_release.xcscheme</key>
 		<dict>
 			<key>orderHint</key>
 			<integer>72</integer>
+		</dict>
+		<key>Maple_release.xcscheme_^#shared#^_</key>
+		<dict>
+			<key>orderHint</key>
+			<integer>69</integer>
 		</dict>
 		<key>maple 2.xcscheme</key>
 		<dict>

@@ -184,6 +184,7 @@
 #import "MaterialNavigationDrawer.h"
 #import "MDCBottomDrawerHeader.h"
 #import "MDCBottomDrawerPresentationController.h"
+#import "MDCBottomDrawerState.h"
 #import "MDCBottomDrawerTransitionController.h"
 #import "MDCBottomDrawerViewController.h"
 #import "MaterialNavigationDrawer+ColorThemer.h"

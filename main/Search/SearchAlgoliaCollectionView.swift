@@ -39,6 +39,9 @@ class SearchAlgoliaCollectionView: MDCCollectionViewController , UISearchBarDele
     let mapCellId = "mapCellId"
     let userCellId = "userCellId"
     
+    var TYPE = SearchType.PRD
+    var searchProgressController: SearchProgressController!
+    
     @objc func didSearchLocation() {
         print("SearchAlgoliaCollectionView::didSearchLocation")
         let hud = JGProgressHUD(style: .dark)
@@ -156,13 +159,12 @@ class SearchAlgoliaCollectionView: MDCCollectionViewController , UISearchBarDele
     }
     
 
-    var TYPE = SearchType.PRD
-    var searchProgressController: SearchProgressController!
+   
     
     
     lazy var searchController: UISearchController = {
             let sc = UISearchController(searchResultsController: nil)
-            sc.hidesNavigationBarDuringPresentation = false
+            sc.hidesNavigationBarDuringPresentation = true
             sc.dimsBackgroundDuringPresentation = true
             //sc.searchBar.barTintColor = UIColor.collectionBackGround()
             sc.searchBar.delegate = self
@@ -182,7 +184,6 @@ class SearchAlgoliaCollectionView: MDCCollectionViewController , UISearchBarDele
             if let pvtClass = NSClassFromString("UINavigationButton") {
                 if subView.isKind(of: pvtClass) {
                     cancelButton = subView as! UIButton
-                    
                     cancelButton.setTitle("", for: .normal)
                     cancelButton.setImage(UIImage(named:"ic_close"), for: .normal)
                     cancelButton.addTarget(self, action: #selector(pressCancelButton(button:)), for: .touchUpInside)
@@ -194,9 +195,7 @@ class SearchAlgoliaCollectionView: MDCCollectionViewController , UISearchBarDele
         searchController.searchResultsUpdater = self
         searchController.searchBar.delegate = self
         searchController.searchBar.placeholder = NSLocalizedString("search_bar_placeholder", comment: "Search control bar")
-        
         searchController.hidesNavigationBarDuringPresentation = false
-        //searchController.searchBar.tintColor = UIColor.themeColor()
         searchController.dimsBackgroundDuringPresentation = false
         searchController.searchBar.barStyle = .default
         navigationItem.titleView = searchController.searchBar
@@ -423,10 +422,14 @@ class SearchAlgoliaCollectionView: MDCCollectionViewController , UISearchBarDele
     
     func openLocationSelected(locationRecord: LocationRecord)
     {
-         // should be pointing to the location entry that contains a post id. 
+         // should be pointing to the location entry that contains a post id.
         
-          let postId = locationRecord.objectID
-            let docRef = db.collection("posts").document(postId)
+        guard let postId = locationRecord.postId else {
+            print("Error fetching postId")
+            return
+        }
+        
+        let docRef = db.collection("posts").document(postId)
             docRef.getDocument()
                 { (document, error) in
                     if let document = document {

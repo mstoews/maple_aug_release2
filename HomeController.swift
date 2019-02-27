@@ -10,7 +10,6 @@ import Firebase
 import FirebaseUI
 import AlgoliaSearch
 import InstantSearchCore
-import Kingfisher
 import Lightbox
 import GoogleSignIn
 import GoogleToolboxForMac

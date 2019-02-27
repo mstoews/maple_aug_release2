@@ -14,7 +14,7 @@ import FirebaseUI
 //import FirebaseInvites
 import AlgoliaSearch
 import InstantSearchCore
-import Kingfisher
+//import Kingfisher
 //import INSPhotoGallery
 import GoogleSignIn
 import GoogleToolboxForMac

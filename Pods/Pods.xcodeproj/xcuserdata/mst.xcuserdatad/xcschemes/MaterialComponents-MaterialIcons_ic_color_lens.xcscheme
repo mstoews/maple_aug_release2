@@ -14,7 +14,7 @@
             buildForAnalyzing = "YES">
             <BuildableReference
                BuildableIdentifier = "primary"
-               BlueprintIdentifier = "AD76BA9EF984E16D1467FC90A02276D0"
+               BlueprintIdentifier = "F20C7B0D35BD6A1705B0EEC9477DA700"
                BuildableName = "MaterialIcons_ic_color_lens.bundle"
                BlueprintName = "MaterialComponents-MaterialIcons_ic_color_lens"
                ReferencedContainer = "container:Pods.xcodeproj">
@@ -45,7 +45,7 @@
       <MacroExpansion>
          <BuildableReference
             BuildableIdentifier = "primary"
-            BlueprintIdentifier = "AD76BA9EF984E16D1467FC90A02276D0"
+            BlueprintIdentifier = "F20C7B0D35BD6A1705B0EEC9477DA700"
             BuildableName = "MaterialIcons_ic_color_lens.bundle"
             BlueprintName = "MaterialComponents-MaterialIcons_ic_color_lens"
             ReferencedContainer = "container:Pods.xcodeproj">

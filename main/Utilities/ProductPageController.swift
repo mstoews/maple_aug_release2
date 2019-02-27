@@ -10,7 +10,7 @@ import UIKit
 import Firebase
 import GoogleMaps
 import GooglePlaces
-import Kingfisher
+//import Kingfisher
 //import INSPhotoGallery
 import MaterialComponents
 

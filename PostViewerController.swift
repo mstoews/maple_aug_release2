@@ -10,9 +10,6 @@
         import Firebase
         import GoogleMaps
         import GooglePlaces
-        
-        import Kingfisher
-//        import INSPhotoGallery
         import MaterialComponents
         
         

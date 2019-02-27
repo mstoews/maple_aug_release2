@@ -13,7 +13,7 @@ import VideoToolbox
 import FBSDKLoginKit
 import GoogleMaps
 import GooglePlaces
-import Kingfisher
+//mport Kingfisher
 import Lightbox
 import MaterialComponents
 
