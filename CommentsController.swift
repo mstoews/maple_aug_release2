@@ -199,7 +199,7 @@ class CommentsController: MDCCollectionViewController, CommentInputAccessoryView
             guard let uid = Auth.auth().currentUser?.uid else { return }
             let postId = self.post?.id ?? ""
             
-            Database.fetchUserWithUID(uid: uid ,  completion: { (mapleUser) in
+            Firestore.fetchUserWithUID(uid: uid ,  completion: { (mapleUser) in
                 let values = ["text": comment,
                               "creationDate": Date().timeIntervalSince1970,
                               "postUid" : self.post?.uid ?? "uid",

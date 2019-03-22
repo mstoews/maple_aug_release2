@@ -18,14 +18,14 @@ class UserFollowersController : UserFollowingController {
             if uid != user?.uid {
                 return
             }
-            Database.fetchUserFollowersByUserId(userId: uid) { (usersList) in
-                for usr in usersList {
-                    Database.fetchUserWithUID(uid: usr) { (user) in
-                        self.userFollowing.append(user)
-                        self.collectionView?.reloadData()
-                    }
-                }
-            }
+//            Database.fetchUserFollowersByUserId(userId: uid) { (usersList) in
+//                for usr in usersList {
+//                    Database.fetchUserWithUID(uid: usr) { (user) in
+//                        self.userFollowing.append(user)
+//                        self.collectionView?.reloadData()
+//                    }
+//                }
+//            }
             
         }
     }
@@ -65,15 +65,15 @@ class UserFollowingController: MDCCollectionViewController {
             if uid != user?.uid {
                 return
             }
-            Database.fetchUserFollowingByUserId(userId: uid) { (usersList) in
-                for usr in usersList {
-                    Database.fetchUserWithUID(uid: usr) { (user) in
-                        self.userFollowing.append(user)
-                         self.collectionView?.reloadData()
-                    }
-                    
-                }
-            }
+//            Firestore.fetchUserFollowingByUserId(userId: uid) { (usersList) in
+//                for usr in usersList {
+//                    Database.fetchUserWithUID(uid: usr) { (user) in
+//                        self.userFollowing.append(user)
+//                         self.collectionView?.reloadData()
+//                    }
+//                    
+//                }
+//            }
            
         }
     }

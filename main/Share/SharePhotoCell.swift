@@ -25,13 +25,13 @@ class SharePhotoCell: MDCCardCollectionCell {
         let iv = CustomImageView()
         iv.contentMode = .scaleAspectFill
         iv.loadImage(urlString: "ic_camera")
+        iv.backgroundColor = .blue
         iv.clipsToBounds = true
         return iv
     }()
     
     override init(frame: CGRect) {
         super.init(frame: frame)
-        
         addSubview(photoImageView)
         photoImageView.anchor(top: topAnchor, left: leftAnchor, bottom: bottomAnchor, right: rightAnchor, paddingTop: 5, paddingLeft: 5, paddingBottom: 5, paddingRight: 5, width: 0, height: 0)
     }

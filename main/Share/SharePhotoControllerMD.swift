@@ -110,8 +110,6 @@ class SharePhotoController:
     
     var referenceURL: URL!
     
-    var spinner : UIView!
-    
     var urlArray = [String]()
     
     var docRef : DocumentReference!
@@ -210,10 +208,9 @@ class SharePhotoController:
         let option = PHImageRequestOptions()
         var thumbnail = UIImage()
         
-        let width = asset.pixelWidth
-        let height = asset.pixelHeight
-        
-        let size = CGSize(width: width, height: height)
+        //let width = asset.pixelWidth
+        //let height = asset.pixelHeight
+        //let size = CGSize(width: width, height: height)
         option.isSynchronous = true
         manager.requestImage(for: asset, targetSize: PHImageManagerMaximumSize, contentMode: .aspectFit, options: option, resultHandler: {(result, info)->Void in
             thumbnail = result!
@@ -352,6 +349,13 @@ class SharePhotoController:
     
     var refresher:UIRefreshControl!
     
+    let backGroundView : UIImageView = {
+        let iv = UIImageView()
+        iv.image = UIImage(named:"windows")
+        //iv.contentMode = .scaleAspectFill
+        return iv
+    }()
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         
@@ -374,7 +378,8 @@ class SharePhotoController:
         view.backgroundColor = UIColor.collectionCell()
         self.view.tintColor  = UIColor.themeColor()
         navigationItem.title = "Post Product"
-        
+        imageCollectionView.backgroundView = backGroundView
+ 
         Products.delegate = self
         Description.textView?.delegate = self
         tableProductsView.delegate = self
@@ -385,7 +390,7 @@ class SharePhotoController:
         
         guard let uid = Auth.auth().currentUser?.uid else { return }
         
-        Database.fetchUserWithUID(uid: uid, completion: { (user) in
+        Firestore.fetchUserWithUID(uid: uid, completion: { (user) in
             self.user = user
         })
         
@@ -490,9 +495,10 @@ class SharePhotoController:
     
     let loadImages: CustomImageView = {
         let iv = CustomImageView()
+        var defaultImage: UIImage = UIImage(named: "maple_start_image")!
+        iv.image = defaultImage
         return iv
     }()
-    
     
     
     @objc func imageCollectionViewTapped(tapGestureRecognizer: UITapGestureRecognizer){

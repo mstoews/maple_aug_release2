@@ -222,7 +222,7 @@ class HomeController: MDCCollectionViewController, HomePostCellDelegate,  HomeHe
     
     func didTapUserNameLabel(uid: String) {
         let userProfileController = UserProfileController(collectionViewLayout: UICollectionViewFlowLayout())
-        Database.fetchUserWithUID(uid: uid, completion: { (user) in
+            Firestore.fetchUserWithUID(uid: uid, completion: { (user) in
             userProfileController.user = user
             self.navigationController?.pushViewController(userProfileController, animated: true)
         })
@@ -338,22 +338,22 @@ class HomeController: MDCCollectionViewController, HomePostCellDelegate,  HomeHe
     
     func didUploadUsersAglolia()
     {
-        Database.fetchAllUser ( completion: { (users) in
-            for user in users {
-                let values : [String: Any] = [
-                    "name" : user.username,
-                    "profileImageUrl" :  user.profileImageUrl,
-                    "creationDate": Date().timeIntervalSince1970
-                ]
-                AlgoliaManager.sharedInstance.users.addObject(values, withID: user.uid , completionHandler: { (content, error) -> Void in
-                    if error == nil {
-                        if let objectID = content!["objectID"] as? String {
-                            print("Object ID: \(objectID)")
-                        }
-                    }
-                })
-            }
-        })
+//        Database.fetchAllUser ( completion: { (users) in
+//            for user in users {
+//                let values : [String: Any] = [
+//                    "name" : user.username,
+//                    "profileImageUrl" :  user.profileImageUrl,
+//                    "creationDate": Date().timeIntervalSince1970
+//                ]
+//                AlgoliaManager.sharedInstance.users.addObject(values, withID: user.uid , completionHandler: { (content, error) -> Void in
+//                    if error == nil {
+//                        if let objectID = content!["objectID"] as? String {
+//                            print("Object ID: \(objectID)")
+//                        }
+//                    }
+//                })
+//            }
+//        })
         
     }
     

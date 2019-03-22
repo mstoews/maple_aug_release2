@@ -27,7 +27,7 @@ class NotificationViewController: MDCCollectionViewController , NotificationDele
     var notification: NotificationObject? {
         didSet {
             if  let sender = notification?.sender {
-                Database.fetchUserWithUID(uid: sender, completion: { (user) in
+                Firestore.fetchUserWithUID(uid: sender, completion: { (user) in
                     self.usernameLabel.text = user.username
                     let profileImageUrl = user.profileImageUrl
                     self.profileImageView.loadImage(urlString: profileImageUrl)
@@ -243,7 +243,7 @@ class NotificationViewController: MDCCollectionViewController , NotificationDele
     
     fileprivate func fetchUser() {
         if let uid = Auth.auth().currentUser?.uid {
-            Database.fetchUserWithUID(uid: uid) { (user) in
+            Firestore.fetchUserWithUID(uid: uid) { (user) in
                 self.user = user
                 let username = self.user?.username
                 self.navigationItem.title = "Notifications - " + username!
@@ -268,21 +268,21 @@ class NotificationViewController: MDCCollectionViewController , NotificationDele
         switch notificationType {
         case "following":
             let userProfileController = UserProfileController(collectionViewLayout: UICollectionViewFlowLayout())
-            Database.fetchUserWithUID(uid: senderUid, completion: { (user) in
+            Firestore.fetchUserWithUID(uid: senderUid, completion: { (user) in
                 userProfileController.user = user
                 self.navigationController?.pushViewController(userProfileController, animated: true)
             })
             break
         case "followers":
             let userProfileController = UserProfileController(collectionViewLayout: UICollectionViewFlowLayout())
-            Database.fetchUserWithUID(uid: senderUid, completion: { (user) in
+            Firestore.fetchUserWithUID(uid: senderUid, completion: { (user) in
                 userProfileController.user = user
                 self.navigationController?.pushViewController(userProfileController, animated: true)
             })
             break
         case "likes":
             let userProfileController = UserProfileController(collectionViewLayout: UICollectionViewFlowLayout())
-            Database.fetchUserWithUID(uid: senderUid, completion: { (user) in
+            Firestore.fetchUserWithUID(uid: senderUid, completion: { (user) in
                 userProfileController.user = user
                 self.navigationController?.pushViewController(userProfileController, animated: true)
             })
@@ -290,7 +290,7 @@ class NotificationViewController: MDCCollectionViewController , NotificationDele
         case "comment":
             
             let userProfileController = UserProfileController(collectionViewLayout: UICollectionViewFlowLayout())
-            Database.fetchUserWithUID(uid: senderUid, completion: { (user) in
+            Firestore.fetchUserWithUID(uid: senderUid, completion: { (user) in
                 userProfileController.user = user
                 self.navigationController?.pushViewController(userProfileController, animated: true)
             })

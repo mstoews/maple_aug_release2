@@ -172,7 +172,7 @@ class ChangeSignPhotoController: UIViewController, UIImagePickerControllerDelega
         // The uid is being passed from the navigation control, if the user ID is nil this will fail ...
         // best to double check that the code is still working under different circumstances.
         
-        Database.fetchUserWithUID(uid: uid!) { (user) in
+        Firestore.fetchUserWithUID(uid: uid!) { (user) in
             self.user = user
             self.navigationItem.title = self.user?.username
             self.usernameTextField.text = self.user?.username
@@ -230,7 +230,7 @@ class ChangeSignPhotoController: UIViewController, UIImagePickerControllerDelega
                 if let url = url {
                  
                 guard let uid = Auth.auth().currentUser?.uid else { return }
-                Database.fetchUserWithUID(uid: uid) { (user) in
+                Firestore.fetchUserWithUID(uid: uid) { (user) in
                     self.user = user
                 }
                 

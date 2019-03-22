@@ -161,7 +161,7 @@ class MainTabBarController: UITabBarController, AuthUIDelegate  {
         userProfileNavController.tabBarItem.selectedImage = #imageLiteral(resourceName: "profile_selected")
         
         if let uid = Auth.auth().currentUser?.uid {
-            Database.fetchUserWithUID(uid: uid) { (user) in
+            Firestore.fetchUserWithUID(uid: uid) { (user) in
                 userProfileController.user = user
             }
         }

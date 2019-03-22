@@ -16,6 +16,18 @@ import GooglePlaces
 
 extension Firestore {
     
+    static func fetchUserWithUID(uid: String, completion: @escaping (MapleUser) -> ()) {
+        let docRef = firestore().collection("users").document(uid).collection("profile").document(uid)
+        docRef.getDocument { (document, error) in
+            if let document = document, document.exists {
+                let user = MapleUser(uid: uid,  dictionary: document.data()!)
+                completion(user)
+            } else {
+                print("Document  nb bbbbbdoes not exist")
+            }
+        }
+     }
+    
     //MARK:- Notification
     static func fetchNotifications(uid : String, completion: @escaping ([NotificationObject]) -> () )
     {

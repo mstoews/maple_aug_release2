@@ -451,7 +451,7 @@ class SearchAlgoliaCollectionView: MDCCollectionViewController , UISearchBarDele
     {
             let userProfileController = UserProfileController(collectionViewLayout: UICollectionViewFlowLayout())
             if let uid = userRecord.objectID {
-                Database.fetchUserWithUID(uid: uid) { (user) in
+                Firestore.fetchUserWithUID(uid: uid) { (user) in
                     userProfileController.user = user
                     self.navigationController?.pushViewController(userProfileController, animated: true)
                 }

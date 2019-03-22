@@ -115,7 +115,6 @@
 		4876BCA820DA16290057E5E0 /* FirebaseUtilites.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4876BC9020DA16280057E5E0 /* FirebaseUtilites.swift */; };
 		4876BCAA20DA16290057E5E0 /* PostViewerController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4876BC9220DA16280057E5E0 /* PostViewerController.swift */; };
 		4876BCAB20DA16290057E5E0 /* PhotoSelectorCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4876BC9320DA16280057E5E0 /* PhotoSelectorCell.swift */; };
-		4876BCAC20DA16290057E5E0 /* FirebaseUtilities+Notifications.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4876BC9420DA16280057E5E0 /* FirebaseUtilities+Notifications.swift */; };
 		4876BCAD20DA16290057E5E0 /* CustomImageView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4876BC9520DA16280057E5E0 /* CustomImageView.swift */; };
 		4876BCAE20DA16290057E5E0 /* PhotoViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4876BC9620DA16280057E5E0 /* PhotoViewModel.swift */; };
 		4876BD0120DA164E0057E5E0 /* Localizable.strings in Resources */ = {isa = PBXBuildFile; fileRef = 4876BCB120DA164E0057E5E0 /* Localizable.strings */; };
@@ -326,7 +325,6 @@
 		4876BC9020DA16280057E5E0 /* FirebaseUtilites.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FirebaseUtilites.swift; sourceTree = "<group>"; };
 		4876BC9220DA16280057E5E0 /* PostViewerController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PostViewerController.swift; sourceTree = "<group>"; };
 		4876BC9320DA16280057E5E0 /* PhotoSelectorCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PhotoSelectorCell.swift; sourceTree = "<group>"; };
-		4876BC9420DA16280057E5E0 /* FirebaseUtilities+Notifications.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "FirebaseUtilities+Notifications.swift"; sourceTree = "<group>"; };
 		4876BC9520DA16280057E5E0 /* CustomImageView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CustomImageView.swift; sourceTree = "<group>"; };
 		4876BC9620DA16280057E5E0 /* PhotoViewModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PhotoViewModel.swift; sourceTree = "<group>"; };
 		4876BCB220DA164E0057E5E0 /* de */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = de; path = de.lproj/Localizable.strings; sourceTree = "<group>"; };
@@ -693,7 +691,6 @@
 			children = (
 				4876BC8D20DA16280057E5E0 /* FirestoreUtilities.swift */,
 				4876BC9020DA16280057E5E0 /* FirebaseUtilites.swift */,
-				4876BC9420DA16280057E5E0 /* FirebaseUtilities+Notifications.swift */,
 				4876BC8020DA16280057E5E0 /* ShrineInkOverlay.swift */,
 				4876BC8120DA16280057E5E0 /* HRToast+UIView.swift */,
 				4876BC8220DA16280057E5E0 /* ProductHeaderContentView.swift */,
@@ -1353,7 +1350,6 @@
 				4876BD1C20DA164E0057E5E0 /* CGRect+Extensions.swift in Sources */,
 				4876BD0620DA164E0057E5E0 /* MapLocationController.swift in Sources */,
 				48482FCC20DA18A00031EBFF /* Post.swift in Sources */,
-				4876BCAC20DA16290057E5E0 /* FirebaseUtilities+Notifications.swift in Sources */,
 				482FC11820DE168200E23DAE /* LoginController.swift in Sources */,
 				48443E71210990AE00A21FC4 /* GMUKMLParser.m in Sources */,
 				4876BCAD20DA16290057E5E0 /* CustomImageView.swift in Sources */,

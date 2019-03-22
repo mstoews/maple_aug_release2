@@ -54,6 +54,21 @@ extension SharePhotoController
     }
     
     
+    func imageWithImage (sourceImage:UIImage, scaledToWidth: CGFloat) -> UIImage {
+        let oldWidth = sourceImage.size.width
+        let scaleFactor = scaledToWidth / oldWidth
+        
+        let newHeight = sourceImage.size.height * scaleFactor
+        let newWidth = oldWidth * scaleFactor
+        
+        UIGraphicsBeginImageContext(CGSize(width:newWidth, height:newHeight))
+        sourceImage.draw(in: CGRect(x:0, y:0, width:newWidth, height:newHeight))
+        let newImage = UIGraphicsGetImageFromCurrentImageContext()
+        UIGraphicsEndImageContext()
+        return newImage!
+    }
+    
+    
     @objc func handleShareAll(_ sender: UIButton) {
         
         
@@ -105,6 +120,7 @@ extension SharePhotoController
             MDCSnackbarManager.show(message)
             return
         }
+        
         
        
         /*
@@ -167,9 +183,7 @@ extension SharePhotoController
         }
         
         myGroup.notify(queue: .main) {
-            if let spinner = self.spinner {
-                self.removeSpinner(spinner)
-            }
+           
             self.imageArray.removeAll()
             self.mapObjects.removeAll()
             self.Products.text?.removeAll()

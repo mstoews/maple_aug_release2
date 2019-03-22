@@ -97,7 +97,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         mdcAction.handler = {
             guard let feed = self.window?.rootViewController?.childViewControllers[0] as? MainTabBarController else { return }
             let userId = content.categoryIdentifier.components(separatedBy: "/user/")[1]
-            Database.fetchUserWithUID(uid: userId,  completion: { (user) in
+            Firestore.fetchUserWithUID(uid: userId,  completion: { (user) in
                 feed.showProfile(user)
             })
         }

@@ -259,11 +259,11 @@ class ProductController: UICollectionViewController, ProductCellDelegate, Produc
                 let product = post?.product
                 //post?.imageUrlArray
                 
-                Database.fetchLocationByPostId(postId){ (locationObjects) in
-                    for location in locationObjects {
-                        self.locateWithLongitude(location, (self.post?.description)! , (self.post?.product)!)
-                    }
-                }
+//                Database.fetchLocationByPostId(postId){ (locationObjects) in
+//                    for location in locationObjects {
+//                        self.locateWithLongitude(location, (self.post?.description)! , (self.post?.product)!)
+//                    }
+//                }
                 
                 
             }
@@ -365,7 +365,7 @@ class ProductController: UICollectionViewController, ProductCellDelegate, Produc
     
     func didTapUserNameLabel(uid: String) {
         let userProfileController = UserProfileController(collectionViewLayout: UICollectionViewFlowLayout())
-        Database.fetchUserWithUID(uid: uid, completion: { (user) in
+        Firestore.fetchUserWithUID(uid: uid, completion: { (user) in
             userProfileController.user = user
             self.navigationController?.pushViewController(userProfileController, animated: true)
         })
@@ -472,22 +472,22 @@ class ProductController: UICollectionViewController, ProductCellDelegate, Produc
     
     func didUploadUsersAglolia()
     {
-        Database.fetchAllUser ( completion: { (users) in
-            for user in users {
-                let values : [String: Any] = [
-                    "name" : user.username,
-                    "profileImageUrl" :  user.profileImageUrl,
-                    "creationDate": Date().timeIntervalSince1970
-                ]
-                AlgoliaManager.sharedInstance.users.addObject(values, withID: user.uid , completionHandler: { (content, error) -> Void in
-                    if error == nil {
-                        if let objectID = content!["objectID"] as? String {
-                            print("Object ID: \(objectID)")
-                        }
-                    }
-                })
-            }
-        })
+//        Firestore.fetchAllUser ( completion: { (users) in
+//            for user in users {
+//                let values : [String: Any] = [
+//                    "name" : user.username,
+//                    "profileImageUrl" :  user.profileImageUrl,
+//                    "creationDate": Date().timeIntervalSince1970
+//                ]
+//                AlgoliaManager.sharedInstance.users.addObject(values, withID: user.uid , completionHandler: { (content, error) -> Void in
+//                    if error == nil {
+//                        if let objectID = content!["objectID"] as? String {
+//                            print("Object ID: \(objectID)")
+//                        }
+//                    }
+//                })
+//            }
+//        })
         
     }
     
@@ -497,7 +497,7 @@ class ProductController: UICollectionViewController, ProductCellDelegate, Produc
             guard let userIdsDictionary = snapshot.value as? [String: Any] else { return }
             userIdsDictionary.forEach({(arg) in
                 let (key, _) = arg
-                Database.fetchUserWithUID(uid: key, completion: { (user) in
+                Firestore.fetchUserWithUID(uid: key, completion: { (user) in
                     // Update FirebaseStore
                     //self.fetchPostByUserFromFireStore(user: user)
                     self.fetchPostsByUserAscendingFirestore(user: user)
@@ -576,18 +576,7 @@ class ProductController: UICollectionViewController, ProductCellDelegate, Produc
 //        }
 //    }
 //    
-   
-    func fetchChildWithUser ()
-    {
-        for post in self.posts {
-            Database.fetchImageByUidPost(post.id!, post.uid) { (images) in
-                for img in images {
-                    print (img.url)
-                }
-            }
-        }
-    }
-    
+       
 //    func getFirestorePostsByUserId(uid: String)
 //    {
 //        Database.fetchUserWithUID(uid: uid, completion: { (user) in

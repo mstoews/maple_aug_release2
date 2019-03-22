@@ -109,12 +109,12 @@ class ProductPageController:  UIViewController, CLLocationManagerDelegate,  UICo
             title =  "Post"
             setupAttributedCaption()
             
-            Database.fetchLocationByPostId((post?.id!)!){ (locationObjects) in
-                for location in locationObjects {
-                    self.locations.append(location)
-                    self.locateWithLongitude(location, (self.post?.description)!, (self.post?.product)!)
-                }
-            }
+//            Database.fetchLocationByPostId((post?.id!)!){ (locationObjects) in
+//                for location in locationObjects {
+//                    self.locations.append(location)
+//                    self.locateWithLongitude(location, (self.post?.description)!, (self.post?.product)!)
+//                }
+//            }
             
             productLabel.text = post?.product
             //guard let profileImageUrl = post?.user.profileImageUrl else { return }

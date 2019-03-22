@@ -102,14 +102,14 @@
                     self.editProfileFollowButton.isHidden = true
                     self.editProfileFollowedButton.isHidden = true
                 } else {
-                    Database.isUserBeingFollowedByUser(userId: uid, userFollowing: userId , { (isFollowed) in
-                        if isFollowed.isEmpty {
-                        self.userIsFollowed()
-                    } else
-                        {
-                        self.userIsNotFollowed()
-                    }
-                })
+//                    Firestore.isUserBeingFollowedByUser(userId: uid, userFollowing: userId , { (isFollowed) in
+//                        if isFollowed.isEmpty {
+//                        self.userIsFollowed()
+//                    } else
+//                        {
+//                        self.userIsNotFollowed()
+//                    }
+//                })
                 }
                 getNumberOfFollowers()
                 getNumberOfPosts()

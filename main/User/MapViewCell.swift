@@ -116,11 +116,11 @@ class MapViewCell: UICollectionViewCell,
     func setMarkerLocation(_ map: Post)
     {
         guard let postid = map.id else {return}
-        Database.fetchLocationByPostId(postid) { (locations) in
-            for location in locations{
-                self.markupMap(location)
-            }
-        }
+//        Database.fetchLocationByPostId(postid) { (locations) in
+//            for location in locations{
+//                self.markupMap(location)
+//            }
+//        }
     }
     
     func setMarker(_ map: LocationObject)

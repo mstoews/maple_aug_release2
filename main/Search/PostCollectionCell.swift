@@ -55,9 +55,9 @@ class PostCollectionCell: MDCCardCollectionCell  {
     
     @objc func usernameLabelTapped(tapGestureRecognizer: UITapGestureRecognizer)
     {
-        Database.fetchPostByUidPostId(uid: (post?.userId!)!, postId: (post?.objectID!)!) { (postFound) in
+        //Database.fetchPostByUidPostId(uid: (post?.userId!)!, postId: (post?.objectID!)!) { (postFound) in
             //self.delegate?.didTapUserNameLabel(post: postFound)
-        }
+        //}
     }
     
     required init?(coder aDecoder: NSCoder) {

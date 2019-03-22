@@ -322,7 +322,7 @@ class UserProfileController: MDCCollectionViewController,
     {
         print("didChangeSignUpdate")
         if let uid = Auth.auth().currentUser?.uid {
-            Database.fetchUserWithUID(uid: uid) { (user) in
+            Firestore.fetchUserWithUID(uid: uid) { (user) in
                 self.user = user
                 self.navigationItem.title = "User Page"
                 self.isCurrentUser = true
@@ -337,14 +337,14 @@ class UserProfileController: MDCCollectionViewController,
         if let uid = Auth.auth().currentUser?.uid {
             if let userid = self.user?.uid {
                 if userid != uid {
-                    Database.fetchUserWithUID(uid: userid) { (user) in
+                    Firestore.fetchUserWithUID(uid: userid) { (user) in
                         self.user = user
                         self.navigationItem.title = "User Page"
                         self.isCurrentUser = false
                         self.observeQuery(uid: user.uid)
                     }
                 } else {
-                    Database.fetchUserWithUID(uid: uid) { (user) in
+                    Firestore.fetchUserWithUID(uid: uid) { (user) in
                         self.user = user
                         self.navigationItem.title = "User Page"
                         self.observeQuery(uid: user.uid)

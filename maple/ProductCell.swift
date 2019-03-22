@@ -125,15 +125,15 @@ class ProductCell: MDCCardCollectionCell , UICollectionViewDataSource, UICollect
             if let postId = post?.id {
                 if let uid = post?.uid {
                     print ("Post id: " + postId + " :Uid " + uid )
-                    Database.IsPostLiked(postId,uid, completion: { (isLiked) in
-                        if isLiked == 1 {
-                            self.likeButton.setImage(#imageLiteral(resourceName: "like_selected-1").withRenderingMode(.alwaysOriginal), for: .normal)
-                        }
-                        else{
-                            self.likeButton.setImage(#imageLiteral(resourceName: "Heart_Unselected-1").withRenderingMode(.alwaysOriginal), for: .normal)
-                        }
-                        
-                    })
+//                    Firestore.IsPostLiked(postId,uid, completion: { (isLiked) in
+//                        if isLiked == 1 {
+//                            self.likeButton.setImage(#imageLiteral(resourceName: "like_selected-1").withRenderingMode(.alwaysOriginal), for: .normal)
+//                        }
+//                        else{
+//                            self.likeButton.setImage(#imageLiteral(resourceName: "Heart_Unselected-1").withRenderingMode(.alwaysOriginal), for: .normal)
+//                        }
+//                        
+//                    })
                 }
             }
             
@@ -161,24 +161,26 @@ class ProductCell: MDCCardCollectionCell , UICollectionViewDataSource, UICollect
                 }
             }
             
+            //MARK: Fetch
+            /*
             if let postId = post?.id {
-                Database.fetchNumberOfLikesByPostId(postid: postId, { (totalLikes) in
+                Firestore.fetchNumberOfLikesByPostId(postid: postId, { (totalLikes) in
                     self.putNumberOfLikes(likes: totalLikes )
                 })
             }
             
             if let postId = post?.id {
-                Database.fetchPostNumberOfComments(postid: postId, { (totalComments) in
+                Firestore.fetchPostNumberOfComments(postid: postId, { (totalComments) in
                     self.putNumberOfComments(likes: totalComments)
                 })
             }
             
             if let postId = post?.id {
-                Database.fetchPostNumberofBookmarks(postid: postId, { (totalBookmarks) in
+                Firestore.fetchPostNumberofBookmarks(postid: postId, { (totalBookmarks) in
                     self.putNumberOfBookmarks(likes: totalBookmarks)
                 })
             }
-            
+            */
             
             setupAttributedCaption()
             

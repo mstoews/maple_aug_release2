@@ -12,7 +12,7 @@ import FirebaseFirestore
 import GoogleMaps
 import GooglePlaces
 
-
+/*
 extension Database {
     
     static func fetchUserWithUID(uid: String, completion: @escaping (MapleUser) -> ()) {
@@ -192,30 +192,10 @@ extension Database {
             completion(locationObjects)
         })
     }
-    
+ 
    
     
-//    static func fetchMapsByPostId( _ postId: String, _ completion: @escaping ([LocationObjects]) -> () ){
-//        var mapObjects = [LocationObjects]()
-//        Database.database().reference().child("locations").child(postId).observeSingleEvent(of: .value, with: { (snapshot) in
-//            guard let locationData = snapshot.value as? [String: Any] else { return }
-//            locationData.forEach({ (key, value) in
-//                guard  let data = value as? [String: Any] else {return}
-//                let location = data["place"] as! String
-//                let latitude = data["latitude"] as! Double
-//                let longitude = data["longitude"] as! Double
-//                let gmsPlace = GMSPlace()
-//                gmsPlace.name = location
-//                gmsPlace.coordinate.latitude = Double(latitude)
-//                gmsPlace.coordinate.longitude = Double(longitude)
-//                let mapObject = LocationObject(postId: postId, place: gmsPlace )
-//                mapObjects.append(LocationObject)
-//            })
-//            completion(mapObjects)
-//        })
-//    }
-//    
-//    
+
     
     
     static func fetchLocation(completion: @escaping ([LocationObject])-> ()) {
@@ -737,4 +717,4 @@ extension Database {
   
 }
 
-
+*/
