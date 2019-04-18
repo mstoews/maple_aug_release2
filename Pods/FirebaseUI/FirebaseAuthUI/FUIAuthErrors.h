@@ -23,16 +23,10 @@ NS_ASSUME_NONNULL_BEGIN
  */
 extern NSString *const FUIAuthErrorDomain;
 
-/** @var FUIAuthErrorUserInfoProviderIDKey
+/** @bar FUIAuthErrorUserInfoProviderIDKey
     @brief The ID of the identity provider.
  */
 extern NSString *const FUIAuthErrorUserInfoProviderIDKey;
-
-/** @var FUIAuthCredentialKey
-    @brief The key used to obtain the credential stored within the userInfo dictionary of the
-        error, if available.
- */
-extern NSString *const FUIAuthCredentialKey;
 
 /** @var FUIAuthErrorCode
     @brief Error codes used by FUIAuth.
@@ -56,13 +50,6 @@ typedef NS_ENUM(NSUInteger, FUIAuthErrorCode) {
           key @c FUIAuthErrorUserInfoProviderIDKey).
    */
   FUIAuthErrorCodeCantFindProvider = 3,
-
-  /** @var FUIAuthErrorCodeMergeConflict
-      @brief Indicates that a merge conflict occurred while trying to automatically upgrade an
-          anonymous user. The non-anonymous credential can be obtained from the userInfo dictionary
-          of the corresponding NSError using the @c FUIAuthCredentialKey.
-   */
-  FUIAuthErrorCodeMergeConflict = 4,
 };
 
 NS_ASSUME_NONNULL_END

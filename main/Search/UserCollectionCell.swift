@@ -19,6 +19,7 @@ class UserCollectionCell: MDCCardCollectionCell {
     
     static let placeholder = UIImage(named: "placeholder")!
     var userId : String!
+   
     
     
     public var imageConstraint: NSLayoutConstraint?
@@ -56,28 +57,11 @@ class UserCollectionCell: MDCCardCollectionCell {
         
     }
     
-    @objc func usernameLabelTapped(tapGestureRecognizer: UITapGestureRecognizer)
-    {
-        if let uid = userRecord?.objectID {
-            //self.delegate?.didTapUserNameLabel(uid: uid)
-        }
-    }
-    
     required init?(coder aDecoder: NSCoder) {
         super.init(coder: aDecoder)
     }
     
-    var userView: MapleUser? {
-        didSet {
-            guard let profileImageUrl = userView?.profileImageUrl else { return }
-            profileImageView.loadImage(urlString: profileImageUrl)
-            usernameLabel.text = userView?.username
-            if let uid = userView?.uid  {
-                userId = uid
-            }
-        }
-    }
-    
+   
     
     let profileImageView : CustomImageView = {
         let iv = CustomImageView()
@@ -102,33 +86,6 @@ class UserCollectionCell: MDCCardCollectionCell {
         return label
     }()
     
-    fileprivate func getNumberOfPosts() {
-        if let postCount = userView?.postCount {
-            self.postsLabel.attributedText = NSMutableAttributedString(string:     "Posts\t : \(postCount)" , attributes: [NSAttributedStringKey.font: UIFont.systemFont(ofSize: 14)])
-        }}
-    
-    fileprivate func getNumberOfFollowers()
-    {
-        // Followers
-        if let followersCount = userView?.followersCount {
-            self.followersLabel.attributedText = NSMutableAttributedString(string: "Followers\t : \(followersCount)" , attributes: [NSAttributedStringKey.font: UIFont.systemFont(ofSize: 14)])
-        }
-    }
-    
-    
-    fileprivate func getNumberOfFollowing()
-    {
-        // Following
-        if let followingCount = userView?.followedCount {
-            self.followingLabel.attributedText = NSMutableAttributedString(string: "Followed\t : \(followingCount)" , attributes: [NSAttributedStringKey.font: UIFont.systemFont(ofSize: 14)])
-        }
-    }
-    
-    
-    /*
-     Possibly it would be good to have number of posts for each user which could be added in the backend for number of likes etc.
-     This would give people and indication of the activity of the users.
-     */
     
     
     let postsLabel: UILabel = {
@@ -159,21 +116,28 @@ class UserCollectionCell: MDCCardCollectionCell {
     }()
     
     var userRecord: UserRecord? {
-        didSet {
-            
-            let strPosts = 10
-            
-            if let name = userRecord?.name {
-                usernameLabel.attributedText = NSMutableAttributedString(string: "\(name)" , attributes: attributeTitle)
-                explanationLabel.attributedText = NSMutableAttributedString(string: "Tokyo Area" , attributes: attributeSubline)
-                postsLabel.attributedText = NSMutableAttributedString(string: "Posts : \(strPosts)" , attributes: attributeCaption)
-                followersLabel.attributedText = NSMutableAttributedString(string: "Followers : \(strPosts)" , attributes: attributeCaption)
-                followingLabel.attributedText = NSMutableAttributedString(string: "Following : \(strPosts)" , attributes: attributeCaption)
+        didSet
+        {
+            if let postCount = userRecord?.postCount {
+                postsLabel.attributedText = NSMutableAttributedString(string: "Posts : \(postCount)" , attributes: attributeCaption)
             }
             
-            if let imageUrl = userRecord?.profileURL {
+            if let followedCount = userRecord?.followedCount {
+                followersLabel.attributedText = NSMutableAttributedString(string: "Followers : \(followedCount)" , attributes: attributeCaption)
+            }
+            
+            if let followerCount = userRecord?.followerCount {
+                followingLabel.attributedText = NSMutableAttributedString(string: "Following : \(followerCount)" , attributes: attributeCaption)
+            }
+            
+            if let name = userRecord?.username {
+                usernameLabel.attributedText = NSMutableAttributedString(string: "\(name )" , attributes: attributeTitle)
+            }
+            
+            if let imageUrl = userRecord?.profileImageUrl {
                 profileImageView.loadImage(urlString: imageUrl)
             }
+            
             
         }
     }

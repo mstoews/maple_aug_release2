@@ -7,14 +7,13 @@
 
 
 import UIKit
+import Firebase
 import Photos
 import AssetsLibrary
 import FirebaseUI
 import AlgoliaSearch
 import InstantSearchCore
 import AFNetworking
-import Firebase
-import FirebaseFirestore
 import GoogleMaps
 import GooglePlaces
 import GooglePlacePicker
@@ -91,11 +90,6 @@ class SharePhotoController:
     var gallery: GalleryController!
     let editor: VideoEditing = VideoEditor()
     
-    /*******************************/
-    
-    let myGroup = DispatchGroup()
-    
-    /*******************************/
     
     
     var bottomConstraint: NSLayoutConstraint!

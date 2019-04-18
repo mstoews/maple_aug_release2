@@ -29,8 +29,6 @@
 #import "FUIPhoneAuth_Internal.h"
 #import "FUIPhoneNumber.h"
 #import "FUIPhoneVerificationViewController.h"
-#import "FUIPrivacyAndTermsOfServiceView+PhoneAuth.h"
-
 
 NS_ASSUME_NONNULL_BEGIN
 
@@ -69,7 +67,7 @@ static NSString *const kNextButtonAccessibilityID = @"NextButtonAccessibilityID"
   UITextField *_countryCodeField;
   FUICountryCodeInfo *_selectedCountryCode;
   __weak IBOutlet UITableView *_tableView;
-  __weak IBOutlet FUIPrivacyAndTermsOfServiceView *_tosView;
+  __weak IBOutlet UITextView *_tosTextView;
   FUICountryCodes *_countryCodes;
   FUIPhoneNumber *_phoneNumber;
 }
@@ -80,46 +78,39 @@ static NSString *const kNextButtonAccessibilityID = @"NextButtonAccessibilityID"
   return [self initWithNibName:nibNameOrNil
                         bundle:nibBundleOrNil
                         authUI:authUI
-                   phoneNumber:nil
-                  countryCodes:nil];
+                   phoneNumber:nil];
 }
 
 - (instancetype)initWithAuthUI:(FUIAuth *)authUI {
   return [self initWithNibName:NSStringFromClass([self class])
                         bundle:[FUIAuthUtils bundleNamed:FUIPhoneAuthBundleName]
                         authUI:authUI
-                   phoneNumber:nil
-                  countryCodes:nil];
+                   phoneNumber:nil];
 }
 
 - (instancetype)initWithAuthUI:(FUIAuth *)authUI
-                   phoneNumber:(nullable NSString *)phoneNumber
-                  countryCodes:(nullable FUICountryCodes *)countryCodes {
+                   phoneNumber:(nullable NSString *)phoneNumber {
   return [self initWithNibName:NSStringFromClass([self class])
                         bundle:[FUIAuthUtils bundleNamed:FUIPhoneAuthBundleName]
                         authUI:authUI
-                   phoneNumber:phoneNumber
-                  countryCodes:countryCodes];
+                   phoneNumber:phoneNumber];
 }
 
 - (instancetype)initWithNibName:(nullable NSString *)nibNameOrNil
                          bundle:(nullable NSBundle *)nibBundleOrNil
                          authUI:(FUIAuth *)authUI
-                    phoneNumber:(nullable NSString *)phoneNumber
-                   countryCodes:(nullable FUICountryCodes *)countryCodes {
+                    phoneNumber:(nullable NSString *)phoneNumber {
 
   self = [super initWithNibName:nibNameOrNil
                          bundle:nibBundleOrNil
                          authUI:authUI];
   if (self) {
     self.title = FUIPhoneAuthLocalizedString(kPAStr_EnterPhoneTitle);
-    _countryCodes = countryCodes ?: [[FUICountryCodes alloc] init];
-    if (phoneNumber.length) {
-      _phoneNumber = [[FUIPhoneNumber alloc] initWithNormalizedPhoneNumber:phoneNumber
-                                                              countryCodes:_countryCodes];
-    }
+    _countryCodes = [[FUICountryCodes alloc] init];
+    _phoneNumber = phoneNumber.length ?
+        [[FUIPhoneNumber alloc] initWithNormalizedPhoneNumber:phoneNumber] : nil;
     _selectedCountryCode = _phoneNumber.countryCode ?:
-        [_countryCodes defaultCountryCodeInfo];
+        [_countryCodes countryCodeInfoFromDeviceLocale];
   }
   return self;
 }
@@ -139,8 +130,8 @@ static NSString *const kNextButtonAccessibilityID = @"NextButtonAccessibilityID"
                                                               target:nil
                                                               action:nil];
   [self.navigationItem setBackBarButtonItem:backItem];
-  _tosView.authUI = self.authUI;
-  [_tosView useFullMessageWithSMSRateTerm];
+  _tosTextView.text = [NSString stringWithFormat:FUIPhoneAuthLocalizedString(kPAStr_TermsSMS),
+                           FUIPhoneAuthLocalizedString(kPAStr_Verify)];
 
   [self enableDynamicCellHeightForTableView:_tableView];
 }
@@ -272,9 +263,6 @@ static NSString *const kNextButtonAccessibilityID = @"NextButtonAccessibilityID"
     _phoneNumberField.autocapitalizationType = UITextAutocapitalizationTypeNone;
     _phoneNumberField.returnKeyType = UIReturnKeyNext;
     _phoneNumberField.keyboardType = UIKeyboardTypeNumberPad;
-    if (@available(iOS 10.0, *)) {
-      _phoneNumberField.textContentType = UITextContentTypeTelephoneNumber;
-    }
     [_phoneNumberField becomeFirstResponder];
     if (_phoneNumber) {
       _phoneNumberField.text = _phoneNumber.rawPhoneNumber;

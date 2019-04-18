@@ -22,7 +22,6 @@
 #import "FUIAuthTableViewCell.h"
 #import "FUIAuthUtils.h"
 #import "FUIAuth_Internal.h"
-#import "FUIPrivacyAndTermsOfServiceView.h"
 
 /** @var kCellReuseIdentifier
     @brief The reuse identifier for table view cell.
@@ -39,7 +38,6 @@ static const CGFloat kFooterTextViewHorizontalInset = 8.0f;
     @brief The text view in the footer of the table.
  */
 @property(nonatomic, strong) IBOutlet UITextView *footerTextView;
-@property(nonatomic, strong) IBOutlet FUIPrivacyAndTermsOfServiceView *termsOfServiceView;
 
 @end
 
@@ -105,9 +103,6 @@ static const CGFloat kFooterTextViewHorizontalInset = 8.0f;
   _footerTextView.textContainerInset =
       UIEdgeInsetsMake(0, kFooterTextViewHorizontalInset, 0, kFooterTextViewHorizontalInset);
   [self.footerTextView sizeToFit];
-
-  self.termsOfServiceView.authUI = self.authUI;
-  [self.termsOfServiceView useFooterMessage];
 }
 
 #pragma mark - Actions
@@ -180,9 +175,6 @@ static const CGFloat kFooterTextViewHorizontalInset = 8.0f;
   _emailField.keyboardType = UIKeyboardTypeEmailAddress;
   _emailField.autocorrectionType = UITextAutocorrectionTypeNo;
   _emailField.autocapitalizationType = UITextAutocapitalizationTypeNone;
-  if (@available(iOS 11.0, *)) {
-    _emailField.textContentType = UITextContentTypeUsername;
-  }
   [cell.textField addTarget:self
                      action:@selector(textFieldDidChange)
            forControlEvents:UIControlEventEditingChanged];

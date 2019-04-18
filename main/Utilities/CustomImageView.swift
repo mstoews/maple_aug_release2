@@ -66,7 +66,7 @@ extension UIImageView{
         }
         else{
             let reference : StorageReference = Storage.storage().reference(forURL: storageRefString)
-            self.sd_setImage(with: reference, placeholderImage: placeholderImage)
+            //self.sd_setImage(with: reference, placeholderImage: placeholderImage)
         }
         
     }

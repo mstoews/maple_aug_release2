@@ -6,6 +6,7 @@
 //  Copyright © 2018 Murray Toews. All rights reserved.
 //
 
+import Firebase
 import FirebaseFirestore
 
 // A type that can be initialized from a Firestore document.

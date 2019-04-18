@@ -16,7 +16,6 @@
 
 #import "FUIPhoneAuth_Internal.h"
 
-#import "CountryCode/FUICountryCodes.h"
 #import "FUIAuth_Internal.h"
 #import "FUIPhoneAuthStrings.h"
 #import "FUIPhoneEntryViewController.h"
@@ -30,66 +29,34 @@ NS_ASSUME_NONNULL_BEGIN
 
   /** The callback which should be invoked when the sign in flow completes (or is cancelled.) */
   FIRAuthProviderSignInCompletionBlock _pendingSignInCallback;
-  
-  /** Available country codes For the authUI to use. */
-  FUICountryCodes *_countryCodes;
+
 }
 
 - (instancetype)initWithAuthUI:(FUIAuth *)authUI {
   if (self = [super init]) {
     _authUI = authUI;
-    _countryCodes = [[FUICountryCodes alloc] init];
   }
 
-  return self;
-}
-
-- (instancetype)initWithAuthUI:(FUIAuth *)authUI
-          whitelistedCountries:(NSSet<NSString *> *)countries {
-  NSParameterAssert(countries);
-  NSParameterAssert(countries.count > 0);
-  if (self = [self initWithAuthUI:authUI]) {
-    [_countryCodes whitelistCountries:countries];
-    NSAssert(_countryCodes.count, @"No available country code found.");
-    if (!_countryCodes.count) {
-      return nil;
-    }
-  }
-  return self;
-}
-
-- (instancetype)initWithAuthUI:(FUIAuth *)authUI
-          blacklistedCountries:(NSSet<NSString *> *)countries {
-  if (!countries.count) {
-    return nil;
-  }
-  if (self = [self initWithAuthUI:authUI]) {
-    [_countryCodes blacklistCountries:countries];
-    NSAssert(_countryCodes.count, @"No available country code found.");
-    if (!_countryCodes.count) {
-      return nil;
-    }
-  }
   return self;
 }
 
 #pragma mark - FUIAuthProvider
 
-- (nullable NSString *)providerID {
+- (NSString *)providerID {
   return FIRPhoneAuthProviderID;
 }
 
 /** @fn accessToken:
     @brief Phone Auth token is matched by FirebaseUI User Access Token
  */
-- (nullable NSString *)accessToken {
+- (NSString *)accessToken {
   return nil;
 }
 
 /** @fn idToken:
     @brief Phone Auth Token Secret is matched by FirebaseUI User Id Token
  */
-- (nullable NSString *)idToken {
+- (NSString *)idToken {
   return nil;
 }
 
@@ -157,8 +124,7 @@ NS_ASSUME_NONNULL_BEGIN
   }
 
   UIViewController *controller = [[FUIPhoneEntryViewController alloc] initWithAuthUI:_authUI
-                                                                         phoneNumber:defaultValue
-                                                                        countryCodes:_countryCodes];
+                                                                         phoneNumber:defaultValue];
   UINavigationController *navigationController =
       [[UINavigationController alloc] initWithRootViewController:controller];
   [presentingViewController presentViewController:navigationController animated:YES completion:nil];

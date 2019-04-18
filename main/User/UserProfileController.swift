@@ -402,7 +402,9 @@ class UserProfileController: MDCCollectionViewController,
     func didChangeToGridView() {
         print("didChangeToGridView")
         cellType = CellType.GRID
-        observeQuery(uid: user!.uid)
+        if let uid = user?.uid {
+            observeQuery(uid: uid)
+        }
         collectionView?.reloadData()
     }
     

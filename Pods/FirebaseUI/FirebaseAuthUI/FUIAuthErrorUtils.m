@@ -26,17 +26,6 @@
   return [self errorWithCode:FUIAuthErrorCodeUserCancelledSignIn userInfo:nil];
 }
 
-+ (NSError *)mergeConflictErrorWithUserInfo:(NSDictionary *)userInfo
-                            underlyingError:(NSError *)underlyingError {
-  NSMutableDictionary *errorInfo = [userInfo mutableCopy];
-  if (underlyingError != nil) {
-    errorInfo[NSUnderlyingErrorKey] = underlyingError;
-  }
-  errorInfo[NSLocalizedDescriptionKey] = @"Unable to merge accounts. Check the userInfo dictionary"
-      @" for the auth credential of the logged-in account.";
-  return [self errorWithCode:FUIAuthErrorCodeMergeConflict userInfo:[errorInfo copy]];
-}
-
 + (NSError *)providerErrorWithUnderlyingError:(NSError *)underlyingError
                                    providerID:(NSString *)providerID {
   return [self errorWithCode:FUIAuthErrorCodeProviderError

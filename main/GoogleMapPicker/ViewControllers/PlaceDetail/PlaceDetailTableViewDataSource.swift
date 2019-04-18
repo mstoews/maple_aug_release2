@@ -158,7 +158,7 @@ class PlaceDetailTableViewDataSource: NSObject, UITableViewDataSource, UITableVi
       case .priceLevel:
         cell.propertyValue.text = text(for: place.priceLevel)
       case .types:
-        cell.propertyValue.text = place.types.joined(separator: ", ")
+        cell.propertyValue.text = place.types!.joined(separator: ", ")
       case .attribution:
         if let attributions = place.attributions {
           cell.propertyValue.attributedText = attributions

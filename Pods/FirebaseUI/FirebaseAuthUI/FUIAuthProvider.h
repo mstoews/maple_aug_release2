@@ -48,7 +48,7 @@ typedef void (^FIRAuthProviderSignInCompletionBlock) (
 /** @property providerID
     @brief A unique identifier for the provider.
  */
-@property(nonatomic, copy, readonly, nullable) NSString *providerID;
+@property(nonatomic, copy, readonly) NSString *providerID;
 
 /** @property shortName
     @brief A short display name for the provider.
@@ -119,19 +119,14 @@ __attribute__((deprecated("This is deprecated API and will be removed in a futur
 /** @property accessToken
     @brief User Access Token obtained during sign in.
  */
-@property(nonatomic, copy, readonly, nullable) NSString *accessToken;
+@property(nonatomic, copy, readonly) NSString *accessToken;
 
 @optional;
 
 /** @property idToken
-    @brief User Id Token obtained during sign in. Not all providers can return, thus it's optional.
+    @brief User Id Token obtained during sign in. Not all providers can return, thus it's optional
  */
-@property(nonatomic, copy, readonly, nullable) NSString *idToken;
-
-/** @fn email
-    @brief The email address associated with this provider, if any.
- */
-- (NSString *)email;
+@property(nonatomic, copy, readonly) NSString *idToken;
 
 /** @fn handleOpenURL:
     @brief May be used to help complete a sign-in flow which requires a callback from Safari.

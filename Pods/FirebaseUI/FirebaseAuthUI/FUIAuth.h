@@ -16,7 +16,6 @@
 
 #import <UIKit/UIKit.h>
 
-#import "FUIAccountSettingsOperationType.h"
 #import "FUIAuthProvider.h"
 
 @class FIRAuth;
@@ -78,10 +77,11 @@ __attribute__((deprecated("Instead use authUI:didSignInWithAuthDataResult:error:
     @param authUI The @c FUIAuth instance sending the message.
     @param operation The operation type that was just completed.
     @param error The error that occurred during operation, if any.
-*/
-- (void)authUI:(FUIAuth *)authUI
+ // TODO: Assitant Settings will be released later.
+ - (void)authUI:(FUIAuth *)authUI
     didFinishOperation:(FUIAccountSettingsOperationType)operation
                  error:(nullable NSError *)error;
+ */
 
 /** @fn authPickerViewControllerForAuthUI:
     @brief Sent to the receiver to ask for an instance of @c FUIAuthPickerViewController subclass
@@ -196,22 +196,9 @@ __attribute__((deprecated("Instead use authUI:didSignInWithAuthDataResult:error:
 
 /** @property TOSURL
     @brief The URL of your app's Terms of Service. If not nil, a Terms of Service notice is
-        displayed on the initial sign-in screen and potentially the phone number auth and
-        email/password account creation screen.
+        displayed on the email/password account creation screen.
  */
 @property(nonatomic, copy, nullable) NSURL *TOSURL;
-
-/** @property shouldAutoUpgradeAnonymousUsers
-    @brief Whether to enable auto upgrading of anonymous accounts, defaults to NO.
- */
-@property(nonatomic, assign, getter=shouldAutoUpgradeAnonymousUsers) BOOL autoUpgradeAnonymousUsers;
-
-/** @property privacyPolicyURL
-    @brief The URL of your app's Privacy Policy. If not nil, a privacy policy notice is
-        displayed on the initial sign-in screen and potentially the phone number auth and
-        email/password account creation screen.
- */
-@property(nonatomic, copy, nullable) NSURL *privacyPolicyURL;
 
 /** @property delegate
     @brief A delegate that receives callbacks or provides custom UI for @c FUIAuth.

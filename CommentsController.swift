@@ -1,5 +1,6 @@
 import UIKit
 import Firebase
+import FirebaseFirestore
 import MaterialComponents
 
 class CommentsController: MDCCollectionViewController, CommentInputAccessoryViewDelegate {

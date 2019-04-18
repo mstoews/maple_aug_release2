@@ -11,10 +11,6 @@
 #endif
 
 #import "FirebaseUI.h"
-#import "FirebaseAnonymousAuthUI.h"
-#import "FUIAnonymousAuth.h"
-#import "FUIAccountSettingsOperationType.h"
-#import "FUIAccountSettingsViewController.h"
 #import "FirebaseAuthUI.h"
 #import "FUIAuth.h"
 #import "FUIAuthBaseViewController.h"

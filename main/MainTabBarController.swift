@@ -7,6 +7,7 @@
 
 import UIKit
 import Firebase
+import FirebaseFirestore
 import FirebaseUI
 import FBSDKLoginKit
 import GoogleMaps
@@ -178,8 +179,9 @@ class MainTabBarController: UITabBarController, AuthUIDelegate  {
         
         tabBar.tintColor = UIColor.red
         
-        viewControllers = [homeNavController,
+        viewControllers = [
                            searchNavController,
+                           homeNavController,
                            sharePhotoNavController,
                            notificationNavController,
                            userProfileNavController]

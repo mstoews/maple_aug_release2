@@ -7,6 +7,7 @@
 
 import UIKit
 import Firebase
+import FirebaseFirestore
 import FirebaseUI
 import AlgoliaSearch
 import InstantSearchCore
@@ -84,7 +85,7 @@ class HomeController: MDCCollectionViewController, HomePostCellDelegate,  HomeHe
     lazy var appDelegate = UIApplication.shared.delegate as! AppDelegate
     
     let red = MDCPalette.red.tint600
-    var observers = [DatabaseQuery]()
+    //var observers = [DatabaseQuery]()
     var newPost = false
     var followChanged = false
     var isFirstOpen = true
@@ -202,9 +203,9 @@ class HomeController: MDCCollectionViewController, HomePostCellDelegate,  HomeHe
         }
     }
     
-    fileprivate func baseQuery() -> Firebase.Query {
-        return db.collection("posts").limit(to: 50)
-    }
+//    fileprivate func baseQuery() -> Firebase.Query {
+//        return db.collection("posts").limit(to: 50)
+//    }
     
     func didTapImageCell(for cell: UserImageCell, post: Post) {
         

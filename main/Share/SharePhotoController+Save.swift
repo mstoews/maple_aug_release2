@@ -173,6 +173,18 @@ extension SharePhotoController
         hud.textLabel.text = "Updating post ..."
         hud.show(in: view)
         
+        
+        let myGroup = DispatchGroup()
+        
+        /*
+         dispatchGroup.enter()
+         Service.shared.fetchGames { (appGroup, err) in
+         print("Done with games")
+         dispatchGroup.leave()
+         group1 = appGroup
+         }
+        */
+        
         myGroup.enter()
         saveImages(postid: docId, typeName: "thumbImages", imageSize: 320, images: self.imageArray)
         
@@ -182,8 +194,7 @@ extension SharePhotoController
             print("Locations completed")
         }
         
-        myGroup.notify(queue: .main) {
-           
+         myGroup.notify(queue: .main) {
             self.imageArray.removeAll()
             self.mapObjects.removeAll()
             self.Products.text?.removeAll()
@@ -193,13 +204,14 @@ extension SharePhotoController
             print("main queue updated")
             message.text = "Upload completed successfully"
             MDCSnackbarManager.show(message)
-            //self.tabBarController?.selectedIndex = 0
             hud.dismiss()
             self.navigationItem.rightBarButtonItem?.isEnabled = true
         }
         
         hud.dismiss()
     }
+    
+    
     
     func saveImages( postid: String,  typeName: String, imageSize: CGFloat, images: [UIImage] ) {
         var urlArray = [String]()
@@ -267,7 +279,7 @@ extension SharePhotoController
                     }
                 }
             }
-            myGroup.leave()
+            //myGroup.leave()
         }
     }
     
@@ -403,7 +415,7 @@ extension SharePhotoController
                     priceLevel = text(for: pl)
                 }
                 
-                if let types = location.place?.types.joined(separator: ", ") {
+                if let types = location.place?.types!.joined(separator: ", ") {
                     let values : [String:Any] = [
                         "uid" : uid,
                         "postId:" : postId,
@@ -441,7 +453,6 @@ extension SharePhotoController
                 }
             }
         }
-         myGroup.leave()
     }
     
 }

@@ -47,21 +47,21 @@ static NSString *const kSignInWithTwitter = @"SignInWithTwitter";
 
 #pragma mark - FUIAuthProvider
 
-- (nullable NSString *)providerID {
+- (NSString *)providerID {
   return FIRTwitterAuthProviderID;
 }
 
 /** @fn accessToken:
     @brief Twitter Auth token is matched by FirebaseUI User Access Token
  */
-- (nullable NSString *)accessToken {
+- (NSString *)accessToken {
   return [self getTwitterManager].sessionStore.session.authToken;
 }
 
 /** @fn idToken:
     @brief Twitter Auth Token Secret is matched by FirebaseUI User Id Token
  */
-- (nullable NSString *)idToken {
+- (NSString *)idToken {
   return [self getTwitterManager].sessionStore.session.authTokenSecret;
 }
 

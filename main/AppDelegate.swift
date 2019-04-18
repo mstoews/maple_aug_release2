@@ -1,4 +1,5 @@
 import Firebase
+import FirebaseFirestore
 import FirebaseUI
 import GoogleSignIn
 import MaterialComponents

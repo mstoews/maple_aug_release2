@@ -25,7 +25,6 @@
 #import "FUIAccountSettingsOperationUpdatePassword.h"
 #import "FUIAuthBaseViewController_Internal.h"
 #import "FUIAuthErrorUtils.h"
-#import "FUIAuth_Internal.h"
 
 NS_ASSUME_NONNULL_BEGIN
 
@@ -98,7 +97,8 @@ NS_ASSUME_NONNULL_BEGIN
     }
   }
 
-  [self.delegate.authUI invokeOperationCallback:[self operationType] error:error];
+  // TODO: Assistant Settings will be released later.
+  // [self.delegate.authUI invokeOperationCallback:[self operationType] error:error];
 }
 
 - (void)showSelectProviderDialogWithAlertTitle:(nullable NSString *)title

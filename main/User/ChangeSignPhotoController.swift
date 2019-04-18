@@ -6,6 +6,7 @@
 
 import UIKit
 import Firebase
+import FirebaseFirestore
 import FirebaseUI
 import FBSDKCoreKit
 import FBSDKLoginKit

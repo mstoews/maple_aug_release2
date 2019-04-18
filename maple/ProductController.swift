@@ -10,12 +10,8 @@ import UIKit
 import Firebase
 import FirebaseFirestore
 import FirebaseUI
-//import FirebaseAuthUI
-//import FirebaseInvites
 import AlgoliaSearch
 import InstantSearchCore
-//import Kingfisher
-//import INSPhotoGallery
 import GoogleSignIn
 import GoogleToolboxForMac
 import GoogleMaps

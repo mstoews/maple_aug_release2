@@ -24,8 +24,8 @@ open class LightboxController: UIViewController {
     scrollView.isPagingEnabled = false
     scrollView.delegate = self
     scrollView.showsHorizontalScrollIndicator = false
-    //scrollView.decelerationRate = UIScrollView.DecelerationRate.hash
-    scrollView.decelerationRate = 0.5;
+    //scrollView.decelerationRate = UIScrollView.hash
+
     return scrollView
   }()
 

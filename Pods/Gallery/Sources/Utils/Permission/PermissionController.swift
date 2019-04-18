@@ -6,7 +6,7 @@ protocol PermissionControllerDelegate: class {
 
 class PermissionController: UIViewController {
 
-  lazy var permissionView: PermissionView = self.makePermissionView()
+  lazy var permissionView: PermissionView = self.permissionView
 
   weak var delegate: PermissionControllerDelegate?
 
@@ -32,8 +32,8 @@ class PermissionController: UIViewController {
 
   func setup() {
     view.addSubview(permissionView)
-    permissionView.closeButton.addTarget(self, action: #selector(closeButtonTouched(_:)),
-                                         for: .touchUpInside)
+    //permissionView.closeButton.addTarget(self, action: #selector(closeButtonTouched(_:)),
+    //                                     for: .touchUpInside)
     permissionView.settingButton.addTarget(self, action: #selector(settingButtonTouched(_:)),
                                            for: .touchUpInside)
     permissionView.g_pinEdges()
@@ -67,13 +67,13 @@ class PermissionController: UIViewController {
 
   @objc func settingButtonTouched(_ button: UIButton) {
     DispatchQueue.main.async {
-        if let settingsURL = URL(string: UIApplicationOpenSettingsURLString) {
-        UIApplication.shared.openURL(settingsURL)
+        //if let settingsURL = URL(string: UIApplication.UIApplicationOpenSettingsURLString) {
+        //UIApplication.shared.openURL(settingsURL)
       }
     }
   }
 
-  @objc func closeButtonTouched(_ button: UIButton) {
+func closeButtonTouched(_ button: UIButton) {
     EventHub.shared.close?()
   }
 
@@ -84,4 +84,4 @@ class PermissionController: UIViewController {
 
     return view
   }
-}
+
