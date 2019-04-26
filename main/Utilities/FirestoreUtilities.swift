@@ -328,24 +328,20 @@ extension Firestore {
     
     /*******  isPostBookMarkedByUser  *******/
     static func isPostBoookMarkedByUser(postId: String, uid: String, _ completion: @escaping (Bool) -> () ) {
-        var isBookMarked = false
         let docRef = firestore().collection("posts").document(postId).collection("bookmarked").document(uid)
+        
         docRef.getDocument { (document, error) in
+            if let error = error {
+                print ("Error in data structure : \(error)")
+                completion(false)
+            }
             if let document = document, document.exists {
-                let dataDescription = document.data().map(String.init(describing:)) ?? "nil"
-                print("Document data: \(dataDescription)")
-                let isBooked = document["BookMark"] as! Int
-                if isBooked == 1 {
-                    isBookMarked = true
-                }
-                else {
-                    isBookMarked = false
-                }
-                
+                print ("Post: \(postId) user id : \(uid)")
+                let isBooked = document["isBookMarked"] as! Bool
+                    completion(isBooked)
             } else {
                 print("Document does not exist")
             }
-            completion(isBookMarked)
         }
     }
     
@@ -391,6 +387,46 @@ extension Firestore {
     static func deletePost(postId : String){
           firestore().collection("posts").document(postId).delete()
     }
+    
+//
+//    static func fetchPostByPostId (postId: String, _ completion: @escaping (FSPost) -> () ) {
+//            firestore().collection("posts").document(postId).getDocument() { (snapshot, error) in
+//                if let error = error  {
+//                    print("Error getting documents: \(error)");
+//                }
+//                else  {
+//                    if snapshot != nil {
+//                        // let post = FSPost(dictionary: (snapshot?.data())!, postId: postId)
+//                        let data = snapshot?.data()! as [String: Any]?
+//                        if let post = FSPost( dictionary: data!, postId: postId) {
+//                           completion(post)
+//                        }
+//                    }
+//                }
+//            }
+//    }
+
+    
+    static func fetchPostByPostId (postId: String, _ completion: @escaping (FSPost) -> () ) {
+        let docRef = firestore().collection("posts").document(postId)
+        docRef.getDocument { (document, error) in
+            if let post = document.flatMap({
+                $0.data().flatMap({ (data) in
+                    let post = FSPost( dictionary: data, postId: postId)
+                    completion(post!)
+                })
+            })
+            {
+                print("OKD \(post)")
+                
+            } else {
+                
+                print("Not okay")
+            }
+        }
+    }
+    
+    
     
     static func getPostCount (user: User) -> Int {
         var postCount = 0

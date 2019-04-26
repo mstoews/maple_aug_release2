@@ -16,6 +16,12 @@
 		02DC63442001BDD600AE9662 /* CommentInputAccessoryView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 02DC63432001BDD600AE9662 /* CommentInputAccessoryView.swift */; };
 		02DC63462001BE7600AE9662 /* CommentInputTextView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 02DC63452001BE7600AE9662 /* CommentInputTextView.swift */; };
 		02DC634A2004E5C500AE9662 /* HomeHeaderCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 02DC63492004E5C500AE9662 /* HomeHeaderCell.swift */; };
+		4800DAE9226FDC6500B326FC /* UserProductController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4800DAE8226FDC6400B326FC /* UserProductController.swift */; };
+		4800DAF62272B6C000B326FC /* SearchController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4800DAF52272B6BF00B326FC /* SearchController.swift */; };
+		4800DAF82272B87000B326FC /* podcasts.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4800DAF72272B87000B326FC /* podcasts.swift */; };
+		4800DAFA2272B8CA00B326FC /* APservice.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4800DAF92272B8CA00B326FC /* APservice.swift */; };
+		4800DAFC2272B96500B326FC /* PodcastCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4800DAFB2272B96500B326FC /* PodcastCell.swift */; };
+		4800DAFE2272BBF900B326FC /* PodcastCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 4800DAFD2272BBF800B326FC /* PodcastCell.xib */; };
 		482FC10020DE15D900E23DAE /* SharePhotoCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 482FC0F720DE15BD00E23DAE /* SharePhotoCell.swift */; };
 		482FC10220DE15D900E23DAE /* ProductFooterCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 482FC0F920DE15C400E23DAE /* ProductFooterCell.swift */; };
 		482FC10420DE15D900E23DAE /* PreviewPhotoContainerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 482FC0FB20DE15C800E23DAE /* PreviewPhotoContainerView.swift */; };
@@ -184,6 +190,12 @@
 		02DC63492004E5C500AE9662 /* HomeHeaderCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeHeaderCell.swift; sourceTree = "<group>"; };
 		1A37A2AC267FCAB8BAC6A37F /* Pods-Maple.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Maple.debug.xcconfig"; path = "Pods/Target Support Files/Pods-Maple/Pods-Maple.debug.xcconfig"; sourceTree = "<group>"; };
 		20978D14CE748FB57EE87399 /* Pods-Maple.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Maple.release.xcconfig"; path = "Pods/Target Support Files/Pods-Maple/Pods-Maple.release.xcconfig"; sourceTree = "<group>"; };
+		4800DAE8226FDC6400B326FC /* UserProductController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserProductController.swift; sourceTree = "<group>"; };
+		4800DAF52272B6BF00B326FC /* SearchController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchController.swift; sourceTree = "<group>"; };
+		4800DAF72272B87000B326FC /* podcasts.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = podcasts.swift; sourceTree = "<group>"; };
+		4800DAF92272B8CA00B326FC /* APservice.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = APservice.swift; sourceTree = "<group>"; };
+		4800DAFB2272B96500B326FC /* PodcastCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PodcastCell.swift; sourceTree = "<group>"; };
+		4800DAFD2272BBF800B326FC /* PodcastCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = PodcastCell.xib; sourceTree = "<group>"; };
 		482FC0F720DE15BD00E23DAE /* SharePhotoCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SharePhotoCell.swift; sourceTree = "<group>"; };
 		482FC0F920DE15C400E23DAE /* ProductFooterCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ProductFooterCell.swift; sourceTree = "<group>"; };
 		482FC0FB20DE15C800E23DAE /* PreviewPhotoContainerView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PreviewPhotoContainerView.swift; sourceTree = "<group>"; };
@@ -607,6 +619,8 @@
 				48482FBB20DA18A00031EBFF /* Category.swift */,
 				48482FBC20DA18A00031EBFF /* Post.swift */,
 				48482FBE20DA18A00031EBFF /* SinglePhotoPost.swift */,
+				4800DAF72272B87000B326FC /* podcasts.swift */,
+				4800DAF92272B8CA00B326FC /* APservice.swift */,
 			);
 			path = Models;
 			sourceTree = "<group>";
@@ -633,6 +647,7 @@
 		4876BB2520DA14880057E5E0 /* User */ = {
 			isa = PBXGroup;
 			children = (
+				4800DAE8226FDC6400B326FC /* UserProductController.swift */,
 				482FC10D20DE165B00E23DAE /* UserProfileController.swift */,
 				482FC11720DE168200E23DAE /* UserProfileHeader.swift */,
 				482FC11220DE166E00E23DAE /* UserGridCell.swift */,
@@ -657,6 +672,7 @@
 		4876BB5420DA14B70057E5E0 /* Search */ = {
 			isa = PBXGroup;
 			children = (
+				4800DAFD2272BBF800B326FC /* PodcastCell.xib */,
 				482FC12820DE234800E23DAE /* SearchAlgoliaCollectionView.swift */,
 				0225F2E120FE0F7300137084 /* UserImageCell.swift */,
 				482FC12B20DE235500E23DAE /* AlgoliaManager.swift */,
@@ -668,6 +684,8 @@
 				482FC12C20DE235900E23DAE /* PostRecord.swift */,
 				482FC12E20DE236100E23DAE /* UserRecord.swift */,
 				482FC12920DE234D00E23DAE /* LocationRecord.swift */,
+				4800DAF52272B6BF00B326FC /* SearchController.swift */,
+				4800DAFB2272B96500B326FC /* PodcastCell.swift */,
 			);
 			name = Search;
 			path = main/Search;
@@ -1108,6 +1126,7 @@
 				482FC11E20DE168200E23DAE /* FPAuthPickerViewController.xib in Resources */,
 				484F88D620DE327D0083D226 /* GoogleService-Info.plist in Resources */,
 				4876BD0B20DA164E0057E5E0 /* PlaceAttributeCell.xib in Resources */,
+				4800DAFE2272BBF900B326FC /* PodcastCell.xib in Resources */,
 				4878C18F20F844C80054F227 /* Assets.xcassets in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -1208,6 +1227,7 @@
 			inputPaths = (
 				"${SRCROOT}/Pods/Target Support Files/Pods-Maple/Pods-Maple-frameworks.sh",
 				"${BUILT_PRODUCTS_DIR}/AFNetworking/AFNetworking.framework",
+				"${BUILT_PRODUCTS_DIR}/Alamofire/Alamofire.framework",
 				"${BUILT_PRODUCTS_DIR}/AlgoliaSearch-Client-Swift/AlgoliaSearch.framework",
 				"${BUILT_PRODUCTS_DIR}/BadgeSwift/BadgeSwift.framework",
 				"${BUILT_PRODUCTS_DIR}/Bolts/Bolts.framework",
@@ -1249,6 +1269,7 @@
 			name = "[CP] Embed Pods Frameworks";
 			outputPaths = (
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/AFNetworking.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/Alamofire.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/AlgoliaSearch.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/BadgeSwift.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/Bolts.framework",
@@ -1328,13 +1349,16 @@
 				482FC11C20DE168200E23DAE /* UserProfileController.swift in Sources */,
 				48443E6A210990AE00A21FC4 /* GMUNonHierarchicalDistanceBasedAlgorithm.m in Sources */,
 				482FC12120DE168200E23DAE /* UserGridCell.swift in Sources */,
+				4800DAFA2272B8CA00B326FC /* APservice.swift in Sources */,
 				48443E6F210990AE00A21FC4 /* GMUGradient.m in Sources */,
 				48443E76210990AE00A21FC4 /* GMUFeature.m in Sources */,
 				48482FC020DA18A00031EBFF /* Location.swift in Sources */,
 				48443E6C210990AE00A21FC4 /* GMUDefaultClusterIconGenerator.m in Sources */,
 				4876BCAE20DA16290057E5E0 /* PhotoViewModel.swift in Sources */,
+				4800DAF82272B87000B326FC /* podcasts.swift in Sources */,
 				482FC10420DE15D900E23DAE /* PreviewPhotoContainerView.swift in Sources */,
 				482FC10720DE15D900E23DAE /* PostImageCell.swift in Sources */,
+				4800DAE9226FDC6500B326FC /* UserProductController.swift in Sources */,
 				48B445AB1FE7342D00DFD412 /* CommentCell.swift in Sources */,
 				4876BD0820DA164E0057E5E0 /* LocationSearchCell.swift in Sources */,
 				48482FCA20DA18A00031EBFF /* Bookmark.swift in Sources */,
@@ -1424,8 +1448,10 @@
 				4876BB8B20DA14CC0057E5E0 /* NotificationViewController.swift in Sources */,
 				4876BD0D20DA164E0057E5E0 /* PlaceAttributeCell.swift in Sources */,
 				48B445B91FE7342D00DFD412 /* CommentsController.swift in Sources */,
+				4800DAFC2272B96500B326FC /* PodcastCell.swift in Sources */,
 				02DC634A2004E5C500AE9662 /* HomeHeaderCell.swift in Sources */,
 				4876BD1320DA164E0057E5E0 /* BackgroundMapViewController.swift in Sources */,
+				4800DAF62272B6C000B326FC /* SearchController.swift in Sources */,
 				4876BD1D20DA164E0057E5E0 /* ShadowView.swift in Sources */,
 				482FC10220DE15D900E23DAE /* ProductFooterCell.swift in Sources */,
 				4876BD1920DA164E0057E5E0 /* MapController.swift in Sources */,

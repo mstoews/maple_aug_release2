@@ -89,6 +89,7 @@ class SearchAlgoliaCollectionView: MDCCollectionViewController , UISearchBarDele
         hud.dismiss(afterDelay: 1)
     }
     
+  
     @objc func didSearchProducts() {
         print("SearchAlgoliaCollectionView::didSearchProducts")
         
@@ -145,7 +146,7 @@ class SearchAlgoliaCollectionView: MDCCollectionViewController , UISearchBarDele
         }
         
         
-        fullTextSearch.params.hitsPerPage = 15
+        fullTextSearch.params.hitsPerPage = 10
         
         fullTextSearch.params.attributesToRetrieve = ["*" ]
         fullTextSearch.params.attributesToHighlight = [index]
@@ -191,19 +192,32 @@ class SearchAlgoliaCollectionView: MDCCollectionViewController , UISearchBarDele
             }
         }
         
+        
+        UINavigationBar.appearance().prefersLargeTitles = true
+        
         searchController = UISearchController(searchResultsController: nil)
         searchController.searchResultsUpdater = self
         searchController.searchBar.delegate = self
         searchController.searchBar.placeholder = NSLocalizedString("search_bar_placeholder", comment: "Search control bar")
         searchController.hidesNavigationBarDuringPresentation = false
         searchController.dimsBackgroundDuringPresentation = false
-        searchController.searchBar.barStyle = .default
+        //searchController.searchBar.barStyle = .default
         navigationItem.titleView = searchController.searchBar
+        navigationItem.hidesSearchBarWhenScrolling = false
+        navigationItem.searchController = searchController
         searchController.searchBar.sizeToFit()
+        
     }
     
     
-
+    
+    fileprivate func setupSearchBar() {
+        navigationItem.searchController = searchController
+        navigationItem.hidesSearchBarWhenScrolling = false
+        searchController.dimsBackgroundDuringPresentation = false
+        searchController.searchBar.delegate = self
+    }
+    
     
     
     override func viewDidLoad() {
@@ -230,6 +244,7 @@ class SearchAlgoliaCollectionView: MDCCollectionViewController , UISearchBarDele
         didSearch(index: "products", name: "FetchProd")
         // First load
         self.navigationItem.title = "Search"
+        UINavigationBar.appearance().prefersLargeTitles = true
     }
     
     deinit {
@@ -389,7 +404,17 @@ class SearchAlgoliaCollectionView: MDCCollectionViewController , UISearchBarDele
             let attributes = [NSAttributedStringKey.font : UIFont.systemFont(ofSize: CGFloat(15))]
             let post = postHits[indexPath.item]
             let estimatedFrame = NSString(string: post.description).boundingRect(with: size, options: .usesLineFragmentOrigin, attributes: attributes, context: nil)
-            return CGSize(width: view.frame.width - 15 , height: estimatedFrame.height + 60)
+            
+            var description = post.description
+            description = description.trimmingCharacters(in: .whitespacesAndNewlines)
+            
+            if description.count < 850 {
+               return CGSize(width: view.frame.width - 15 , height: estimatedFrame.height + 90)
+            }
+            else {
+                 return CGSize(width: view.frame.width - 15 , height: estimatedFrame.height + 140)
+            }
+           
         }
     }
     
@@ -398,23 +423,15 @@ class SearchAlgoliaCollectionView: MDCCollectionViewController , UISearchBarDele
     func openSearchSelected(postRecord: PostRecord)
     {
         if let postId = postRecord.objectID {
-            let docRef = db.collection("posts").document(postId)
-            docRef.getDocument()
-                { (document, error) in
-                    if let document = document {
-                        if let dataDescription = document.data().map(String.init(describing:)) {
-                        
-                            let data = document.data() as! [String: Any]
-                            let post = FSPost(dictionary: data, postId: postId)
-                            let editPostController = PostViewerController()
-                            editPostController.post = post
-                            self.navigationController?.pushViewController( editPostController, animated: true)
-                        
-                            print("Cached document data: \(dataDescription)")
-                        }
-                    } else {
-                        print("Document does not exist in cache")
-                    }
+            Firestore.fetchPostByPostId(postId: postId) { (post) in
+               
+                    Firestore.fetchUserWithUID(uid: post.uid) { (user) in
+                        let userProductController = UserProductController(collectionViewLayout: UICollectionViewFlowLayout())
+                        userProductController.setPostId(postId: postId)
+                        userProductController.user = user
+                        self.navigationController?.pushViewController(userProductController, animated: true)
+                    
+                }
             }
         }
     }

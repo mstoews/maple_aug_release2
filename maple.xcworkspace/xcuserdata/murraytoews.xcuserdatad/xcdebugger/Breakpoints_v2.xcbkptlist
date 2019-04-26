@@ -10,12 +10,236 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "main/Search/SearchAlgoliaCollectionView.swift"
-            timestampString = "577177248.388862"
+            timestampString = "577945142.008732"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "280"
-            endingLineNumber = "280"
+            startingLineNumber = "295"
+            endingLineNumber = "295"
             landmarkName = "collectionView(_:cellForItemAt:)"
+            landmarkType = "7">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            shouldBeEnabled = "No"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "main/Utilities/FirestoreUtilities.swift"
+            timestampString = "577945142.008943"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "338"
+            endingLineNumber = "338"
+            landmarkName = "isPostBoookMarkedByUser(postId:uid:_:)"
+            landmarkType = "7">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            shouldBeEnabled = "No"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "main/Utilities/FirestoreUtilities.swift"
+            timestampString = "577945142.009033"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "412"
+            endingLineNumber = "412"
+            landmarkName = "fetchPostByPostId(postId:_:)"
+            landmarkType = "7">
+            <Locations>
+               <Location
+                  shouldBeEnabled = "No"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "static (extension in Maple):__C.FIRFirestore.fetchPostByPostId(postId: Swift.String, _: (Maple.FSPost) -&gt; ()) -&gt; ()"
+                  moduleName = "Maple"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/murraytoews/Documents/maple_release_march_2019/main/Utilities/FirestoreUtilities.swift"
+                  timestampString = "577715925.377077"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "412"
+                  endingLineNumber = "412"
+                  offsetFromSymbolStart = "405">
+               </Location>
+               <Location
+                  shouldBeEnabled = "No"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "closure #1 (Swift.Optional&lt;__C.FIRDocumentSnapshot&gt;, Swift.Optional&lt;Swift.Error&gt;) -&gt; () in static (extension in Maple):__C.FIRFirestore.fetchPostByPostId(postId: Swift.String, _: (Maple.FSPost) -&gt; ()) -&gt; ()"
+                  moduleName = "Maple"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/murraytoews/Documents/maple_release_march_2019/main/Utilities/FirestoreUtilities.swift"
+                  timestampString = "577715925.380379"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "413"
+                  endingLineNumber = "413"
+                  offsetFromSymbolStart = "61">
+               </Location>
+            </Locations>
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            shouldBeEnabled = "No"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "main/Utilities/FirestoreUtilities.swift"
+            timestampString = "577945142.009089"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "414"
+            endingLineNumber = "414"
+            landmarkName = "fetchPostByPostId(postId:_:)"
+            landmarkType = "7">
+            <Locations>
+               <Location
+                  shouldBeEnabled = "No"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "closure #1 (__C.FIRDocumentSnapshot) -&gt; Swift.Optional&lt;()&gt; in closure #1 (Swift.Optional&lt;__C.FIRDocumentSnapshot&gt;, Swift.Optional&lt;Swift.Error&gt;) -&gt; () in static (extension in Maple):__C.FIRFirestore.fetchPostByPostId(postId: Swift.String, _: (Maple.FSPost) -&gt; ()) -&gt; ()"
+                  moduleName = "Maple"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/murraytoews/Documents/maple_release_march_2019/main/Utilities/FirestoreUtilities.swift"
+                  timestampString = "577715925.3868279"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "414"
+                  endingLineNumber = "414"
+                  offsetFromSymbolStart = "49">
+               </Location>
+               <Location
+                  shouldBeEnabled = "No"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "closure #1 (Swift.Dictionary&lt;Swift.String, Any&gt;) -&gt; () in closure #1 (__C.FIRDocumentSnapshot) -&gt; Swift.Optional&lt;()&gt; in closure #1 (Swift.Optional&lt;__C.FIRDocumentSnapshot&gt;, Swift.Optional&lt;Swift.Error&gt;) -&gt; () in static (extension in Maple):__C.FIRFirestore.fetchPostByPostId(postId: Swift.String, _: (Maple.FSPost) -&gt; ()) -&gt; ()"
+                  moduleName = "Maple"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/murraytoews/Documents/maple_release_march_2019/main/Utilities/FirestoreUtilities.swift"
+                  timestampString = "577715925.390425"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "415"
+                  endingLineNumber = "415"
+                  offsetFromSymbolStart = "59">
+               </Location>
+            </Locations>
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            shouldBeEnabled = "No"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "main/Utilities/FirestoreUtilities.swift"
+            timestampString = "577945142.009156"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "415"
+            endingLineNumber = "415"
+            landmarkName = "fetchPostByPostId(postId:_:)"
+            landmarkType = "7">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            shouldBeEnabled = "No"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "main/Utilities/FirestoreUtilities.swift"
+            timestampString = "577945142.009226"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "413"
+            endingLineNumber = "413"
+            landmarkName = "fetchPostByPostId(postId:_:)"
+            landmarkType = "7">
+            <Locations>
+               <Location
+                  shouldBeEnabled = "No"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "closure #1 (Swift.Optional&lt;__C.FIRDocumentSnapshot&gt;, Swift.Optional&lt;Swift.Error&gt;) -&gt; () in static (extension in Maple):__C.FIRFirestore.fetchPostByPostId(postId: Swift.String, _: (Maple.FSPost) -&gt; ()) -&gt; ()"
+                  moduleName = "Maple"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/murraytoews/Documents/maple_release_march_2019/main/Utilities/FirestoreUtilities.swift"
+                  timestampString = "577715925.403097"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "413"
+                  endingLineNumber = "413"
+                  offsetFromSymbolStart = "61">
+               </Location>
+               <Location
+                  shouldBeEnabled = "No"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "closure #1 (__C.FIRDocumentSnapshot) -&gt; Swift.Optional&lt;()&gt; in closure #1 (Swift.Optional&lt;__C.FIRDocumentSnapshot&gt;, Swift.Optional&lt;Swift.Error&gt;) -&gt; () in static (extension in Maple):__C.FIRFirestore.fetchPostByPostId(postId: Swift.String, _: (Maple.FSPost) -&gt; ()) -&gt; ()"
+                  moduleName = "Maple"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/murraytoews/Documents/maple_release_march_2019/main/Utilities/FirestoreUtilities.swift"
+                  timestampString = "577715925.40597"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "414"
+                  endingLineNumber = "414"
+                  offsetFromSymbolStart = "49">
+               </Location>
+            </Locations>
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            shouldBeEnabled = "No"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "main/Search/SearchAlgoliaCollectionView.swift"
+            timestampString = "577945142.0095659"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "430"
+            endingLineNumber = "430"
+            landmarkName = "openSearchSelected(postRecord:)"
+            landmarkType = "7">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            shouldBeEnabled = "No"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "main/User/UserProfileController.swift"
+            timestampString = "577945142.009712"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "340"
+            endingLineNumber = "340"
+            landmarkName = "fetchUser()"
+            landmarkType = "7">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            shouldBeEnabled = "No"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "main/User/UserProfileController.swift"
+            timestampString = "577945142.010034"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "618"
+            endingLineNumber = "618"
+            landmarkName = "collectionView(_:numberOfItemsInSection:)"
             landmarkType = "7">
          </BreakpointContent>
       </BreakpointProxy>

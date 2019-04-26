@@ -14,6 +14,7 @@ PODS:
   - AFNetworking/Serialization (3.2.1)
   - AFNetworking/UIKit (3.2.1):
     - AFNetworking/NSURLSession
+  - Alamofire (4.8.2)
   - AlgoliaSearch-Client-Swift (5.1.7)
   - BadgeSwift (5.0.1)
   - Bolts (1.9.0):
@@ -795,6 +796,7 @@ PODS:
 
 DEPENDENCIES:
   - AFNetworking
+  - Alamofire (~> 4.5)
   - BadgeSwift (~> 5.0)
   - Crashlytics
   - CropViewController
@@ -824,6 +826,7 @@ DEPENDENCIES:
 SPEC REPOS:
   https://github.com/cocoapods/specs.git:
     - AFNetworking
+    - Alamofire
     - AlgoliaSearch-Client-Swift
     - BadgeSwift
     - Bolts
@@ -885,6 +888,7 @@ SPEC REPOS:
 
 SPEC CHECKSUMS:
   AFNetworking: b6f891fdfaed196b46c7a83cf209e09697b94057
+  Alamofire: ae5c501addb7afdbb13687d7f2f722c78734c2d3
   AlgoliaSearch-Client-Swift: 13f8abe012615ed3ccc35dc61ce0401a191be0ff
   BadgeSwift: 3defa56f504bfb46f2300122c4a565ec9e405c1e
   Bolts: ac6567323eac61e203f6a9763667d0f711be34c8
@@ -944,6 +948,6 @@ SPEC CHECKSUMS:
   TwitterCore: 8cbc9ad34d91c63a0035ea05bfbfc0d7ca72a28c
   TwitterKit: 5e4f41d70b9abdb41df5467f52d7aa2c0fd26ebb
 
-PODFILE CHECKSUM: 4e8d9fcb3656abf89b7487e89a262b0913e45bbc
+PODFILE CHECKSUM: e08b06e0e838397163ae2cb7595bbcbfcdbdf742
 
 COCOAPODS: 1.5.3

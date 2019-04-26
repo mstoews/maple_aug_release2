@@ -273,6 +273,7 @@ class HomeController: MDCCollectionViewController, HomePostCellDelegate,  HomeHe
         //Firestore.updateDocCounts()
         setupNavigationItems()
         observeQuery()
+        self.navigationItem.title = "Home Page"
         
         // didShowAllPosts()
         // didShowFollowersPosts()

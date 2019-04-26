@@ -111,6 +111,10 @@ class MainTabBarController: UITabBarController, AuthUIDelegate  {
         setupViewControllers()
         observeNotifications()
         
+        UINavigationBar.appearance().prefersLargeTitles = true
+        
+        tabBar.tintColor = .purple
+        
         //NotificationCenter.default.addObserver(self, selector: #selector(resetBadges), name: NSNotification.Name(rawValue : "Badge Changed"), object: nil)
     }
     
@@ -146,7 +150,10 @@ class MainTabBarController: UITabBarController, AuthUIDelegate  {
         
         let homeNavController = templateNavController(unselectedImage: #imageLiteral(resourceName: "ic_home_white"), selectedImage: #imageLiteral(resourceName: "ic_home"), rootViewController: HomeController(collectionViewLayout: UICollectionViewFlowLayout()))
         
-        let searchNavController = templateNavController(unselectedImage: #imageLiteral(resourceName: "ic_search_white"), selectedImage: #imageLiteral(resourceName: "ic_search"), rootViewController: SearchAlgoliaCollectionView(collectionViewLayout: UICollectionViewFlowLayout()))        
+        //let searchNavController = templateNavController(unselectedImage: #imageLiteral(resourceName: "ic_search_white"), selectedImage: #imageLiteral(resourceName: "ic_search"), rootViewController: SearchAlgoliaCollectionView(collectionViewLayout: UICollectionViewFlowLayout()))
+        
+        
+        let searchNavController = templateNavController(unselectedImage: #imageLiteral(resourceName: "ic_search_white"), selectedImage: #imageLiteral(resourceName: "ic_search"), rootViewController: PodcastsSearchController())
 
         let sharePhotoNavController = templateNavController(unselectedImage: #imageLiteral(resourceName: "plus_unselected"), selectedImage: #imageLiteral(resourceName: "plus_unselected"), rootViewController: SharePhotoController())
 

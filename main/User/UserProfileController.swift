@@ -13,7 +13,6 @@ import VideoToolbox
 import FBSDKLoginKit
 import GoogleMaps
 import GooglePlaces
-//mport Kingfisher
 import Lightbox
 import MaterialComponents
 
@@ -25,15 +24,13 @@ enum  CellType {
     case MAP
 }
 
+
 class UserProfileController: MDCCollectionViewController,
     UserProfileHeaderDelegate,
     ChangeSignPhotoControllerDelegate,
     UserGridPostCellDelegate
 {
-    func didOpenSettings() {
-        didChangeSignUpFoto()
-    }
-    
+   
 
     let db = Firestore.firestore()
     let cellId = "cellId"
@@ -45,14 +42,19 @@ class UserProfileController: MDCCollectionViewController,
     
     lazy var appDelegate = UIApplication.shared.delegate as! AppDelegate
     
-    
-   
     var userId: String?
-    //var posts = [Post]()
+    public var listener: ListenerRegistration?
+    private var bookMarkListener: ListenerRegistration?
    
     private var fs_posts: [FSPost] = []
     private var fs_bookmarks: [FSPost] = []
-    private var documents: [DocumentSnapshot] = []
+    public var documents: [DocumentSnapshot] = []
+    
+    var headerView: UserProfileHeader?
+    var selectedImage: UIImage?
+    
+    var images = [UIImage]()
+    var assets = [PHAsset]()
     
     private var fs_locations : [LocationObject] = []
     private var locationDoc : [DocumentSnapshot] = []
@@ -84,8 +86,10 @@ class UserProfileController: MDCCollectionViewController,
         stopBookMarkObserving()
     }
     
-    private var listener: ListenerRegistration?
-    private var bookMarkListener: ListenerRegistration?
+        func didOpenSettings() {
+        didChangeSignUpFoto()
+    }
+    
     
     fileprivate func observeQuery(uid : String)
     {
@@ -174,7 +178,7 @@ class UserProfileController: MDCCollectionViewController,
     
     
     
-    fileprivate func stopObserving() {
+    func stopObserving() {
         listener?.remove()
     }
    
@@ -183,7 +187,6 @@ class UserProfileController: MDCCollectionViewController,
         bookMarkListener?.remove()
     }
     
-
   
     func didTapBookmark(for cell: UserGridPostCell) {
         guard let indexPath = collectionView?.indexPath(for: cell) else { return }
@@ -284,7 +287,7 @@ class UserProfileController: MDCCollectionViewController,
          print ("didTapUserNameLabel")
     }
     
-    private let refreshControl = UIRefreshControl()
+    public let refreshControl = UIRefreshControl()
     
     
     override func viewDidLoad() {
@@ -299,6 +302,7 @@ class UserProfileController: MDCCollectionViewController,
         
         refreshControl.addTarget(self, action: #selector(handleRefresh), for: .valueChanged)
         collectionView?.refreshControl = refreshControl
+        self.navigationItem.title = "User Page"
                
         setupSettingsButton()
         fetchUser()
@@ -324,7 +328,7 @@ class UserProfileController: MDCCollectionViewController,
         if let uid = Auth.auth().currentUser?.uid {
             Firestore.fetchUserWithUID(uid: uid) { (user) in
                 self.user = user
-                self.navigationItem.title = "User Page"
+                //self.navigationItem.title = "User Page"
                 self.isCurrentUser = true
                 
             }
@@ -339,14 +343,14 @@ class UserProfileController: MDCCollectionViewController,
                 if userid != uid {
                     Firestore.fetchUserWithUID(uid: userid) { (user) in
                         self.user = user
-                        self.navigationItem.title = "User Page"
+                        //self.navigationItem.title = "User Page"
                         self.isCurrentUser = false
                         self.observeQuery(uid: user.uid)
                     }
                 } else {
                     Firestore.fetchUserWithUID(uid: uid) { (user) in
                         self.user = user
-                        self.navigationItem.title = "User Page"
+                        //self.navigationItem.title = "User Page"
                         self.observeQuery(uid: user.uid)
                         self.isCurrentUser = true
                     }
@@ -665,12 +669,7 @@ class UserProfileController: MDCCollectionViewController,
     }
     
     
-    var headerView: UserProfileHeader?
-    var selectedImage: UIImage?
-    
-    var images = [UIImage]()
-    var assets = [PHAsset]()
-    
+   
     func collectionView(collectionView: UICollectionView, didSelectItemAtIndexPath indexPath: NSIndexPath){
         
         let cell : UICollectionViewCell = collectionView.cellForItem(at: indexPath as IndexPath)!
