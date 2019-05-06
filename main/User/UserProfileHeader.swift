@@ -169,7 +169,7 @@
             let button = UIButton(type: .system)
             button.setTitle("FOLLOW\t", for: .normal)
             button.setImage(#imageLiteral(resourceName: "ic_favorite_border"), for: .normal )
-            button.tintColor = UIColor.themeColor()
+            button.tintColor = UIColor.buttonThemeColor()
             button.backgroundColor = .white
             button.addTarget(self, action: #selector(handleFollow), for: .touchUpInside)
             return button
@@ -179,7 +179,7 @@
             let button = UIButton(type: .system)
             button.setTitle("FOLLOWED\t", for: .normal)
             button.setImage(#imageLiteral(resourceName: "ic_favorite"), for: .normal )
-            button.tintColor = UIColor.themeColor()
+            button.tintColor = UIColor.buttonThemeColor()
             button.backgroundColor = .white
             
             //button.tintColor = .white
@@ -258,7 +258,7 @@
         }
         
         fileprivate func buttonPressed() -> UIColor {
-            return UIColor.themeColor()
+            return UIColor.buttonThemeColor()
         }
         
         @objc func handleChangeToGridView() {

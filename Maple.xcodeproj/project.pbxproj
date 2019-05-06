@@ -21,7 +21,6 @@
 		4800DAF82272B87000B326FC /* podcasts.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4800DAF72272B87000B326FC /* podcasts.swift */; };
 		4800DAFA2272B8CA00B326FC /* APservice.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4800DAF92272B8CA00B326FC /* APservice.swift */; };
 		4800DAFC2272B96500B326FC /* PodcastCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4800DAFB2272B96500B326FC /* PodcastCell.swift */; };
-		4800DAFE2272BBF900B326FC /* PodcastCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 4800DAFD2272BBF800B326FC /* PodcastCell.xib */; };
 		482FC10020DE15D900E23DAE /* SharePhotoCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 482FC0F720DE15BD00E23DAE /* SharePhotoCell.swift */; };
 		482FC10220DE15D900E23DAE /* ProductFooterCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 482FC0F920DE15C400E23DAE /* ProductFooterCell.swift */; };
 		482FC10420DE15D900E23DAE /* PreviewPhotoContainerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 482FC0FB20DE15C800E23DAE /* PreviewPhotoContainerView.swift */; };
@@ -195,7 +194,6 @@
 		4800DAF72272B87000B326FC /* podcasts.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = podcasts.swift; sourceTree = "<group>"; };
 		4800DAF92272B8CA00B326FC /* APservice.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = APservice.swift; sourceTree = "<group>"; };
 		4800DAFB2272B96500B326FC /* PodcastCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PodcastCell.swift; sourceTree = "<group>"; };
-		4800DAFD2272BBF800B326FC /* PodcastCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = PodcastCell.xib; sourceTree = "<group>"; };
 		482FC0F720DE15BD00E23DAE /* SharePhotoCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SharePhotoCell.swift; sourceTree = "<group>"; };
 		482FC0F920DE15C400E23DAE /* ProductFooterCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ProductFooterCell.swift; sourceTree = "<group>"; };
 		482FC0FB20DE15C800E23DAE /* PreviewPhotoContainerView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PreviewPhotoContainerView.swift; sourceTree = "<group>"; };
@@ -672,7 +670,6 @@
 		4876BB5420DA14B70057E5E0 /* Search */ = {
 			isa = PBXGroup;
 			children = (
-				4800DAFD2272BBF800B326FC /* PodcastCell.xib */,
 				482FC12820DE234800E23DAE /* SearchAlgoliaCollectionView.swift */,
 				0225F2E120FE0F7300137084 /* UserImageCell.swift */,
 				482FC12B20DE235500E23DAE /* AlgoliaManager.swift */,
@@ -1126,7 +1123,6 @@
 				482FC11E20DE168200E23DAE /* FPAuthPickerViewController.xib in Resources */,
 				484F88D620DE327D0083D226 /* GoogleService-Info.plist in Resources */,
 				4876BD0B20DA164E0057E5E0 /* PlaceAttributeCell.xib in Resources */,
-				4800DAFE2272BBF900B326FC /* PodcastCell.xib in Resources */,
 				4878C18F20F844C80054F227 /* Assets.xcassets in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

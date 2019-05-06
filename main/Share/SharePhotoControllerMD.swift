@@ -365,13 +365,12 @@ class SharePhotoController:
         //UIView.hr_setToastThemeColor(color: UIColor.themeColor())
         presentWindow = UIApplication.shared.keyWindow
         
-        
         imageCollectionView.register(PostImageObject.self, forCellWithReuseIdentifier: imageCellId)
         locationCollectionView.register(MapCell.self, forCellWithReuseIdentifier: mapCellId)
         
         view.backgroundColor = UIColor.collectionCell()
-        self.view.tintColor  = UIColor.themeColor()
-        navigationItem.title = "Post Product"
+        self.view.tintColor  = UIColor.buttonThemeColor()
+        navigationItem.title = "Post Page"
         imageCollectionView.backgroundView = backGroundView
  
         Products.delegate = self
@@ -696,7 +695,7 @@ class SharePhotoController:
     
     let FloatingPlusButton : MDCFloatingButton = {
         let fb = MDCFloatingButton()
-        fb.backgroundColor = UIColor.themeColor()
+        fb.backgroundColor = UIColor.buttonThemeColor()
         fb.setImage(#imageLiteral(resourceName: "ic_add_to_photos_white"), for: .normal)
         fb.addTarget(self, action: #selector(handleShareAll(_:)), for: .touchUpInside)
         return fb
@@ -790,8 +789,8 @@ class SharePhotoController:
         button.backgroundColor = UIColor.collectionBackGround()
         button.setImage(#imageLiteral(resourceName: "ic_place"), for: .normal)
         button.setTitle( "" , for: .normal)
-        button.setTitleColor( UIColor.themeColor() , for: .normal)
-        button.tintColor = UIColor.themeColor()
+        button.setTitleColor( UIColor.buttonThemeColor() , for: .normal)
+        button.tintColor = UIColor.buttonThemeColor()
         button.sizeToFit()
         button.addTarget(self, action: #selector(openMapSelector), for: .touchUpInside)
         CellType = CT.MAP
@@ -816,7 +815,7 @@ class SharePhotoController:
     lazy var clearAllFields: UIButton = {
         let button = UIButton(type: .system)
         button.setImage(#imageLiteral(resourceName: "ic_delete"), for: .normal)
-        button.tintColor = UIColor.themeColor()
+        button.tintColor = UIColor.buttonThemeColor()
         button.sizeToFit()
         button.addTarget(self, action: #selector(didClearAllFields), for: .touchUpInside)
         //button.setElevation(ShadowElevation.raisedButtonResting, for: .normal)
@@ -830,7 +829,7 @@ class SharePhotoController:
         let button = UIButton(type: .system)
         //button.setImage(#imageLiteral(resourceName: "ic_camera"), for: .normal)
         button.sizeToFit()
-        button.tintColor = UIColor.themeColor()
+        button.tintColor = UIColor.buttonThemeColor()
         button.addTarget(self, action: #selector(handleAddPhotos), for: .touchUpInside)
         CellType = CT.PIC
         return button
@@ -860,7 +859,7 @@ class SharePhotoController:
         
         let rightImage = UIImage(named: "ic_add_to_photos")?.withRenderingMode(.automatic)
         let rightButton = UIBarButtonItem(image: rightImage, style: .done , target: self, action: #selector(handleShareAll))
-        rightButton.tintColor = UIColor.themeColor()
+        rightButton.tintColor = UIColor.buttonThemeColor()
         navigationItem.rightBarButtonItem = rightButton
         
 //        let leftImage = UIImage(named: "ic_menu")?.withRenderingMode(.automatic)

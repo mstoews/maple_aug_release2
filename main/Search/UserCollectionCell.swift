@@ -66,6 +66,7 @@ class UserCollectionCell: MDCCardCollectionCell {
     let profileImageView : CustomImageView = {
         let iv = CustomImageView()
         iv.contentMode = .scaleAspectFill
+        iv.layer.cornerRadius = 40/8
         iv.clipsToBounds = true
         return iv
     }()

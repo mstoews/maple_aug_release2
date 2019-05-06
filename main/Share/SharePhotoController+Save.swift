@@ -84,7 +84,7 @@ extension SharePhotoController
         }
         
         let message = MDCSnackbarMessage()
-        MDCSnackbarManager.snackbarMessageViewBackgroundColor  = UIColor.themeColor()
+        MDCSnackbarManager.snackbarMessageViewBackgroundColor  = UIColor.buttonThemeColor()
         
         
         if imageArray.count == 0 {

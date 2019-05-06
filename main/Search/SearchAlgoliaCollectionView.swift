@@ -24,8 +24,6 @@ enum SearchType {
 
 class SearchAlgoliaCollectionView: MDCCollectionViewController , UISearchBarDelegate, UISearchControllerDelegate, UISearchResultsUpdating, SearchProgressDelegate , SearchHeaderDelegate  {
     
-     // let searchController = UISearchController(searchResultsController: nil)
-    
     var fullTextSearch: Searcher!
     
     var postHits: [JSONObject] = []
@@ -66,6 +64,13 @@ class SearchAlgoliaCollectionView: MDCCollectionViewController , UISearchBarDele
         
     }
     
+    
+    fileprivate func setupSearchBar() {
+        navigationItem.searchController = searchController
+        navigationItem.hidesSearchBarWhenScrolling = false
+        searchController.dimsBackgroundDuringPresentation = false
+        searchController.searchBar.delegate = self
+    }
     
     
     @objc func didSearchUser() {
@@ -160,8 +165,10 @@ class SearchAlgoliaCollectionView: MDCCollectionViewController , UISearchBarDele
     }
     
 
-   
+    // lets implement a UISearchController
+    let searchController = UISearchController(searchResultsController: nil)
     
+    /*
     
     lazy var searchController: UISearchController = {
             let sc = UISearchController(searchResultsController: nil)
@@ -171,6 +178,7 @@ class SearchAlgoliaCollectionView: MDCCollectionViewController , UISearchBarDele
             sc.searchBar.delegate = self
             return sc
     }()
+     */
     
     @objc func pressCancelButton(button: UIButton) {
         //searchEvent.isEnabled = true
@@ -195,13 +203,12 @@ class SearchAlgoliaCollectionView: MDCCollectionViewController , UISearchBarDele
         
         UINavigationBar.appearance().prefersLargeTitles = true
         
-        searchController = UISearchController(searchResultsController: nil)
+        //searchController = UISearchController(searchResultsController: nil)
         searchController.searchResultsUpdater = self
         searchController.searchBar.delegate = self
         searchController.searchBar.placeholder = NSLocalizedString("search_bar_placeholder", comment: "Search control bar")
         searchController.hidesNavigationBarDuringPresentation = false
         searchController.dimsBackgroundDuringPresentation = false
-        //searchController.searchBar.barStyle = .default
         navigationItem.titleView = searchController.searchBar
         navigationItem.hidesSearchBarWhenScrolling = false
         navigationItem.searchController = searchController
@@ -211,18 +218,9 @@ class SearchAlgoliaCollectionView: MDCCollectionViewController , UISearchBarDele
     
     
     
-    fileprivate func setupSearchBar() {
-        navigationItem.searchController = searchController
-        navigationItem.hidesSearchBarWhenScrolling = false
-        searchController.dimsBackgroundDuringPresentation = false
-        searchController.searchBar.delegate = self
-    }
-    
-    
-    
     override func viewDidLoad() {
         super.viewDidLoad()
-        setUpSearchBar()
+        setupSearchBar()
         
         collectionView?.backgroundColor = UIColor.collectionBackGround()
         collectionView?.register(PostSearchCollectionHeader.self, forSupplementaryViewOfKind: UICollectionElementKindSectionHeader, withReuseIdentifier: headerId)
@@ -332,7 +330,7 @@ class SearchAlgoliaCollectionView: MDCCollectionViewController , UISearchBarDele
         super.viewDidAppear(animated)
         DispatchQueue.global(qos: .default).async(execute: {() -> Void in
             DispatchQueue.main.async(execute: {() -> Void in
-                self.searchController.searchBar.becomeFirstResponder()
+               // self.searchController.searchBar.becomeFirstResponder()
             })
         })
         navigationController?.navigationBar.tintColor = .gray

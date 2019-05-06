@@ -327,7 +327,7 @@ extension Firestore {
     }
     
     /*******  isPostBookMarkedByUser  *******/
-    static func isPostBoookMarkedByUser(postId: String, uid: String, _ completion: @escaping (Bool) -> () ) {
+    static func isPostBookMarkedByUser(postId: String, uid: String, _ completion: @escaping (Bool) -> () ) {
         let docRef = firestore().collection("posts").document(postId).collection("bookmarked").document(uid)
         
         docRef.getDocument { (document, error) in
@@ -337,8 +337,13 @@ extension Firestore {
             }
             if let document = document, document.exists {
                 print ("Post: \(postId) user id : \(uid)")
-                let isBooked = document["isBookMarked"] as! Bool
-                    completion(isBooked)
+                guard let isBookMarked = document["isBookMarked"] else
+                {
+                    completion(false)
+                    return
+                }
+                completion(isBookMarked as! Bool)
+                
             } else {
                 print("Document does not exist")
             }

@@ -69,9 +69,9 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         application.registerForRemoteNotifications()
         
         UINavigationBar.appearance().backgroundColor = UIColor.themeColor()
-        UIBarButtonItem.appearance().tintColor = UIColor.themeColor()
+        UIBarButtonItem.appearance().tintColor = UIColor.buttonThemeColor()
         UITabBar.appearance().backgroundColor = UIColor.themeColor()
-        window?.backgroundColor = .white
+        window?.backgroundColor = UIColor.themeColor()
         
         window?.rootViewController = MainTabBarController()
         GMSPlacesClient.provideAPIKey(kPlacesAPIKey)

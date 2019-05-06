@@ -273,7 +273,7 @@ class HomeController: MDCCollectionViewController, HomePostCellDelegate,  HomeHe
         //Firestore.updateDocCounts()
         setupNavigationItems()
         observeQuery()
-        self.navigationItem.title = "Home Page"
+        
         
         // didShowAllPosts()
         // didShowFollowersPosts()
@@ -375,28 +375,6 @@ class HomeController: MDCCollectionViewController, HomePostCellDelegate,  HomeHe
         }
     }
     
-//    enum Result<T>{
-//        case success(result: T)
-//        case failure(error: Error)
-//    }
-//
-//    func wrap<T>(_ body: (@escaping (Result<T>) -> Void) throws -> Void) -> Promise<T>  {
-//        return Promise { fulfill, reject in
-//            try body { result in
-//                switch result{
-//                case .success(let result):
-//                    fulfill(result)
-//                    break
-//                case .failure(let error):
-//                    reject(error)
-//                    break
-//                }
-//            }
-//        }
-//    }
-//
-    
-    
     internal func cleanCollectionView() {
         if collectionView!.numberOfItems(inSection: 0) > 0 {
             collectionView!.reloadSections([0])
@@ -404,7 +382,8 @@ class HomeController: MDCCollectionViewController, HomePostCellDelegate,  HomeHe
     }
     
     func setupNavigationItems() {
-        navigationItem.titleView = UIImageView(image: #imageLiteral(resourceName: "logo2"))
+        //navigationItem.titleView = UIImageView(image: #imageLiteral(resourceName: "logo2"))
+        navigationItem.title = "Home Page"
         
         let rightImage = UIImage(named: "ic_people")?.withRenderingMode(.alwaysOriginal)
         let rightButton = UIBarButtonItem(image: rightImage, style: .done , target: self, action: #selector(inviteTapped))

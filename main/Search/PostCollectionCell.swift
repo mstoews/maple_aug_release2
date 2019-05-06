@@ -70,7 +70,7 @@ class PostCollectionCell: MDCCardCollectionCell  {
     let posterImageView : CustomImageView = {
         let iv = CustomImageView()
         iv.contentMode = .scaleAspectFill
-        //iv.layer.cornerRadius = 40/2
+        iv.layer.cornerRadius = 40/8
         iv.clipsToBounds = true
         return iv
     }()
@@ -105,6 +105,7 @@ class PostCollectionCell: MDCCardCollectionCell  {
         lb.numberOfLines = 0
         lb.textAlignment = NSTextAlignment.left;
         lb.sizeToFit()
+       
         return lb
     }()
     
@@ -115,11 +116,24 @@ class PostCollectionCell: MDCCardCollectionCell  {
                 usernameLabel.attributedText = NSMutableAttributedString(string: "\(name)" , attributes: attributeTitle)
             }
             
+            
+            
             if let product = post?.product {
                 titleLabel.attributedText =  NSMutableAttributedString(string: (product) , attributes: attributeTitle)
             }
+            
             if let desc = post?.description {
-                detailLabel.attributedText = NSMutableAttributedString(string: desc, attributes: attributeCaption)
+                let nsString = desc as NSString
+                if nsString.length >= 190
+                {
+                    let desc = nsString.substring(with: NSRange(location: 0, length: nsString.length > 190 ? 190 : nsString.length))
+                    detailLabel.attributedText = NSMutableAttributedString(string: desc as String , attributes: attributeCaption)
+                }
+                else
+                {
+                     detailLabel.attributedText = NSMutableAttributedString(string: desc, attributes: attributeCaption)
+                }
+               
             }
             
             if  let url = post?.productImagineUrl {

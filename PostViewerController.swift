@@ -210,7 +210,7 @@
                     photos.append(pt)
                 }
                 
-                let currentPhoto = photos[0]
+                //let currentPhoto = photos[0]
                 //let galleryPreview = INSPhotosViewController(photos: photos, initialPhoto: currentPhoto, referenceView: cell)
                 //present(galleryPreview, animated: true, completion: nil)
                 
@@ -325,12 +325,12 @@
             
             // MARK: Needed to create the custom info window (this is optional)
             func sizeForOffset(view: UIView) -> CGFloat {
-                return  120.0
+                return  0
             }
             
             func mapView(_ mapView: GMSMapView, didTap marker: GMSMarker) -> Bool {
                 if let poiItem = marker.userData as? POIItem {
-                    NSLog("Did tap marker for cluster item \(poiItem.name)")
+                    NSLog("Did tap marker for cluster item \(poiItem.name ?? "")")
                 } else {
                     NSLog("Did tap a normal marker")
                 }
@@ -352,7 +352,7 @@
             // MARK: Needed to create the custom info window
             func mapView(_ mapView: GMSMapView, didChange position: GMSCameraPosition) {
                 if (locationMarker != nil){
-                    guard let location = locationMarker?.position else {
+                    guard (locationMarker?.position) != nil else {
                         print("locationMarker is nil")
                         return
                     }
@@ -411,7 +411,7 @@
                     photos.append(pt)
                 }
                 
-                let currentPhoto = photos[0]
+                //let currentPhoto = photos[0]
                 //let galleryPreview = INSPhotosViewController(photos: photos, initialPhoto: currentPhoto, referenceView: cell)
                 //present(galleryPreview, animated: true, completion: nil)
                 

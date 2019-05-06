@@ -56,7 +56,7 @@ class PostSearchCollectionHeader: UICollectionViewCell  {
     {
         print("Search Users")
         resetButtons()
-        userButton.tintColor = UIColor.themeColor()
+        userButton.tintColor = UIColor.buttonThemeColor()
         delegate?.didSearch(index: "user", name: "FetchUsers")
     }
     
@@ -65,14 +65,14 @@ class PostSearchCollectionHeader: UICollectionViewCell  {
     {
         print("Seach Locations")
         resetButtons()
-        mapButton.tintColor = UIColor.themeColor()
+        mapButton.tintColor = UIColor.buttonThemeColor()
         delegate?.didSearch(index: "location", name: "FetchLocations")
     }
     
     @objc func handlePrdButton() {
         print("Search Products")
         resetButtons()
-        prdButton.tintColor = UIColor.themeColor()
+        prdButton.tintColor = UIColor.buttonThemeColor()
         delegate?.didSearch(index: "product", name: "FetchPosts")
     }
     
@@ -106,7 +106,7 @@ class PostSearchCollectionHeader: UICollectionViewCell  {
                                  paddingTop: 0, paddingLeft: 0, paddingBottom: 0, paddingRight: 0, width: 0, height: 0.5)
         
         resetButtons()
-        prdButton.tintColor = UIColor.themeColor()
+        prdButton.tintColor = UIColor.buttonThemeColor()
     }
     
     required init?(coder aDecoder: NSCoder) {

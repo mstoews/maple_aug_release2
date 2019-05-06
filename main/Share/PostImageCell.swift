@@ -32,7 +32,7 @@ class PostImageObject: MDCCardCollectionCell
         
         
         let buttonMenus = UIView()
-        buttonMenus.backgroundColor = UIColor.themeColor()
+        buttonMenus.backgroundColor = UIColor.buttonThemeColor()
         buttonMenus.layer.cornerRadius = 10
         buttonMenus.backgroundColor = UIColor(displayP3Red: 255, green: 200, blue: 150, alpha: 1.3)
         buttonMenus.layer.borderWidth = 2
@@ -71,7 +71,7 @@ class PostImageObject: MDCCardCollectionCell
         let button = UIButton(type: .system)
         //button.setImage(#imageLiteral(resourceName: "filter-2"), for: .normal)
         button.setImage(#imageLiteral(resourceName: "ic_filter"), for: .normal)
-        button.tintColor = UIColor.themeColor()
+        button.tintColor = UIColor.buttonThemeColor()
         button.sizeToFit()
         button.addTarget(self, action: #selector(handleFilterFromImage), for: .touchUpInside)
         return button
@@ -81,7 +81,7 @@ class PostImageObject: MDCCardCollectionCell
         let button = UIButton(type: .system)
         //button.setImage(#imageLiteral(resourceName: "ic_filter"), for: .normal)
         button.setImage(#imageLiteral(resourceName: "ic_edit"), for: .normal)
-        button.tintColor = UIColor.themeColor()
+        button.tintColor = UIColor.buttonThemeColor()
         button.sizeToFit()
         button.addTarget(self, action: #selector(handleEdit), for: .touchUpInside)
         return button
@@ -91,7 +91,7 @@ class PostImageObject: MDCCardCollectionCell
         let button = UIButton(type: .system)
         button.setImage(#imageLiteral(resourceName: "ic_delete"), for: .normal)
         button.sizeToFit()
-        button.tintColor = UIColor.themeColor()
+        button.tintColor = UIColor.buttonThemeColor()
         button.addTarget(self, action: #selector(handleDelete), for: .touchUpInside)
         return button
     }()

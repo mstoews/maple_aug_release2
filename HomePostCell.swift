@@ -156,7 +156,7 @@ class HomePostCell: MDCCardCollectionCell , UICollectionViewDataSource, UICollec
                         
                     })
                     
-                    Firestore.isPostBoookMarkedByUser(postId: postId, uid: uid,  { (isBookmarked) in
+                    Firestore.isPostBookMarkedByUser(postId: postId, uid: uid,  { (isBookmarked) in
                              self.bookmarkButton.setImage(isBookmarked == true ? #imageLiteral(resourceName: "ic_bookmark").withRenderingMode(.alwaysOriginal) : #imageLiteral(resourceName: "ic_bookmark_border").withRenderingMode(.alwaysOriginal), for: .normal)
                              isBookMarkedByUid = isBookmarked
                     })

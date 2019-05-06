@@ -16,7 +16,7 @@ class MapCell: BaseCell
         let containerView = UIView()
         
         containerView.layer.borderWidth  = 1
-        containerView.layer.borderColor = UIColor.themeColor().cgColor
+        containerView.layer.borderColor = UIColor.buttonThemeColor().cgColor
         
         addSubview(containerView)
         containerView.anchor(top: topAnchor,  left: leftAnchor, bottom: bottomAnchor,right: rightAnchor)
@@ -68,7 +68,7 @@ class MapCell: BaseCell
     lazy var  deleteMapCell : UIButton = {
         let button = UIButton(type: .system)
         button.setImage(#imageLiteral(resourceName: "ic_delete"), for: .normal)
-        button.tintColor = UIColor.themeColor()
+        button.tintColor = UIColor.buttonThemeColor()
         button.sizeToFit()
         button.addTarget(self, action: #selector(didDeleteMapCell), for: .touchUpInside)
         return button

@@ -209,7 +209,12 @@ extension UIColor {
          // rgb(220,20,60)
           // crimson
          // 199, 63, 74
-         return UIColor.rgb(red: 199, green: 63, blue: 74)
+         //return UIColor.rgb(red: 199, green: 63, blue: 74)
+        return .white
+    }
+    
+    static func buttonThemeColor() -> UIColor {
+        return .purple
     }
     
     static func mainBlack() -> UIColor{
