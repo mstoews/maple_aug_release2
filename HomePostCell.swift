@@ -46,7 +46,7 @@ class LoadingImageIndicator: UIView {
 protocol HomePostCellDelegate {
     func didTapComment(post: FSPost)
     func didLike(for cell: HomePostCell)
-    func didTapModify(post: FSPost)
+    func didTapMapButton(post: FSPost)
     func didTapBookmark(for cell : HomePostCell)
     func didTapImage(for cell : PostImage, post: FSPost)
     func didSharePost(post: FSPost, imageObject: ImageObject)
@@ -425,7 +425,7 @@ class HomePostCell: MDCCardCollectionCell , UICollectionViewDataSource, UICollec
     lazy var mapButton: UIButton = {
         let button = UIButton(type: .system)
         button.setImage(#imageLiteral(resourceName: "ic_map").withRenderingMode(.alwaysOriginal), for: .normal)
-        button.addTarget(self, action: #selector(handleEditButton), for: .touchUpInside)
+        button.addTarget(self, action: #selector(handleMapButton), for: .touchUpInside)
         return button
     }()
     
@@ -433,7 +433,7 @@ class HomePostCell: MDCCardCollectionCell , UICollectionViewDataSource, UICollec
     lazy var editButton: UIButton = {
         let button = UIButton(type: .system)
         button.setImage(#imageLiteral(resourceName: "ic_edit").withRenderingMode(.alwaysOriginal), for: .normal)
-        button.addTarget(self, action: #selector(handleEditButton), for: .touchUpInside)
+        button.addTarget(self, action: #selector(handleMapButton), for: .touchUpInside)
         return button
     }()
     
@@ -442,8 +442,8 @@ class HomePostCell: MDCCardCollectionCell , UICollectionViewDataSource, UICollec
         delegate?.didTapBookmark(for: self)
     }
 
-    @objc func handleEditButton() {
-        delegate?.didTapModify(post: fs_post!)
+    @objc func handleMapButton() {
+        delegate?.didTapMapButton(post: fs_post!)
     }
     
     let imageCollectionView: UICollectionView = {

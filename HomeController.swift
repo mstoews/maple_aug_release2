@@ -16,6 +16,7 @@ import GoogleSignIn
 import GoogleToolboxForMac
 import MaterialComponents
 import JGProgressHUD
+import Mapbox
 
 
 enum  FetchType {
@@ -23,46 +24,13 @@ enum  FetchType {
     case USER
 }
 
+/*
+ let viewController = MapBoxViewController()
+ navigationController?.pushViewController(viewController, animated: true)
+ //present(viewController, animated: true, completion: nil)
+ */
+
 class HomeController: MDCCollectionViewController, HomePostCellDelegate,  HomeHeaderCellDelegate {
-    
-    func didTapModify(post: FSPost) {
-        print("Did tap modify ... ")
-        let editPostController = PostViewerController()
-        editPostController.post = post
-        navigationController?.pushViewController(editPostController, animated: true)
-    }
-    
-    func didSharePost(post: FSPost, imageObject: ImageObject) {
-    
-        shareImageView.loadImage(urlString: imageObject.url)
-        
-        if UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiom.pad {
-            
-            //let objectsToShare = [post.description]
-            let activityVC = UIActivityViewController(activityItems: [shareImageView.image!], applicationActivities: nil)
-            activityVC.title = "Share Post"
-            activityVC.excludedActivityTypes = []
-            
-            activityVC.popoverPresentationController?.sourceView = self.view
-            activityVC.popoverPresentationController?.barButtonItem = navigationItem.rightBarButtonItem
-            //activityVC.popoverPresentationController?.sourceRect = self.view.frame
-            
-            self.present(activityVC, animated: true, completion: nil)
-        }
-        else
-        {
-            let activityController = UIActivityViewController(activityItems:  [shareImageView.image!] , applicationActivities: nil)
-             activityController.popoverPresentationController?.barButtonItem = navigationItem.rightBarButtonItem
-            present(activityController, animated: true, completion: nil)
-        }
-    }
-    
-    
-    
-    
-    func didTapImageCell(for cell: UserImageCell, post: FSPost) {
-        
-    }
     
     var FETCH_TYPE = FetchType.USER
     let db = Firestore.firestore()
@@ -90,6 +58,72 @@ class HomeController: MDCCollectionViewController, HomePostCellDelegate,  HomeHe
     var followChanged = false
     var isFirstOpen = true
     
+    
+    func didTapMapButton(post: FSPost) {
+        print("Did tap map button ... ")
+        let viewController = MapPostViewController()
+        
+        // get current post location
+        // get current location
+        
+        let lat = 35.6860342
+        let lng = 139.75471199999998
+        
+        let destLat = 35.7297196
+        let destLng = 139.7516671
+        
+
+        let values : [String: Any] = [
+            "currentLat" : lat,
+            "currentLng" : lng,
+            "destinationLat" : destLat,
+            "destinationLng" : destLng,
+            "Title": post.product,
+            "SubTitle" : post.description]
+        
+        let nav = Navigation(dictionary: values)
+        
+        //viewController.setNavigation(nav: nav)
+        viewController.nav = nav
+        
+        navigationController?.pushViewController(viewController, animated: true)
+    }
+    
+    func didSharePost(post: FSPost, imageObject: ImageObject) {
+    
+        shareImageView.loadImage(urlString: imageObject.url)
+        
+        if UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiom.pad {
+            
+            //let objectsToShare = [post.description]
+            let activityVC = UIActivityViewController(activityItems: [shareImageView.image!], applicationActivities: nil)
+            activityVC.title = "Share Post"
+            activityVC.excludedActivityTypes = []
+            
+            activityVC.popoverPresentationController?.sourceView = self.view
+            activityVC.popoverPresentationController?.barButtonItem = navigationItem.rightBarButtonItem
+            //activityVC.popoverPresentationController?.sourceRect = self.view.frame
+            
+            
+            
+            self.present(activityVC, animated: true, completion: nil)
+        }
+        else
+        {
+            let activityController = UIActivityViewController(activityItems:  [shareImageView.image!] , applicationActivities: nil)
+             activityController.popoverPresentationController?.barButtonItem = navigationItem.rightBarButtonItem
+            present(activityController, animated: true, completion: nil)
+        }
+    }
+    
+    
+    
+    
+    func didTapImageCell(for cell: UserImageCell, post: FSPost) {
+        
+    }
+    
+  
     let shareImageView: CustomImageView = {
         let iv = CustomImageView()
         iv.contentMode = .scaleAspectFill
@@ -127,7 +161,7 @@ class HomeController: MDCCollectionViewController, HomePostCellDelegate,  HomeHe
         hud.show(in: view)
         
         self.listener = self.db.collection("posts")
-            .order(by: "creationDate", descending: true).limit(to: 60)
+            .order(by: "creationDate", descending: true).limit(to: 10)
             .addSnapshotListener{  (snapshot, error) in
                 guard let snapshot = snapshot else {
                     print("Error fetching snapshot results: \(error!)")
