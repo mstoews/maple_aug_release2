@@ -8,7 +8,6 @@ import UIKit
 import FirebaseStorage
 import FirebaseUI
 import SDWebImage
-import Kingfisher
 
 var imageCache = [String: UIImage]()
 
@@ -27,21 +26,10 @@ class CustomImageView: UIImageView {
         }
         guard let url = URL(string: urlString) else { return }
         
-        loadImageWithCompletionHandler(imageURL: url) { (img, error) in
-            if error != nil {
-                return
-            }
-            else {
-                self.image = img
-            }
-        }
+         self.sd_setImage(with: url, placeholderImage: UIImage(named: "windows"))
+        
     }
     
-    func loadImageWithCompletionHandler(imageURL: URL, _ completion: @escaping (_ image: UIImage?, _ error: Error?) -> ()) {
-        KingfisherManager.shared.retrieveImage(with: ImageResource(downloadURL: imageURL), options: nil, progressBlock: nil, completionHandler: { (image, error, cacheType, url) in
-            completion(image, error)
-        })
-    }
 }
 
 
@@ -66,7 +54,7 @@ extension UIImageView{
         }
         else{
             let reference : StorageReference = Storage.storage().reference(forURL: storageRefString)
-            //self.sd_setImage(with: reference, placeholderImage: placeholderImage)
+            self.sd_setImage(with: reference, placeholderImage: placeholderImage)
         }
         
     }
