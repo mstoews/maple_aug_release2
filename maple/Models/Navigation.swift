@@ -1,9 +1,27 @@
 //
-//  Navigation.swift
+//  Situation.swift
 //  Maple
-//
-//  Created by Murray Toews on 2019/05/10.
-//  Copyright © 2019 Murray Toews. All rights reserved.
 //
 
 import Foundation
+
+struct Navigation {
+    var currentLocationLatitude: Double?
+    var currentLocationLongitude: Double?
+    
+    var destinationLocationLatitude: Double?
+    var destinationLocationLongitude: Double?
+    
+    var Title: String
+    var SubTitle: String
+    
+    init(dictionary : [String: Any]) {
+        self.currentLocationLatitude = dictionary["currentLat"] as? Double ?? 0.0
+        self.currentLocationLongitude = dictionary["currentLng"] as? Double ?? 0.0
+        self.destinationLocationLatitude = dictionary["destinationLat"] as? Double ?? 0.0
+        self.destinationLocationLongitude = dictionary["destinationLng"] as? Double ?? 0.0
+        self.Title = dictionary["Title"] as? String ?? ""
+        self.SubTitle = dictionary["SubTitle"] as? String ?? ""
+    }
+    
+}

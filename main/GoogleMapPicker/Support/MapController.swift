@@ -397,7 +397,7 @@ class MapController: UIViewController, CLLocationManagerDelegate, GMSMapViewDele
             
             dictionaries.forEach({ (key, value) in
                 guard let dictionary = value as? [String: Any] else { return }
-                var post = Post(user: user , dictionary: dictionary)
+                let post = Post(user: user , dictionary: dictionary)
                 post.id = key
                 
                 guard let uid = Auth.auth().currentUser?.uid else { return }
@@ -515,9 +515,9 @@ extension MapController: GMSAutocompleteResultsViewControllerDelegate {
         searchController.isActive = false
         // Do something with the selected place.
         
-        print("Place ID: \(place.placeID)")
+        print("Place ID: \(place.placeID ?? "")")
         print("Place Phone Number: \(String(describing: place.phoneNumber))")
-        print("Place name: \(place.name)")
+        print("Place name: \(place.name ?? "")")
         print("Place address: \(String(describing: place.formattedAddress))")
         print("Place attributions: \(String(describing: place.attributions))")
         

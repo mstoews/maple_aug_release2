@@ -5,8 +5,6 @@
 //  Created by Murray Toews on 2018/05/04.
 //
 
-
-//import AFNetworking
 import UIKit
 import Firebase
 import FirebaseFirestore

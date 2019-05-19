@@ -123,7 +123,7 @@ class MapCollectionCell: MDCCardCollectionCell {
                 locationLabel.attributedText = NSMutableAttributedString(string: location , attributes: attributeTitle )
             }
             
-            if let ratings = locationRecord?.rating {
+            if (locationRecord?.rating) != nil {
                 
                 //ratingLabel.attributedText = NSMutableAttributedString(string: ratings , attributes: attributeCaption)
             }

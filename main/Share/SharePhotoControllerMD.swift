@@ -28,7 +28,7 @@ import AVFoundation
 import AVKit
 import SVProgressHUD
 import CropViewController
-
+import ActiveLabel
 
 enum  CT {
     case PIC
@@ -62,7 +62,7 @@ class SharePhotoController:
     
     private var croppedRect = CGRect.zero
     private var croppedAngle = 0
-    
+    var VIEW_SCROLL_HEIGHT: CGFloat?
     
     var shareDelegate :SharePhotoDelegate?
     var searchController: UISearchController!
@@ -411,40 +411,25 @@ class SharePhotoController:
         NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillShow), name: NSNotification.Name.UIKeyboardWillShow, object: nil)
         NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillHide), name: NSNotification.Name.UIKeyboardWillHide, object: nil)
         
+        VIEW_SCROLL_HEIGHT? = 400.0
+        print("Keyboard adjusted value \(VIEW_SCROLL_HEIGHT ?? 0.0)")
         
     }
     
     var editingIndex: IndexPath!
     
-    @objc func handleKeyboardNotification(notification: NSNotification) {
-        if let keyboardSize = (notification.userInfo?[UIKeyboardFrameEndUserInfoKey] as? NSValue)?.cgRectValue {
-            let isKeyboardShowing = notification.name == NSNotification.Name.UIKeyboardWillShow
-            print(isKeyboardShowing)
-            bottomConstraint?.constant = isKeyboardShowing ? -keyboardSize.height : 0
-            print(bottomConstraint)
-            let inset = isKeyboardShowing ? -bottomAreaInset : bottomAreaInset
-            print("Keyboard is showing : \(inset)")
-            heightConstraint?.constant += inset
-            inputBottomConstraint?.constant = isKeyboardShowing ? 0 : bottomAreaInset
-            sendBottomConstraint?.constant = isKeyboardShowing ? 12 : (12 + bottomAreaInset)
-            print(sendBottomConstraint)
-            if let animationDuration = notification.userInfo![UIKeyboardAnimationDurationUserInfoKey] as? Double {
-                UIView.animate(withDuration: animationDuration, delay: 0, options: .curveEaseOut, animations: {
-                    self.view.layoutIfNeeded()
-                }, completion: { completed in
-                    if isKeyboardShowing {
-                        if !(self.Description.text?.isEmpty)!{
-                            let indexPath = self.isEditingComment ? self.editingIndex : IndexPath(item: (self.Description.text?.count)! - 1, section: 1)
-                            //scrollToItem(at: indexPath!, at: .bottom, animated: true)
-                            //print ("Print Keyboard Height : \(keyboardSize.height) \() " )
-                            self.view.frame.origin.y -= keyboardSize.height + 100
-                        }
-                    } else {
-                        MDCSnackbarManager.setBottomOffset(0)
-                    }
-                })
-            }
-        }
+    @objc fileprivate func handleKeyboardShow(notification: Notification) {
+        // how to figure out how tall the keyboard actually is
+        //guard let value = notification.userInfo?[UIResponder.UIKeyboardFrameEndUserInfoKey] as? NSValue else { return }
+        guard let value = notification.userInfo?[UIKeyboardFrameEndUserInfoKey] as? NSValue else { return }
+        let keyboardFrame = value.cgRectValue
+        
+        // let's try to figure out how tall the gap is from the register button to the bottom of the screen
+        let bottomSpace = view.frame.height //- overallStackView.frame.origin.y - overallStackView.frame.height
+        print(bottomSpace)
+        
+        let difference = keyboardFrame.height - bottomSpace
+        self.view.transform = CGAffineTransform(translationX: 0, y: -difference - 8)
     }
     
     @objc func keyboardWillShow(notification: NSNotification) {
@@ -453,22 +438,16 @@ class SharePhotoController:
         if let keyboardSize = (notification.userInfo?[UIKeyboardFrameBeginUserInfoKey] as? NSValue)?.cgRectValue {
             //let inset = isKeyboardShowing ? -bottomAreaInset : bottomAreaInset
             if isKeyboardShowing {
-                print ("Print Keyboard Height : \(keyboardSize.height)  \(self.view.frame.origin.y)")
-                self.view.frame.origin.y = -keyboardSize.height + 2 * (88)
+                 self.view.frame.origin.y = -keyboardSize.height + self.view.frame.height / 2.5
             }
         }
     }
     
     @objc func keyboardWillHide(notification: NSNotification) {
         print("Keyboard will hide...")
-        let isKeyboardShowing = notification.name == NSNotification.Name.UIKeyboardWillShow
-        if let keyboardSize = (notification.userInfo?[UIKeyboardFrameBeginUserInfoKey] as? NSValue)?.cgRectValue {
-            let inset = isKeyboardShowing ? -bottomAreaInset : bottomAreaInset
-            self.view.frame.origin.y = 88 //keyboardSize.height
-        }
+        //let isKeyboardShowing = notification.name == NSNotification.Name.UIKeyboardWillShow
+        self.view.frame.origin.y =  130
     }
-    
-    
     
     
     func text(for priceLevel: GMSPlacesPriceLevel) -> String {
@@ -686,9 +665,9 @@ class SharePhotoController:
         
         tableProductsView.anchor(top: Products.bottomAnchor, left: Products.leftAnchor, bottom: Description.bottomAnchor , right: Products.rightAnchor)
         
-        FloatingPlusButton.anchor(top: Description.bottomAnchor, left: nil, bottom: nil, right: containerView.rightAnchor, paddingTop: 80, paddingLeft: 0, paddingBottom: 0, paddingRight: 10, width: 0, height: 0)
+        FloatingPlusButton.anchor(top: nil, left: nil, bottom: containerView.bottomAnchor, right: containerView.rightAnchor, paddingTop: 80, paddingLeft: 0, paddingBottom: 0, paddingRight: 10, width: 0, height: 0)
         
-        
+        VIEW_SCROLL_HEIGHT = 400
    
      }
     
@@ -748,10 +727,6 @@ class SharePhotoController:
         ui.text = "Location"
         return ui
     }()
-    
-    //let backGroundView: = UIView{}()
-    //backGroundView.addSubview(LocationLabel)
-    //collectionView.backgroundView = backGroundView
     
     
     let locationCollectionView: UICollectionView = {
@@ -861,15 +836,9 @@ class SharePhotoController:
         let rightButton = UIBarButtonItem(image: rightImage, style: .done , target: self, action: #selector(handleShareAll))
         rightButton.tintColor = UIColor.buttonThemeColor()
         navigationItem.rightBarButtonItem = rightButton
-        
-//        let leftImage = UIImage(named: "ic_menu")?.withRenderingMode(.automatic)
-//        let leftButton = UIBarButtonItem(image: leftImage, style: .done , target: self, action: #selector(handleEditMenu))
-//        leftButton.tintColor = UIColor.themeColor()
-//        navigationItem.leftBarButtonItem = leftButton
     }
     
     let noneText = NSLocalizedString("PlaceDetails.MissingValue", comment: "The value of a property which is missing")
-    
     
     @objc func handleClearAllFields()
     {
@@ -891,8 +860,6 @@ class SharePhotoController:
                         self.imageCollectionView.reloadData()
                         self.locationCollectionView.reloadData()
                         
-                        //let image = UIImage(named: "icons8-erase_filled")
-                    //self.presentWindow!.makeToast(message: "All fields cleared", duration: 1, position: "bottom" as AnyObject, image: image!)
                     case .cancel:
                         print("cancel")
                         
@@ -1276,7 +1243,7 @@ class SharePhotoController:
     
     func textFieldDidBeginEditing(_ textField: UITextField) {
         if textField.tag == 1 {
-            tableProductsView.isHidden = false
+            tableProductsView.isHidden = true
         }
         
     }

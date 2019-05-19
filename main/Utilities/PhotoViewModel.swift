@@ -7,7 +7,7 @@
 //
 
 import UIKit
-import Kingfisher
+
 //import INSPhotoGallery
 
 class PhotoViewModel: NSObject {
@@ -49,26 +49,14 @@ class PhotoViewModel: NSObject {
     }
     
     func loadImageWithCompletionHandler(_ completion: @escaping (_ image: UIImage?, _ error: Error?) -> ()) {
-        if let url = imageURL {
-            KingfisherManager.shared.retrieveImage(with: ImageResource(downloadURL: url), options: nil, progressBlock: nil, completionHandler: { (image, error, cacheType, url) in
-                completion(image, error)
-            })
-        } else {
-            completion(nil, NSError(domain: "PhotoDomain", code: -1, userInfo: [ NSLocalizedDescriptionKey: "Couldn't load image"]))
-        }
+       
     }
     func loadThumbnailImageWithCompletionHandler(_ completion: @escaping (_ image: UIImage?, _ error: Error?) -> ()) {
         if let thumbnailImage = thumbnailImage {
             completion(thumbnailImage, nil)
             return
         }
-        if let url = thumbnailImageURL {
-            KingfisherManager.shared.retrieveImage(with: ImageResource(downloadURL: url), options: nil, progressBlock: nil, completionHandler: { (image, error, cacheType, url) in
-                completion(image, error)
-            })
-        } else {
-            completion(nil, NSError(domain: "PhotoDomain", code: -1, userInfo: [ NSLocalizedDescriptionKey: "Couldn't load image"]))
-        }
+       
     }
 }
 
