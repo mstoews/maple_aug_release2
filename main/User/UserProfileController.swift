@@ -523,10 +523,10 @@ class UserProfileController: MDCCollectionViewController,
     
     override func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
         setTransition()
-        let editPostController = PostViewerController()
-        let index = indexPath.item
-        editPostController.post = self.fs_posts[index]
-        navigationController?.pushViewController(editPostController, animated: false)
+        //let editPostController = PostViewerController()
+        //let index = indexPath.item
+        //editPostController.post = self.fs_posts[index]
+        //navigationController?.pushViewController(editPostController, animated: false)
     }
     
 

@@ -13,6 +13,48 @@ extension Notification.Name {
     static let pickersChanged = NSNotification.Name("pickersChanged")
 }
 
+extension Date {
+    
+    func timeAgoToDisplay() -> String {
+        
+        let secondsAgo = Int(Date().timeIntervalSince(self))
+        
+        let minute = 60
+        let hour = 60 * minute
+        let day = 24 * hour
+        let week = 7 * day
+        let month = 4 * week
+        
+        let quotient: Int
+        let unit: String
+        
+        if secondsAgo < minute {
+            quotient = secondsAgo
+            unit = "SECOND"
+        } else if secondsAgo < hour {
+            quotient = secondsAgo / minute
+            unit = "MIN"
+        } else if secondsAgo < day {
+            quotient = secondsAgo / hour
+            unit = "HOUR"
+        } else if secondsAgo < week {
+            quotient = secondsAgo / day
+            unit = "DAY"
+        } else if secondsAgo < month {
+            quotient = secondsAgo / week
+            unit = "WEEK"
+        } else {
+            quotient = secondsAgo / month
+            unit = "MONTH"
+        }
+        
+        return "\(quotient) \(unit)\(quotient == 1 ? "" : "S") AGO"
+    }
+    
+}
+
+
+
 extension UITextView {
     
     public convenience init(placeholder: String) {
@@ -206,15 +248,12 @@ extension UIColor {
     }
     
     static func themeColor() -> UIColor {
-         // rgb(220,20,60)
-          // crimson
-         // 199, 63, 74
-         //return UIColor.rgb(red: 199, green: 63, blue: 74)
-        return .white
+      return .white
     }
     
     static func buttonThemeColor() -> UIColor {
-        return .purple
+        // return UIColor.rgb(red: 199, green: 63, blue: 74)
+        return .purple 
     }
     
     static func mainBlack() -> UIColor{
@@ -300,42 +339,6 @@ extension UIView {
     
 }
 
-extension Date {
-    func timeAgoDisplay() -> String {
-        let secondsAgo = Int(Date().timeIntervalSince(self))
-        
-        let minute = 60
-        let hour = 60 * minute
-        let day = 24 * hour
-        let week = 7 * day
-        let month = 4 * week
-        
-        let quotient: Int
-        let unit: String
-        if secondsAgo < minute {
-            quotient = secondsAgo
-            unit = "second"
-        } else if secondsAgo < hour {
-            quotient = secondsAgo / minute
-            unit = "min"
-        } else if secondsAgo < day {
-            quotient = secondsAgo / hour
-            unit = "hour"
-        } else if secondsAgo < week {
-            quotient = secondsAgo / day
-            unit = "day"
-        } else if secondsAgo < month {
-            quotient = secondsAgo / week
-            unit = "week"
-        } else {
-            quotient = secondsAgo / month
-            unit = "month"
-        }
-        
-        return "\(quotient) \(unit)\(quotient == 1 ? "" : "s") ago"
-        
-    }
-}
 
 
 extension UIColor {

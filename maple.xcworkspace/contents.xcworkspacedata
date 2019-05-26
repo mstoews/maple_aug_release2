@@ -2,9 +2,6 @@
 <Workspace
    version = "1.0">
    <FileRef
-      location = "group:main/PodcastCell.xib">
-   </FileRef>
-   <FileRef
       location = "group:Maple.xcodeproj">
    </FileRef>
    <FileRef

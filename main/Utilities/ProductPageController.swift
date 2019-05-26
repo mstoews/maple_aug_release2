@@ -174,7 +174,7 @@ class ProductPageController:  UIViewController, CLLocationManagerDelegate,  UICo
         attributedText.append(NSAttributedString(string: "\(post.description)", attributes: [NSAttributedStringKey.font: UIFont.systemFont(ofSize: 12)]))
         attributedText.append(NSAttributedString(string: "\n", attributes: [NSAttributedStringKey.font: UIFont.systemFont(ofSize: 6)]))
         
-        let timeAgoDisplay = post.creationDate.timeAgoDisplay()
+        let timeAgoDisplay = post.creationDate.timeAgoToDisplay()
         attributedText.append(NSAttributedString(string: timeAgoDisplay, attributes: [NSAttributedStringKey.font: UIFont.systemFont(ofSize: 8), NSAttributedStringKey.foregroundColor: UIColor.gray]))
         Description.attributedText = attributedText
     }

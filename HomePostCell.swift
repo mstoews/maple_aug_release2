@@ -10,7 +10,7 @@ import Firebase
 import FirebaseFirestore
 import BadgeSwift
 import MaterialComponents
-
+import ActiveLabel
 
 class LoadingImageIndicator: UIView {
     
@@ -127,67 +127,84 @@ class HomePostCell: MDCCardCollectionCell , UICollectionViewDataSource, UICollec
         imageWidthContraint?.constant = widthConstant
     }
     
-    var fs_post: FSPost? {
+
+    // MARK: - Is Liked
+    fileprivate func isLikedByUid(uid: String, postId: String, completion: @escaping (Bool)->() ) {
+         Firestore.isPostLikeByUser(postId: postId, uid: uid,  { (isLiked) in
+            completion(isLiked)
+         })
+    }
+
+    // MARK: - Is Bookmarked
+    fileprivate func isBookMarkedByUid(uid: String, postId: String, completion: @escaping (Bool)->() ){
+            Firestore.isPostBookMarkedByUser(postId: postId, uid: uid,  { (isBookmarked) in
+            completion(isBookmarked)
+        })
+    }
+    
+    
+    func setButtonImage(button: UIButton, btnName: String,  color: UIColor)
+    {
+        let origImage = UIImage(named: btnName);
+        let tintedImage = origImage?.withRenderingMode(UIImageRenderingMode.alwaysTemplate)
+        button.setImage(tintedImage, for: .normal)
+        button.tintColor = color
+    }
+    
+    // MARK:- Set Post
+    var post: FSPost? {
         
         didSet {
-            if fs_post == nil
+            if post == nil
             {
                 return
             }
             images = []
             
             self.likeButton.setImage(#imageLiteral(resourceName: "ic_favorite_border").withRenderingMode(.alwaysOriginal), for: .normal)
-            self.uid = fs_post?.uid
-            var isLikedByUid = false
-            var isBookMarkedByUid = false
+            self.uid = post?.uid
             
-            if let postId = fs_post?.id {
-                if let uid = fs_post?.uid {
-                    Firestore.isPostLikeByUser(postId: postId, uid: uid,  { (isLiked) in
-                        if isLiked == true {
-                            self.likeButton.setImage(#imageLiteral(resourceName: "ic_favorite").withRenderingMode(.alwaysOriginal), for: .normal)
-                            isLikedByUid = true
-                        }
-                        else
-                        {
-                            self.likeButton.setImage(#imageLiteral(resourceName: "ic_favorite_border").withRenderingMode(.alwaysOriginal), for: .normal)
-                            isLikedByUid = false
-                        }
-                        
-                    })
-                    
-                    Firestore.isPostBookMarkedByUser(postId: postId, uid: uid,  { (isBookmarked) in
-                             self.bookmarkButton.setImage(isBookmarked == true ? #imageLiteral(resourceName: "ic_bookmark").withRenderingMode(.alwaysOriginal) : #imageLiteral(resourceName: "ic_bookmark_border").withRenderingMode(.alwaysOriginal), for: .normal)
-                             isBookMarkedByUid = isBookmarked
-                    })
-                    
-                    
+            isLikedByUid(uid: self.uid!, postId: self.post!.id!) { (isLiked) in
+                 if isLiked == true {
+                    self.setButtonImage(button: self.likeButton, btnName: "ic_favorite", color: UIColor.red)
+                }
+                else{
+                    self.setButtonImage(button: self.likeButton, btnName: "ic_favorite_border", color: UIColor.red)
+                }
+            }
+                
+            
+            isBookMarkedByUid(uid: self.uid!, postId: self.post!.id!) { (isBookmarked) in
+                if isBookmarked == true {
+                    self.setButtonImage(button: self.bookmarkButton, btnName: "ic_bookmark", color: UIColor.orange)
+                }
+                else
+                {
+                     self.setButtonImage(button: self.bookmarkButton, btnName: "ic_bookmark_border", color: UIColor.orange)
                 }
             }
             
-            fs_post?.isLiked = isLikedByUid
-            fs_post?.isBookmarked = isBookMarkedByUid
             self.hideLikesBadge(0)
             self.hideMarkBadge(0)
             self.hideCommentBadge(0)
             
             usernameLabel.text = "TEST USERNAME"
-            if let userName = fs_post?.userName {
-                if let product = fs_post?.product {
-                    usernameLabel.attributedText = setUserName(userName: userName, caption: product)
-                }
+            if let userName = post?.userName {
+                //if let product = fs_post?.product {
+                    usernameLabel.attributedText = setUserName(userName: userName, caption: "")
+                //}
                 
             }
             
-            if let profileURL = fs_post?.profileURL {
+            if let profileURL = post?.profileURL {
                     self.userProfileImageView.loadImage(urlString: profileURL)
             }
             
             
-            if let postid = fs_post?.id {
-                if let count = fs_post?.imageUrlArray.count {
+            if let postid = post?.id {
+                if let count = post?.imageUrlArray.count {
                     if count > 0 {
-                        for url in (fs_post?.imageUrlArray)! {
+                        for url in (post?.imageUrlArray)! {
                             let obj = ImageObject(postid: postid, imageid: url , url: url)
                             images.append(obj)
                         }
@@ -195,29 +212,62 @@ class HomePostCell: MDCCardCollectionCell , UICollectionViewDataSource, UICollec
                 }
             }
             
-            if let likeCount = fs_post?.likeCount {
+            if let likeCount = post?.likeCount {
                 self.putNumberOfLikes(likes: likeCount)
             }
             
-            if let commentCount = fs_post?.commentCount {
+            if let commentCount = post?.commentCount {
                 self.putNumberOfComments(likes: commentCount)
             }
             
             
-            if let description = fs_post?.description {
-                let attributedText = NSMutableAttributedString(string: description, attributes: attributeCaption)
-                captionLabel.attributedText = attributedText
-            }
-            
-            if let timeAgoDisplay = fs_post?.creationDate.timeAgoDisplay() {
+            if let timeAgoDisplay = post?.creationDate.timeAgoToDisplay() {
             let timeAttributedText = NSMutableAttributedString(string: timeAgoDisplay, attributes: [NSAttributedStringKey.font: UIFont.systemFont(ofSize: 12)])
                 timeAgoLabel.attributedText = timeAttributedText
             }
+           
+             configurePostCaption()
             
-            self.imageCollectionView.reloadData()
+            //self.imageCollectionView.reloadData()
         }
         
     }
+    
+    func configurePostCaption() {
+        guard let post = self.post else { return }
+        guard let caption = self.post?.description else { return }
+        guard let product = self.post?.product else { return }
+        guard let username = self.post?.userName else { return }
+         
+        // look for username as pattern
+        let customType = ActiveType.custom(pattern: "^\(username)\\b")
+        
+        // enable username as custom type
+        captionLabel.enabledTypes = [.mention, .hashtag, .url, customType]
+        
+        // configure usnerame link attributes
+        captionLabel.configureLinkAttribute = { (type, attributes, isSelected) in
+            var atts = attributes
+            
+            switch type {
+            case .custom:
+                atts[NSAttributedString.Key.font] = UIFont.boldSystemFont(ofSize: 12)
+            default: ()
+            }
+            return atts
+        }
+        
+        captionLabel.customize { (label) in
+            label.text = "\(product) \(caption)"
+            label.customColor[customType] = .black
+            label.font = UIFont.systemFont(ofSize: 12)
+            label.textColor = .black
+            captionLabel.numberOfLines = 2
+        }
+        
+        timeAgoLabel.text = post.creationDate.timeAgoToDisplay()
+    }
+    
     
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
         return images.count
@@ -240,7 +290,7 @@ class HomePostCell: MDCCardCollectionCell , UICollectionViewDataSource, UICollec
     
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: horizontalCellId, for: indexPath) as! PostImage
-        delegate?.didTapImage(for: cell, post: fs_post!)
+        delegate?.didTapImage(for: cell, post: post!)
     }
     
     
@@ -327,6 +377,10 @@ class HomePostCell: MDCCardCollectionCell , UICollectionViewDataSource, UICollec
     lazy var likeButton: UIButton = {
         let button = UIButton(type: .system)
         //button.setImage(#imageLiteral(resourceName: "Heart_Unselected-1").withRenderingMode(.alwaysOriginal), for: .normal)
+        let origImage = UIImage(named: "Heart_Unselected-1");
+        let tintedImage = origImage?.withRenderingMode(UIImageRenderingMode.alwaysTemplate)
+        button.setImage(tintedImage, for: .normal)
+        button.tintColor = UIColor.red
         button.addTarget(self, action: #selector(handleLike), for: .touchUpInside)
         return button
     }()
@@ -345,7 +399,7 @@ class HomePostCell: MDCCardCollectionCell , UICollectionViewDataSource, UICollec
     @objc func handleShare()
     {
         print("Share")
-        delegate?.didSharePost(post: fs_post!, imageObject: images[0])
+        delegate?.didSharePost(post: post!, imageObject: images[0])
     }
 
    
@@ -402,29 +456,36 @@ class HomePostCell: MDCCardCollectionCell , UICollectionViewDataSource, UICollec
     
     @objc func handleComment() {
         print("Trying to show comments...")
-        guard let post = fs_post else { return }
+        guard let post = post else { return }
         delegate?.didTapComment(post: post)
     }
     
     lazy var commentButton: UIButton = {
         let button = UIButton(type: .system)
-        button.setImage(#imageLiteral(resourceName: "ic_comment").withRenderingMode(.alwaysOriginal), for: .normal)
-        button.tintColor = .black
-   
+        let origImage = UIImage(named: "ic_comment");
+        let tintedImage = origImage?.withRenderingMode(UIImageRenderingMode.alwaysTemplate)
+        button.setImage(tintedImage, for: .normal)
+        button.tintColor = .blue
         button.addTarget(self, action: #selector(handleComment), for: .touchUpInside)
         return button
     }()
    
     lazy var bookmarkButton: UIButton = {
         let button = UIButton(type: .system)
-        button.setImage(#imageLiteral(resourceName: "ic_bookmark_border").withRenderingMode(.alwaysOriginal), for: .normal)
+        let origImage = UIImage(named: "ic_bookmark_border");
+        let tintedImage = origImage?.withRenderingMode(UIImageRenderingMode.alwaysTemplate)
+        button.setImage(tintedImage, for: .normal)
+        button.tintColor = UIColor.purple
         button.addTarget(self, action: #selector(handleBookmark), for: .touchUpInside)
         return button
     }()
    
     lazy var mapButton: UIButton = {
         let button = UIButton(type: .system)
-        button.setImage(#imageLiteral(resourceName: "ic_map").withRenderingMode(.alwaysOriginal), for: .normal)
+        let origImage = UIImage(named: "ic_map");
+        let tintedImage = origImage?.withRenderingMode(UIImageRenderingMode.alwaysTemplate)
+        button.setImage(tintedImage, for: .normal)
+        button.tintColor = UIColor.purple
         button.addTarget(self, action: #selector(handleMapButton), for: .touchUpInside)
         return button
     }()
@@ -443,7 +504,7 @@ class HomePostCell: MDCCardCollectionCell , UICollectionViewDataSource, UICollec
     }
 
     @objc func handleMapButton() {
-        delegate?.didTapMapButton(post: fs_post!)
+        delegate?.didTapMapButton(post: post!)
     }
     
     let imageCollectionView: UICollectionView = {
@@ -461,17 +522,15 @@ class HomePostCell: MDCCardCollectionCell , UICollectionViewDataSource, UICollec
     }()
     
     
-    let captionLabel: UILabel = {
-        let label = UILabel()
+    let captionLabel: ActiveLabel = {
+        let label = ActiveLabel()
         label.numberOfLines = 0
         return label
     }()
     
-    
-    
     @objc func usernameLabelTapped(tapGestureRecognizer: UITapGestureRecognizer)
     {
-        delegate?.didTapUserNameLabel(uid: fs_post!.uid)
+        delegate?.didTapUserNameLabel(uid: post!.uid)
     }
     
     let timeAgoLabel: UILabel = {
@@ -501,7 +560,6 @@ class HomePostCell: MDCCardCollectionCell , UICollectionViewDataSource, UICollec
         usernameLabel.isUserInteractionEnabled = true
         usernameLabel.addGestureRecognizer(tapFollowers)
         
-     
         addSubview(userProfileImageView)
         addSubview(usernameLabel)
         addSubview(imageCollectionView)
@@ -542,7 +600,7 @@ class HomePostCell: MDCCardCollectionCell , UICollectionViewDataSource, UICollec
         bookmarkButton.anchor (top: imageCollectionView.bottomAnchor, left: commentButton.rightAnchor, bottom: nil, right: nil, paddingTop: 0, paddingLeft: 4, paddingBottom: 0, paddingRight: -15  , width: 50, height: 40)
         mapButton.anchor (top: imageCollectionView.bottomAnchor, left: bookmarkButton.rightAnchor, bottom: nil, right: nil, paddingTop: 0, paddingLeft: 4, paddingBottom: 0, paddingRight: -15  , width: 50, height: 40)
         
-        timeAgoLabel.anchor (top: imageCollectionView.bottomAnchor, left: bookmarkButton.rightAnchor, bottom: nil, right: nil, paddingTop: 0, paddingLeft: 120, paddingBottom: 0, paddingRight: 0 , width: 0, height: 20)
+        timeAgoLabel.anchor (top: imageCollectionView.bottomAnchor, left: bookmarkButton.rightAnchor, bottom: nil, right: nil, paddingTop: 0, paddingLeft: 100, paddingBottom: 0, paddingRight: 0 , width: 0, height: 20)
        
         commentBadge.anchor(top: topDividerView.topAnchor, left: commentButton.rightAnchor, bottom: nil, right: nil, paddingTop: 2, paddingLeft: -20, paddingBottom: 0, paddingRight: 0 , width: 0, height: 0)
         likeBadge.anchor(top: topDividerView.topAnchor, left: likeButton.rightAnchor, bottom: nil, right: nil, paddingTop: 2, paddingLeft: -20, paddingBottom: 0, paddingRight: 0 , width: 0, height: 0)

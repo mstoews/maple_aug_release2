@@ -42,7 +42,7 @@
 		</dict>
 	</array>
 	<key>CFBundleVersion</key>
-	<string>2019.02.25</string>
+	<string>2019.05.22.3</string>
 	<key>Fabric</key>
 	<dict>
 		<key>APIKey</key>
@@ -74,6 +74,8 @@
 	</array>
 	<key>LSRequiresIPhoneOS</key>
 	<true/>
+	<key>MGLMapboxAccessToken</key>
+	<string>pk.eyJ1IjoibXN0b2V3cyIsImEiOiJjam41ZG1jMnIweXljM3BydTdmbnNwbnBjIn0.lI1Dc8J2nLQAiGAKssrKQA</string>
 	<key>NSCameraUsageDescription</key>
 	<string>We would like to access your camera</string>
 	<key>NSContactsUsageDescription</key>
@@ -92,7 +94,7 @@
 	<array>
 		<string>location</string>
 		<string>remote-notification</string>
-        <string>audio</string>
+		<string>audio</string>
 	</array>
 	<key>UILaunchStoryboardName</key>
 	<string>LaunchScreen</string>
@@ -117,7 +119,5 @@
 		<string>UIInterfaceOrientationLandscapeLeft</string>
 		<string>UIInterfaceOrientationLandscapeRight</string>
 	</array>
-    <key>MGLMapboxAccessToken</key>
-    <string>pk.eyJ1IjoibXN0b2V3cyIsImEiOiJjam41ZG1jMnIweXljM3BydTdmbnNwbnBjIn0.lI1Dc8J2nLQAiGAKssrKQA</string>
 </dict>
 </plist>

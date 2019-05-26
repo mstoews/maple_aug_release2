@@ -11,6 +11,20 @@ import GoogleMaps
 import GooglePlaces
 import Firebase
 
+
+class POIItem: NSObject, GMUClusterItem {
+    var position: CLLocationCoordinate2D
+    var name: String!
+    @objc var marker: GMSMarker!
+    
+    init(position: CLLocationCoordinate2D, name: String, marker: GMSMarker) {
+        self.position = position
+        self.name = name
+        self.marker = marker
+    }
+}
+
+
 class MapViewCell: UICollectionViewCell,
     GMSMapViewDelegate,
     CLLocationManagerDelegate,
@@ -18,7 +32,6 @@ class MapViewCell: UICollectionViewCell,
 {
     
     private var clusterManager: GMUClusterManager!
-    private var infoWindow = InfoWindow()
     
     let locationManager = CLLocationManager()
     
@@ -56,11 +69,7 @@ class MapViewCell: UICollectionViewCell,
     fileprivate var locationMarker : GMSMarker? = GMSMarker()
     
     
-    // MARK: Needed to create the custom info window
-    func mapView(_ mapView: GMSMapView, didTapAt coordinate: CLLocationCoordinate2D) {
-        infoWindow.removeFromSuperview()
-    }
-    
+  
     
     private func generateClusterItems() {
         for location in locations {
@@ -79,11 +88,7 @@ class MapViewCell: UICollectionViewCell,
         }
     }
     
-    func loadNiB() -> InfoWindow{
-        let infoWindow = InfoWindow.instanceFromNib() as! InfoWindow
-        return infoWindow
-    }
-    
+   
     
     func sizeForOffset(view: UIView) -> CGFloat {
         return  120.0
@@ -99,15 +104,15 @@ class MapViewCell: UICollectionViewCell,
         
         // Needed to create the custom info window
         locationMarker = marker
-        infoWindow.removeFromSuperview()
-        infoWindow = loadNiB()
+        //infoWindow.removeFromSuperview()
+        //infoWindow = loadNiB()
         guard let location = locationMarker?.position else {
             print("locationMarker is nil")
             return false
         }
-        infoWindow.center = mapView.projection.point(for: location)
-        infoWindow.center.y = infoWindow.center.y - sizeForOffset(view: infoWindow)
-        self.addSubview(infoWindow)
+        //infoWindow.center = mapView.projection.point(for: location)
+        //infoWindow.center.y = infoWindow.center.y - sizeForOffset(view: infoWindow)
+        //self.addSubview(infoWindow)
         
         return false
     }

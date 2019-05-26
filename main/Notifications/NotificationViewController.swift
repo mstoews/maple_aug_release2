@@ -13,6 +13,14 @@ import MaterialComponents
 
 class NotificationViewController: MDCCollectionViewController , NotificationDelegate {
     
+    let cellId = "cellId"
+    var sizingCell: NotificationPostCell!
+    var insets: UIEdgeInsets!
+    
+    var userId: String?
+    var followers: [String] = []
+    var user: MapleUser?
+    var allNotifications: [NotificationFireObject] = []
     
     func didSave(for cell: NotificationPostCell) {
         
@@ -36,7 +44,7 @@ class NotificationViewController: MDCCollectionViewController , NotificationDele
                     let formatter = DateFormatter()
                     formatter.dateFormat = "yyyy/MM/dd"
                     let date = Date(timeIntervalSince1970: (self.notification?.date)!)
-                    let timeAgoDisplay = date.timeAgoDisplay()
+                    let timeAgoDisplay = date.timeAgoToDisplay()
                     self.timeLabel.text = timeAgoDisplay
                 })
             }
@@ -57,16 +65,6 @@ class NotificationViewController: MDCCollectionViewController , NotificationDele
         //label.backgroundColor = UIColor.veryLightGray()
         return label
     }()
-    
-    //    let contentLabel: UILabel = {
-    //        let label = UILabel()
-    //        label.text = "Content"
-    //        label.textColor = .darkGray
-    //        label.font = UIFont.systemFont(ofSize: 12)
-    //        label.numberOfLines = 0
-    //        return label
-    //    }()
-    
     
     let contentLabel:  MDCMultilineTextField = {
         let TextField =  MDCMultilineTextField()
@@ -89,15 +87,6 @@ class NotificationViewController: MDCCollectionViewController , NotificationDele
         return label
     }()
     
-    
-    let cellId = "cellId"
-    var sizingCell: NotificationPostCell!
-    var insets: UIEdgeInsets!
-    
-    var userId: String?
-    var followers: [String] = []
-    var user: MapleUser?
-    var allNotifications: [NotificationFireObject] = []
     
     
     override func viewDidLoad() {
@@ -158,8 +147,8 @@ class NotificationViewController: MDCCollectionViewController , NotificationDele
         
         if let uid = Auth.auth().currentUser?.uid {
             self.listener =
-                 Firestore.firestore().collection("users").document(uid).collection("events")
-                 // Firestore.firestore().collection("users").document(uid).collection("events").whereField("deleted", isEqualTo: false)
+                Firestore.firestore().collection("users").document(uid).collection("events").order(by: "timestamp", descending: true)
+                //Firestore.firestore().collection("users").document(uid).collection("events").whereField("deleted", isEqualTo: false)
                     .addSnapshotListener{  (snapshot, error) in
                         guard let snapshot = snapshot else {
                             print("Error fetching snapshot results: \(error!)")
@@ -168,7 +157,9 @@ class NotificationViewController: MDCCollectionViewController , NotificationDele
                         notificationsFire.removeAll()
                         for document in snapshot.documents {
                             if let notification = NotificationFireObject(dictionary: document.data()) {
-                                notificationsFire.append(notification)
+                                if notification.interactionUser != uid {
+                                    notificationsFire.append(notification)
+                                }
                                 self.collectionView?.reloadData()
                             }
                         }
@@ -184,12 +175,6 @@ class NotificationViewController: MDCCollectionViewController , NotificationDele
 
     override func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
         let mainTabBarController = UIApplication.shared.keyWindow?.rootViewController as? MainTabBarController
-        
-        //mainTabBarController?.setNotificationBadgeCount(count: notificationsFire.count)
-        
-        // immediately clear all the notifications that were currently observed
-        // mark the new notifications with a new mark of some kind
-        
         mainTabBarController?.setNotificationBadgeCount(count: 0)
         return  notificationsFire.count
     }
@@ -209,7 +194,7 @@ class NotificationViewController: MDCCollectionViewController , NotificationDele
             print("Removed")
         }
         
-         let height = CGFloat(56.0)
+        let height = CGFloat(70.0)
         return CGSize(width: view.frame.width - 30, height: height)
     }
     
@@ -253,61 +238,51 @@ class NotificationViewController: MDCCollectionViewController , NotificationDele
         }
     }
     
-    func openUserProfile(_ senderUid: String, _ notificationType: String){
+    fileprivate func openPost(_ postId: String) {
+        Firestore.fetchPostByPostId(postId: postId) { (post) in
+            Firestore.fetchUserWithUID(uid: post.uid) { (user) in
+                let userProductController = UserProductController(collectionViewLayout: UICollectionViewFlowLayout())
+                userProductController.setPostId(postId: postId)
+                userProductController.user = user
+                self.navigationController?.pushViewController(userProductController, animated: true)
+            }
+        }
+    }
+    
+    fileprivate func openUserPage(_ senderUid: String) {
+        let userProfileController = UserProfileController(collectionViewLayout: UICollectionViewFlowLayout())
+        Firestore.fetchUserWithUID(uid: senderUid, completion: { (user) in
+            userProfileController.user = user
+            self.navigationController?.pushViewController(userProfileController, animated: true)
+        })
+    }
+    
+    func openPageByKind(_ senderUid: String, _ notificationType: String, _ postId: String){
         
         let backItem = UIBarButtonItem(title: "Back", style: .plain , target: nil, action: nil)
         navigationItem.backBarButtonItem = backItem
         
         let transition = CATransition()
-        transition.duration = 0.75
+        transition.duration = 0.1
         transition.timingFunction = CAMediaTimingFunction(name: kCAMediaTimingFunctionEaseInEaseOut)
         transition.type = kCATransitionFade
         self.navigationController?.view.layer.add(transition, forKey: nil)
         _ = self.navigationController?.popToRootViewController(animated: false)
-        
+
         
         switch notificationType {
         case "following":
-            let userProfileController = UserProfileController(collectionViewLayout: UICollectionViewFlowLayout())
-            Firestore.fetchUserWithUID(uid: senderUid, completion: { (user) in
-                userProfileController.user = user
-                self.navigationController?.pushViewController(userProfileController, animated: true)
-            })
+            openUserPage(senderUid)
             break
         case "followers":
-            let userProfileController = UserProfileController(collectionViewLayout: UICollectionViewFlowLayout())
-            Firestore.fetchUserWithUID(uid: senderUid, completion: { (user) in
-                userProfileController.user = user
-                self.navigationController?.pushViewController(userProfileController, animated: true)
-            })
+            openUserPage(senderUid)
             break
         case "likes":
-            let userProfileController = UserProfileController(collectionViewLayout: UICollectionViewFlowLayout())
-            Firestore.fetchUserWithUID(uid: senderUid, completion: { (user) in
-                userProfileController.user = user
-                self.navigationController?.pushViewController(userProfileController, animated: true)
-            })
+            openPost(postId)
             break
         case "comment":
-            
-            let userProfileController = UserProfileController(collectionViewLayout: UICollectionViewFlowLayout())
-            Firestore.fetchUserWithUID(uid: senderUid, completion: { (user) in
-                userProfileController.user = user
-                self.navigationController?.pushViewController(userProfileController, animated: true)
-            })
+            openPost(postId)
             break
-//            let commentsController = CommentsController(collectionViewLayout: UICollectionViewFlowLayout())
-//
-//            Database.fetchPostByUidPostId(uid: senderUid, postId: notificationType, completion: { (Post) in
-//                if let postId = Post.id {
-//                    if postId.count > 0 {
-//                        //todo
-//                        commentsController.post = Post
-//                        self.navigationController?.pushViewController(commentsController, animated: true)
-//                    }
-//                }
-//            })
-//            break
         default:
             return
         }
@@ -315,14 +290,10 @@ class NotificationViewController: MDCCollectionViewController , NotificationDele
     }
     
     override func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
-       
+        
         let notification = notificationsFire[indexPath.item]
-        
-        print(notification.kind)
-        
-        if let uid = Auth.auth().currentUser?.uid {
-            openUserProfile(notification.interactionUser, notification.kind)
-        }
+        print("Notification reference \(notification.interactionRef)")
+        openPageByKind(notification.interactionUser, notification.kind, notification.interactionRef)
     }
     
     

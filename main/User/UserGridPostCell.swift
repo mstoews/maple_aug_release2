@@ -293,8 +293,8 @@ class UserGridPostCell: MDCCardCollectionCell , UICollectionViewDataSource, UICo
                 captionLabel.attributedText = attributedText
             }
             
-            if let timeAgoDisplay = post?.creationDate.timeAgoDisplay() {
-                let timeAttributedText = NSMutableAttributedString(string: timeAgoDisplay, attributes: [NSAttributedStringKey.font: UIFont.systemFont(ofSize: 8)])
+            if let timeAgoDisplay = post?.creationDate.timeAgoToDisplay() {
+                let timeAttributedText = NSMutableAttributedString(string: timeAgoDisplay, attributes: [NSAttributedStringKey.font: UIFont.systemFont(ofSize: 12)])
                 timeAgoLabel.attributedText = timeAttributedText
             }
             
@@ -429,7 +429,7 @@ class UserGridPostCell: MDCCardCollectionCell , UICollectionViewDataSource, UICo
         attributedText.append(NSAttributedString(string: post.description))
         
         captionLabel.attributedText = attributedText
-        let timeAgoDisplay = post.creationDate.timeAgoDisplay()
+        let timeAgoDisplay = post.creationDate.timeAgoToDisplay()
         
         let timeAttributedText = NSMutableAttributedString(string: timeAgoDisplay, attributes: attributeCaption )
         timeAgoLabel.attributedText = timeAttributedText

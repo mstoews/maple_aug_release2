@@ -24,35 +24,31 @@ class NotificationPostCell: MDCCardCollectionCell , UIGestureRecognizerDelegate{
     
     var notification: NotificationFireObject? {
         didSet {
-           
-                
-                    self.usernameLabel.text = notification?.interactionUserUsername
-                    let profileImageUrl = notification?.interactionUserProfilePicture
-                    self.profileImageView.loadImage(urlString: profileImageUrl!)
-                    self.contentLabel.text = self.notification?.kind
-                    let formatter = DateFormatter()
-                    formatter.dateFormat = "yyyy/MM/dd"
-                    //let date = Date(timeIntervalSince1970: (self.notification?.timestamp)!)
-                    //let timeAgoDisplay = date.timeAgoDisplay()
-                    //self.timeLabel.text = timeAgoDisplay
+            self.usernameLabel.text = notification?.interactionUserUsername
+            let profileImageUrl = notification?.interactionUserProfilePicture
+            self.profileImageView.loadImage(urlString: profileImageUrl!)
+            self.contentLabel.text = self.notification?.kind
+            let date: Date = (self.notification?.timestamp.dateValue())!
+            self.timeLabel.text = date.timeAgoToDisplay()
         }
     }
     
     var delegate: NotificationDelegate?
     
-    var pan: UIPanGestureRecognizer!
+    //var pan: UIPanGestureRecognizer!
     
     func gestureRecognizer(_ gestureRecognizer: UIGestureRecognizer, shouldRecognizeSimultaneouslyWith otherGestureRecognizer: UIGestureRecognizer) -> Bool {
         return true
     }
     
-    override func gestureRecognizerShouldBegin(_ gestureRecognizer: UIGestureRecognizer) -> Bool {
-        return abs((pan.velocity(in: pan.view)).x) > abs((pan.velocity(in: pan.view)).y)
-    }
-    
+//    override func gestureRecognizerShouldBegin(_ gestureRecognizer: UIGestureRecognizer) -> Bool {
+//        return abs((pan.velocity(in: pan.view)).x) > abs((pan.velocity(in: pan.view)).y)
+//    }
+//
     let profileImageView: CustomImageView = {
         let iv = CustomImageView()
         iv.contentMode = .scaleAspectFill
+        iv.layer.cornerRadius = 40/8
         iv.clipsToBounds = true
         return iv
     }()
@@ -152,27 +148,27 @@ class NotificationPostCell: MDCCardCollectionCell , UIGestureRecognizerDelegate{
          switch from.kind {
             case "comment":
                 print ("Comment Event")
-                NotificationText = from.interactionUserUsername + " commented on your post."
+                NotificationText = from.interactionUserUsername + " commented on your post." + "\n" + from.interactionRef
                 break
             case "like" :
                 print ("Like Event")
-                NotificationText = from.interactionUserUsername + " liked your post."
+                NotificationText = from.interactionUserUsername + " liked your post." + "\n" + from.interactionRef
                 break
             case "follow" :
                 print ("follow Event")
-                NotificationText = from.interactionUserUsername + " is now following you."
+                NotificationText = from.interactionUserUsername + " is now following you." + "\n" + from.interactionRef
                 break
             default:
                 print("unknown event " + from.kind)
          }
         
-        let dateCreated = from.timestamp
+        let dateCreated = from.timestamp.dateValue()
         
         let commentText =  NSMutableAttributedString(string: NotificationText, attributes: attributes)
         commentText.addAttribute(.paragraphStyle, value: NotificationPostCell.paragraphStyle, range: NSMakeRange(0, commentText.length))
         
         contentLabel.attributedText = commentText
-        timeLabel.text = dateCreated.timeAgoDisplay()
+        timeLabel.text = dateCreated.timeAgoToDisplay()
         
         
         if !isDryRun {
@@ -188,6 +184,13 @@ class NotificationPostCell: MDCCardCollectionCell , UIGestureRecognizerDelegate{
     
     var deleteLabel1 : UILabel!
     
+//    fileprivate func panGesture() {
+//        self.insertSubview(clearButton, belowSubview: self.contentView)
+//        pan = UIPanGestureRecognizer(target: self, action: #selector(onPan(_:)))
+//        pan.delegate = self
+//        self.addGestureRecognizer(pan)
+//    }
+//    
     override init(frame: CGRect) {
         super.init(frame: frame)
         self.contentView.addSubview(profileImageView)
@@ -209,44 +212,30 @@ class NotificationPostCell: MDCCardCollectionCell , UIGestureRecognizerDelegate{
                             paddingBottom: 5, paddingRight: 10, width: 0, height: 45)
         
         
-        //clearButton.anchor(top: contentLabel.topAnchor, left: nil, bottom: nil,
-        //                   right: contentView.rightAnchor, paddingTop: 0, paddingLeft: 2,
-        //                   paddingBottom: 5, paddingRight: 2, width: 25, height: 25)
         
         timeLabel.anchor(top: contentLabel.bottomAnchor, left:  profileImageView.rightAnchor, bottom: nil, right: nil, paddingTop: 0, paddingLeft: 8,
                          paddingBottom: 0, paddingRight: 0, width: 0, height: 10)
         
         
-        self.insertSubview(clearButton, belowSubview: self.contentView)
-        
-//        deleteLabel1 = UILabel()
-//        deleteLabel1.text = "Delete"
-//        deleteLabel1.adjustsFontSizeToFitWidth = true
-//        deleteLabel1.textColor = UIColor.white
-//        deleteLabel1.backgroundColor = UIColor.themeColor()
-//        self.insertSubview(deleteLabel1, belowSubview: self.contentView)
-        
-        pan = UIPanGestureRecognizer(target: self, action: #selector(onPan(_:)))
-        pan.delegate = self
-        self.addGestureRecognizer(pan)
+        //panGesture()
 
     }
     
-    override func layoutSubviews() {
-        super.layoutSubviews()
-        
-        if (pan.state == UIGestureRecognizerState.changed) {
-            let p: CGPoint = pan.translation(in: self)
-            let width = self.contentView.frame.width
-            let height = self.contentView.frame.height
-            self.contentView.frame = CGRect(x: p.x,y: 0, width: width, height: height);
-            //self.deleteLabel1.frame = CGRect(x: p.x - deleteLabel1.frame.size.width-10, y: 0, width: 100, height: height)
-            //self.clearButton.frame = CGRect(x: p.x + width + deleteLabel1.frame.size.width, y: 0, width: 100, height: height)
-            self.clearButton.frame = CGRect(x: p.x + width + clearButton.frame.size.width, y: 0, width: 70, height: height)
-        }
-        
-    }
-    
+//    override func layoutSubviews() {
+//        super.layoutSubviews()
+//
+//        if (pan.state == UIGestureRecognizerState.changed) {
+//            let p: CGPoint = pan.translation(in: self)
+//            let width = self.contentView.frame.width
+//            let height = self.contentView.frame.height
+//            self.contentView.frame = CGRect(x: p.x,y: 0, width: width, height: height);
+//            //self.deleteLabel1.frame = CGRect(x: p.x - deleteLabel1.frame.size.width-10, y: 0, width: 100, height: height)
+//            //self.clearButton.frame = CGRect(x: p.x + width + deleteLabel1.frame.size.width, y: 0, width: 100, height: height)
+//            self.clearButton.frame = CGRect(x: p.x + width + clearButton.frame.size.width, y: 0, width: 70, height: height)
+//        }
+//
+//    }
+//
 
     @objc func onPan(_ pan: UIPanGestureRecognizer) {
         if pan.state == UIGestureRecognizerState.began {
@@ -276,11 +265,8 @@ class NotificationPostCell: MDCCardCollectionCell , UIGestureRecognizerDelegate{
 extension NotificationPostCell {
     static let paragraphStyle = { () -> NSMutableParagraphStyle in
         let style = NSMutableParagraphStyle()
-        style.lineSpacing = 2
+        style.lineSpacing = 3
         return style
     }()
-    
-    
-    
 }
 

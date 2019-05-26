@@ -49,7 +49,7 @@ class MainTabBarController: UITabBarController, AuthUIDelegate  {
         
         if let uid = Auth.auth().currentUser?.uid {
             self.listener =
-                  Firestore.firestore().collection("users").document(uid).collection("events").whereField("deleted", isEqualTo: false)
+                Firestore.firestore().collection("users").document(uid).collection("events").whereField("deleted", isEqualTo: false)
                     //.whereField("deleted", isEqualTo: false)
                     .addSnapshotListener{  (snapshot, error) in
                         guard let snapshot = snapshot else {
@@ -103,7 +103,7 @@ class MainTabBarController: UITabBarController, AuthUIDelegate  {
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        authUI?.delegate = self 
+        authUI?.delegate = self
         authUI?.tosurl = kFirebaseTermsOfService
         authUI?.isSignInWithEmailHidden = false
         let providers: [FUIAuthProvider] = [FUIGoogleAuth(), FUIFacebookAuth()]
@@ -142,7 +142,7 @@ class MainTabBarController: UITabBarController, AuthUIDelegate  {
     lazy var FAB :  MDCFloatingButton = {
         let fb = MDCFloatingButton()
         return fb
-        }()
+    }()
     
     
     
@@ -154,9 +154,9 @@ class MainTabBarController: UITabBarController, AuthUIDelegate  {
         
         
         // let searchNavController = templateNavController(unselectedImage: #imageLiteral(resourceName: "ic_search_white"), selectedImage: #imageLiteral(resourceName: "ic_search"), rootViewController: PodcastsSearchController())
-
+        
         let sharePhotoNavController = templateNavController(unselectedImage: #imageLiteral(resourceName: "plus_unselected"), selectedImage: #imageLiteral(resourceName: "plus_unselected"), rootViewController: SharePhotoController())
-
+        
         //let notificationNavController = templateNavController(unselectedImage: #imageLiteral(resourceName: "ic_favorite_border"), selectedImage: #imageLiteral(resourceName: "ic_favorite"), rootViewController: NotificationViewController(collectionViewLayout: UICollectionViewFlowLayout()))
         
         let notificationNavController = templateNavController(unselectedImage: #imageLiteral(resourceName: "ic_notifications_white"), selectedImage: #imageLiteral(resourceName: "ic_notifications"), rootViewController: NotificationViewController(collectionViewLayout: UICollectionViewFlowLayout()))
@@ -188,11 +188,11 @@ class MainTabBarController: UITabBarController, AuthUIDelegate  {
         
         viewControllers = [
             
-                           homeNavController,
-                           searchNavController,
-                           sharePhotoNavController,
-                           notificationNavController,
-                           userProfileNavController]
+            homeNavController,
+            searchNavController,
+            sharePhotoNavController,
+            notificationNavController,
+            userProfileNavController]
         
         guard let items = tabBar.items else { return }
         
@@ -204,7 +204,7 @@ class MainTabBarController: UITabBarController, AuthUIDelegate  {
     }
     
     
-   
+    
     fileprivate func templateNavController(unselectedImage: UIImage, selectedImage: UIImage, rootViewController: UIViewController = UIViewController()) -> UINavigationController {
         let viewController = rootViewController
         let navController = UINavigationController(rootViewController: viewController)
@@ -242,11 +242,11 @@ extension MainTabBarController: FUIAuthDelegate {
             present(authVC,animated: true, completion: nil)
         }
     }
-
+    
     func authPickerViewController(forAuthUI authUI: FUIAuth) -> FUIAuthPickerViewController {
         return FPAuthPickerViewController(nibName: "FPAuthPickerViewController", bundle: Bundle.main, authUI: authUI)
     }
-
+    
     func signOut() {
         let firebaseAuth = Auth.auth()
         do {
@@ -258,12 +258,12 @@ extension MainTabBarController: FUIAuthDelegate {
         } catch {
             print("Unknown error.")
         }
-     }
-
+    }
+    
     func signed(in user: User) {
         Firestore.updateUserProfile(user: user)
-       // downloadImage(url: user.photoURL!, user: user)
-       // savePhotoImage(user: user)
+        // downloadImage(url: user.photoURL!, user: user)
+        // savePhotoImage(user: user)
     }
     
     func downloadImage(url: URL, user: User) {
@@ -276,7 +276,7 @@ extension MainTabBarController: FUIAuthDelegate {
             }
         }
     }
-
+    
     func getDataFromUrl(url: URL, completion: @escaping (_ data: Data?, _  response: URLResponse?, _ error: Error?) -> Void) {
         URLSession.shared.dataTask(with: url) {
             (data, response, error) in
@@ -309,7 +309,7 @@ extension MainTabBarController: FUIAuthDelegate {
                         return
                     }
                     if let url = url {
-                         let values: [String: Any] = ["profileImageUrl": url]
+                        let values: [String: Any] = ["profileImageUrl": url]
                         Firestore.firestore().collection("users").document(user.uid).collection("profile").document(user.uid).updateData(values)
                     }
                 }

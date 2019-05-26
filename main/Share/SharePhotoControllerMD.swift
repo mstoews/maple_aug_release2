@@ -60,6 +60,8 @@ class SharePhotoController:
     ShareHeaderCellDelegate
 {
     
+    // MARK: - Variables and containts
+    
     private var croppedRect = CGRect.zero
     private var croppedAngle = 0
     var VIEW_SCROLL_HEIGHT: CGFloat?
@@ -90,7 +92,8 @@ class SharePhotoController:
     var gallery: GalleryController!
     let editor: VideoEditing = VideoEditor()
     
-    
+    var urlThumbArray = [String]()
+    var urlOriginalArray = [String]()
     
     var bottomConstraint: NSLayoutConstraint!
     var heightConstraint: NSLayoutConstraint!
@@ -373,7 +376,7 @@ class SharePhotoController:
         navigationItem.title = "Post Page"
         imageCollectionView.backgroundView = backGroundView
  
-        Products.delegate = self
+        //Products.delegate = self
         Description.textView?.delegate = self
         tableProductsView.delegate = self
         tableProductsView.dataSource =  self
@@ -405,7 +408,7 @@ class SharePhotoController:
         tableProductsView.tableHeaderView?.isHidden = true
         
         definesPresentationContext = true
-        updateSearchResults(for: Products)
+        //updateSearchResults(for: Products)
         
         
         NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillShow), name: NSNotification.Name.UIKeyboardWillShow, object: nil)
@@ -417,6 +420,8 @@ class SharePhotoController:
     }
     
     var editingIndex: IndexPath!
+    
+     // MARK: - Keyboard Handlers
     
     @objc fileprivate func handleKeyboardShow(notification: Notification) {
         // how to figure out how tall the keyboard actually is
@@ -438,6 +443,7 @@ class SharePhotoController:
         if let keyboardSize = (notification.userInfo?[UIKeyboardFrameBeginUserInfoKey] as? NSValue)?.cgRectValue {
             //let inset = isKeyboardShowing ? -bottomAreaInset : bottomAreaInset
             if isKeyboardShowing {
+                print ("Frame size \(self.view.frame.height)")
                  self.view.frame.origin.y = -keyboardSize.height + self.view.frame.height / 2.5
             }
         }
@@ -462,8 +468,7 @@ class SharePhotoController:
     }
     
     
-    var urlThumbArray = [String]()
-    var urlOriginalArray = [String]()
+    
     
     let loadImages: CustomImageView = {
         let iv = CustomImageView()
@@ -516,6 +521,8 @@ class SharePhotoController:
         handleAddPhotos()
     }
     
+    // MARK: - Arrange Fields
+    
     func setupImageAndTextViews() {
         
         // Construct a window and the split split pane view controller we are going to embed our UI in.
@@ -523,8 +530,6 @@ class SharePhotoController:
         // Make the window visible and allow the app to continue initialization.
         
         //docRef = Firestore.firestore().document("maplefirebase/posts")
-        
-        
         
         let productsHeight = CGFloat(45.0)
         let paddingSize = CGFloat(7.0)
@@ -599,10 +604,10 @@ class SharePhotoController:
     
         if #available(iOS 11.0, *) {
             containerView.anchor(top: view.safeAreaLayoutGuide.topAnchor , left: view.leftAnchor, bottom: view.safeAreaLayoutGuide.bottomAnchor, right: view.rightAnchor,
-                                 paddingTop: 7,
-                                 paddingLeft: 7,
-                                 paddingBottom: 7 ,
-                                 paddingRight: 7,
+                                 paddingTop: paddingSize,
+                                 paddingLeft: paddingSize,
+                                 paddingBottom: paddingSize ,
+                                 paddingRight: paddingSize,
                                  width: 0 ,
                                  height: 0)
         } else {
@@ -612,7 +617,7 @@ class SharePhotoController:
         
         self.pictureSize = containerView.frame.size.width
         
-        let heightCollectionView = imageConstraint?.constant
+        //let heightCollectionView = imageConstraint?.constant
         
         imageCard.anchor(top: containerView.topAnchor, left: containerView.leftAnchor, bottom: nil , right: containerView.rightAnchor,
                          paddingTop: paddingTopBottom,
@@ -626,16 +631,15 @@ class SharePhotoController:
         
         
         Products.anchor(top:  imageCard.bottomAnchor,
-                        left: containerView.leftAnchor, bottom: nil ,
+                        left: containerView.leftAnchor,
+                        bottom: nil ,
                         right: containerView.rightAnchor ,
-    
-            paddingTop: paddingTopBottom,
-            paddingLeft: paddingSize,
-            paddingBottom: paddingTopBottom,
-            paddingRight: paddingSize,
-            //width: width / 2   , height: productsHeight)
-            width: 0 , height: productsHeight)
-        
+                        paddingTop: paddingTopBottom,
+                        paddingLeft: paddingSize,
+                        paddingBottom: paddingTopBottom,
+                        paddingRight: paddingSize,
+                        width: 0 ,
+                        height: productsHeight)
         
         
         locationCard.anchor(top: Products.bottomAnchor, left: containerView.leftAnchor, bottom: nil, right: containerView.rightAnchor ,
@@ -663,7 +667,7 @@ class SharePhotoController:
         //buttonMenus.anchor(top: imageCard.topAnchor, left: nil, bottom: nil, right: containerView.rightAnchor, paddingTop: 10, paddingLeft: 5, paddingBottom: 0, paddingRight: 15, width: 40, height: 120)
         //buttonMenus.isHidden = true
         
-        tableProductsView.anchor(top: Products.bottomAnchor, left: Products.leftAnchor, bottom: Description.bottomAnchor , right: Products.rightAnchor)
+        //tableProductsView.anchor(top: Products.bottomAnchor, left: Products.leftAnchor, bottom: Description.bottomAnchor , right: Products.rightAnchor)
         
         FloatingPlusButton.anchor(top: nil, left: nil, bottom: containerView.bottomAnchor, right: containerView.rightAnchor, paddingTop: 80, paddingLeft: 0, paddingBottom: 0, paddingRight: 10, width: 0, height: 0)
         
@@ -682,21 +686,17 @@ class SharePhotoController:
     
     var textFieldControllerFloating : MDCTextInputController?
     
-    let Products: MDCTextField = {
-        let TextField = MDCTextField()
-        TextField.placeholder = "Products"
-        TextField.borderView?.borderFillColor = .white
-        TextField.hidesPlaceholderOnInput = true
+    let Products:  MDCMultilineTextField = {
+        let TextField =  MDCMultilineTextField()
+        TextField.placeholder = "Caption"
         TextField.font = UIFont.systemFont(ofSize: 15)
-        TextField.autocorrectionType = UITextAutocorrectionType.yes
-        TextField.keyboardType = UIKeyboardType.default
-        TextField.clearButtonMode = UITextFieldViewMode.whileEditing;
-        TextField.contentVerticalAlignment = UIControlContentVerticalAlignment.center
+        TextField.translatesAutoresizingMaskIntoConstraints = true
+        TextField.textColor = UIColor.black
         TextField.backgroundColor =  UIColor.collectionCell()
-        TextField.addTarget(self, action: #selector(textProductFieldChanged(_:)), for: .editingChanged)
         TextField.tag = 1
         return TextField
     }()
+    
     
     let Description:  MDCMultilineTextField = {
         let TextField =  MDCMultilineTextField()
@@ -739,21 +739,21 @@ class SharePhotoController:
         return collectionView
     }()
     
+//
+//    func showControllerForSetting(_ setting: ShareSetting) {
+//        let dummySettingsViewController = UIViewController()
+//        dummySettingsViewController.view.backgroundColor = UIColor.white
+//        dummySettingsViewController.navigationItem.title = setting.name.rawValue
+//        navigationController?.navigationBar.tintColor = UIColor.white
+//        navigationController?.navigationBar.titleTextAttributes = [NSAttributedStringKey.foregroundColor: UIColor.white]
+//        navigationController?.pushViewController(dummySettingsViewController, animated: true)
+//    }
     
-    func showControllerForSetting(_ setting: ShareSetting) {
-        let dummySettingsViewController = UIViewController()
-        dummySettingsViewController.view.backgroundColor = UIColor.white
-        dummySettingsViewController.navigationItem.title = setting.name.rawValue
-        navigationController?.navigationBar.tintColor = UIColor.white
-        navigationController?.navigationBar.titleTextAttributes = [NSAttributedStringKey.foregroundColor: UIColor.white]
-        navigationController?.pushViewController(dummySettingsViewController, animated: true)
-    }
-    
-    let  shareShowSettings = ShareShowSettings()
+//    let  shareShowSettings = ShareShowSettings()
     
     @objc func handleEditMenu()
     {
-        shareShowSettings.showSettings()
+        //shareShowSettings.showSettings()
         print ("Handle Edit Menu")
         
     }
@@ -1099,11 +1099,6 @@ class SharePhotoController:
                 let item = indexPath.item
                 if item >= 0  {
                     if let img = imageArray[item] as UIImage? {
-                        //let vc = SHViewController(image: img)
-                        //vc.delegate = self as SHViewControllerDelegate
-                        //currentImageItem = item
-                        //os_log("Filtering an item", log: OSLog.default, type: .debug)
-                        //present(vc, animated: true, completion: nil)
                     }
                 }
             }

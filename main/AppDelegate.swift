@@ -42,6 +42,8 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         let settings = FirestoreSettings()
         settings.isPersistenceEnabled = true
         
+        
+        
         if #available(iOS 10.0, *) {
             // For iOS 10 display notification (sent via APNS)
             UNUserNotificationCenter.current().delegate = self
@@ -64,8 +66,12 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
             application.registerUserNotificationSettings(settings)
         }
         
+        
         let db = Firestore.firestore()
-        db.settings = settings
+        let setting = db.settings
+        setting.areTimestampsInSnapshotsEnabled = true
+        db.settings = setting
+       
         application.registerForRemoteNotifications()
         
         UINavigationBar.appearance().backgroundColor = UIColor.themeColor()

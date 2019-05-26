@@ -1,4 +1,5 @@
 PODS:
+  - ActiveLabel (1.0.1)
   - AFNetworking (3.2.1):
     - AFNetworking/NSURLSession (= 3.2.1)
     - AFNetworking/Reachability (= 3.2.1)
@@ -254,10 +255,25 @@ PODS:
   - InstantSearch-Core-Swift (3.2.1):
     - AlgoliaSearch-Client-Swift (~> 5.0)
   - JGProgressHUD (2.0.3)
-  - Kingfisher (5.4.0)
   - leveldb-library (1.20)
   - Lightbox (2.3.0):
     - Imaginary (~> 4.0)
+  - Mapbox-iOS-SDK (4.10.0)
+  - MapboxCoreNavigation (0.31.0):
+    - MapboxDirections.swift (~> 0.27.3)
+    - MapboxMobileEvents (~> 0.8.1)
+    - MapboxNavigationNative (~> 6.1.1)
+    - Turf (~> 0.3.0)
+  - MapboxDirections.swift (0.27.3):
+    - Polyline (~> 4.2)
+  - MapboxMobileEvents (0.8.1)
+  - MapboxNavigation (0.31.0):
+    - Mapbox-iOS-SDK (~> 4.3)
+    - MapboxCoreNavigation (= 0.31.0)
+    - MapboxSpeech (~> 0.1.0)
+    - Solar (~> 2.1)
+  - MapboxNavigationNative (6.1.3)
+  - MapboxSpeech (0.1.1)
   - MaterialComponents (83.0.1):
     - MaterialComponents/ActionSheet (= 83.0.1)
     - "MaterialComponents/ActionSheet+Theming (= 83.0.1)"
@@ -830,17 +846,21 @@ PODS:
     - nanopb/encode (= 0.3.901)
   - nanopb/decode (0.3.901)
   - nanopb/encode (0.3.901)
+  - Polyline (4.2.1)
   - Protobuf (3.7.0)
   - Reachability (3.2)
   - SDWebImage (4.4.6):
     - SDWebImage/Core (= 4.4.6)
   - SDWebImage/Core (4.4.6)
+  - Solar (2.1.0)
   - SVProgressHUD (2.2.5)
+  - Turf (0.3.0)
   - TwitterCore (3.2.0)
   - TwitterKit (3.4.2):
     - TwitterCore (>= 3.2.0)
 
 DEPENDENCIES:
+  - ActiveLabel
   - AFNetworking
   - Alamofire (~> 4.5)
   - BadgeSwift (~> 5.0)
@@ -862,8 +882,9 @@ DEPENDENCIES:
   - ImagePicker
   - InstantSearch-Core-Swift
   - JGProgressHUD (~> 2.0.3)
-  - Kingfisher
   - Lightbox
+  - Mapbox-iOS-SDK (~> 4.10)
+  - MapboxNavigation
   - MaterialComponents
   - Reachability (~> 3.2)
   - SDWebImage (~> 4.0)
@@ -871,6 +892,7 @@ DEPENDENCIES:
 
 SPEC REPOS:
   https://github.com/cocoapods/specs.git:
+    - ActiveLabel
     - AFNetworking
     - Alamofire
     - AlgoliaSearch-Client-Swift
@@ -915,9 +937,15 @@ SPEC REPOS:
     - Imaginary
     - InstantSearch-Core-Swift
     - JGProgressHUD
-    - Kingfisher
     - leveldb-library
     - Lightbox
+    - Mapbox-iOS-SDK
+    - MapboxCoreNavigation
+    - MapboxDirections.swift
+    - MapboxMobileEvents
+    - MapboxNavigation
+    - MapboxNavigationNative
+    - MapboxSpeech
     - MaterialComponents
     - MDFInternationalization
     - MDFTextAccessibility
@@ -925,14 +953,18 @@ SPEC REPOS:
     - MotionInterchange
     - MotionTransitioning
     - nanopb
+    - Polyline
     - Protobuf
     - Reachability
     - SDWebImage
+    - Solar
     - SVProgressHUD
+    - Turf
     - TwitterCore
     - TwitterKit
 
 SPEC CHECKSUMS:
+  ActiveLabel: b8b2396fe25308d563601437d6605bf691c3b5db
   AFNetworking: b6f891fdfaed196b46c7a83cf209e09697b94057
   Alamofire: ae5c501addb7afdbb13687d7f2f722c78734c2d3
   AlgoliaSearch-Client-Swift: 13f8abe012615ed3ccc35dc61ce0401a191be0ff
@@ -977,9 +1009,15 @@ SPEC CHECKSUMS:
   Imaginary: dae33d06dbc2ada22f98afef5eb45cc061311a2c
   InstantSearch-Core-Swift: 0863a6bf3ebf46ae334341d89cf63c9710ccec71
   JGProgressHUD: 12b20a8f4ffe05258f8635c1ab92816e451f904d
-  Kingfisher: 9c8f2cc6710334e06f32ba2b45e77707d5e2f0c9
   leveldb-library: 08cba283675b7ed2d99629a4bc5fd052cd2bb6a5
   Lightbox: d317750e4132bfb871a5307cfe0a2c7d6a583c65
+  Mapbox-iOS-SDK: 8b1b777de7de373cdf000994c91af101ef886477
+  MapboxCoreNavigation: 203f774086328766e5d084e02e3855b7459ea0dd
+  MapboxDirections.swift: af3d8bc8cd80ed6e498dd6ed933f3c348799e1e2
+  MapboxMobileEvents: 0f30fe39687f26fd8f255335053023ba039a0392
+  MapboxNavigation: 188a6e4652da8de68b2e19bf7928a40766e9f3eb
+  MapboxNavigationNative: c7340cdfcb28f88aa02b6e3896151f4cd897f323
+  MapboxSpeech: 59b3984d3f433a443d24acf53097f918c5cc70f9
   MaterialComponents: 2363f5dab79a96d3958e6aaf49ec116e102d23dc
   MDFInternationalization: 010097556d6b09d2c4ea38e0820ea6d37be6a314
   MDFTextAccessibility: 85c09a1bd9c321f494348e632a25063bcda35a53
@@ -987,13 +1025,16 @@ SPEC CHECKSUMS:
   MotionInterchange: ead0e3ae1f3a5fb539e289debbc7ae036160a10d
   MotionTransitioning: 23d25edc2f4606efb922403cbac6d81af37aa33a
   nanopb: 2901f78ea1b7b4015c860c2fdd1ea2fee1a18d48
+  Polyline: 0e9890790292741c8186201a536b6bb6a78d02dd
   Protobuf: 7a877b7f3e5964e3fce995e2eb323dbc6831bb5a
   Reachability: 33e18b67625424e47b6cde6d202dce689ad7af96
   SDWebImage: 3f3f0c02f09798048c47a5ed0a13f17b063572d8
+  Solar: 2dc6e7cc39186cb0c8228fa08df76fb50c7d8f24
   SVProgressHUD: 1428aafac632c1f86f62aa4243ec12008d7a51d6
+  Turf: c6bdf62d6a70c647874f295dd1cf4eefc0c3e9e6
   TwitterCore: 8cbc9ad34d91c63a0035ea05bfbfc0d7ca72a28c
   TwitterKit: 5e4f41d70b9abdb41df5467f52d7aa2c0fd26ebb
 
-PODFILE CHECKSUM: b9c02383b4ea7da6b95313e56079f55ce0e0b01a
+PODFILE CHECKSUM: e15f90f0e37bcd34fc71678828cba4dde3becda9
 
 COCOAPODS: 1.5.3

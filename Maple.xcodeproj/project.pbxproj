@@ -12,20 +12,19 @@
 		024EDBC02078EFF50069C77F /* HomeHeaderCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 02DC63492004E5C500AE9662 /* HomeHeaderCell.swift */; };
 		024EDBC32078EFFA0069C77F /* CommentCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 48B4450C1FE7342200DFD412 /* CommentCell.swift */; };
 		024EDBC52078EFFD0069C77F /* CommentInputAccessoryView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 02DC63432001BDD600AE9662 /* CommentInputAccessoryView.swift */; };
+		0252AF3822938A46004DA3BB /* AdvancedNavigationController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0252AF3722938A46004DA3BB /* AdvancedNavigationController.swift */; };
 		02C40A4A211A8F9300A73B51 /* SharePhotoControllerMD.swift in Sources */ = {isa = PBXBuildFile; fileRef = 02C40A49211A8F9300A73B51 /* SharePhotoControllerMD.swift */; };
 		02D8690F228233530093BD18 /* MapBoxViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 02D8690E228233530093BD18 /* MapBoxViewController.swift */; };
 		02D869112285A0C70093BD18 /* Navigation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 02D869102285A0C70093BD18 /* Navigation.swift */; };
 		02DC63442001BDD600AE9662 /* CommentInputAccessoryView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 02DC63432001BDD600AE9662 /* CommentInputAccessoryView.swift */; };
 		02DC63462001BE7600AE9662 /* CommentInputTextView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 02DC63452001BE7600AE9662 /* CommentInputTextView.swift */; };
 		02DC634A2004E5C500AE9662 /* HomeHeaderCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 02DC63492004E5C500AE9662 /* HomeHeaderCell.swift */; };
+		2F6DA8E6E451D4E4D137B11B /* Pods_Maple.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1E49CA1F1B426E691F3AE5AE /* Pods_Maple.framework */; };
 		4800DAE9226FDC6500B326FC /* UserProductController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4800DAE8226FDC6400B326FC /* UserProductController.swift */; };
 		4800DAF62272B6C000B326FC /* SearchController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4800DAF52272B6BF00B326FC /* SearchController.swift */; };
 		4800DAF82272B87000B326FC /* podcasts.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4800DAF72272B87000B326FC /* podcasts.swift */; };
 		4800DAFA2272B8CA00B326FC /* APservice.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4800DAF92272B8CA00B326FC /* APservice.swift */; };
 		4800DAFC2272B96500B326FC /* PodcastCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4800DAFB2272B96500B326FC /* PodcastCell.swift */; };
-		482FC10020DE15D900E23DAE /* SharePhotoCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 482FC0F720DE15BD00E23DAE /* SharePhotoCell.swift */; };
-		482FC10220DE15D900E23DAE /* ProductFooterCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 482FC0F920DE15C400E23DAE /* ProductFooterCell.swift */; };
-		482FC10420DE15D900E23DAE /* PreviewPhotoContainerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 482FC0FB20DE15C800E23DAE /* PreviewPhotoContainerView.swift */; };
 		482FC10520DE15D900E23DAE /* SharePhotoController+Save.swift in Sources */ = {isa = PBXBuildFile; fileRef = 482FC0FC20DE15CC00E23DAE /* SharePhotoController+Save.swift */; };
 		482FC10620DE15D900E23DAE /* MapCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 482FC0FD20DE15D000E23DAE /* MapCell.swift */; };
 		482FC10720DE15D900E23DAE /* PostImageCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 482FC0FE20DE15D400E23DAE /* PostImageCell.swift */; };
@@ -55,7 +54,6 @@
 		482FC13B20DE236D00E23DAE /* PostCollectionCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 482FC13120DE236D00E23DAE /* PostCollectionCell.swift */; };
 		482FC13D20DE23C800E23DAE /* UserFollowingController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 482FC13C20DE23C800E23DAE /* UserFollowingController.swift */; };
 		482FC13E20DE295700E23DAE /* HomeController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 48B444F51FE7341D00DFD412 /* HomeController.swift */; };
-		482FC13F20DE296100E23DAE /* FlexibleHeader.swift in Sources */ = {isa = PBXBuildFile; fileRef = 025D70DF20B53AD4004E967B /* FlexibleHeader.swift */; };
 		482FC14120DE29CF00E23DAE /* SearchTableCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 482FC14020DE29CF00E23DAE /* SearchTableCell.swift */; };
 		482FC14320DE2B8000E23DAE /* ProductController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 482FC14220DE2B7F00E23DAE /* ProductController.swift */; };
 		48443E66210990AE00A21FC4 /* GMUClusterManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 48443E21210990AE00A21FC4 /* GMUClusterManager.m */; };
@@ -82,8 +80,6 @@
 		48443E7B210990AE00A21FC4 /* GMUGeoJSONParser.m in Sources */ = {isa = PBXBuildFile; fileRef = 48443E5C210990AE00A21FC4 /* GMUGeoJSONParser.m */; };
 		48443E7C210990AE00A21FC4 /* GQTPointQuadTree.m in Sources */ = {isa = PBXBuildFile; fileRef = 48443E5F210990AE00A21FC4 /* GQTPointQuadTree.m */; };
 		48443E7D210990AE00A21FC4 /* GQTPointQuadTreeChild.m in Sources */ = {isa = PBXBuildFile; fileRef = 48443E61210990AE00A21FC4 /* GQTPointQuadTreeChild.m */; };
-		48443E7F2109FB0F00A21FC4 /* MapInfoWindowView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 48443E7E2109FB0F00A21FC4 /* MapInfoWindowView.xib */; };
-		48443E812109FB6100A21FC4 /* InfoWindow.swift in Sources */ = {isa = PBXBuildFile; fileRef = 48443E802109FB6100A21FC4 /* InfoWindow.swift */; };
 		48482FC020DA18A00031EBFF /* Location.swift in Sources */ = {isa = PBXBuildFile; fileRef = 48482FB020DA18A00031EBFF /* Location.swift */; };
 		48482FC120DA18A00031EBFF /* Situation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 48482FB120DA18A00031EBFF /* Situation.swift */; };
 		48482FC220DA18A00031EBFF /* DataModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 48482FB220DA18A00031EBFF /* DataModel.swift */; };
@@ -94,7 +90,6 @@
 		48482FC820DA18A00031EBFF /* User.swift in Sources */ = {isa = PBXBuildFile; fileRef = 48482FB820DA18A00031EBFF /* User.swift */; };
 		48482FC920DA18A00031EBFF /* Photo.swift in Sources */ = {isa = PBXBuildFile; fileRef = 48482FB920DA18A00031EBFF /* Photo.swift */; };
 		48482FCA20DA18A00031EBFF /* Bookmark.swift in Sources */ = {isa = PBXBuildFile; fileRef = 48482FBA20DA18A00031EBFF /* Bookmark.swift */; };
-		48482FCB20DA18A00031EBFF /* Category.swift in Sources */ = {isa = PBXBuildFile; fileRef = 48482FBB20DA18A00031EBFF /* Category.swift */; };
 		48482FCC20DA18A00031EBFF /* Post.swift in Sources */ = {isa = PBXBuildFile; fileRef = 48482FBC20DA18A00031EBFF /* Post.swift */; };
 		48482FCE20DA18A00031EBFF /* SinglePhotoPost.swift in Sources */ = {isa = PBXBuildFile; fileRef = 48482FBE20DA18A00031EBFF /* SinglePhotoPost.swift */; };
 		484F88D620DE327D0083D226 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 484F88D520DE327D0083D226 /* GoogleService-Info.plist */; };
@@ -119,7 +114,6 @@
 		4876BCA220DA16280057E5E0 /* Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4876BC8A20DA16280057E5E0 /* Extensions.swift */; };
 		4876BCA320DA16280057E5E0 /* PhotoSelectorController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4876BC8B20DA16280057E5E0 /* PhotoSelectorController.swift */; };
 		4876BCA520DA16290057E5E0 /* FirestoreUtilities.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4876BC8D20DA16280057E5E0 /* FirestoreUtilities.swift */; };
-		4876BCAA20DA16290057E5E0 /* PostViewerController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4876BC9220DA16280057E5E0 /* PostViewerController.swift */; };
 		4876BCAB20DA16290057E5E0 /* PhotoSelectorCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4876BC9320DA16280057E5E0 /* PhotoSelectorCell.swift */; };
 		4876BCAD20DA16290057E5E0 /* CustomImageView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4876BC9520DA16280057E5E0 /* CustomImageView.swift */; };
 		4876BCAE20DA16290057E5E0 /* PhotoViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4876BC9620DA16280057E5E0 /* PhotoViewModel.swift */; };
@@ -152,8 +146,6 @@
 		4876BD1D20DA164E0057E5E0 /* ShadowView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4876BCF320DA164E0057E5E0 /* ShadowView.swift */; };
 		4876BD1F20DA164E0057E5E0 /* RoundedButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4876BCFC20DA164E0057E5E0 /* RoundedButton.swift */; };
 		4876BD2320DA16B20057E5E0 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4876BD2220DA16B20057E5E0 /* AppDelegate.swift */; };
-		4878C0B820F6D0DD0054F227 /* ShareSettingsController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4878C0B720F6D0DD0054F227 /* ShareSettingsController.swift */; };
-		4878C0FE20F6D5400054F227 /* ShareSettingCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4878C0FD20F6D5400054F227 /* ShareSettingCell.swift */; };
 		4878C10120F7486F0054F227 /* ShareHeaderCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4878C10020F7486F0054F227 /* ShareHeaderCell.swift */; };
 		4878C18F20F844C80054F227 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 4878C18E20F844C70054F227 /* Assets.xcassets */; };
 		48B444C41FE7329900DFD412 /* maple_releaseTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 48B444C31FE7329900DFD412 /* maple_releaseTests.swift */; };
@@ -161,7 +153,6 @@
 		48B4457F1FE7342D00DFD412 /* HomePostCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 48B444DF1FE7341700DFD412 /* HomePostCell.swift */; };
 		48B445AB1FE7342D00DFD412 /* CommentCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 48B4450C1FE7342200DFD412 /* CommentCell.swift */; };
 		48B445B91FE7342D00DFD412 /* CommentsController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 48B4451A1FE7342600DFD412 /* CommentsController.swift */; };
-		E9A436FD424974DC4AF516E9 /* Pods_Maple.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 50A6F8B957EFD1BCC64CD12A /* Pods_Maple.framework */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -184,23 +175,20 @@
 /* Begin PBXFileReference section */
 		0225F2E120FE0F7300137084 /* UserImageCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UserImageCell.swift; sourceTree = "<group>"; };
 		024EDB9F2078EE760069C77F /* maple_release.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; name = maple_release.app; path = Maple_release.app; sourceTree = BUILT_PRODUCTS_DIR; };
-		025D70DF20B53AD4004E967B /* FlexibleHeader.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FlexibleHeader.swift; sourceTree = "<group>"; };
+		0252AF3722938A46004DA3BB /* AdvancedNavigationController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AdvancedNavigationController.swift; sourceTree = "<group>"; };
 		02C40A49211A8F9300A73B51 /* SharePhotoControllerMD.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SharePhotoControllerMD.swift; sourceTree = "<group>"; };
 		02D8690E228233530093BD18 /* MapBoxViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MapBoxViewController.swift; sourceTree = "<group>"; };
 		02D869102285A0C70093BD18 /* Navigation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Navigation.swift; sourceTree = "<group>"; };
 		02DC63432001BDD600AE9662 /* CommentInputAccessoryView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CommentInputAccessoryView.swift; sourceTree = "<group>"; };
 		02DC63452001BE7600AE9662 /* CommentInputTextView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CommentInputTextView.swift; sourceTree = "<group>"; };
 		02DC63492004E5C500AE9662 /* HomeHeaderCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeHeaderCell.swift; sourceTree = "<group>"; };
-		1A37A2AC267FCAB8BAC6A37F /* Pods-Maple.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Maple.debug.xcconfig"; path = "Pods/Target Support Files/Pods-Maple/Pods-Maple.debug.xcconfig"; sourceTree = "<group>"; };
-		20978D14CE748FB57EE87399 /* Pods-Maple.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Maple.release.xcconfig"; path = "Pods/Target Support Files/Pods-Maple/Pods-Maple.release.xcconfig"; sourceTree = "<group>"; };
+		1E49CA1F1B426E691F3AE5AE /* Pods_Maple.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_Maple.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		21741E8B77BBF111E024E733 /* Pods-Maple.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Maple.release.xcconfig"; path = "Pods/Target Support Files/Pods-Maple/Pods-Maple.release.xcconfig"; sourceTree = "<group>"; };
 		4800DAE8226FDC6400B326FC /* UserProductController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserProductController.swift; sourceTree = "<group>"; };
 		4800DAF52272B6BF00B326FC /* SearchController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchController.swift; sourceTree = "<group>"; };
 		4800DAF72272B87000B326FC /* podcasts.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = podcasts.swift; sourceTree = "<group>"; };
 		4800DAF92272B8CA00B326FC /* APservice.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = APservice.swift; sourceTree = "<group>"; };
 		4800DAFB2272B96500B326FC /* PodcastCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PodcastCell.swift; sourceTree = "<group>"; };
-		482FC0F720DE15BD00E23DAE /* SharePhotoCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SharePhotoCell.swift; sourceTree = "<group>"; };
-		482FC0F920DE15C400E23DAE /* ProductFooterCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ProductFooterCell.swift; sourceTree = "<group>"; };
-		482FC0FB20DE15C800E23DAE /* PreviewPhotoContainerView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PreviewPhotoContainerView.swift; sourceTree = "<group>"; };
 		482FC0FC20DE15CC00E23DAE /* SharePhotoController+Save.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "SharePhotoController+Save.swift"; sourceTree = "<group>"; };
 		482FC0FD20DE15D000E23DAE /* MapCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MapCell.swift; sourceTree = "<group>"; };
 		482FC0FE20DE15D400E23DAE /* PostImageCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PostImageCell.swift; sourceTree = "<group>"; };
@@ -296,8 +284,6 @@
 		48443E63210990AE00A21FC4 /* GQTPointQuadTree.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GQTPointQuadTree.h; sourceTree = "<group>"; };
 		48443E64210990AE00A21FC4 /* GQTPointQuadTreeChild.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GQTPointQuadTreeChild.h; sourceTree = "<group>"; };
 		48443E65210990AE00A21FC4 /* GQTBounds.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GQTBounds.h; sourceTree = "<group>"; };
-		48443E7E2109FB0F00A21FC4 /* MapInfoWindowView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = MapInfoWindowView.xib; sourceTree = "<group>"; };
-		48443E802109FB6100A21FC4 /* InfoWindow.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = InfoWindow.swift; sourceTree = "<group>"; };
 		48482FB020DA18A00031EBFF /* Location.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Location.swift; sourceTree = "<group>"; };
 		48482FB120DA18A00031EBFF /* Situation.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Situation.swift; sourceTree = "<group>"; };
 		48482FB220DA18A00031EBFF /* DataModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DataModel.swift; sourceTree = "<group>"; };
@@ -308,7 +294,6 @@
 		48482FB820DA18A00031EBFF /* User.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = User.swift; sourceTree = "<group>"; };
 		48482FB920DA18A00031EBFF /* Photo.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Photo.swift; sourceTree = "<group>"; };
 		48482FBA20DA18A00031EBFF /* Bookmark.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Bookmark.swift; sourceTree = "<group>"; };
-		48482FBB20DA18A00031EBFF /* Category.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Category.swift; sourceTree = "<group>"; };
 		48482FBC20DA18A00031EBFF /* Post.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Post.swift; sourceTree = "<group>"; };
 		48482FBE20DA18A00031EBFF /* SinglePhotoPost.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SinglePhotoPost.swift; sourceTree = "<group>"; };
 		484F862E20FDB56D00FAF6AA /* LaunchScreen.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = LaunchScreen.storyboard; sourceTree = "<group>"; };
@@ -335,7 +320,6 @@
 		4876BC8A20DA16280057E5E0 /* Extensions.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Extensions.swift; sourceTree = "<group>"; };
 		4876BC8B20DA16280057E5E0 /* PhotoSelectorController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PhotoSelectorController.swift; sourceTree = "<group>"; };
 		4876BC8D20DA16280057E5E0 /* FirestoreUtilities.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FirestoreUtilities.swift; sourceTree = "<group>"; };
-		4876BC9220DA16280057E5E0 /* PostViewerController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PostViewerController.swift; sourceTree = "<group>"; };
 		4876BC9320DA16280057E5E0 /* PhotoSelectorCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PhotoSelectorCell.swift; sourceTree = "<group>"; };
 		4876BC9520DA16280057E5E0 /* CustomImageView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CustomImageView.swift; sourceTree = "<group>"; };
 		4876BC9620DA16280057E5E0 /* PhotoViewModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PhotoViewModel.swift; sourceTree = "<group>"; };
@@ -409,8 +393,6 @@
 		4876BCFF20DA164E0057E5E0 /* hi */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = hi; path = hi.lproj/Localizable.strings; sourceTree = "<group>"; };
 		4876BD0020DA164E0057E5E0 /* ca */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = ca; path = ca.lproj/Localizable.strings; sourceTree = "<group>"; };
 		4876BD2220DA16B20057E5E0 /* AppDelegate.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = AppDelegate.swift; path = main/AppDelegate.swift; sourceTree = SOURCE_ROOT; };
-		4878C0B720F6D0DD0054F227 /* ShareSettingsController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ShareSettingsController.swift; sourceTree = "<group>"; };
-		4878C0FD20F6D5400054F227 /* ShareSettingCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ShareSettingCell.swift; sourceTree = "<group>"; };
 		4878C10020F7486F0054F227 /* ShareHeaderCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ShareHeaderCell.swift; sourceTree = "<group>"; };
 		4878C18E20F844C70054F227 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		4878C22B20F85D520054F227 /* maple-release-Bridging-Header.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "maple-release-Bridging-Header.h"; sourceTree = "<group>"; };
@@ -425,7 +407,7 @@
 		48B444F51FE7341D00DFD412 /* HomeController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = HomeController.swift; sourceTree = "<group>"; };
 		48B4450C1FE7342200DFD412 /* CommentCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CommentCell.swift; sourceTree = "<group>"; };
 		48B4451A1FE7342600DFD412 /* CommentsController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CommentsController.swift; sourceTree = "<group>"; };
-		50A6F8B957EFD1BCC64CD12A /* Pods_Maple.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_Maple.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		7A9564352AD53882CD8730CA /* Pods-Maple.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Maple.debug.xcconfig"; path = "Pods/Target Support Files/Pods-Maple/Pods-Maple.debug.xcconfig"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -440,7 +422,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				E9A436FD424974DC4AF516E9 /* Pods_Maple.framework in Frameworks */,
+				2F6DA8E6E451D4E4D137B11B /* Pods_Maple.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -476,6 +458,26 @@
 				4878C22B20F85D520054F227 /* maple-release-Bridging-Header.h */,
 			);
 			path = maple_release;
+			sourceTree = "<group>";
+		};
+		02ECD2222296D68000A177CD /* Comments */ = {
+			isa = PBXGroup;
+			children = (
+				48B4451A1FE7342600DFD412 /* CommentsController.swift */,
+				02DC63452001BE7600AE9662 /* CommentInputTextView.swift */,
+				48B4450C1FE7342200DFD412 /* CommentCell.swift */,
+				02DC63432001BDD600AE9662 /* CommentInputAccessoryView.swift */,
+			);
+			path = Comments;
+			sourceTree = "<group>";
+		};
+		3C193FEF31D19AB8C89E6DD6 /* Pods */ = {
+			isa = PBXGroup;
+			children = (
+				7A9564352AD53882CD8730CA /* Pods-Maple.debug.xcconfig */,
+				21741E8B77BBF111E024E733 /* Pods-Maple.release.xcconfig */,
+			);
+			name = Pods;
 			sourceTree = "<group>";
 		};
 		48443DBE21098C6500A21FC4 /* Google-Maps-iOS-Utils */ = {
@@ -619,7 +621,6 @@
 				48482FB820DA18A00031EBFF /* User.swift */,
 				48482FB920DA18A00031EBFF /* Photo.swift */,
 				48482FBA20DA18A00031EBFF /* Bookmark.swift */,
-				48482FBB20DA18A00031EBFF /* Category.swift */,
 				48482FBC20DA18A00031EBFF /* Post.swift */,
 				48482FBE20DA18A00031EBFF /* SinglePhotoPost.swift */,
 				4800DAF72272B87000B326FC /* podcasts.swift */,
@@ -636,11 +637,6 @@
 				482FC0FD20DE15D000E23DAE /* MapCell.swift */,
 				482FC14020DE29CF00E23DAE /* SearchTableCell.swift */,
 				482FC0FE20DE15D400E23DAE /* PostImageCell.swift */,
-				482FC0FB20DE15C800E23DAE /* PreviewPhotoContainerView.swift */,
-				482FC0F920DE15C400E23DAE /* ProductFooterCell.swift */,
-				482FC0F720DE15BD00E23DAE /* SharePhotoCell.swift */,
-				4878C0B720F6D0DD0054F227 /* ShareSettingsController.swift */,
-				4878C0FD20F6D5400054F227 /* ShareSettingCell.swift */,
 				4878C10020F7486F0054F227 /* ShareHeaderCell.swift */,
 			);
 			name = Share;
@@ -741,6 +737,7 @@
 				4876BCF320DA164E0057E5E0 /* ShadowView.swift */,
 				4876BCFC20DA164E0057E5E0 /* RoundedButton.swift */,
 				02D8690E228233530093BD18 /* MapBoxViewController.swift */,
+				0252AF3722938A46004DA3BB /* AdvancedNavigationController.swift */,
 			);
 			name = GoogleMapPicker;
 			path = main/GoogleMapPicker;
@@ -816,23 +813,16 @@
 			children = (
 				484F88D520DE327D0083D226 /* GoogleService-Info.plist */,
 			);
-			path = maple_release;
+			name = maple_release;
+			path = maple/maple_release;
 			sourceTree = "<group>";
 		};
 		488C9D621FEFA1B9009D0F6D /* Home */ = {
 			isa = PBXGroup;
 			children = (
-				48443E802109FB6100A21FC4 /* InfoWindow.swift */,
-				48443E7E2109FB0F00A21FC4 /* MapInfoWindowView.xib */,
 				48B444F51FE7341D00DFD412 /* HomeController.swift */,
 				48B444DF1FE7341700DFD412 /* HomePostCell.swift */,
-				4876BC9220DA16280057E5E0 /* PostViewerController.swift */,
-				025D70DF20B53AD4004E967B /* FlexibleHeader.swift */,
 				02DC63492004E5C500AE9662 /* HomeHeaderCell.swift */,
-				48B4451A1FE7342600DFD412 /* CommentsController.swift */,
-				02DC63452001BE7600AE9662 /* CommentInputTextView.swift */,
-				48B4450C1FE7342200DFD412 /* CommentCell.swift */,
-				02DC63432001BDD600AE9662 /* CommentInputAccessoryView.swift */,
 			);
 			name = Home;
 			path = ..;
@@ -842,6 +832,7 @@
 			isa = PBXGroup;
 			children = (
 				0225F33220FE144800137084 /* maple_release */,
+				4878C22920F85C940054F227 /* maple_release */,
 				482FC12720DE16CE00E23DAE /* maple-release.entitlements */,
 				48B444AD1FE7329900DFD412 /* maple */,
 				48443DBE21098C6500A21FC4 /* Google-Maps-iOS-Utils */,
@@ -849,8 +840,8 @@
 				48B444CD1FE7329900DFD412 /* maple-releaseUITests */,
 				48B444AC1FE7329900DFD412 /* Products */,
 				0225F32720FE0FF600137084 /* Recovered References */,
-				DB7F511BBF62B77B683C3B12 /* Pods */,
-				871E443344BA7285B536FFA4 /* Frameworks */,
+				3C193FEF31D19AB8C89E6DD6 /* Pods */,
+				E6DBE8D8E57BA29E0F31EDA1 /* Frameworks */,
 			);
 			sourceTree = "<group>";
 		};
@@ -868,7 +859,6 @@
 		48B444AD1FE7329900DFD412 /* maple */ = {
 			isa = PBXGroup;
 			children = (
-				4878C22920F85C940054F227 /* maple_release */,
 				4876BD2220DA16B20057E5E0 /* AppDelegate.swift */,
 				485EF5DE212E412000ACD44A /* LaunchScreen.storyboard */,
 				4876BBB520DA14EF0057E5E0 /* Localizable.strings */,
@@ -878,6 +868,7 @@
 				4878C18E20F844C70054F227 /* Assets.xcassets */,
 				482FC14220DE2B7F00E23DAE /* ProductController.swift */,
 				4876BC8720DA16280057E5E0 /* ProductCell.swift */,
+				02ECD2222296D68000A177CD /* Comments */,
 				48482FAF20DA18A00031EBFF /* Models */,
 				4876BCB020DA164E0057E5E0 /* GoogleMapPicker */,
 				4876BC7F20DA16280057E5E0 /* Utilities */,
@@ -908,21 +899,12 @@
 			path = "maple-releaseUITests";
 			sourceTree = "<group>";
 		};
-		871E443344BA7285B536FFA4 /* Frameworks */ = {
+		E6DBE8D8E57BA29E0F31EDA1 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
-				50A6F8B957EFD1BCC64CD12A /* Pods_Maple.framework */,
+				1E49CA1F1B426E691F3AE5AE /* Pods_Maple.framework */,
 			);
 			name = Frameworks;
-			sourceTree = "<group>";
-		};
-		DB7F511BBF62B77B683C3B12 /* Pods */ = {
-			isa = PBXGroup;
-			children = (
-				1A37A2AC267FCAB8BAC6A37F /* Pods-Maple.debug.xcconfig */,
-				20978D14CE748FB57EE87399 /* Pods-Maple.release.xcconfig */,
-			);
-			name = Pods;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -949,13 +931,13 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = 48B444D31FE7329900DFD412 /* Build configuration list for PBXNativeTarget "Maple" */;
 			buildPhases = (
-				A525D4C6664BBC180D42D023 /* [CP] Check Pods Manifest.lock */,
+				D0D75708482C841878DF053D /* [CP] Check Pods Manifest.lock */,
 				48B444A71FE7329900DFD412 /* Sources */,
 				48B444A81FE7329900DFD412 /* Frameworks */,
 				48B444A91FE7329900DFD412 /* Resources */,
 				029FB5212040F04600E4DBA1 /* ShellScript */,
-				D39641013A4CEC28251B8A0C /* [CP] Embed Pods Frameworks */,
-				336474DF9706E9523B211639 /* [CP] Copy Pods Resources */,
+				5438991B05C0D2E6F090C183 /* [CP] Embed Pods Frameworks */,
+				F49AF80164766A6A1FA9C474 /* [CP] Copy Pods Resources */,
 			);
 			buildRules = (
 			);
@@ -1122,7 +1104,6 @@
 				4876BD0C20DA164E0057E5E0 /* PlaceDetailViewController.xib in Resources */,
 				4876BD0920DA164E0057E5E0 /* PickAPlaceViewController.xib in Resources */,
 				485EF5DC212E412000ACD44A /* LaunchScreen.storyboard in Resources */,
-				48443E7F2109FB0F00A21FC4 /* MapInfoWindowView.xib in Resources */,
 				4876BD0120DA164E0057E5E0 /* Localizable.strings in Resources */,
 				4876BBBB20DA14F00057E5E0 /* Localizable.strings in Resources */,
 				4876BBB920DA14F00057E5E0 /* Main.storyboard in Resources */,
@@ -1163,65 +1144,7 @@
 			shellPath = /bin/sh;
 			shellScript = "\"${PODS_ROOT}/Fabric/run\" e8afeb39a16c02e8fd208e0cab11f6a245270298 10a14b24bdfda8b6b0d10c3af86315dfa8c4c36f800dd806de23c41af2fd72d8\n";
 		};
-		336474DF9706E9523B211639 /* [CP] Copy Pods Resources */ = {
-			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			inputPaths = (
-				"${SRCROOT}/Pods/Target Support Files/Pods-Maple/Pods-Maple-resources.sh",
-				"${PODS_ROOT}/FirebaseInvites/Resources/GINInviteResources.bundle",
-				"${PODS_ROOT}/FirebaseInvites/Resources/GPPACLPickerResources.bundle",
-				"${PODS_CONFIGURATION_BUILD_DIR}/FirebaseUI/FirebaseAuthUI.bundle",
-				"${PODS_CONFIGURATION_BUILD_DIR}/FirebaseUI/FirebaseFacebookAuthUI.bundle",
-				"${PODS_CONFIGURATION_BUILD_DIR}/FirebaseUI/FirebaseGoogleAuthUI.bundle",
-				"${PODS_CONFIGURATION_BUILD_DIR}/FirebaseUI/FirebasePhoneAuthUI.bundle",
-				"${PODS_CONFIGURATION_BUILD_DIR}/FirebaseUI/FirebaseTwitterAuthUI.bundle",
-				"${PODS_ROOT}/GoogleMaps/Maps/Frameworks/GoogleMaps.framework/Resources/GoogleMaps.bundle",
-				"${PODS_ROOT}/GooglePlacePicker/Frameworks/GooglePlacePicker.framework/Resources/GooglePlacePicker.bundle",
-				"${PODS_ROOT}/GooglePlaces/Frameworks/GooglePlaces.framework/Resources/GooglePlaces.bundle",
-				"${PODS_ROOT}/GoogleSignIn/Resources/GoogleSignIn.bundle",
-				"${PODS_ROOT}/TwitterKit/iOS/TwitterKit.framework/TwitterKitResources.bundle",
-			);
-			name = "[CP] Copy Pods Resources";
-			outputPaths = (
-				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/GINInviteResources.bundle",
-				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/GPPACLPickerResources.bundle",
-				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/FirebaseAuthUI.bundle",
-				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/FirebaseFacebookAuthUI.bundle",
-				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/FirebaseGoogleAuthUI.bundle",
-				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/FirebasePhoneAuthUI.bundle",
-				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/FirebaseTwitterAuthUI.bundle",
-				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/GoogleMaps.bundle",
-				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/GooglePlacePicker.bundle",
-				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/GooglePlaces.bundle",
-				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/GoogleSignIn.bundle",
-				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/TwitterKitResources.bundle",
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-Maple/Pods-Maple-resources.sh\"\n";
-			showEnvVarsInLog = 0;
-		};
-		A525D4C6664BBC180D42D023 /* [CP] Check Pods Manifest.lock */ = {
-			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			inputPaths = (
-				"${PODS_PODFILE_DIR_PATH}/Podfile.lock",
-				"${PODS_ROOT}/Manifest.lock",
-			);
-			name = "[CP] Check Pods Manifest.lock";
-			outputPaths = (
-				"$(DERIVED_FILE_DIR)/Pods-Maple-checkManifestLockResult.txt",
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
-			showEnvVarsInLog = 0;
-		};
-		D39641013A4CEC28251B8A0C /* [CP] Embed Pods Frameworks */ = {
+		5438991B05C0D2E6F090C183 /* [CP] Embed Pods Frameworks */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
@@ -1339,6 +1262,64 @@
 			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-Maple/Pods-Maple-frameworks.sh\"\n";
 			showEnvVarsInLog = 0;
 		};
+		D0D75708482C841878DF053D /* [CP] Check Pods Manifest.lock */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+				"${PODS_PODFILE_DIR_PATH}/Podfile.lock",
+				"${PODS_ROOT}/Manifest.lock",
+			);
+			name = "[CP] Check Pods Manifest.lock";
+			outputPaths = (
+				"$(DERIVED_FILE_DIR)/Pods-Maple-checkManifestLockResult.txt",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
+			showEnvVarsInLog = 0;
+		};
+		F49AF80164766A6A1FA9C474 /* [CP] Copy Pods Resources */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+				"${SRCROOT}/Pods/Target Support Files/Pods-Maple/Pods-Maple-resources.sh",
+				"${PODS_ROOT}/FirebaseInvites/Resources/GINInviteResources.bundle",
+				"${PODS_ROOT}/FirebaseInvites/Resources/GPPACLPickerResources.bundle",
+				"${PODS_CONFIGURATION_BUILD_DIR}/FirebaseUI/FirebaseAuthUI.bundle",
+				"${PODS_CONFIGURATION_BUILD_DIR}/FirebaseUI/FirebaseFacebookAuthUI.bundle",
+				"${PODS_CONFIGURATION_BUILD_DIR}/FirebaseUI/FirebaseGoogleAuthUI.bundle",
+				"${PODS_CONFIGURATION_BUILD_DIR}/FirebaseUI/FirebasePhoneAuthUI.bundle",
+				"${PODS_CONFIGURATION_BUILD_DIR}/FirebaseUI/FirebaseTwitterAuthUI.bundle",
+				"${PODS_ROOT}/GoogleMaps/Maps/Frameworks/GoogleMaps.framework/Resources/GoogleMaps.bundle",
+				"${PODS_ROOT}/GooglePlacePicker/Frameworks/GooglePlacePicker.framework/Resources/GooglePlacePicker.bundle",
+				"${PODS_ROOT}/GooglePlaces/Frameworks/GooglePlaces.framework/Resources/GooglePlaces.bundle",
+				"${PODS_ROOT}/GoogleSignIn/Resources/GoogleSignIn.bundle",
+				"${PODS_ROOT}/TwitterKit/iOS/TwitterKit.framework/TwitterKitResources.bundle",
+			);
+			name = "[CP] Copy Pods Resources";
+			outputPaths = (
+				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/GINInviteResources.bundle",
+				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/GPPACLPickerResources.bundle",
+				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/FirebaseAuthUI.bundle",
+				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/FirebaseFacebookAuthUI.bundle",
+				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/FirebaseGoogleAuthUI.bundle",
+				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/FirebasePhoneAuthUI.bundle",
+				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/FirebaseTwitterAuthUI.bundle",
+				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/GoogleMaps.bundle",
+				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/GooglePlacePicker.bundle",
+				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/GooglePlaces.bundle",
+				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/GoogleSignIn.bundle",
+				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/TwitterKitResources.bundle",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-Maple/Pods-Maple-resources.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
 /* End PBXShellScriptBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
@@ -1368,7 +1349,6 @@
 				48443E69210990AE00A21FC4 /* GMUSimpleClusterAlgorithm.m in Sources */,
 				48443E75210990AE00A21FC4 /* GMUPolygon.m in Sources */,
 				48482FCE20DA18A00031EBFF /* SinglePhotoPost.swift in Sources */,
-				4878C0B820F6D0DD0054F227 /* ShareSettingsController.swift in Sources */,
 				4876BD1F20DA164E0057E5E0 /* RoundedButton.swift in Sources */,
 				48443E74210990AE00A21FC4 /* GMUPlacemark.m in Sources */,
 				02C40A4A211A8F9300A73B51 /* SharePhotoControllerMD.swift in Sources */,
@@ -1382,7 +1362,6 @@
 				48443E6C210990AE00A21FC4 /* GMUDefaultClusterIconGenerator.m in Sources */,
 				4876BCAE20DA16290057E5E0 /* PhotoViewModel.swift in Sources */,
 				4800DAF82272B87000B326FC /* podcasts.swift in Sources */,
-				482FC10420DE15D900E23DAE /* PreviewPhotoContainerView.swift in Sources */,
 				482FC10720DE15D900E23DAE /* PostImageCell.swift in Sources */,
 				4800DAE9226FDC6500B326FC /* UserProductController.swift in Sources */,
 				48B445AB1FE7342D00DFD412 /* CommentCell.swift in Sources */,
@@ -1407,6 +1386,7 @@
 				4876BCAB20DA16290057E5E0 /* PhotoSelectorCell.swift in Sources */,
 				48443E77210990AE00A21FC4 /* GMUGroundOverlay.m in Sources */,
 				4876BC9E20DA16280057E5E0 /* CircleImage.swift in Sources */,
+				0252AF3822938A46004DA3BB /* AdvancedNavigationController.swift in Sources */,
 				4876BD1A20DA164E0057E5E0 /* ShadowLineView.swift in Sources */,
 				48443E7C210990AE00A21FC4 /* GQTPointQuadTree.m in Sources */,
 				4876BD0E20DA164E0057E5E0 /* PlaceNameHeader.swift in Sources */,
@@ -1454,10 +1434,7 @@
 				482FC13920DE236D00E23DAE /* InstantSearch.swift in Sources */,
 				4876BD1B20DA164E0057E5E0 /* MapCollectionView.swift in Sources */,
 				4876BCA220DA16280057E5E0 /* Extensions.swift in Sources */,
-				4876BCAA20DA16290057E5E0 /* PostViewerController.swift in Sources */,
-				4878C0FE20F6D5400054F227 /* ShareSettingCell.swift in Sources */,
 				482FC13E20DE295700E23DAE /* HomeController.swift in Sources */,
-				482FC10020DE15D900E23DAE /* SharePhotoCell.swift in Sources */,
 				482FC12020DE168200E23DAE /* ChangeSignPhotoController.swift in Sources */,
 				48482FC920DA18A00031EBFF /* Photo.swift in Sources */,
 				482FC13320DE236D00E23DAE /* LocationRecord.swift in Sources */,
@@ -1465,13 +1442,10 @@
 				482FC11B20DE168200E23DAE /* SignUpController.swift in Sources */,
 				4876BD0F20DA164E0057E5E0 /* PlaceDetailTableViewDataSource.swift in Sources */,
 				48443E6E210990AE00A21FC4 /* GMUWeightedLatLng.m in Sources */,
-				48482FCB20DA18A00031EBFF /* Category.swift in Sources */,
 				02D8690F228233530093BD18 /* MapBoxViewController.swift in Sources */,
 				4876BD0320DA164E0057E5E0 /* MapSearchController.swift in Sources */,
 				48B4457F1FE7342D00DFD412 /* HomePostCell.swift in Sources */,
 				0225F32620FE0F7300137084 /* UserImageCell.swift in Sources */,
-				482FC13F20DE296100E23DAE /* FlexibleHeader.swift in Sources */,
-				48443E812109FB6100A21FC4 /* InfoWindow.swift in Sources */,
 				482FC11F20DE168200E23DAE /* UserGridPostCell.swift in Sources */,
 				4876BB8B20DA14CC0057E5E0 /* NotificationViewController.swift in Sources */,
 				4876BD0D20DA164E0057E5E0 /* PlaceAttributeCell.swift in Sources */,
@@ -1481,7 +1455,6 @@
 				4876BD1320DA164E0057E5E0 /* BackgroundMapViewController.swift in Sources */,
 				4800DAF62272B6C000B326FC /* SearchController.swift in Sources */,
 				4876BD1D20DA164E0057E5E0 /* ShadowView.swift in Sources */,
-				482FC10220DE15D900E23DAE /* ProductFooterCell.swift in Sources */,
 				4876BD1920DA164E0057E5E0 /* MapController.swift in Sources */,
 				48482FC420DA18A00031EBFF /* Comment.swift in Sources */,
 				482FC13420DE236D00E23DAE /* PostSearchCollectionHeader.swift in Sources */,
@@ -1804,7 +1777,7 @@
 		};
 		48B444D41FE7329900DFD412 /* Debug */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 1A37A2AC267FCAB8BAC6A37F /* Pods-Maple.debug.xcconfig */;
+			baseConfigurationReference = 7A9564352AD53882CD8730CA /* Pods-Maple.debug.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CLANG_ENABLE_MODULES = YES;
@@ -1859,7 +1832,7 @@
 		};
 		48B444D51FE7329900DFD412 /* Release */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 20978D14CE748FB57EE87399 /* Pods-Maple.release.xcconfig */;
+			baseConfigurationReference = 21741E8B77BBF111E024E733 /* Pods-Maple.release.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CLANG_ENABLE_MODULES = YES;

@@ -449,9 +449,9 @@ class SearchAlgoliaCollectionView: MDCCollectionViewController , UISearchBarDele
                         if let dataDescription = document.data().map(String.init(describing:)) {
                             let data = document.data() as! [String: Any]
                             let post = FSPost(dictionary: data, postId: postId)
-                            let editPostController = PostViewerController()
-                            editPostController.post = post
-                            self.navigationController?.pushViewController( editPostController, animated: true)
+                            
+                            //editPostController.post = post
+                            //self.navigationController?.pushViewController( editPostController, animated: true)
                             print("Cached document data: \(dataDescription)")
                         }
                     } else {

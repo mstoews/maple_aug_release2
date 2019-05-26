@@ -31,7 +31,7 @@ enum  FetchType {
  */
 
 class HomeController: MDCCollectionViewController, HomePostCellDelegate,  HomeHeaderCellDelegate {
-    
+  
     var FETCH_TYPE = FetchType.USER
     let db = Firestore.firestore()
     let cellId = "cellId"
@@ -59,34 +59,38 @@ class HomeController: MDCCollectionViewController, HomePostCellDelegate,  HomeHe
     var isFirstOpen = true
     
     
+    
+    var locations = [LocationObject]()
+    
     func didTapMapButton(post: FSPost) {
         print("Did tap map button ... ")
-        let viewController = MapPostViewController()
+        //let viewController = MapPostViewController()
         
-        // get current post location
-        // get current location
+        let viewController = AdvancedNavigationController()
         
-        let lat = 35.6860342
-        let lng = 139.75471199999998
+        // Get the current location here and add it below.
+        // If there are multiple locations the user will be directed to the latest location
         
-        let destLat = 35.7297196
-        let destLng = 139.7516671
         
-
-        let values : [String: Any] = [
-            "currentLat" : lat,
-            "currentLng" : lng,
-            "destinationLat" : destLat,
-            "destinationLng" : destLng,
-            "Title": post.product,
-            "SubTitle" : post.description]
-        
-        let nav = Navigation(dictionary: values)
-        
-        //viewController.setNavigation(nav: nav)
-        viewController.nav = nav
-        
-        navigationController?.pushViewController(viewController, animated: true)
+        locations.removeAll()
+        if let postId = post.id {
+            Firestore.fetchLocationByPostId(postId: postId) { (locationObjects) in
+                if locationObjects.count > 0 {
+                    let values : [String: Any] = [
+                        "currentLat" : locationObjects[0].latitude!,
+                        "currentLng" : locationObjects[0].longitude!,
+                        "destinationLat" : locationObjects[0].latitude!,
+                        "destinationLng" : locationObjects[0].longitude!,
+                        "Title": post.product,
+                        "SubTitle" : post.description]
+                    
+                    let nav = Navigation(dictionary: values)
+                    viewController.nav = nav
+                    self.navigationController?.pushViewController(viewController, animated: true)
+                }
+            }
+            
+        }
     }
     
     func didSharePost(post: FSPost, imageObject: ImageObject) {
@@ -104,8 +108,6 @@ class HomeController: MDCCollectionViewController, HomePostCellDelegate,  HomeHe
             activityVC.popoverPresentationController?.barButtonItem = navigationItem.rightBarButtonItem
             //activityVC.popoverPresentationController?.sourceRect = self.view.frame
             
-            
-            
             self.present(activityVC, animated: true, completion: nil)
         }
         else
@@ -116,13 +118,19 @@ class HomeController: MDCCollectionViewController, HomePostCellDelegate,  HomeHe
         }
     }
     
-    
-    
-    
     func didTapImageCell(for cell: UserImageCell, post: FSPost) {
         
     }
     
+    
+    
+    func setButtonImage(button: UIButton, btnName: String,  color: UIColor)
+    {
+        let origImage = UIImage(named: btnName);
+        let tintedImage = origImage?.withRenderingMode(UIImageRenderingMode.alwaysTemplate)
+        button.setImage(tintedImage, for: .normal)
+        button.tintColor = color
+    }
   
     let shareImageView: CustomImageView = {
         let iv = CustomImageView()
@@ -161,7 +169,53 @@ class HomeController: MDCCollectionViewController, HomePostCellDelegate,  HomeHe
         hud.show(in: view)
         
         self.listener = self.db.collection("posts")
-            .order(by: "creationDate", descending: true).limit(to: 10)
+            .order(by: "creationDate", descending: true).limit(to: refreshTotal)
+            .addSnapshotListener{  (snapshot, error) in
+                guard let snapshot = snapshot else {
+                    print("Error fetching snapshot results: \(error!)")
+                    return
+                }
+                
+                let models = snapshot.documents.map { (document) -> FSPost in
+                    print ("Document Data : \(document.data())")
+                    if let model = FSPost(dictionary: document.data(), postId: document.documentID) {
+                        return model
+                    }
+                    else {
+                        // Don't use fatalError here in a real app.
+                        fatalError("Unable to initialize type \(FSPost.self) with dictionary \(document.data())")
+                    }
+                }
+                self.fs_posts = models
+                self.documents = snapshot.documents
+                if self.documents.count > 0 {
+                    //print("Number of posts: \(self.documents.count)")
+                    self.collectionView?.backgroundView = nil
+                }
+                else
+                {
+                    self.collectionView?.backgroundView = nil
+                }
+                self.collectionView?.reloadData()
+        }
+         hud.dismiss()
+    }
+    
+    
+    fileprivate func stopObserving() {
+        listener?.remove()
+    }
+    
+    //MARK:- Top Posts
+    func didShowTopPosts(){
+        stopObserving()
+        
+        let hud = JGProgressHUD(style: .dark)
+        hud.textLabel.text = "Fetching Posts"
+        hud.show(in: view)
+        
+        self.listener = self.db.collection("posts")
+            .order(by: "numberOfLikes", descending: false).limit(to: refreshTotal)
             .addSnapshotListener{  (snapshot, error) in
                 guard let snapshot = snapshot else {
                     print("Error fetching snapshot results: \(error!)")
@@ -193,53 +247,9 @@ class HomeController: MDCCollectionViewController, HomePostCellDelegate,  HomeHe
                 }
                 self.collectionView?.reloadData()
         }
-         hud.dismiss()
+        hud.dismiss()
     }
     
-    
-    fileprivate func stopObserving() {
-        listener?.remove()
-    }
-    
-    func didShowTopPosts(){
-        stopObserving()
-        self.listener = self.db.collection("posts")
-            .order(by: "creationDate", descending: false).limit(to: 5)
-            .addSnapshotListener{  (snapshot, error) in
-                guard let snapshot = snapshot else {
-                    print("Error fetching snapshot results: \(error!)")
-                    return
-                }
-                
-                let models = snapshot.documents.map { (document) -> FSPost in
-                    if let model = FSPost(dictionary: document.data(), postId: document.documentID) {
-                        return model
-                    }
-                    else {
-                        // Don't use fatalError here in a real app.
-                        fatalError("Unable to initialize type \(FSPost.self) with dictionary \(document.data())")
-                    }
-                }
-                
-                self.fs_posts = models
-                self.documents = snapshot.documents
-                
-                if self.documents.count > 0 {
-                    //print("Number of posts: \(self.documents.count)")
-                    self.collectionView?.backgroundView = nil
-                    self.collectionView?.reloadData()
-                }
-                else
-                {
-                    self.collectionView?.backgroundView = nil
-                }
-                
-        }
-    }
-    
-//    fileprivate func baseQuery() -> Firebase.Query {
-//        return db.collection("posts").limit(to: 50)
-//    }
     
     func didTapImageCell(for cell: UserImageCell, post: Post) {
         
@@ -290,12 +300,14 @@ class HomeController: MDCCollectionViewController, HomePostCellDelegate,  HomeHe
     }
     
     let backgroundView = UIImageView()
+    var refreshTotal = 10
     
     static let updateFeedNotificationName = NSNotification.Name(rawValue: "handleRefresh")
     
     override func viewDidLoad() {
         
         super.viewDidLoad()
+        
         NotificationCenter.default.addObserver(self, selector: #selector(handleUpdateFeed), name: HomeController.updateFeedNotificationName, object: nil)
         collectionView?.backgroundColor = UIColor.collectionBackGround()
         collectionView?.register(HomePostCell.self, forCellWithReuseIdentifier: cellId)
@@ -307,7 +319,7 @@ class HomeController: MDCCollectionViewController, HomePostCellDelegate,  HomeHe
         //Firestore.updateDocCounts()
         setupNavigationItems()
         observeQuery()
-        
+        collectionView?.delegate = self
         
         // didShowAllPosts()
         // didShowFollowersPosts()
@@ -321,7 +333,8 @@ class HomeController: MDCCollectionViewController, HomePostCellDelegate,  HomeHe
     
     @objc func handleRefresh() {
       refreshControl.beginRefreshing()
-        
+      refreshTotal = refreshTotal + 10
+      observeQuery()
       refreshControl.endRefreshing()
     }
     
@@ -432,7 +445,7 @@ class HomeController: MDCCollectionViewController, HomePostCellDelegate,  HomeHe
         let attributes = [NSAttributedStringKey.font : UIFont.systemFont(ofSize: CGFloat(15))]
         let post = fs_posts[indexPath.item]
         let estimatedFrame = NSString(string: post.description).boundingRect(with: size, options: .usesLineFragmentOrigin, attributes: attributes, context: nil)
-        return CGSize(width: view.frame.width - 15 , height: estimatedFrame.height + view.frame.width - 45 )
+        return CGSize(width: view.frame.width - 15 , height: estimatedFrame.height + view.frame.width - 40 )
     }
     
     override func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
@@ -467,7 +480,7 @@ class HomeController: MDCCollectionViewController, HomePostCellDelegate,  HomeHe
     override func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: cellId, for: indexPath) as! HomePostCell
         if (fs_posts.count > 0 ){
-            cell.fs_post = fs_posts[indexPath.item]
+            cell.post = fs_posts[indexPath.item]
         }
         cell.delegate = self
         return cell
@@ -488,6 +501,10 @@ class HomeController: MDCCollectionViewController, HomePostCellDelegate,  HomeHe
     }
     
     
+    func collectionView(collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAtIndexPath indexPath: NSIndexPath) -> CGSize {
+        let size = CGSize(width: collectionView.frame.size.width, height: collectionView.frame.size.height)
+        return size
+    }
     
     func didOptions()
     {
@@ -497,10 +514,6 @@ class HomeController: MDCCollectionViewController, HomePostCellDelegate,  HomeHe
     
     func didModifyOptions(for cell: HomePostCell)
     {
-        print("Did modify options")
-        let editPostController = PostViewerController()
-        editPostController.post = cell.fs_post
-        navigationController?.pushViewController(editPostController, animated: true)
     }
     
     func didTapComment(post: FSPost) {
@@ -578,7 +591,14 @@ class HomeController: MDCCollectionViewController, HomePostCellDelegate,  HomeHe
                     Firestore.didBookmarkedPost(post: post, didBookmark: true)
                 }
         self.fs_posts[indexPath.item] = post
-        self.collectionView?.reloadItems(at: [indexPath])
+        //self.collectionView?.reloadItems(at: [indexPath])
+        
+        if post.hasBookmark == true {
+            self.setButtonImage(button: cell.bookmarkButton, btnName: "ic_bookmark", color: UIColor.orange)
+        }
+        else{
+            self.setButtonImage(button: cell.bookmarkButton, btnName: "ic_bookmark_border", color: UIColor.orange)
+        }
     }
     
     
@@ -600,7 +620,13 @@ class HomeController: MDCCollectionViewController, HomePostCellDelegate,  HomeHe
             }
         }
         self.fs_posts[indexPath.item] = post
-        self.collectionView?.reloadItems(at: [indexPath])
+        // self.collectionView?.reloadItems(at: [indexPath])
+        if post.hasLiked == true {
+            self.setButtonImage(button: cell.likeButton, btnName: "ic_favorite", color: UIColor.red)
+        }
+        else{
+            self.setButtonImage(button: cell.likeButton, btnName: "ic_favorite_border", color: UIColor.red)
+        }
     }
 }
 

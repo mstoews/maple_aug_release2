@@ -20,17 +20,18 @@ class MapPostViewController: UIViewController, MGLMapViewDelegate  {
     
     var delegate: MapPostDelegate?
     var nav: Navigation?
-    var currentLocation : Navigation?
+    var containerView: MDCCard?
+    
 
     override func viewDidLoad() {
         super.viewDidLoad()
 
-        let containerView = MDCCard()
-        containerView.setShadowElevation(ShadowElevation.cardResting, for: UIControlState.normal)
-        containerView.inkView.inkColor = .lightGray
-        containerView.backgroundColor = UIColor.collectionBackGround()
+        containerView? = MDCCard()
+        containerView?.setShadowElevation(ShadowElevation.cardResting, for: UIControlState.normal)
+        containerView?.inkView.inkColor = .lightGray
+        containerView?.backgroundColor = UIColor.collectionBackGround()
         
-        view.addSubview(containerView)
+        view.addSubview(containerView!)
         
         let url = URL(string: "mapbox://styles/mapbox/streets-v11")
         navigationItem.title = "Map Page"
@@ -38,20 +39,16 @@ class MapPostViewController: UIViewController, MGLMapViewDelegate  {
         let mapView = MGLMapView(frame: view.bounds, styleURL: url)
         mapView.autoresizingMask = [.flexibleWidth, .flexibleHeight]
         mapView.delegate = self
-        
-        //mapView.styleURL = MGLStyle.lightStyleURL
-        
-        // Tokyo, Japan
-        //Longitude of Shinjuku: 139.703549  Latitude of Shinjuku: 35.693840
+        mapView.showsUserLocation = true
         
         let center = CLLocationCoordinate2D(latitude: self.nav!.currentLocationLatitude! , longitude: self.nav!.currentLocationLongitude!)
         
         // Optionally set a starting point.
-        mapView.setCenter(center, zoomLevel: 7, direction: 0, animated: false)
+        mapView.setCenter(center, zoomLevel: 8, direction: 0, animated: false)
         
         // Initialize and add the marker annotation.
         let marker = MGLPointAnnotation()
-        marker.coordinate = CLLocationCoordinate2D(latitude: nav!.currentLocationLatitude! , longitude: nav!.currentLocationLongitude!)
+        marker.coordinate = CLLocationCoordinate2D(latitude: nav!.destinationLocationLatitude! , longitude: nav!.destinationLocationLongitude!)
         marker.title = nav?.Title
         
         // This custom callout example does not implement subtitles.
@@ -62,15 +59,14 @@ class MapPostViewController: UIViewController, MGLMapViewDelegate  {
         
         // Select the annotation so the callout will appear.
         mapView.selectAnnotation(marker, animated: false)
-       
-        view.addSubview(mapView)
+        containerView?.addSubview(mapView)
         setupLocationButton()
     
     }
 
     // Button creation and autolayout setup
     func setupLocationButton() {
-        view.addSubview(navButton)
+        containerView?.addSubview(navButton)
         
         // Setup constraints such that the button is placed within
         // the upper left corner of the view.
@@ -120,8 +116,10 @@ class MapPostViewController: UIViewController, MGLMapViewDelegate  {
     
     let navButton : MDCFloatingButton = {
         let fb = MDCFloatingButton()
-        fb.backgroundColor = UIColor.buttonThemeColor()
+        fb.backgroundColor = .white
+        fb.tintColor = .white
         fb.setImage(#imageLiteral(resourceName: "ic_map"), for: .normal)
+        fb.imageTintColor(for: .focused)
         fb.addTarget(self, action: #selector(handleNavigate(_:)), for: .touchUpInside)
         return fb
     }()
@@ -133,14 +131,8 @@ class MapPostViewController: UIViewController, MGLMapViewDelegate  {
     @objc func handleNavigate(_ sender: UIButton) {
         print("Handle Navigation ... ")
         
-        currentLocation?.currentLocationLatitude = 35.693840
-        currentLocation?.currentLocationLongitude =  139.703549
-        currentLocation?.SubTitle = "Palace"
-        currentLocation?.Title = "Tokyo"
-
-        
-        let origin = Waypoint(coordinate: CLLocationCoordinate2D(latitude: 35.693840 , longitude: 139.703549), name: "Origin")
-        let destination = Waypoint(coordinate: CLLocationCoordinate2D(latitude: nav!.currentLocationLatitude!, longitude: nav!.currentLocationLongitude!), name: nav?.Title)
+        let origin = Waypoint(coordinate: CLLocationCoordinate2D(latitude: nav!.currentLocationLatitude! , longitude: nav!.currentLocationLongitude!), name: "Origin")
+        let destination = Waypoint(coordinate: CLLocationCoordinate2D(latitude: nav!.destinationLocationLatitude!, longitude: nav!.destinationLocationLongitude!), name: nav?.Title)
         
         // Set options
         options = NavigationRouteOptions(waypoints: [origin, destination])

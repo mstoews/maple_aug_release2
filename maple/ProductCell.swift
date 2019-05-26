@@ -362,7 +362,7 @@ class ProductCell: MDCCardCollectionCell , UICollectionViewDataSource, UICollect
         guard let post = self.post else { return }
         let attributedText = NSMutableAttributedString(string: post.description, attributes: attributeCaption)
         captionLabel.attributedText = attributedText
-        let timeAgoDisplay = post.creationDate.timeAgoDisplay()
+        let timeAgoDisplay = post.creationDate.timeAgoToDisplay()
         let timeAttributedText = NSMutableAttributedString(string: timeAgoDisplay, attributes: [NSAttributedStringKey.font: UIFont.systemFont(ofSize: 8)])
         timeAgoLabel.attributedText = timeAttributedText
         print (timeAgoLabel.text!)

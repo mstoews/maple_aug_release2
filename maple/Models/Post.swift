@@ -147,7 +147,7 @@ class  Post {
             self.hasComments = false
         }
         
-        if let Data = dictionary["bookmarks"] as? [String: Any] {
+        if let Data = dictionary["bookmarked"] as? [String: Any] {
                 Data.forEach({ (key,value) in
                 self.hasBookmark = true
                 self.noOfBookMarks = self.noOfBookMarks + 1
