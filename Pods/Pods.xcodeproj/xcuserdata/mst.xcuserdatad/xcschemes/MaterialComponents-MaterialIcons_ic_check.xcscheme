@@ -14,7 +14,7 @@
             buildForAnalyzing = "YES">
             <BuildableReference
                BuildableIdentifier = "primary"
-               BlueprintIdentifier = "BDD4EEDD4E78DD4D6FF31263093DDEAE"
+               BlueprintIdentifier = "A1B0A28B6E4C867615E43973AD9AD456"
                BuildableName = "MaterialIcons_ic_check.bundle"
                BlueprintName = "MaterialComponents-MaterialIcons_ic_check"
                ReferencedContainer = "container:Pods.xcodeproj">
@@ -45,7 +45,7 @@
       <MacroExpansion>
          <BuildableReference
             BuildableIdentifier = "primary"
-            BlueprintIdentifier = "BDD4EEDD4E78DD4D6FF31263093DDEAE"
+            BlueprintIdentifier = "A1B0A28B6E4C867615E43973AD9AD456"
             BuildableName = "MaterialIcons_ic_check.bundle"
             BlueprintName = "MaterialComponents-MaterialIcons_ic_check"
             ReferencedContainer = "container:Pods.xcodeproj">

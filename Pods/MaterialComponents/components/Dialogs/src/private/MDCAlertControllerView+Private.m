@@ -43,9 +43,6 @@ static const CGFloat MDCDialogMessageOpacity = (CGFloat)0.54;
 
 @interface MDCAlertControllerView ()
 
-@property(nonatomic, nonnull, strong) UIScrollView *contentScrollView;
-@property(nonatomic, nonnull, strong) UIScrollView *actionsScrollView;
-
 @property(nonatomic, getter=isVerticalActionsLayout) BOOL verticalActionsLayout;
 
 @end
@@ -161,11 +158,13 @@ static const CGFloat MDCDialogMessageOpacity = (CGFloat)0.54;
 }
 
 - (void)updateTitleFont {
-  UIFont *titleFont = _titleFont ?: [[self class] titleFontDefault];
-  if (_mdc_adjustsFontForContentSizeCategory) {
-    _titleLabel.font =
-        [titleFont mdc_fontSizedForMaterialTextStyle:kTitleTextStyle
-                                scaledForDynamicType:_mdc_adjustsFontForContentSizeCategory];
+  UIFont *titleFont = self.titleFont ?: [[self class] titleFontDefault];
+  if (self.mdc_adjustsFontForContentSizeCategory) {
+    if (self.adjustsFontForContentSizeCategoryWhenScaledFontIsUnavailable) {
+      self.titleLabel.font =
+          [titleFont mdc_fontSizedForMaterialTextStyle:kTitleTextStyle
+                                  scaledForDynamicType:self.mdc_adjustsFontForContentSizeCategory];
+    }
   } else {
     _titleLabel.font = titleFont;
   }
@@ -236,10 +235,12 @@ static const CGFloat MDCDialogMessageOpacity = (CGFloat)0.54;
 
 - (void)updateMessageFont {
   UIFont *messageFont = _messageFont ?: [[self class] messageFontDefault];
-  if (_mdc_adjustsFontForContentSizeCategory) {
-    _messageLabel.font =
-        [messageFont mdc_fontSizedForMaterialTextStyle:kMessageTextStyle
-                                  scaledForDynamicType:_mdc_adjustsFontForContentSizeCategory];
+  if (self.mdc_adjustsFontForContentSizeCategory) {
+    if (self.adjustsFontForContentSizeCategoryWhenScaledFontIsUnavailable) {
+      self.messageLabel.font = [messageFont
+          mdc_fontSizedForMaterialTextStyle:kMessageTextStyle
+                       scaledForDynamicType:self.mdc_adjustsFontForContentSizeCategory];
+    }
   } else {
     _messageLabel.font = messageFont;
   }
@@ -266,11 +267,13 @@ static const CGFloat MDCDialogMessageOpacity = (CGFloat)0.54;
 }
 
 - (void)updateButtonFont {
-  UIFont *finalButtonFont = _buttonFont ?: [[self class] buttonFontDefault];
-  if (_mdc_adjustsFontForContentSizeCategory) {
-    finalButtonFont =
-        [finalButtonFont mdc_fontSizedForMaterialTextStyle:kTitleTextStyle
-                                      scaledForDynamicType:_mdc_adjustsFontForContentSizeCategory];
+  UIFont *finalButtonFont = self.buttonFont ?: [[self class] buttonFontDefault];
+  if (self.mdc_adjustsFontForContentSizeCategory) {
+    if (self.adjustsFontForContentSizeCategoryWhenScaledFontIsUnavailable) {
+      finalButtonFont = [finalButtonFont
+          mdc_fontSizedForMaterialTextStyle:kTitleTextStyle
+                       scaledForDynamicType:self.mdc_adjustsFontForContentSizeCategory];
+    }
   }
   for (MDCButton *button in self.actionManager.buttonsInActionOrder) {
     [button setTitleFont:finalButtonFont forState:UIControlStateNormal];

@@ -155,6 +155,7 @@ static NSAttributedString *uppercaseAttributedString(NSAttributedString *string)
   _borderWidths = [NSMutableDictionary dictionary];
   _fonts = [NSMutableDictionary dictionary];
   _accessibilityTraitsIncludesButton = YES;
+  _adjustsFontForContentSizeCategoryWhenScaledFontIsUnavailable = YES;
 
   if (!_backgroundColors) {
     // _backgroundColors may have already been initialized by setting the backgroundColor setter.
@@ -321,9 +322,7 @@ static NSAttributedString *uppercaseAttributedString(NSAttributedString *string)
   }
   [super touchesBegan:touches withEvent:event];
 
-  if (self.enableRippleBehavior) {
-    self.rippleView.rippleHighlighted = YES;
-  } else {
+  if (!self.enableRippleBehavior) {
     [self handleBeginTouches:touches];
   }
 }
@@ -343,9 +342,7 @@ static NSAttributedString *uppercaseAttributedString(NSAttributedString *string)
   }
   [super touchesEnded:touches withEvent:event];
 
-  if (self.enableRippleBehavior) {
-    self.rippleView.rippleHighlighted = NO;
-  } else {
+  if (!self.enableRippleBehavior) {
     CGPoint location = [self locationFromTouches:touches];
     [_inkView startTouchEndedAnimationAtPoint:location completion:nil];
   }
@@ -358,9 +355,7 @@ static NSAttributedString *uppercaseAttributedString(NSAttributedString *string)
   }
   [super touchesCancelled:touches withEvent:event];
 
-  if (self.enableRippleBehavior) {
-    self.rippleView.rippleHighlighted = NO;
-  } else {
+  if (!self.enableRippleBehavior) {
     [self evaporateInkToPoint:[self locationFromTouches:touches]];
   }
 }
@@ -380,12 +375,14 @@ static NSAttributedString *uppercaseAttributedString(NSAttributedString *string)
 - (void)setHighlighted:(BOOL)highlighted {
   [super setHighlighted:highlighted];
 
+  self.rippleView.rippleHighlighted = highlighted;
   [self updateAfterStateChange:NO];
 }
 
 - (void)setSelected:(BOOL)selected {
   [super setSelected:selected];
 
+  self.rippleView.selected = selected;
   [self updateAfterStateChange:NO];
 }
 
@@ -729,13 +726,27 @@ static NSAttributedString *uppercaseAttributedString(NSAttributedString *string)
 #pragma mark - Title Font
 
 - (nullable UIFont *)titleFontForState:(UIControlState)state {
-  return _fonts[@(state)];
+  // If the `.highlighted` flag is set, turn off the `.disabled` flag
+  if ((state & UIControlStateHighlighted) == UIControlStateHighlighted) {
+    state = state & ~UIControlStateDisabled;
+  }
+  return _fonts[@(state)] ?: _fonts[@(UIControlStateNormal)];
 }
 
 - (void)setTitleFont:(nullable UIFont *)font forState:(UIControlState)state {
-  _fonts[@(state)] = font;
+  UIControlState storageState = state;
+  // If the `.highlighted` flag is set, turn off the `.disabled` flag
+  if ((state & UIControlStateHighlighted) == UIControlStateHighlighted) {
+    storageState = state & ~UIControlStateDisabled;
+  }
 
-  [self updateTitleFont];
+  // Only update the backing dictionary if:
+  // 1. The `state` argument is the same as the "storage" state, OR
+  // 2. There is already a value in the "storage" state.
+  if (storageState == state || _fonts[@(storageState)] != nil) {
+    _fonts[@(storageState)] = font;
+    [self updateTitleFont];
+  }
 }
 
 #pragma mark - Private methods
@@ -879,11 +890,13 @@ static NSAttributedString *uppercaseAttributedString(NSAttributedString *string)
 
   if (_mdc_adjustsFontForContentSizeCategory) {
     // Dynamic type is enabled so apply scaling
-    if (font.mdc_scalingCurve && !_mdc_legacyFontScaling) {
-      font = [font mdc_scaledFontForCurrentSizeCategory];
+    if (font.mdc_scalingCurve) {
+      font = [font mdc_scaledFontForTraitEnvironment:self];
     } else {
-      font = [font mdc_fontSizedForMaterialTextStyle:MDCFontTextStyleButton
-                                scaledForDynamicType:YES];
+      if (self.adjustsFontForContentSizeCategoryWhenScaledFontIsUnavailable) {
+        font = [font mdc_fontSizedForMaterialTextStyle:MDCFontTextStyleButton
+                                  scaledForDynamicType:YES];
+      }
     }
   }
 
@@ -951,6 +964,14 @@ static NSAttributedString *uppercaseAttributedString(NSAttributedString *string)
   [self updateTitleFont];
 
   [self sizeToFit];
+}
+
+- (BOOL)mdc_legacyFontScaling {
+  return self.adjustsFontForContentSizeCategoryWhenScaledFontIsUnavailable;
+}
+
+- (void)mdc_setLegacyFontScaling:(BOOL)mdc_legacyFontScaling {
+  self.adjustsFontForContentSizeCategoryWhenScaledFontIsUnavailable = mdc_legacyFontScaling;
 }
 
 #pragma mark - Deprecations

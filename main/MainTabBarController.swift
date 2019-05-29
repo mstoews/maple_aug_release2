@@ -105,7 +105,7 @@ class MainTabBarController: UITabBarController, AuthUIDelegate  {
         
         authUI?.delegate = self
         authUI?.tosurl = kFirebaseTermsOfService
-        authUI?.isSignInWithEmailHidden = false
+        //authUI?.isSignInWithEmailHidden = false
         let providers: [FUIAuthProvider] = [FUIGoogleAuth(), FUIFacebookAuth()]
         authUI?.providers = providers
         setupViewControllers()

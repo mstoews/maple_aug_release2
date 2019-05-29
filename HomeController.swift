@@ -429,14 +429,15 @@ class HomeController: MDCCollectionViewController, HomePostCellDelegate,  HomeHe
         }
     }
     
+    // MARK: - Needs a fix to move to dynamic links 
     func setupNavigationItems() {
         //navigationItem.titleView = UIImageView(image: #imageLiteral(resourceName: "logo2"))
         navigationItem.title = "Home Page"
         
-        let rightImage = UIImage(named: "ic_people")?.withRenderingMode(.alwaysOriginal)
-        let rightButton = UIBarButtonItem(image: rightImage, style: .done , target: self, action: #selector(inviteTapped))
-        rightButton.tintColor = UIColor.themeColor()
-        navigationItem.rightBarButtonItem = rightButton
+        //let rightImage = UIImage(named: "ic_people")?.withRenderingMode(.alwaysOriginal)
+        //let rightButton = UIBarButtonItem(image: rightImage, style: .done , target: self, action: #selector(inviteTapped))
+        //rightButton.tintColor = UIColor.themeColor()
+        //navigationItem.rightBarButtonItem = rightButton
     }
     
     override func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
@@ -638,7 +639,7 @@ class HomeController: MDCCollectionViewController, HomePostCellDelegate,  HomeHe
 }
 
 
-extension HomeController: InviteDelegate, GIDSignInDelegate, GIDSignInUIDelegate {
+extension HomeController: GIDSignInDelegate, GIDSignInUIDelegate {
     
     @objc func inviteTapped() {
         GIDSignIn.sharedInstance().clientID = FirebaseApp.app()?.options.clientID
@@ -668,20 +669,21 @@ extension HomeController: InviteDelegate, GIDSignInDelegate, GIDSignInUIDelegate
         case .some(let error):
             print("Login error: \(error.localizedDescription)")
         case .none:
-            if let invite = Invites.inviteDialog() {
-                invite.setInviteDelegate(self)
-                // NOTE: You must have the App Store ID set in your developer console project
-                // in order for invitations to successfully be sent.
-                // A message hint for the dialog. Note this manifests differently depending on the
-                // received invitation type. For example, in an email invite this appears as the subject.
-                invite.setMessage("Try this out!\n -\(Auth.auth().currentUser!.displayName ?? "")")
-                // Title for the dialog, this is what the user sees before sending the invites.
-                //invite.setCustomImage(#imageLiteral(resourceName: "ic_insert_photo_white").imageAsset.)
-                invite.setTitle("Maple")
-                invite.setDeepLink("app_url")
-                invite.setCallToActionText("Install!")
-                invite.open()
-            }
+            print("Login error: \(error.localizedDescription)")
+//            if let invite = Invites.inviteDialog() {
+//                invite.setInviteDelegate(self)
+//                // NOTE: You must have the App Store ID set in your developer console project
+//                // in order for invitations to successfully be sent.
+//                // A message hint for the dialog. Note this manifests differently depending on the
+//                // received invitation type. For example, in an email invite this appears as the subject.
+//                invite.setMessage("Try this out!\n -\(Auth.auth().currentUser!.displayName ?? "")")
+//                // Title for the dialog, this is what the user sees before sending the invites.
+//                //invite.setCustomImage(#imageLiteral(resourceName: "ic_insert_photo_white").imageAsset.)
+//                invite.setTitle("Maple")
+//                invite.setDeepLink("app_url")
+//                invite.setCallToActionText("Install!")
+//                invite.open()
+            
         }
     }
 }

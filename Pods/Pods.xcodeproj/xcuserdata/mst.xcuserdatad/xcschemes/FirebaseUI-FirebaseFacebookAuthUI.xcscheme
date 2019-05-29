@@ -14,7 +14,7 @@
             buildForAnalyzing = "YES">
             <BuildableReference
                BuildableIdentifier = "primary"
-               BlueprintIdentifier = "9BB965C6BCBFC5AEB56AACAE76BBDD5C"
+               BlueprintIdentifier = "D08D647EFEF9BF6BE8D4C62E8A068E02"
                BuildableName = "FirebaseFacebookAuthUI.bundle"
                BlueprintName = "FirebaseUI-FirebaseFacebookAuthUI"
                ReferencedContainer = "container:Pods.xcodeproj">
@@ -45,7 +45,7 @@
       <MacroExpansion>
          <BuildableReference
             BuildableIdentifier = "primary"
-            BlueprintIdentifier = "9BB965C6BCBFC5AEB56AACAE76BBDD5C"
+            BlueprintIdentifier = "D08D647EFEF9BF6BE8D4C62E8A068E02"
             BuildableName = "FirebaseFacebookAuthUI.bundle"
             BlueprintName = "FirebaseUI-FirebaseFacebookAuthUI"
             ReferencedContainer = "container:Pods.xcodeproj">
