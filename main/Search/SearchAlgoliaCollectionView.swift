@@ -221,7 +221,7 @@ class SearchAlgoliaCollectionView: MDCCollectionViewController , UISearchBarDele
         setupSearchBar()
         
         collectionView?.backgroundColor = UIColor.collectionBackGround()
-        collectionView?.register(PostSearchCollectionHeader.self, forSupplementaryViewOfKind: UICollectionElementKindSectionHeader, withReuseIdentifier: headerId)
+        collectionView?.register(PostSearchCollectionHeader.self, forSupplementaryViewOfKind: UICollectionView.elementKindSectionHeader, withReuseIdentifier: headerId)
 
         // Algolia Search
         collectionView?.register(PostCollectionCell.self, forCellWithReuseIdentifier: postCellId)
@@ -316,7 +316,7 @@ class SearchAlgoliaCollectionView: MDCCollectionViewController , UISearchBarDele
     
     
     override func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, insetForSectionAt section: Int) -> UIEdgeInsets {
-        return UIEdgeInsetsMake(1, 1, 1, 1)
+        return UIEdgeInsets(top: 1, left: 1, bottom: 1, right: 1)
     }
     
     override func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, referenceSizeForHeaderInSection section: Int) -> CGSize {
@@ -384,7 +384,7 @@ class SearchAlgoliaCollectionView: MDCCollectionViewController , UISearchBarDele
         case SearchType.LOC :
             let approximateWidthOfBioTextView = view.frame.width
             let size = CGSize(width: approximateWidthOfBioTextView, height: 60)
-            let attributes = [NSAttributedStringKey.font : UIFont.systemFont(ofSize: CGFloat(15))]
+            let attributes = [NSAttributedString.Key.font : UIFont.systemFont(ofSize: CGFloat(15))]
             
             if locationHits.count > 0 {
                 let location = locationHits[indexPath.item]
@@ -397,7 +397,7 @@ class SearchAlgoliaCollectionView: MDCCollectionViewController , UISearchBarDele
         case SearchType.PRD :
             let approximateWidthOfBioTextView = view.frame.width
             let size = CGSize(width: approximateWidthOfBioTextView, height: 60)
-            let attributes = [NSAttributedStringKey.font : UIFont.systemFont(ofSize: CGFloat(15))]
+            let attributes = [NSAttributedString.Key.font : UIFont.systemFont(ofSize: CGFloat(15))]
             let post = postHits[indexPath.item]
             let estimatedFrame = NSString(string: post.description).boundingRect(with: size, options: .usesLineFragmentOrigin, attributes: attributes, context: nil)
             

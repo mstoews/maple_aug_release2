@@ -25,9 +25,13 @@ class CustomImageView: UIImageView {
             return
         }
         guard let url = URL(string: urlString) else { return }
+        //self.sd_showActivityIndicatorView()
+        //self.sd_setIndicatorStyle(.gray)
         
-         self.sd_setImage(with: url, placeholderImage: UIImage(named: "windows"))
-        
+        self.sd_setShowActivityIndicatorView(true)
+        self.sd_setIndicatorStyle(.gray)
+        //self.sd_setImage(with: URL(string: urlString), placeholderImage: UIImage(named: "placeholder"))
+        self.sd_setImage(with: url, placeholderImage: UIImage(named: "windows"))
     }
     
 }
@@ -50,9 +54,13 @@ extension UIImageView{
         }
         else if storageRefString.hasPrefix("https://fb")
         {
+            self.sd_showActivityIndicatorView()
+            self.sd_setIndicatorStyle(.gray)
             self.sd_setImage(with: URL(string: storageRefString), placeholderImage: placeholderImage)
         }
         else{
+            self.sd_showActivityIndicatorView()
+            self.sd_setIndicatorStyle(.gray)
             let reference : StorageReference = Storage.storage().reference(forURL: storageRefString)
             self.sd_setImage(with: reference, placeholderImage: placeholderImage)
         }
@@ -61,4 +69,6 @@ extension UIImageView{
     
     
 }
+
+
 

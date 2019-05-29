@@ -46,7 +46,7 @@ class UserProfileController: MDCCollectionViewController,
     public var listener: ListenerRegistration?
     private var bookMarkListener: ListenerRegistration?
    
-    private var fs_posts: [FSPost] = []
+    private var posts: [FSPost] = []
     private var fs_bookmarks: [FSPost] = []
     public var documents: [DocumentSnapshot] = []
     
@@ -93,6 +93,7 @@ class UserProfileController: MDCCollectionViewController,
     
     fileprivate func observeQuery(uid : String)
     {
+        posts.removeAll()
         stopObserving()
         
         self.listener = self.db.collection("posts")
@@ -114,7 +115,7 @@ class UserProfileController: MDCCollectionViewController,
                     }
                 }
                 
-                self.fs_posts = models
+                self.posts = models
                 self.documents = snapshot.documents
                 
                 if self.documents.count > 0 {
@@ -190,7 +191,7 @@ class UserProfileController: MDCCollectionViewController,
   
     func didTapBookmark(for cell: UserGridPostCell) {
         guard let indexPath = collectionView?.indexPath(for: cell) else { return }
-        var post = self.fs_posts[indexPath.item]
+        var post = self.posts[indexPath.item]
                 if (post.hasBookmark == true) {
                     post.hasBookmark = false
                     Firestore.didBookmarkedPost(post: post, didBookmark: post.hasBookmark)
@@ -200,14 +201,14 @@ class UserProfileController: MDCCollectionViewController,
                     post.hasBookmark = true
                     Firestore.didBookmarkedPost(post: post, didBookmark: post.hasBookmark)
                 }
-        self.fs_posts[indexPath.item] = post
+        self.posts[indexPath.item] = post
         self.collectionView?.reloadItems(at: [indexPath])
     }
     
     
     func didLike(for cell: UserGridPostCell) {
         guard let indexPath = collectionView?.indexPath(for: cell) else { return }
-        var post = self.fs_posts[indexPath.item]
+        var post = self.posts[indexPath.item]
         if let postId = post.id {
             if let uid = Auth.auth().currentUser?.uid {
                 if (post.hasLiked == true) {
@@ -222,7 +223,7 @@ class UserProfileController: MDCCollectionViewController,
                 
             }
         }
-        self.fs_posts[indexPath.item] = post
+        self.posts[indexPath.item] = post
         self.collectionView?.reloadItems(at: [indexPath])
     }
     
@@ -294,7 +295,7 @@ class UserProfileController: MDCCollectionViewController,
         super.viewDidLoad()
         
         collectionView?.backgroundColor = UIColor.collectionBackGround()
-        collectionView?.register(UserProfileHeader.self, forSupplementaryViewOfKind: UICollectionElementKindSectionHeader, withReuseIdentifier: headerCellId)
+        collectionView?.register(UserProfileHeader.self, forSupplementaryViewOfKind: UICollectionView.elementKindSectionHeader, withReuseIdentifier: headerCellId)
         collectionView?.register(UserProfilePhotoCell.self, forCellWithReuseIdentifier: cellId)
         collectionView?.register(UserGridPostCell.self, forCellWithReuseIdentifier: userGridCellId)
         collectionView?.register(UserListPostCell.self, forCellWithReuseIdentifier: userListCellId)
@@ -317,11 +318,6 @@ class UserProfileController: MDCCollectionViewController,
     
     // MARK :  SharePhotoControllerUpdateDelegate.refreshUsers()
     
-    func refeshUsers() {
-        // Post is already deleted so just refresh the screen
-        fetchUser()
-    }
-
     func didChangeSignUpPhoto()
     {
         print("didChangeSignUpdate")
@@ -337,7 +333,7 @@ class UserProfileController: MDCCollectionViewController,
     
     
     fileprivate func fetchUser() {
-        fs_posts.removeAll()
+        posts.removeAll()
         if let uid = Auth.auth().currentUser?.uid {
             if let userid = self.user?.uid {
                 if userid != uid {
@@ -375,8 +371,8 @@ class UserProfileController: MDCCollectionViewController,
         
         let transition = CATransition()
         transition.duration = 0.75
-        transition.timingFunction = CAMediaTimingFunction(name: kCAMediaTimingFunctionEaseInEaseOut)
-        transition.type = kCATransitionFade
+        transition.timingFunction = CAMediaTimingFunction(name: CAMediaTimingFunctionName.easeInEaseOut)
+        transition.type = CATransitionType.fade
         self.view.layer.add(transition, forKey: nil)
         _ = self.navigationController?.popToRootViewController(animated: false)
         
@@ -492,8 +488,8 @@ class UserProfileController: MDCCollectionViewController,
         navigationItem.backBarButtonItem = backItem
         let transition = CATransition()
         transition.duration = 0.75
-        transition.timingFunction = CAMediaTimingFunction(name: kCAMediaTimingFunctionEaseInEaseOut)
-        transition.type = kCATransitionFade
+        transition.timingFunction = CAMediaTimingFunction(name: CAMediaTimingFunctionName.easeInEaseOut)
+        transition.type = CATransitionType.fade
         self.navigationController?.view.layer.add(transition, forKey: nil)
         _ = self.navigationController?.popToRootViewController(animated: false)
     }
@@ -537,7 +533,7 @@ class UserProfileController: MDCCollectionViewController,
     }
     
     override func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, insetForSectionAt section: Int) -> UIEdgeInsets {
-        return UIEdgeInsetsMake(5, 5, 0, 5)
+        return UIEdgeInsets(top: 5, left: 5, bottom: 0, right: 5)
     }
     
     override func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, minimumLineSpacingForSectionAt section: Int) -> CGFloat {
@@ -611,11 +607,11 @@ class UserProfileController: MDCCollectionViewController,
                 break
        
             case CellType.GRID :
-                rc = fs_posts.count
+                rc = posts.count
                 break
             
             case CellType.LIST:
-                rc = fs_posts.count
+                rc = posts.count
                 break
             
             case CellType.MAP :
@@ -641,8 +637,8 @@ class UserProfileController: MDCCollectionViewController,
             
             case CellType.GRID :
                 let cell = collectionView.dequeueReusableCell(withReuseIdentifier: userGridCellId, for: indexPath) as! UserGridPostCell
-                if (fs_posts.count > 0 ){
-                    cell.post = fs_posts[indexPath.item]
+                if (posts.count > 0 ){
+                    cell.post = posts[indexPath.item]
                      cell.delegate = self
                 }
                 rc = cell
@@ -650,8 +646,8 @@ class UserProfileController: MDCCollectionViewController,
           
           case CellType.LIST :
             let cell = collectionView.dequeueReusableCell(withReuseIdentifier: userListCellId, for: indexPath) as! UserListPostCell
-            if (fs_posts.count > 0 ){
-                cell.post = fs_posts[indexPath.item]
+            if (posts.count > 0 ){
+                cell.post = posts[indexPath.item]
                 cell.delegate = self
             }
             rc = cell
@@ -699,14 +695,17 @@ class UserProfileController: MDCCollectionViewController,
     
     override func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
         var rc = CGSize()
+        if posts.count == 0 {
+            return rc
+        }
         switch cellType
         {
         case CellType.GRID :
             //let width = view.frame.width
             let approximateWidthOfBioTextView = view.frame.width
             let size = CGSize(width: approximateWidthOfBioTextView, height: 1200)
-            let attributes = [NSAttributedStringKey.font : UIFont.systemFont(ofSize: CGFloat(15))]
-            let post = fs_posts[indexPath.item]
+            let attributes = [NSAttributedString.Key.font : UIFont.systemFont(ofSize: CGFloat(15))]
+            let post = posts[indexPath.item]
             let estimatedFrame = NSString(string: post.description).boundingRect(with: size, options: .usesLineFragmentOrigin, attributes: attributes, context: nil)
             rc = CGSize(width: view.frame.width - 15 , height: estimatedFrame.height + view.frame.width - 60 )
             break
@@ -715,8 +714,8 @@ class UserProfileController: MDCCollectionViewController,
             //let width = view.frame.width
             let approximateWidthOfBioTextView = view.frame.width
             let size = CGSize(width: approximateWidthOfBioTextView, height: 1200)
-            let attributes = [NSAttributedStringKey.font : UIFont.systemFont(ofSize: CGFloat(15))]
-            let post = fs_posts[indexPath.item]
+            let attributes = [NSAttributedString.Key.font : UIFont.systemFont(ofSize: CGFloat(15))]
+            let post = posts[indexPath.item]
             let estimatedFrame = NSString(string: post.description).boundingRect(with: size, options: .usesLineFragmentOrigin, attributes: attributes, context: nil)
             rc = CGSize(width: view.frame.width - 15, height: estimatedFrame.height + view.frame.width - 180 )
             break
@@ -730,7 +729,7 @@ class UserProfileController: MDCCollectionViewController,
         case CellType.BKMK :
             let approximateWidthOfBioTextView = view.frame.width
             let size = CGSize(width: approximateWidthOfBioTextView, height: 1200)
-            let attributes = [NSAttributedStringKey.font : UIFont.systemFont(ofSize: CGFloat(15))]
+            let attributes = [NSAttributedString.Key.font : UIFont.systemFont(ofSize: CGFloat(15))]
             let post = fs_bookmarks[indexPath.item]
             let estimatedFrame = NSString(string: post.description).boundingRect(with: size, options: .usesLineFragmentOrigin, attributes: attributes, context: nil)
             rc = CGSize(width: view.frame.width - 15 , height: estimatedFrame.height + view.frame.width - 60 )

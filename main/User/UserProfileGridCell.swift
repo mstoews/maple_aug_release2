@@ -71,7 +71,7 @@ class UserProfileGridCell: MDCCardCollectionCell, UICollectionViewDataSource, UI
     }
     
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, insetForSectionAt section: Int) -> UIEdgeInsets {
-        return UIEdgeInsetsMake(8, 8, 8, 8)
+        return UIEdgeInsets(top: 8, left: 8, bottom: 8, right: 8)
     }
     
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
@@ -197,14 +197,14 @@ class UserProfileGridCell: MDCCardCollectionCell, UICollectionViewDataSource, UI
     fileprivate func setupAttributedCaption() {
         guard let post = self.post else { return }
         
-        let attributedText = NSMutableAttributedString(string: "商品名:\t\(post.caption)", attributes: [NSAttributedStringKey.font: UIFont.systemFont(ofSize: 12)])
-        attributedText.append(NSAttributedString(string:   "\n\(post.description)", attributes: [NSAttributedStringKey.font: UIFont.systemFont(ofSize: 12)]))
+        let attributedText = NSMutableAttributedString(string: "商品名:\t\(post.caption)", attributes: [NSAttributedString.Key.font: UIFont.systemFont(ofSize: 12)])
+        attributedText.append(NSAttributedString(string:   "\n\(post.description)", attributes: [NSAttributedString.Key.font: UIFont.systemFont(ofSize: 12)]))
         //attributedText.append(NSAttributedString(string:   "\n購入場所:\t\(post.location)", attributes: [NSAttributedStringKey.font: UIFont.systemFont(ofSize: 12)]))
         //attributedText.append(NSAttributedString(string:   "\n種類:\t\(post.category)", attributes: [NSAttributedStringKey.font: UIFont.systemFont(ofSize: 12)]))
-        attributedText.append(NSAttributedString(string:   "\n", attributes: [NSAttributedStringKey.font: UIFont.systemFont(ofSize: 4)]))
+        attributedText.append(NSAttributedString(string:   "\n", attributes: [NSAttributedString.Key.font: UIFont.systemFont(ofSize: 4)]))
         
         let timeAgoDisplay = post.creationDate.timeAgoToDisplay()
-        attributedText.append(NSAttributedString(string: timeAgoDisplay, attributes: [NSAttributedStringKey.font: UIFont.systemFont(ofSize: 12), NSAttributedStringKey.foregroundColor: UIColor.gray]))
+        attributedText.append(NSAttributedString(string: timeAgoDisplay, attributes: [NSAttributedString.Key.font: UIFont.systemFont(ofSize: 12), NSAttributedString.Key.foregroundColor: UIColor.gray]))
         captionLabel.attributedText = attributedText
     }
     

@@ -24,7 +24,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     var blocking = Set<String>()
     
     func application(_ application: UIApplication, didFinishLaunchingWithOptions
-        launchOptions: [UIApplicationLaunchOptionsKey: Any]?) -> Bool {
+        launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
         
         
         FirebaseApp.configure()
@@ -102,7 +102,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         mdcAction.title = content.title
         mdcMessage.duration = 3
         mdcAction.handler = {
-            guard let feed = self.window?.rootViewController?.childViewControllers[0] as? MainTabBarController else { return }
+            guard let feed = self.window?.rootViewController?.children[0] as? MainTabBarController else { return }
             let userId = content.categoryIdentifier.components(separatedBy: "/user/")[1]
             Firestore.fetchUserWithUID(uid: userId,  completion: { (user) in
                 feed.showProfile(user)

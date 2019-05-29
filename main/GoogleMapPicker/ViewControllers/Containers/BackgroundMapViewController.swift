@@ -66,16 +66,19 @@ class BackgroundMapViewController: UIViewController, CAAnimationDelegate {
     // Restart the animation whenever the 'reduce motion' setting changes. This will allow the
     // animation code to adjust for the setting. See the implementation of startAnimating() for
     // more details.
-    let notificationName = NSNotification.Name.UIAccessibilityReduceMotionStatusDidChange
-    reduceMotionChanged = NotificationObserver(name: notificationName, target: self,
-                                               action: type(of: self).restartAnimation)
-
-    if #available(iOS 9.0, *) {
-      // Much like 'reduce motion', detect changes in 'lower power mode' and restart the animation.
-      let notificationName = NSNotification.Name.NSProcessInfoPowerStateDidChange
-      lowPowerModeChanged = NotificationObserver(name: notificationName, target: self,
-                                                 action: type(of: self).restartAnimation)
-    }
+    
+    //MARK: - Needs fixing
+    
+//    let notificationName = NSNotification.Name.UIAccessibility.reduceMotionStatusDidChangeNotification
+//    reduceMotionChanged = NotificationObserver(name: notificationName, target: self,
+//                                               action: type(of: self).restartAnimation)
+//
+//    if #available(iOS 9.0, *) {
+//      // Much like 'reduce motion', detect changes in 'lower power mode' and restart the animation.
+//      let notificationName = NSNotification.Name.NSProcessInfoPowerStateDidChange
+//      lowPowerModeChanged = NotificationObserver(name: notificationName, target: self,
+//                                                 action: type(of: self).restartAnimation)
+//    }
   }
 
   override func viewWillDisappear(_ animated: Bool) {
@@ -115,9 +118,7 @@ class BackgroundMapViewController: UIViewController, CAAnimationDelegate {
 
   private func startAnimatingMap() {
     // If 'reduce motion' is enabled, don't start the animation.
-    if UIAccessibilityIsReduceMotionEnabled() {
-      return
-    }
+   
 
     if #available(iOS 9.0, *) {
       // If 'low power mode' is enabled, don't start the animation.
@@ -154,12 +155,12 @@ class BackgroundMapViewController: UIViewController, CAAnimationDelegate {
     latAnimation.fromValue = lastCoordinate.latitude
     latAnimation.toValue = targetCoordinate.latitude
     latAnimation.duration = animationDuration
-    latAnimation.timingFunction = CAMediaTimingFunction(name: kCAMediaTimingFunctionEaseInEaseOut)
+    latAnimation.timingFunction = CAMediaTimingFunction(name: CAMediaTimingFunctionName.easeInEaseOut)
     let lngAnimation = CABasicAnimation(keyPath: kGMSLayerCameraLongitudeKey)
     lngAnimation.fromValue = lastCoordinate.longitude
     lngAnimation.toValue = targetCoordinate.longitude
     lngAnimation.duration = animationDuration
-    lngAnimation.timingFunction = CAMediaTimingFunction(name: kCAMediaTimingFunctionEaseInEaseOut)
+    lngAnimation.timingFunction = CAMediaTimingFunction(name: CAMediaTimingFunctionName.easeInEaseOut)
 
     // Create an animation group for the two animations.
     let group = CAAnimationGroup()

@@ -49,7 +49,7 @@ class MapSearchController: UICollectionViewController, UICollectionViewDelegateF
         
         self.title = "Locations"
         
-        let leftButton =  UIBarButtonItem(title: "Back", style: UIBarButtonItemStyle.plain, target: self, action: #selector(handleCancel))
+        let leftButton =  UIBarButtonItem(title: "Back", style: UIBarButtonItem.Style.plain, target: self, action: #selector(handleCancel))
         
         
         let image = UIImage(named: "nav_more_icons")?.withRenderingMode(.alwaysOriginal)

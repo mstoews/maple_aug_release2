@@ -187,7 +187,7 @@ public extension UIView {
         }
         
         addSubview(toast)
-        let desiredSize = toast.systemLayoutSizeFitting(UILayoutFittingCompressedSize)
+        let desiredSize = toast.systemLayoutSizeFitting(UIView.layoutFittingCompressedSize)
         let sidePadding = self.bounds.width * (1 - config.HRToastMaxWidth) / 2
         toast.leftAnchor.constraint(equalTo: self.leftAnchor, constant: sidePadding).isActive = true
         toast.rightAnchor.constraint(equalTo: self.rightAnchor, constant: -sidePadding).isActive = true
@@ -234,7 +234,7 @@ public extension UIView {
             activityView.layer.shadowOffset = config.HRToastShadowOffset
         }
         
-        let activityIndicatorView = UIActivityIndicatorView(activityIndicatorStyle: .whiteLarge)
+        let activityIndicatorView = UIActivityIndicatorView(style: .whiteLarge)
         activityIndicatorView.center = CGPoint(x: activityView.bounds.size.width / 2, y: activityView.bounds.size.height / 2)
         activityView.addSubview(activityIndicatorView)
         activityIndicatorView.startAnimating()
@@ -256,7 +256,7 @@ public extension UIView {
         
         UIView.animate(withDuration: config.HRToastFadeDuration,
                        delay: 0.0,
-                       options: UIViewAnimationOptions.curveEaseOut,
+                       options: UIView.AnimationOptions.curveEaseOut,
                        animations: {
                         activityView.alpha = 1.0
         },
@@ -268,7 +268,7 @@ public extension UIView {
         if existingActivityView == nil { return }
         UIView.animate(withDuration: config.HRToastFadeDuration,
                        delay: 0.0,
-                       options: UIViewAnimationOptions.curveEaseOut,
+                       options: UIView.AnimationOptions.curveEaseOut,
                        animations: {
                         existingActivityView!.alpha = 0.0
         },

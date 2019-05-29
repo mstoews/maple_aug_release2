@@ -88,12 +88,12 @@ class SplitPaneViewController: BaseContainerViewController {
   }
 
   /// Pass through to the child view controller for status bar appearance.
-  override var childViewControllerForStatusBarStyle: UIViewController? {
+    override var childForStatusBarStyle: UIViewController? {
     return leftController
   }
 
   /// Pass through to the child view controller for status bar appearance.
-  override var childViewControllerForStatusBarHidden: UIViewController? {
+    override var childForStatusBarHidden: UIViewController? {
     return leftController
   }
 
@@ -393,23 +393,23 @@ class SplitPaneViewController: BaseContainerViewController {
                              self,
                              .OBJC_ASSOCIATION_ASSIGN)
 
-    self.addChildViewController(viewController)
+    self.addChild(viewController)
   }
 
   /// Finish up adding a view controller.
   private func endAdd(_ viewController: UIViewController) {
-    viewController.didMove(toParentViewController: self)
+    viewController.didMove(toParent: self)
   }
 
   /// Start removing a child view controller.
   private func startRemove(_ viewController: UIViewController) {
-    viewController.willMove(toParentViewController: self)
+    viewController.willMove(toParent: self)
   }
 
   /// Finish up removing a child view controller. Remove it as a child and reset the
   /// |UIViewController.splitPaneViewController| property.
   private func endRemove(_ viewController: UIViewController) {
-    viewController.removeFromParentViewController()
+    viewController.removeFromParent()
 
     // Check to see if it hasn't changed before nilling it out.
     if viewController.splitPaneViewController == self {

@@ -32,7 +32,7 @@ class CategoryPicker: UIPickerView, UIPickerViewDataSource, UIPickerViewDelegate
     }
     
     func pickerView(_ pickerView: UIPickerView, attributedTitleForRow row: Int, forComponent component: Int) -> NSAttributedString? {
-        let attribute = [NSAttributedStringKey.foregroundColor: UIColor.white]
+        let attribute = [NSAttributedString.Key.foregroundColor: UIColor.white]
         let text =  modelData[row].Category
         
         return NSAttributedString(string: text, attributes: attribute)

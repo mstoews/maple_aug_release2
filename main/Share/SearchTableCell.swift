@@ -18,7 +18,7 @@ class SearchTableCell: UITableViewCell {
     
     static let placeholder = UIImage(named: "placeholder")!
     
-    override init(style: UITableViewCellStyle, reuseIdentifier: String?) {
+    override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
         
         super.init(style: style, reuseIdentifier: reuseIdentifier)
         
@@ -73,10 +73,10 @@ class SearchTableCell: UITableViewCell {
     var post: PostRecord? {
         didSet {
             if let product = post?.product {
-                titleLabel.attributedText =  NSMutableAttributedString(string: product, attributes: [NSAttributedStringKey.font: UIFont.boldSystemFont(ofSize: 10)])
+                titleLabel.attributedText =  NSMutableAttributedString(string: product, attributes: [NSAttributedString.Key.font: UIFont.boldSystemFont(ofSize: 10)])
             }
             if let desc = post?.description {
-                detailLabel.attributedText = NSMutableAttributedString(string: desc, attributes: [NSAttributedStringKey.font: UIFont.boldSystemFont(ofSize: 10)])
+                detailLabel.attributedText = NSMutableAttributedString(string: desc, attributes: [NSAttributedString.Key.font: UIFont.boldSystemFont(ofSize: 10)])
             }
             
             let url = post?.productImagineUrl

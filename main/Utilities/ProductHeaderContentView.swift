@@ -83,7 +83,7 @@ class ProductHeaderContentView: UIView, UIScrollViewDelegate {
                                    width: boundsWidth,
                                    height: pageControlSize.height)
         pageControl.addTarget(self, action: #selector(didChangePage),
-                              for: UIControlEvents.valueChanged)
+                              for: UIControl.Event.valueChanged)
         addSubview(pageControl)
         
         addHeaderPages()
@@ -219,7 +219,7 @@ struct MapleHeaderPage {
         self.imageName = imageName
         self.description = description
         
-        imageView.contentMode = UIViewContentMode.scaleAspectFill
+        imageView.contentMode = UIView.ContentMode.scaleAspectFill
         imageView.autoresizingMask = .flexibleHeight
         (page as AnyObject).addSubview(imageView)
         //let url = URL(string: ShrineData.baseURL + imageName)
@@ -260,7 +260,7 @@ struct MapleHeaderPage {
         let paragraphStyle = NSMutableParagraphStyle()
         paragraphStyle.lineHeightMultiple = lineHeightMultiple
         let attrString = NSMutableAttributedString(string: string)
-        attrString.addAttribute(NSAttributedStringKey.paragraphStyle, value:paragraphStyle, range:NSRange(location: 0, length: attrString.length))
+        attrString.addAttribute(NSAttributedString.Key.paragraphStyle, value:paragraphStyle, range:NSRange(location: 0, length: attrString.length))
         return attrString
     }
     

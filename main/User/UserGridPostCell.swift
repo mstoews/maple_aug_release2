@@ -28,13 +28,13 @@ protocol UserGridPostCellDelegate {
 class UserListPostCell : UserGridPostCell {
     
     override func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
-        let width = (frame.size.width / 3)
+        let width = (frame.size.width / 4)
         return CGSize(width: width , height: width)
         
     }
     
     override func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, insetForSectionAt section: Int) -> UIEdgeInsets {
-        return UIEdgeInsetsMake(0, 0, 0, 0)
+        return UIEdgeInsets(top: 0, left: 0, bottom: 0, right: 0)
     }
     
     
@@ -42,8 +42,9 @@ class UserListPostCell : UserGridPostCell {
     {
         imageCollectionView.register(UserImageCell.self, forCellWithReuseIdentifier: horizontalCellId)
         
+        imageCollectionView.backgroundColor = UIColor.collectionCell()
         
-        backgroundColor = UIColor.white
+        backgroundColor = UIColor.collectionCell()
         
         let topDividerView = UIView()
         topDividerView.backgroundColor = UIColor.collectionCell()
@@ -101,7 +102,7 @@ class UserListPostCell : UserGridPostCell {
                                    paddingBottom: 0,
                                    paddingRight: 4,
                                    width: 0,
-                                   height: frame.width / 3)
+                                   height: frame.width / 4)
         
         // 375
         
@@ -132,9 +133,9 @@ class UserListPostCell : UserGridPostCell {
 class UserGridPostCell: MDCCardCollectionCell , UICollectionViewDataSource, UICollectionViewDelegate, UICollectionViewDelegateFlowLayout  {
     
     public var imageConstraint: NSLayoutConstraint?
-    let attributeTitle = [NSAttributedStringKey.font: UIFont.mdc_preferredFont(forMaterialTextStyle: .title)]
-    let attributeCaption = [NSAttributedStringKey.font: UIFont.mdc_preferredFont(forMaterialTextStyle: .body2 )]
-    let attributeSubline = [NSAttributedStringKey.font: UIFont.mdc_preferredFont(forMaterialTextStyle:  .subheadline )]
+    let attributeTitle = [NSAttributedString.Key.font: UIFont.mdc_preferredFont(forMaterialTextStyle: .title)]
+    let attributeCaption = [NSAttributedString.Key.font: UIFont.mdc_preferredFont(forMaterialTextStyle: .body2 )]
+    let attributeSubline = [NSAttributedString.Key.font: UIFont.mdc_preferredFont(forMaterialTextStyle:  .subheadline )]
     
     override func updateConstraints() {
         super.updateConstraints()
@@ -152,61 +153,6 @@ class UserGridPostCell: MDCCardCollectionCell , UICollectionViewDataSource, UICo
     
     var delegate : UserGridPostCellDelegate?
     
-//    var post: FSPost? {
-//        didSet {
-//            images.removeAll()
-//            bookmarkButton.setImage(post?.hasBookmark == true ? #imageLiteral(resourceName: "ic_bookmark_border").withRenderingMode(.alwaysOriginal) : #imageLiteral(resourceName: "ic_bookmark").withRenderingMode(.alwaysOriginal), for: .normal)
-//            if post?.hasLiked == true {
-//                print ("Post liked \(String(describing: post?.hasLiked))")
-//                likeButton.setImage(#imageLiteral(resourceName: "like_selected-1").withRenderingMode(.alwaysOriginal), for: .normal)
-//            }
-//            else {
-//                print ("Post unliked \(String(describing: post?.hasLiked))")
-//                likeButton.setImage(#imageLiteral(resourceName: "Heart_Unselected-1").withRenderingMode(.alwaysOriginal), for: .normal)
-//            }
-//
-//
-//            if let caption = post?.product {
-//                var attributedText: NSMutableAttributedString?
-//                attributedText = NSMutableAttributedString(string: caption , attributes: attributeTitle)
-//                usernameLabel.attributedText = attributedText
-//            }
-//
-//            if let count = post?.imageUrlArray.count {
-//                if count > 0 {
-//                    for url in (post?.imageUrlArray)! {
-//                        print(url)
-//                        let obj = ImageObject(postid: (post?.id)!, imageid: "" , url: url)
-//                        images.append(obj)
-//                    }
-//                }
-//            }
-//
-//            if let postId = post?.id {
-//                Database.fetchNumberOfLikesByPostId(postid: postId, { (totalLikes) in
-//                    self.setNumberOfLikes(likes: totalLikes)
-//                })
-//            }
-//
-//            if let postId = post?.id {
-//                Database.fetchPostNumberOfComments(postid: postId, { (totalComments) in
-//                    self.setNumberOfComments(likes: totalComments)
-//                })
-//            }
-//
-//            if let postId = post?.id {
-//                Database.fetchPostNumberofBookmarks(postid: postId, { (totalBookmarks) in
-//                    self.setNumberOfBookmarks(likes: totalBookmarks)
-//                })
-//            }
-//
-//            setupAttributedCaption()
-//
-//            self.imageCollectionView.reloadData()
-//        }
-//    }
-//
-
     var post: FSPost? {
         
         didSet {
@@ -294,7 +240,7 @@ class UserGridPostCell: MDCCardCollectionCell , UICollectionViewDataSource, UICo
             }
             
             if let timeAgoDisplay = post?.creationDate.timeAgoToDisplay() {
-                let timeAttributedText = NSMutableAttributedString(string: timeAgoDisplay, attributes: [NSAttributedStringKey.font: UIFont.systemFont(ofSize: 12)])
+                let timeAttributedText = NSMutableAttributedString(string: timeAgoDisplay, attributes: [NSAttributedString.Key.font: UIFont.systemFont(ofSize: 12)])
                 timeAgoLabel.attributedText = timeAttributedText
             }
             
@@ -324,7 +270,7 @@ class UserGridPostCell: MDCCardCollectionCell , UICollectionViewDataSource, UICo
         self.likeBadge.isHidden = true
         var attributedText: NSMutableAttributedString?
         let sLikes = "\(likes)"
-        attributedText = NSMutableAttributedString(string: sLikes , attributes: [NSAttributedStringKey.font: UIFont.boldSystemFont(ofSize: 8)])
+        attributedText = NSMutableAttributedString(string: sLikes , attributes: [NSAttributedString.Key.font: UIFont.boldSystemFont(ofSize: 8)])
         self.likeBadge.attributedText = attributedText
         hideLikesBadge(likes)
     }
@@ -338,7 +284,7 @@ class UserGridPostCell: MDCCardCollectionCell , UICollectionViewDataSource, UICo
         self.commentBadge.isHidden = true
         var attributedText: NSMutableAttributedString?
         let sLikes = "\(likes)"
-        attributedText = NSMutableAttributedString(string: sLikes , attributes: [NSAttributedStringKey.font: UIFont.boldSystemFont(ofSize: 8)])
+        attributedText = NSMutableAttributedString(string: sLikes , attributes: [NSAttributedString.Key.font: UIFont.boldSystemFont(ofSize: 8)])
         self.commentBadge.attributedText = attributedText
         hideCommentBadge(likes)
     }
@@ -354,7 +300,7 @@ class UserGridPostCell: MDCCardCollectionCell , UICollectionViewDataSource, UICo
         self.bookMarkBadge.isHidden = true
         var attributedText: NSMutableAttributedString?
         let sLikes = "\(likes)"
-        attributedText = NSMutableAttributedString(string: sLikes , attributes: [NSAttributedStringKey.font: UIFont.boldSystemFont(ofSize: 8)])
+        attributedText = NSMutableAttributedString(string: sLikes , attributes: [NSAttributedString.Key.font: UIFont.boldSystemFont(ofSize: 8)])
         self.bookMarkBadge.attributedText = attributedText
         hideMarkBadge(likes)
     }
@@ -382,7 +328,7 @@ class UserGridPostCell: MDCCardCollectionCell , UICollectionViewDataSource, UICo
     }
     
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, insetForSectionAt section: Int) -> UIEdgeInsets {
-        return UIEdgeInsetsMake(0, 0, 0, 0)
+        return UIEdgeInsets(top: 0, left: 0, bottom: 0, right: 0)
     }
     
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
@@ -511,7 +457,7 @@ class UserGridPostCell: MDCCardCollectionCell , UICollectionViewDataSource, UICo
         let badge = BadgeSwift()
         badge.text = ""
         badge.insets = CGSize(width: 2, height: 2)
-        badge.font = UIFont.preferredFont(forTextStyle: UIFontTextStyle.caption1)
+        badge.font = UIFont.preferredFont(forTextStyle: UIFont.TextStyle.caption1)
         badge.textColor = UIColor.white
         badge.badgeColor = UIColor.red
         badge.shadowOpacityBadge = 0.5
@@ -528,7 +474,7 @@ class UserGridPostCell: MDCCardCollectionCell , UICollectionViewDataSource, UICo
         let badge = BadgeSwift()
         badge.text = ""
         badge.insets = CGSize(width: 2, height: 2)
-        badge.font = UIFont.preferredFont(forTextStyle: UIFontTextStyle.caption1)
+        badge.font = UIFont.preferredFont(forTextStyle: UIFont.TextStyle.caption1)
         badge.textColor = UIColor.white
         badge.badgeColor = UIColor.red
         badge.shadowOpacityBadge = 0.5
@@ -544,7 +490,7 @@ class UserGridPostCell: MDCCardCollectionCell , UICollectionViewDataSource, UICo
         let badge = BadgeSwift()
         badge.text = ""
         badge.insets = CGSize(width: 2, height: 2)
-        badge.font = UIFont.preferredFont(forTextStyle: UIFontTextStyle.caption1)
+        badge.font = UIFont.preferredFont(forTextStyle: UIFont.TextStyle.caption1)
         badge.textColor = UIColor.white
         badge.badgeColor = UIColor.red
         badge.shadowOpacityBadge = 0.5
@@ -621,6 +567,8 @@ class UserGridPostCell: MDCCardCollectionCell , UICollectionViewDataSource, UICo
         
         backgroundColor = UIColor.collectionCell()
         
+        imageCollectionView.backgroundColor = UIColor.collectionCell()
+        
         let topDividerView = UIView()
         topDividerView.backgroundColor = UIColor.collectionCell()
         
@@ -690,7 +638,6 @@ class UserGridPostCell: MDCCardCollectionCell , UICollectionViewDataSource, UICo
         bookmarkButton.anchor (top: imageCollectionView.bottomAnchor, left: commentButton.rightAnchor,  bottom: nil, right: nil, paddingTop: 0, paddingLeft: 4, paddingBottom: 0, paddingRight: -15 , width: 50, height: 40)
         editButton.anchor     (top: imageCollectionView.bottomAnchor, left: bookmarkButton.rightAnchor, bottom: nil, right: nil, paddingTop: 0, paddingLeft: 4, paddingBottom: 0, paddingRight: -15 , width: 50, height: 40)
         timeAgoLabel.anchor      (top: imageCollectionView.bottomAnchor, left: editButton.rightAnchor,     bottom: nil, right: nil, paddingTop: 0, paddingLeft: 70, paddingBottom: 0, paddingRight: 0 , width: 0, height: 20)
-        
         
         commentBadge.anchor(top: topDividerView.topAnchor, left: commentButton.rightAnchor, bottom: nil, right: nil, paddingTop: 2, paddingLeft: -20, paddingBottom: 0, paddingRight: 0 , width: 0, height: 0)
         

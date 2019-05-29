@@ -103,8 +103,8 @@ class NotificationPostCell: MDCCardCollectionCell , UIGestureRecognizerDelegate{
         delegate?.didClear(for: self)
     }
     
-    let attributes = [NSAttributedStringKey.font: UIFont.mdc_preferredFont(forMaterialTextStyle: .body2)]
-    let captionAttr = [NSAttributedStringKey.font: UIFont.mdc_preferredFont(forMaterialTextStyle: .caption)]
+    let attributes = [NSAttributedString.Key.font: UIFont.mdc_preferredFont(forMaterialTextStyle: .body2)]
+    let captionAttr = [NSAttributedString.Key.font: UIFont.mdc_preferredFont(forMaterialTextStyle: .caption)]
     
     func populateContent(from: MapleUser, text: String, date: Date, index: Int, isDryRun: Bool)
     {
@@ -238,9 +238,9 @@ class NotificationPostCell: MDCCardCollectionCell , UIGestureRecognizerDelegate{
 //
 
     @objc func onPan(_ pan: UIPanGestureRecognizer) {
-        if pan.state == UIGestureRecognizerState.began {
+        if pan.state == UIGestureRecognizer.State.began {
             
-        } else if pan.state == UIGestureRecognizerState.changed {
+        } else if pan.state == UIGestureRecognizer.State.changed {
             self.setNeedsLayout()
         } else {
             if abs(pan.velocity(in: self).x) > 500 {

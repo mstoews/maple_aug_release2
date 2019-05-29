@@ -25,9 +25,9 @@ class UserCollectionCell: MDCCardCollectionCell {
     public var imageConstraint: NSLayoutConstraint?
     public var imageWidthContraint: NSLayoutConstraint?
     
-    let attributeTitle = [NSAttributedStringKey.font: UIFont.mdc_preferredFont(forMaterialTextStyle: .title)]
-    let attributeCaption = [NSAttributedStringKey.font: UIFont.mdc_preferredFont(forMaterialTextStyle: .body2 )]
-    let attributeSubline = [NSAttributedStringKey.font: UIFont.mdc_preferredFont(forMaterialTextStyle:  .subheadline )]
+    let attributeTitle = [NSAttributedString.Key.font: UIFont.mdc_preferredFont(forMaterialTextStyle: .title)]
+    let attributeCaption = [NSAttributedString.Key.font: UIFont.mdc_preferredFont(forMaterialTextStyle: .body2 )]
+    let attributeSubline = [NSAttributedString.Key.font: UIFont.mdc_preferredFont(forMaterialTextStyle:  .subheadline )]
     
     override init(frame: CGRect) {
         super.init(frame: frame)
@@ -109,7 +109,7 @@ class UserCollectionCell: MDCCardCollectionCell {
     
     let followingLabel: UILabel  = {
         let label  = UILabel()
-        let attributedText = NSMutableAttributedString(string: "Following : 0", attributes: [NSAttributedStringKey.font: UIFont.boldSystemFont(ofSize: 14)])
+        let attributedText = NSMutableAttributedString(string: "Following : 0", attributes: [NSAttributedString.Key.font: UIFont.boldSystemFont(ofSize: 14)])
         label.attributedText = attributedText
         label.numberOfLines = 0
         label.textAlignment = .left

@@ -180,7 +180,7 @@ class NotificationViewController: MDCCollectionViewController , NotificationDele
     }
     
     override func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, insetForSectionAt section: Int) -> UIEdgeInsets {
-        return UIEdgeInsetsMake(7, 7, 7, 7)
+        return UIEdgeInsets(top: 7, left: 7, bottom: 7, right: 7)
     }
     
     override func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
@@ -264,8 +264,8 @@ class NotificationViewController: MDCCollectionViewController , NotificationDele
         
         let transition = CATransition()
         transition.duration = 0.1
-        transition.timingFunction = CAMediaTimingFunction(name: kCAMediaTimingFunctionEaseInEaseOut)
-        transition.type = kCATransitionFade
+        transition.timingFunction = CAMediaTimingFunction(name: CAMediaTimingFunctionName.easeInEaseOut)
+        transition.type = CATransitionType.fade
         self.navigationController?.view.layer.add(transition, forKey: nil)
         _ = self.navigationController?.popToRootViewController(animated: false)
 

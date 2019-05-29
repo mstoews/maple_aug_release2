@@ -85,7 +85,7 @@ class PlaceDetailTableViewDataSource: NSObject, UITableViewDataSource, UITableVi
     // Configure some other properties.
     tableView.estimatedRowHeight = 44
     tableView.estimatedSectionHeaderHeight = 44
-    tableView.sectionHeaderHeight = UITableViewAutomaticDimension
+    tableView.sectionHeaderHeight = UITableView.automaticDimension
   }
 
   // MARK: - Public Methods
@@ -192,7 +192,7 @@ class PlaceDetailTableViewDataSource: NSObject, UITableViewDataSource, UITableVi
       return compactHeader ? 0 : 20
     }
     else {
-      return UITableViewAutomaticDimension
+        return UITableView.automaticDimension
     }
   }
 

@@ -90,9 +90,9 @@ class ProductCell: MDCCardCollectionCell , UICollectionViewDataSource, UICollect
     public var imageConstraint: NSLayoutConstraint?
     public var imageWidthContraint: NSLayoutConstraint?
     
-    let attributeTitle = [NSAttributedStringKey.font: UIFont.mdc_preferredFont(forMaterialTextStyle: .title)]
-    let attributeCaption = [NSAttributedStringKey.font: UIFont.mdc_preferredFont(forMaterialTextStyle: .body2 )]
-    let attributeSubline = [NSAttributedStringKey.font: UIFont.mdc_preferredFont(forMaterialTextStyle:  .subheadline )]
+    let attributeTitle = [NSAttributedString.Key.font: UIFont.mdc_preferredFont(forMaterialTextStyle: .title)]
+    let attributeCaption = [NSAttributedString.Key.font: UIFont.mdc_preferredFont(forMaterialTextStyle: .body2 )]
+    let attributeSubline = [NSAttributedString.Key.font: UIFont.mdc_preferredFont(forMaterialTextStyle:  .subheadline )]
     
     
     override func updateConstraints() {
@@ -205,7 +205,7 @@ class ProductCell: MDCCardCollectionCell , UICollectionViewDataSource, UICollect
     }
     
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, insetForSectionAt section: Int) -> UIEdgeInsets {
-        return UIEdgeInsetsMake(0, 0, 0, 0)
+        return UIEdgeInsets(top: 0, left: 0, bottom: 0, right: 0)
     }
     
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
@@ -246,7 +246,7 @@ class ProductCell: MDCCardCollectionCell , UICollectionViewDataSource, UICollect
         self.likeBadge.isHidden = true
         var attributedText: NSMutableAttributedString?
         let sLikes = "\(likes)"
-        attributedText = NSMutableAttributedString(string: sLikes , attributes: [NSAttributedStringKey.font: UIFont.boldSystemFont(ofSize: 8)])
+        attributedText = NSMutableAttributedString(string: sLikes , attributes: [NSAttributedString.Key.font: UIFont.boldSystemFont(ofSize: 8)])
         self.likeBadge.attributedText = attributedText
         hideLikesBadge(likes)
     }
@@ -260,7 +260,7 @@ class ProductCell: MDCCardCollectionCell , UICollectionViewDataSource, UICollect
         self.commentBadge.isHidden = true
         var attributedText: NSMutableAttributedString?
         let sLikes = "\(likes)"
-        attributedText = NSMutableAttributedString(string: sLikes , attributes: [NSAttributedStringKey.font: UIFont.boldSystemFont(ofSize: 8)])
+        attributedText = NSMutableAttributedString(string: sLikes , attributes: [NSAttributedString.Key.font: UIFont.boldSystemFont(ofSize: 8)])
         self.commentBadge.attributedText = attributedText
         hideCommentBadge(likes)
     }
@@ -276,7 +276,7 @@ class ProductCell: MDCCardCollectionCell , UICollectionViewDataSource, UICollect
         self.bookMarkBadge.isHidden = true
         var attributedText: NSMutableAttributedString?
         let sLikes = "\(likes)"
-        attributedText = NSMutableAttributedString(string: sLikes , attributes: [NSAttributedStringKey.font: UIFont.boldSystemFont(ofSize: 8)])
+        attributedText = NSMutableAttributedString(string: sLikes , attributes: [NSAttributedString.Key.font: UIFont.boldSystemFont(ofSize: 8)])
         self.bookMarkBadge.attributedText = attributedText
         hideMarkBadge(likes)
     }
@@ -287,12 +287,12 @@ class ProductCell: MDCCardCollectionCell , UICollectionViewDataSource, UICollect
     {
         print("Get the number of likes \(postid)")
         var attributedText: NSMutableAttributedString?
-        attributedText = NSMutableAttributedString(string: "" , attributes: [NSAttributedStringKey.font: UIFont.boldSystemFont(ofSize: 8)])
+        attributedText = NSMutableAttributedString(string: "" , attributes: [NSAttributedString.Key.font: UIFont.boldSystemFont(ofSize: 8)])
         Database.database().reference().child("likes").child(postid).child("likes").observeSingleEvent(of: .value, with: { (snapshot) in
             if let value = snapshot.value as? NSDictionary {
                 let iLikes = value.count
                 let sLikes = "\(iLikes)"
-                attributedText = NSMutableAttributedString(string: sLikes , attributes: [NSAttributedStringKey.font: UIFont.boldSystemFont(ofSize: 8)])
+                attributedText = NSMutableAttributedString(string: sLikes , attributes: [NSAttributedString.Key.font: UIFont.boldSystemFont(ofSize: 8)])
                 if (iLikes > 0) {
                     self.likeBadge.attributedText = attributedText
                     self.likeBadge.isHidden = false
@@ -308,13 +308,13 @@ class ProductCell: MDCCardCollectionCell , UICollectionViewDataSource, UICollect
     {
         print("Get the number of comments...\(postid)")
         var attributedText: NSMutableAttributedString?
-        attributedText = NSMutableAttributedString(string: "" , attributes: [NSAttributedStringKey.font: UIFont.boldSystemFont(ofSize: 8)])
+        attributedText = NSMutableAttributedString(string: "" , attributes: [NSAttributedString.Key.font: UIFont.boldSystemFont(ofSize: 8)])
         Database.database().reference().child("comments").child(postid).observeSingleEvent(of: .value, with: { (snapshot) in
             if let value = snapshot.value as? NSDictionary {
                 let iLikes = value.count
                 let sLikes = "\(iLikes)"
                 
-                attributedText = NSMutableAttributedString(string: sLikes , attributes: [NSAttributedStringKey.font: UIFont.boldSystemFont(ofSize: 8)])
+                attributedText = NSMutableAttributedString(string: sLikes , attributes: [NSAttributedString.Key.font: UIFont.boldSystemFont(ofSize: 8)])
                 if (iLikes > 0) {
                     self.commentBadge.attributedText = attributedText
                     self.commentBadge.isHidden = false
@@ -337,11 +337,11 @@ class ProductCell: MDCCardCollectionCell , UICollectionViewDataSource, UICollect
         print("Get the number of bookmarks...")
         var attributedText: NSMutableAttributedString?
         guard let uid = Auth.auth().currentUser?.uid else { return }
-        attributedText = NSMutableAttributedString(string: "" , attributes: [NSAttributedStringKey.font: UIFont.boldSystemFont(ofSize: 8)])
+        attributedText = NSMutableAttributedString(string: "" , attributes: [NSAttributedString.Key.font: UIFont.boldSystemFont(ofSize: 8)])
         Database.database().reference().child("bookmarks").child(uid).child(postid).observeSingleEvent(of: .value, with: { (snapshot) in
             if let value = snapshot.value as? NSDictionary {
                 let sCount = "\(value.count)"
-                attributedText = NSMutableAttributedString(string: sCount , attributes: [NSAttributedStringKey.font: UIFont.boldSystemFont(ofSize: 8)])
+                attributedText = NSMutableAttributedString(string: sCount , attributes: [NSAttributedString.Key.font: UIFont.boldSystemFont(ofSize: 8)])
                 self.bookMarkBadge.attributedText = attributedText
                 if (value.count > 0 ) {
                     self.bookMarkBadge.isHidden = false
@@ -363,7 +363,7 @@ class ProductCell: MDCCardCollectionCell , UICollectionViewDataSource, UICollect
         let attributedText = NSMutableAttributedString(string: post.description, attributes: attributeCaption)
         captionLabel.attributedText = attributedText
         let timeAgoDisplay = post.creationDate.timeAgoToDisplay()
-        let timeAttributedText = NSMutableAttributedString(string: timeAgoDisplay, attributes: [NSAttributedStringKey.font: UIFont.systemFont(ofSize: 8)])
+        let timeAttributedText = NSMutableAttributedString(string: timeAgoDisplay, attributes: [NSAttributedString.Key.font: UIFont.systemFont(ofSize: 8)])
         timeAgoLabel.attributedText = timeAttributedText
         print (timeAgoLabel.text!)
     }
@@ -427,7 +427,7 @@ class ProductCell: MDCCardCollectionCell , UICollectionViewDataSource, UICollect
         let badge = BadgeSwift()
         badge.text = ""
         badge.insets = CGSize(width: 2, height: 2)
-        badge.font = UIFont.preferredFont(forTextStyle: UIFontTextStyle.caption1)
+        badge.font = UIFont.preferredFont(forTextStyle: UIFont.TextStyle.caption1)
         badge.textColor = UIColor.white
         badge.badgeColor = UIColor.red
         badge.shadowOpacityBadge = 0.5
@@ -444,7 +444,7 @@ class ProductCell: MDCCardCollectionCell , UICollectionViewDataSource, UICollect
         let badge = BadgeSwift()
         badge.text = ""
         badge.insets = CGSize(width: 2, height: 2)
-        badge.font = UIFont.preferredFont(forTextStyle: UIFontTextStyle.caption1)
+        badge.font = UIFont.preferredFont(forTextStyle: UIFont.TextStyle.caption1)
         badge.textColor = UIColor.white
         badge.badgeColor = UIColor.red
         badge.shadowOpacityBadge = 0.5
@@ -460,7 +460,7 @@ class ProductCell: MDCCardCollectionCell , UICollectionViewDataSource, UICollect
         let badge = BadgeSwift()
         badge.text = ""
         badge.insets = CGSize(width: 2, height: 2)
-        badge.font = UIFont.preferredFont(forTextStyle: UIFontTextStyle.caption1)
+        badge.font = UIFont.preferredFont(forTextStyle: UIFont.TextStyle.caption1)
         badge.textColor = UIColor.white
         badge.badgeColor = UIColor.red
         badge.shadowOpacityBadge = 0.5

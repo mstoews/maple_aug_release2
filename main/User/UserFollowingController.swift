@@ -125,7 +125,7 @@ class UserFollowingCell: MDCCollectionViewCell {
     var user: MapleUser? {
         didSet {
             guard let user = user else {return}
-            let attributedText = NSMutableAttributedString(string: " \(user.username)", attributes: [NSAttributedStringKey.font: UIFont.systemFont(ofSize: 10)])
+            let attributedText = NSMutableAttributedString(string: " \(user.username)", attributes: [NSAttributedString.Key.font: UIFont.systemFont(ofSize: 10)])
             textView.attributedText = attributedText
             profileImageView.loadImage(urlString: user.profileImageUrl)
         }

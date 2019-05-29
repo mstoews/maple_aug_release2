@@ -133,7 +133,7 @@
         }
         
         func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, insetForSectionAt section: Int) -> UIEdgeInsets {
-            return UIEdgeInsetsMake(5, 5, 5, 5)
+            return UIEdgeInsets(top: 5, left: 5, bottom: 5, right: 5)
         }
         
         func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
@@ -145,12 +145,12 @@
         fileprivate func setupAttributedCaption() {
             guard let post = self.post else { return }
             
-            let attributedText = NSMutableAttributedString(string: "\(post.caption)", attributes: [NSAttributedStringKey.font: UIFont.systemFont(ofSize: 12)])
-            attributedText.append(NSAttributedString(string:   "\n\(post.description)", attributes: [NSAttributedStringKey.font: UIFont.systemFont(ofSize: 12)]))
-            attributedText.append(NSAttributedString(string:   "\n", attributes: [NSAttributedStringKey.font: UIFont.systemFont(ofSize: 4)]))
+            let attributedText = NSMutableAttributedString(string: "\(post.caption)", attributes: [NSAttributedString.Key.font: UIFont.systemFont(ofSize: 12)])
+            attributedText.append(NSAttributedString(string:   "\n\(post.description)", attributes: [NSAttributedString.Key.font: UIFont.systemFont(ofSize: 12)]))
+            attributedText.append(NSAttributedString(string:   "\n", attributes: [NSAttributedString.Key.font: UIFont.systemFont(ofSize: 4)]))
             
             let timeAgoDisplay = post.creationDate.timeAgoToDisplay()
-            attributedText.append(NSAttributedString(string: timeAgoDisplay, attributes: [NSAttributedStringKey.font: UIFont.systemFont(ofSize: 12), NSAttributedStringKey.foregroundColor: UIColor.gray]))
+            attributedText.append(NSAttributedString(string: timeAgoDisplay, attributes: [NSAttributedString.Key.font: UIFont.systemFont(ofSize: 12), NSAttributedString.Key.foregroundColor: UIColor.gray]))
             captionLabel.attributedText = attributedText
         }
         

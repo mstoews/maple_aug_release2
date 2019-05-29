@@ -32,14 +32,14 @@
         
         fileprivate func getNumberOfPosts() {
             if let postCount = userView?.postCount {
-                self.postsLabel.attributedText = NSMutableAttributedString(string:     "Posts\t\t  \(postCount)" , attributes: [NSAttributedStringKey.font: UIFont.boldSystemFont(ofSize: 14)])
+                self.postsLabel.attributedText = NSMutableAttributedString(string:     "Posts\t\t  \(postCount)" , attributes: [NSAttributedString.Key.font: UIFont.boldSystemFont(ofSize: 14)])
             }}
         
         fileprivate func getNumberOfFollowers()
         {
             // Followers
             if let followersCount = userView?.followersCount {
-                self.followersLabel.attributedText = NSMutableAttributedString(string: "Followers\t  \(followersCount)" , attributes: [NSAttributedStringKey.font: UIFont.boldSystemFont(ofSize: 14)])
+                self.followersLabel.attributedText = NSMutableAttributedString(string: "Followers\t  \(followersCount)" , attributes: [NSAttributedString.Key.font: UIFont.boldSystemFont(ofSize: 14)])
             }
         }
         
@@ -48,7 +48,7 @@
         {
             // Following
             if let followingCount = userView?.followedCount {
-                self.followingLabel.attributedText = NSMutableAttributedString(string: "Followed\t  \(followingCount)" , attributes: [NSAttributedStringKey.font: UIFont.boldSystemFont(ofSize: 14)])
+                self.followingLabel.attributedText = NSMutableAttributedString(string: "Followed\t  \(followingCount)" , attributes: [NSAttributedString.Key.font: UIFont.boldSystemFont(ofSize: 14)])
             }
         }
         
@@ -315,7 +315,7 @@
         let postsLabel: UILabel = {
             let label = UILabel()
             var strPosts =  "0\n"
-            let attributedText = NSMutableAttributedString(string: "Posts  \(strPosts)" , attributes: [NSAttributedStringKey.font: UIFont.boldSystemFont(ofSize: 14)])
+            let attributedText = NSMutableAttributedString(string: "Posts  \(strPosts)" , attributes: [NSAttributedString.Key.font: UIFont.boldSystemFont(ofSize: 14)])
             label.attributedText = attributedText
             label.textAlignment = .left
             label.numberOfLines = 0
@@ -326,7 +326,7 @@
         
         let followersLabel: UILabel = {
             let label = UILabel()
-            let attributedText = NSMutableAttributedString(string: "Followers  ", attributes: [NSAttributedStringKey.font: UIFont.boldSystemFont(ofSize: 14)])
+            let attributedText = NSMutableAttributedString(string: "Followers  ", attributes: [NSAttributedString.Key.font: UIFont.boldSystemFont(ofSize: 14)])
             label.attributedText = attributedText
             
             label.textAlignment = .left
@@ -336,7 +336,7 @@
         
         let followingLabel: UILabel  = {
             let label  = UILabel()
-            let attributedText = NSMutableAttributedString(string: "Following ", attributes: [NSAttributedStringKey.font: UIFont.boldSystemFont(ofSize: 14)])
+            let attributedText = NSMutableAttributedString(string: "Following ", attributes: [NSAttributedString.Key.font: UIFont.boldSystemFont(ofSize: 14)])
             label.attributedText = attributedText
             label.numberOfLines = 0
             label.textAlignment = .left

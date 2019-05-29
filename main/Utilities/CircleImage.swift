@@ -117,9 +117,6 @@ extension UIImage {
         return newImage
     }
     
-    func resizeImage(_ dimension: CGFloat, with quality: CGFloat) -> Data? {
-        return UIImageJPEGRepresentation(resizeImage(dimension), quality)
-    }
     
     static func circleImage(with url: URL, to imageView: UIImageView) {
         let urlString = url.absoluteString

@@ -85,9 +85,9 @@ class SharePhotoController:
     var UIMapController: UIViewController?
     var presentWindow : UIWindow?
     
-    let attributeTitle = [NSAttributedStringKey.font: UIFont.mdc_preferredFont(forMaterialTextStyle: .title)]
-    let attributeCaption = [NSAttributedStringKey.font: UIFont.mdc_preferredFont(forMaterialTextStyle: .body2 )]
-    let attributeSubline = [NSAttributedStringKey.font: UIFont.mdc_preferredFont(forMaterialTextStyle:  .subheadline )]
+    let attributeTitle = [NSAttributedString.Key.font: UIFont.mdc_preferredFont(forMaterialTextStyle: .title)]
+    let attributeCaption = [NSAttributedString.Key.font: UIFont.mdc_preferredFont(forMaterialTextStyle: .body2 )]
+    let attributeSubline = [NSAttributedString.Key.font: UIFont.mdc_preferredFont(forMaterialTextStyle:  .subheadline )]
     
     var gallery: GalleryController!
     let editor: VideoEditing = VideoEditor()
@@ -411,8 +411,8 @@ class SharePhotoController:
         //updateSearchResults(for: Products)
         
         
-        NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillShow), name: NSNotification.Name.UIKeyboardWillShow, object: nil)
-        NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillHide), name: NSNotification.Name.UIKeyboardWillHide, object: nil)
+        //NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillShow), name: NSNotification.Name. keyboardWillShowNotification, object: nil)
+        //NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillHide), name: NSNotification.Name.keyboardWillHideNotification, object: nil)
         
         VIEW_SCROLL_HEIGHT? = 400.0
         print("Keyboard adjusted value \(VIEW_SCROLL_HEIGHT ?? 0.0)")
@@ -426,7 +426,7 @@ class SharePhotoController:
     @objc fileprivate func handleKeyboardShow(notification: Notification) {
         // how to figure out how tall the keyboard actually is
         //guard let value = notification.userInfo?[UIResponder.UIKeyboardFrameEndUserInfoKey] as? NSValue else { return }
-        guard let value = notification.userInfo?[UIKeyboardFrameEndUserInfoKey] as? NSValue else { return }
+        guard let value = notification.userInfo?[UIResponder.keyboardFrameEndUserInfoKey] as? NSValue else { return }
         let keyboardFrame = value.cgRectValue
         
         // let's try to figure out how tall the gap is from the register button to the bottom of the screen
@@ -439,14 +439,22 @@ class SharePhotoController:
     
     @objc func keyboardWillShow(notification: NSNotification) {
         print("Keyboard will show...")
-        let isKeyboardShowing = notification.name == NSNotification.Name.UIKeyboardWillShow
-        if let keyboardSize = (notification.userInfo?[UIKeyboardFrameBeginUserInfoKey] as? NSValue)?.cgRectValue {
-            //let inset = isKeyboardShowing ? -bottomAreaInset : bottomAreaInset
-            if isKeyboardShowing {
-                print ("Frame size \(self.view.frame.height)")
-                 self.view.frame.origin.y = -keyboardSize.height + self.view.frame.height / 2.5
-            }
-        }
+        
+//        let notificationName = NotificationCenter.default.addObserver(
+//            self,
+//            selector: #selector(self.keyboardDidShow(notification:)),
+//            name: UIResponder.keyboardDidShowNotification, object: nil)
+        
+        
+//
+//        let isKeyboardShowing = NSNotification.Name(UIR
+//        if let keyboardSize = (notification.userInfo?[UIResponder.keyboardFrameBeginUserInfoKey] as? NSValue)?.cgRectValue {
+//            //let inset = isKeyboardShowing ? -bottomAreaInset : bottomAreaInset
+//            if isKeyboardShowing {
+//                print ("Frame size \(self.view.frame.height)")
+//                 self.view.frame.origin.y = -keyboardSize.height + self.view.frame.height / 2.5
+//            }
+//        }
     }
     
     @objc func keyboardWillHide(notification: NSNotification) {
@@ -547,7 +555,7 @@ class SharePhotoController:
         locationCollectionView.anchor(top: locationCard.topAnchor, left: locationCard.leftAnchor, bottom: locationCard.bottomAnchor, right: locationCard.rightAnchor)
         
         let imageCard = MDCCard()
-        imageCard.setShadowElevation(ShadowElevation.menu, for: UIControlState.normal)
+        imageCard.setShadowElevation(ShadowElevation.menu, for: UIControl.State.normal)
         imageCard.addSubview(imageCollectionView)
         imageCollectionView.anchor(top: imageCard.topAnchor, left: imageCard.leftAnchor, bottom: imageCard.bottomAnchor , right: imageCard.rightAnchor,
                                    paddingTop: paddingTopBottom,
@@ -559,7 +567,7 @@ class SharePhotoController:
         
         
         let containerView = MDCCard()
-        containerView.setShadowElevation(ShadowElevation.cardResting, for: UIControlState.normal)
+        containerView.setShadowElevation(ShadowElevation.cardResting, for: UIControl.State.normal)
         
         containerView.inkView.inkColor = .lightGray
         containerView.backgroundColor = UIColor.collectionBackGround()
@@ -846,10 +854,10 @@ class SharePhotoController:
         
         if post == nil
         {
-            let alert = UIAlertController(title: "Clear All Fields", message: "Current fields will be cleared. Continue?", preferredStyle: UIAlertControllerStyle.alert)
+            let alert = UIAlertController(title: "Clear All Fields", message: "Current fields will be cleared. Continue?", preferredStyle: UIAlertController.Style.alert)
             
             // add the actions (buttons)
-            alert.addAction(UIAlertAction(title: "Continue", style: UIAlertActionStyle.default, handler:
+            alert.addAction(UIAlertAction(title: "Continue", style: UIAlertAction.Style.default, handler:
                 { action in
                     switch action.style{
                     case .default:
@@ -866,7 +874,7 @@ class SharePhotoController:
                     case .destructive:
                         print("destructive")
                     }}))
-            alert.addAction(UIAlertAction(title: "Cancel", style: UIAlertActionStyle.cancel, handler: nil))
+            alert.addAction(UIAlertAction(title: "Cancel", style: UIAlertAction.Style.cancel, handler: nil))
             self.present(alert, animated: true, completion: nil)
         }
     }
@@ -1062,7 +1070,7 @@ class SharePhotoController:
     }
     
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, insetForSectionAt section: Int) -> UIEdgeInsets {
-        return UIEdgeInsetsMake(1, 1, 1, 1)
+        return UIEdgeInsets(top: 1, left: 1, bottom: 1, right: 1)
     }
     
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, minimumInteritemSpacingForSectionAt section: Int) -> CGFloat {

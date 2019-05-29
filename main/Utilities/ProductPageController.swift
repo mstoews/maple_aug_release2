@@ -170,12 +170,12 @@ class ProductPageController:  UIViewController, CLLocationManagerDelegate,  UICo
     
     fileprivate func setupAttributedCaption() {
         guard let post = self.post else { return }
-        let attributedText = NSMutableAttributedString(string: "", attributes: [NSAttributedStringKey.font: UIFont.systemFont(ofSize: 10)])
-        attributedText.append(NSAttributedString(string: "\(post.description)", attributes: [NSAttributedStringKey.font: UIFont.systemFont(ofSize: 12)]))
-        attributedText.append(NSAttributedString(string: "\n", attributes: [NSAttributedStringKey.font: UIFont.systemFont(ofSize: 6)]))
+        let attributedText = NSMutableAttributedString(string: "", attributes: [NSAttributedString.Key.font: UIFont.systemFont(ofSize: 10)])
+        attributedText.append(NSAttributedString(string: "\(post.description)", attributes: [NSAttributedString.Key.font: UIFont.systemFont(ofSize: 12)]))
+        attributedText.append(NSAttributedString(string: "\n", attributes: [NSAttributedString.Key.font: UIFont.systemFont(ofSize: 6)]))
         
         let timeAgoDisplay = post.creationDate.timeAgoToDisplay()
-        attributedText.append(NSAttributedString(string: timeAgoDisplay, attributes: [NSAttributedStringKey.font: UIFont.systemFont(ofSize: 8), NSAttributedStringKey.foregroundColor: UIColor.gray]))
+        attributedText.append(NSAttributedString(string: timeAgoDisplay, attributes: [NSAttributedString.Key.font: UIFont.systemFont(ofSize: 8), NSAttributedString.Key.foregroundColor: UIColor.gray]))
         Description.attributedText = attributedText
     }
     
@@ -217,7 +217,7 @@ class ProductPageController:  UIViewController, CLLocationManagerDelegate,  UICo
     }
     
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, insetForSectionAt section: Int) -> UIEdgeInsets {
-        return UIEdgeInsetsMake(5, 0, 0, 0)
+        return UIEdgeInsets(top: 5, left: 0, bottom: 0, right: 0)
     }
     
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
@@ -528,26 +528,19 @@ class ProductPageController:  UIViewController, CLLocationManagerDelegate,  UICo
     fileprivate func setUserName(userName: String, caption: String) -> NSMutableAttributedString
     {
         var attributedText: NSMutableAttributedString?
-        let systemDynamicFontDescriptor = UIFontDescriptor.preferredFontDescriptor(withTextStyle: UIFontTextStyle.body)
+        let systemDynamicFontDescriptor = UIFontDescriptor.preferredFontDescriptor(withTextStyle: UIFont.TextStyle.body)
         let size = systemDynamicFontDescriptor.pointSize
         let font = UIFont(name: "ArialHebrew", size: size)
         
-        attributedText = NSMutableAttributedString(string: "" , attributes: [NSAttributedStringKey.font: font as Any])
-        attributedText?.append(NSMutableAttributedString(string: userName , attributes: [NSAttributedStringKey.font: font as Any]))
-        attributedText?.append(NSMutableAttributedString(string: " : " , attributes: [NSAttributedStringKey.font: UIFont.boldSystemFont(ofSize: 12)]))
-        attributedText?.append(NSMutableAttributedString(string: caption , attributes: [NSAttributedStringKey.font: UIFont.boldSystemFont(ofSize: 12)]))
+        attributedText = NSMutableAttributedString(string: "" , attributes: [NSAttributedString.Key.font: font as Any])
+        attributedText?.append(NSMutableAttributedString(string: userName , attributes: [NSAttributedString.Key.font: font as Any]))
+        attributedText?.append(NSMutableAttributedString(string: " : " , attributes: [NSAttributedString.Key.font: UIFont.boldSystemFont(ofSize: 12)]))
+        attributedText?.append(NSMutableAttributedString(string: caption , attributes: [NSAttributedString.Key.font: UIFont.boldSystemFont(ofSize: 12)]))
         
         return attributedText!
     }
     
-    let  editShowSettings = UserPostSettingsController()
     
-    func handleEditMenu()
-    {
-        editShowSettings.showSettings()
-        print ("Handle Edit Menu")
-        
-    }
     
     
 //    func showControllerForSetting(_ setting: Setting) {

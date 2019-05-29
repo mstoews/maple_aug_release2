@@ -132,7 +132,7 @@ class MainTabBarController: UITabBarController, AuthUIDelegate  {
         var label = UILabel()
         var iPosts = 0
         let strPosts = "\(iPosts)"
-        let attributedText = NSMutableAttributedString(string: strPosts , attributes: [NSAttributedStringKey.font: UIFont.boldSystemFont(ofSize: 14)])
+        let attributedText = NSMutableAttributedString(string: strPosts , attributes: [NSAttributedString.Key.font: UIFont.boldSystemFont(ofSize: 14)])
         label.attributedText = attributedText
         print("Realtime Update Followers: ", Int32((iPosts)))
         return label

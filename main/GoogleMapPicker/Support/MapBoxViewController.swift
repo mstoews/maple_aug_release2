@@ -27,7 +27,7 @@ class MapPostViewController: UIViewController, MGLMapViewDelegate  {
         super.viewDidLoad()
 
         containerView? = MDCCard()
-        containerView?.setShadowElevation(ShadowElevation.cardResting, for: UIControlState.normal)
+        containerView?.setShadowElevation(ShadowElevation.cardResting, for: UIControl.State.normal)
         containerView?.inkView.inkColor = .lightGray
         containerView?.backgroundColor = UIColor.collectionBackGround()
         
@@ -111,7 +111,7 @@ class MapPostViewController: UIViewController, MGLMapViewDelegate  {
         let camera = MGLMapCamera(lookingAtCenter: mapView.centerCoordinate, altitude: 1500, pitch: 15, heading: 180)
         
         // Animate the camera movement over 5 seconds.
-        mapView.setCamera(camera, withDuration: 5, animationTimingFunction: CAMediaTimingFunction(name: kCAMediaTimingFunctionEaseInEaseOut))
+        mapView.setCamera(camera, withDuration: 5, animationTimingFunction: CAMediaTimingFunction(name: CAMediaTimingFunctionName.easeInEaseOut))
     }
     
     let navButton : MDCFloatingButton = {

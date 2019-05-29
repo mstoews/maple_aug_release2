@@ -127,7 +127,7 @@ class HomeController: MDCCollectionViewController, HomePostCellDelegate,  HomeHe
     func setButtonImage(button: UIButton, btnName: String,  color: UIColor)
     {
         let origImage = UIImage(named: btnName);
-        let tintedImage = origImage?.withRenderingMode(UIImageRenderingMode.alwaysTemplate)
+        let tintedImage = origImage?.withRenderingMode(UIImage.RenderingMode.alwaysTemplate)
         button.setImage(tintedImage, for: .normal)
         button.tintColor = color
     }
@@ -150,7 +150,7 @@ class HomeController: MDCCollectionViewController, HomePostCellDelegate,  HomeHe
         return messageLabel
     }()
     
-    private var fs_posts: [FSPost] = []
+    private var posts: [FSPost] = []
     private var documents: [DocumentSnapshot] = []
     
     
@@ -163,6 +163,7 @@ class HomeController: MDCCollectionViewController, HomePostCellDelegate,  HomeHe
     fileprivate func observeQuery()
     {
         stopObserving()
+        self.posts.removeAll()
         
         let hud = JGProgressHUD(style: .dark)
         hud.textLabel.text = "Fetching Posts"
@@ -186,7 +187,7 @@ class HomeController: MDCCollectionViewController, HomePostCellDelegate,  HomeHe
                         fatalError("Unable to initialize type \(FSPost.self) with dictionary \(document.data())")
                     }
                 }
-                self.fs_posts = models
+                self.posts = models
                 self.documents = snapshot.documents
                 if self.documents.count > 0 {
                     //print("Number of posts: \(self.documents.count)")
@@ -233,7 +234,7 @@ class HomeController: MDCCollectionViewController, HomePostCellDelegate,  HomeHe
                     }
                 }
                 
-                self.fs_posts = models
+                self.posts = models
                 
                 self.documents = snapshot.documents
                 
@@ -300,7 +301,7 @@ class HomeController: MDCCollectionViewController, HomePostCellDelegate,  HomeHe
     }
     
     let backgroundView = UIImageView()
-    var refreshTotal = 10
+    var refreshTotal = 50
     
     static let updateFeedNotificationName = NSNotification.Name(rawValue: "handleRefresh")
     
@@ -311,7 +312,7 @@ class HomeController: MDCCollectionViewController, HomePostCellDelegate,  HomeHe
         NotificationCenter.default.addObserver(self, selector: #selector(handleUpdateFeed), name: HomeController.updateFeedNotificationName, object: nil)
         collectionView?.backgroundColor = UIColor.collectionBackGround()
         collectionView?.register(HomePostCell.self, forCellWithReuseIdentifier: cellId)
-        collectionView?.register(HomeHeaderCell.self, forSupplementaryViewOfKind: UICollectionElementKindSectionHeader, withReuseIdentifier: cellHeaderId)
+        collectionView?.register(HomeHeaderCell.self, forSupplementaryViewOfKind: UICollectionView.elementKindSectionHeader, withReuseIdentifier: cellHeaderId)
         refreshControl.addTarget(self, action: #selector(handleRefresh), for: .valueChanged )
         
         collectionView?.refreshControl = refreshControl
@@ -439,18 +440,24 @@ class HomeController: MDCCollectionViewController, HomePostCellDelegate,  HomeHe
     }
     
     override func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
-        
-        let approximateWidthOfBioTextView = view.frame.width
-        let size = CGSize(width: approximateWidthOfBioTextView, height: 1000)
-        let attributes = [NSAttributedStringKey.font : UIFont.systemFont(ofSize: CGFloat(15))]
-        let post = fs_posts[indexPath.item]
-        let estimatedFrame = NSString(string: post.description).boundingRect(with: size, options: .usesLineFragmentOrigin, attributes: attributes, context: nil)
-        return CGSize(width: view.frame.width - 15 , height: estimatedFrame.height + view.frame.width - 40 )
+        if posts.count > 0 {
+            
+            let approximateWidthOfBioTextView = view.frame.width
+            let size = CGSize(width: approximateWidthOfBioTextView, height: 1000)
+            let attributes = [NSAttributedString.Key.font : UIFont.systemFont(ofSize: CGFloat(15))]
+            let post = posts[indexPath.item]
+            let estimatedFrame = NSString(string: post.description).boundingRect(with: size, options: .usesLineFragmentOrigin, attributes: attributes, context: nil)
+            return CGSize(width: view.frame.width - 15 , height: estimatedFrame.height + view.frame.width - 40 )
+        }
+        else
+        {
+            return CGSize(width: view.frame.width - 15 , height: view.frame.height/2 )
+        }
     }
     
     override func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        if fs_posts.count > 0 {
-            return fs_posts.count
+        if posts.count > 0 {
+            return posts.count
         }
         else
         {
@@ -479,8 +486,8 @@ class HomeController: MDCCollectionViewController, HomePostCellDelegate,  HomeHe
     
     override func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: cellId, for: indexPath) as! HomePostCell
-        if (fs_posts.count > 0 ){
-            cell.post = fs_posts[indexPath.item]
+        if (posts.count > 0 ){
+            cell.post = posts[indexPath.item]
         }
         cell.delegate = self
         return cell
@@ -493,7 +500,7 @@ class HomeController: MDCCollectionViewController, HomePostCellDelegate,  HomeHe
     }
     
     override func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, insetForSectionAt section: Int) -> UIEdgeInsets {
-        return UIEdgeInsetsMake(7, 1, 1, 1)
+        return UIEdgeInsets(top: 7, left: 1, bottom: 1, right: 1)
     }
     
     override func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, referenceSizeForHeaderInSection section: Int) -> CGSize {
@@ -580,7 +587,7 @@ class HomeController: MDCCollectionViewController, HomePostCellDelegate,  HomeHe
     
     func didTapBookmark(for cell: HomePostCell) {
         guard let indexPath = collectionView?.indexPath(for: cell) else { return }
-        var post = self.fs_posts[indexPath.item]
+        var post = self.posts[indexPath.item]
                  if (post.hasBookmark == true) {
                     post.hasBookmark = false
                     Firestore.didBookmarkedPost(post: post, didBookmark: false)
@@ -590,7 +597,7 @@ class HomeController: MDCCollectionViewController, HomePostCellDelegate,  HomeHe
                     post.hasBookmark = true
                     Firestore.didBookmarkedPost(post: post, didBookmark: true)
                 }
-        self.fs_posts[indexPath.item] = post
+        self.posts[indexPath.item] = post
         //self.collectionView?.reloadItems(at: [indexPath])
         
         if post.hasBookmark == true {
@@ -604,7 +611,7 @@ class HomeController: MDCCollectionViewController, HomePostCellDelegate,  HomeHe
     
     func didLike(for cell: HomePostCell) {
         guard let indexPath = collectionView?.indexPath(for: cell) else { return }
-        var post = self.fs_posts[indexPath.item]
+        var post = self.posts[indexPath.item]
         if let postId = post.id {
             if let uid = Auth.auth().currentUser?.uid {
                 if (post.hasLiked == true) {
@@ -619,7 +626,7 @@ class HomeController: MDCCollectionViewController, HomePostCellDelegate,  HomeHe
                 
             }
         }
-        self.fs_posts[indexPath.item] = post
+        self.posts[indexPath.item] = post
         // self.collectionView?.reloadItems(at: [indexPath])
         if post.hasLiked == true {
             self.setButtonImage(button: cell.likeButton, btnName: "ic_favorite", color: UIColor.red)

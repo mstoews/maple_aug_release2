@@ -49,17 +49,17 @@ class InsetViewController: BaseContainerViewController {
 
     // Add the background and the content controllers.
 
-    addChildViewController(backgroundViewController)
+    addChild(backgroundViewController)
     backgroundViewController.view.frame = view.bounds
     backgroundViewController.view.autoresizingMask = [.flexibleHeight, .flexibleWidth]
     view.addSubview(backgroundViewController.view)
-    backgroundViewController.didMove(toParentViewController: self)
+    backgroundViewController.didMove(toParent: self)
 
-    addChildViewController(contentViewController)
+    addChild(contentViewController)
     view.addSubview(contentViewController.view)
     contentViewController.view.autoresizingMask = [.flexibleTopMargin, .flexibleLeftMargin,
                                                    .flexibleRightMargin, .flexibleBottomMargin]
-    contentViewController.didMove(toParentViewController: self)
+    contentViewController.didMove(toParent: self)
   }
 
   override func viewWillAppear(_ animated: Bool) {
@@ -91,7 +91,7 @@ class InsetViewController: BaseContainerViewController {
   }
 
   /// Pass through to the appropriate child view controller for status bar appearance.
-  override var childViewControllerForStatusBarStyle: UIViewController? {
+    override var childForStatusBarStyle: UIViewController? {
     if contentViewController.view.frame == view.bounds {
       return contentViewController
     } else {
@@ -100,7 +100,7 @@ class InsetViewController: BaseContainerViewController {
   }
 
   /// Pass through to the appropriate child view controller for status bar appearance.
-  override var childViewControllerForStatusBarHidden: UIViewController? {
+    override var childForStatusBarHidden: UIViewController? {
     if contentViewController.view.frame == view.bounds {
       return contentViewController
     } else {

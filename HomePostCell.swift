@@ -105,9 +105,9 @@ class HomePostCell: MDCCardCollectionCell , UICollectionViewDataSource, UICollec
     public var imageConstraint: NSLayoutConstraint?
     public var imageWidthContraint: NSLayoutConstraint?
     
-   let attributeTitle = [NSAttributedStringKey.font: UIFont.mdc_preferredFont(forMaterialTextStyle: .title)]
-   let attributeCaption = [NSAttributedStringKey.font: UIFont.mdc_preferredFont(forMaterialTextStyle: .body2 )]
-   let attributeSubline = [NSAttributedStringKey.font: UIFont.mdc_preferredFont(forMaterialTextStyle:  .subheadline )]
+    let attributeTitle = [NSAttributedString.Key.font: UIFont.mdc_preferredFont(forMaterialTextStyle: .title)]
+    let attributeCaption = [NSAttributedString.Key.font: UIFont.mdc_preferredFont(forMaterialTextStyle: .body2 )]
+    let attributeSubline = [NSAttributedString.Key.font: UIFont.mdc_preferredFont(forMaterialTextStyle:  .subheadline )]
  
     
     override func updateConstraints() {
@@ -146,7 +146,7 @@ class HomePostCell: MDCCardCollectionCell , UICollectionViewDataSource, UICollec
     func setButtonImage(button: UIButton, btnName: String,  color: UIColor)
     {
         let origImage = UIImage(named: btnName);
-        let tintedImage = origImage?.withRenderingMode(UIImageRenderingMode.alwaysTemplate)
+        let tintedImage = origImage?.withRenderingMode(UIImage.RenderingMode.alwaysTemplate)
         button.setImage(tintedImage, for: .normal)
         button.tintColor = color
     }
@@ -222,7 +222,7 @@ class HomePostCell: MDCCardCollectionCell , UICollectionViewDataSource, UICollec
             
             
             if let timeAgoDisplay = post?.creationDate.timeAgoToDisplay() {
-            let timeAttributedText = NSMutableAttributedString(string: timeAgoDisplay, attributes: [NSAttributedStringKey.font: UIFont.systemFont(ofSize: 12)])
+                let timeAttributedText = NSMutableAttributedString(string: timeAgoDisplay, attributes: [NSAttributedString.Key.font: UIFont.systemFont(ofSize: 12)])
                 timeAgoLabel.attributedText = timeAttributedText
             }
            
@@ -285,7 +285,7 @@ class HomePostCell: MDCCardCollectionCell , UICollectionViewDataSource, UICollec
     }
     
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, insetForSectionAt section: Int) -> UIEdgeInsets {
-        return UIEdgeInsetsMake(0, 0, 0, 0)
+        return UIEdgeInsets(top: 0, left: 0, bottom: 0, right: 0)
     }
     
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
@@ -299,7 +299,7 @@ class HomePostCell: MDCCardCollectionCell , UICollectionViewDataSource, UICollec
         var attributedText: NSMutableAttributedString?
         attributedText = NSMutableAttributedString(string: "" , attributes: attributeCaption)
         attributedText?.append(NSMutableAttributedString(string: userName , attributes:attributeCaption))
-        attributedText?.append(NSMutableAttributedString(string: " : " , attributes: attributeCaption))
+        attributedText?.append(NSMutableAttributedString(string: "" , attributes: attributeCaption))
         attributedText?.append(NSMutableAttributedString(string: caption , attributes: attributeCaption))
      
         return attributedText!
@@ -314,7 +314,7 @@ class HomePostCell: MDCCardCollectionCell , UICollectionViewDataSource, UICollec
         self.likeBadge.isHidden = true
         var attributedText: NSMutableAttributedString?
         let sLikes = "\(likes)"
-        attributedText = NSMutableAttributedString(string: sLikes , attributes: [NSAttributedStringKey.font: UIFont.boldSystemFont(ofSize: 8)])
+        attributedText = NSMutableAttributedString(string: sLikes , attributes: [NSAttributedString.Key.font: UIFont.boldSystemFont(ofSize: 8)])
         self.likeBadge.attributedText = attributedText
         hideLikesBadge(likes)
     }
@@ -328,7 +328,7 @@ class HomePostCell: MDCCardCollectionCell , UICollectionViewDataSource, UICollec
         self.commentBadge.isHidden = true
         var attributedText: NSMutableAttributedString?
         let sLikes = "\(likes)"
-        attributedText = NSMutableAttributedString(string: sLikes , attributes: [NSAttributedStringKey.font: UIFont.boldSystemFont(ofSize: 8)])
+        attributedText = NSMutableAttributedString(string: sLikes , attributes: [NSAttributedString.Key.font: UIFont.boldSystemFont(ofSize: 8)])
         self.commentBadge.attributedText = attributedText
         hideCommentBadge(likes)
     }
@@ -344,7 +344,7 @@ class HomePostCell: MDCCardCollectionCell , UICollectionViewDataSource, UICollec
         self.bookMarkBadge.isHidden = true
         var attributedText: NSMutableAttributedString?
         let sLikes = "\(likes)"
-        attributedText = NSMutableAttributedString(string: sLikes , attributes: [NSAttributedStringKey.font: UIFont.boldSystemFont(ofSize: 8)])
+        attributedText = NSMutableAttributedString(string: sLikes , attributes: [NSAttributedString.Key.font: UIFont.boldSystemFont(ofSize: 8)])
         self.bookMarkBadge.attributedText = attributedText
         hideMarkBadge(likes)
     }
@@ -378,7 +378,7 @@ class HomePostCell: MDCCardCollectionCell , UICollectionViewDataSource, UICollec
         let button = UIButton(type: .system)
         //button.setImage(#imageLiteral(resourceName: "Heart_Unselected-1").withRenderingMode(.alwaysOriginal), for: .normal)
         let origImage = UIImage(named: "Heart_Unselected-1");
-        let tintedImage = origImage?.withRenderingMode(UIImageRenderingMode.alwaysTemplate)
+        let tintedImage = origImage?.withRenderingMode(UIImage.RenderingMode.alwaysTemplate)
         button.setImage(tintedImage, for: .normal)
         button.tintColor = UIColor.red
         button.addTarget(self, action: #selector(handleLike), for: .touchUpInside)
@@ -408,7 +408,7 @@ class HomePostCell: MDCCardCollectionCell , UICollectionViewDataSource, UICollec
         let badge = BadgeSwift()
         badge.text = ""
         badge.insets = CGSize(width: 2, height: 2)
-        badge.font = UIFont.preferredFont(forTextStyle: UIFontTextStyle.caption1)
+        badge.font = UIFont.preferredFont(forTextStyle: UIFont.TextStyle.caption1)
         badge.textColor = UIColor.white
         badge.badgeColor = UIColor.red
         badge.shadowOpacityBadge = 0.5
@@ -425,7 +425,7 @@ class HomePostCell: MDCCardCollectionCell , UICollectionViewDataSource, UICollec
         let badge = BadgeSwift()
         badge.text = ""
         badge.insets = CGSize(width: 2, height: 2)
-        badge.font = UIFont.preferredFont(forTextStyle: UIFontTextStyle.caption1)
+        badge.font = UIFont.preferredFont(forTextStyle: UIFont.TextStyle.caption1)
         badge.textColor = UIColor.white
         badge.badgeColor = UIColor.red
         badge.shadowOpacityBadge = 0.5
@@ -441,7 +441,7 @@ class HomePostCell: MDCCardCollectionCell , UICollectionViewDataSource, UICollec
         let badge = BadgeSwift()
         badge.text = ""
         badge.insets = CGSize(width: 2, height: 2)
-        badge.font = UIFont.preferredFont(forTextStyle: UIFontTextStyle.caption1)
+        badge.font = UIFont.preferredFont(forTextStyle: UIFont.TextStyle.caption1)
         badge.textColor = UIColor.white
         badge.badgeColor = UIColor.red
         badge.shadowOpacityBadge = 0.5
@@ -463,7 +463,7 @@ class HomePostCell: MDCCardCollectionCell , UICollectionViewDataSource, UICollec
     lazy var commentButton: UIButton = {
         let button = UIButton(type: .system)
         let origImage = UIImage(named: "ic_comment");
-        let tintedImage = origImage?.withRenderingMode(UIImageRenderingMode.alwaysTemplate)
+        let tintedImage = origImage?.withRenderingMode(UIImage.RenderingMode.alwaysTemplate)
         button.setImage(tintedImage, for: .normal)
         button.tintColor = .blue
         button.addTarget(self, action: #selector(handleComment), for: .touchUpInside)
@@ -473,7 +473,7 @@ class HomePostCell: MDCCardCollectionCell , UICollectionViewDataSource, UICollec
     lazy var bookmarkButton: UIButton = {
         let button = UIButton(type: .system)
         let origImage = UIImage(named: "ic_bookmark_border");
-        let tintedImage = origImage?.withRenderingMode(UIImageRenderingMode.alwaysTemplate)
+        let tintedImage = origImage?.withRenderingMode(UIImage.RenderingMode.alwaysTemplate)
         button.setImage(tintedImage, for: .normal)
         button.tintColor = UIColor.purple
         button.addTarget(self, action: #selector(handleBookmark), for: .touchUpInside)
@@ -483,7 +483,7 @@ class HomePostCell: MDCCardCollectionCell , UICollectionViewDataSource, UICollec
     lazy var mapButton: UIButton = {
         let button = UIButton(type: .system)
         let origImage = UIImage(named: "ic_map");
-        let tintedImage = origImage?.withRenderingMode(UIImageRenderingMode.alwaysTemplate)
+        let tintedImage = origImage?.withRenderingMode(UIImage.RenderingMode.alwaysTemplate)
         button.setImage(tintedImage, for: .normal)
         button.tintColor = UIColor.purple
         button.addTarget(self, action: #selector(handleMapButton), for: .touchUpInside)
@@ -540,9 +540,8 @@ class HomePostCell: MDCCardCollectionCell , UICollectionViewDataSource, UICollec
     }()
     
     
-    override init(frame: CGRect) {
-        super.init(frame: frame)
-        
+    func setupCollectionCell()
+    {
         backgroundColor = UIColor.collectionCell()
         
         let topDividerView = UIView()
@@ -551,7 +550,7 @@ class HomePostCell: MDCCardCollectionCell , UICollectionViewDataSource, UICollec
         /*
          let bottomDividerView = UIView()
          bottomDividerView.backgroundColor = UIColor.collectionCell()
-        */
+         */
         
         imageCollectionView.dataSource = self
         imageCollectionView.delegate = self
@@ -566,7 +565,7 @@ class HomePostCell: MDCCardCollectionCell , UICollectionViewDataSource, UICollec
         addSubview(shareButton)
         addSubview(likeButton)
         addSubview(timeAgoLabel)
-       
+        
         addSubview(commentButton)
         addSubview(bookmarkButton)
         addSubview(mapButton)
@@ -576,20 +575,20 @@ class HomePostCell: MDCCardCollectionCell , UICollectionViewDataSource, UICollec
         addSubview(likeBadge)
         addSubview(bookMarkBadge)
         addSubview(commentBadge)
-    
+        
         imageCollectionView.register(PostImage.self, forCellWithReuseIdentifier: horizontalCellId)
         
         
         userProfileImageView.anchor(top: topAnchor, left: leftAnchor, bottom: nil,
                                     right: nil, paddingTop: 8, paddingLeft: 8,
                                     paddingBottom: 0, paddingRight: 0, width: 40, height: 40)
-
+        
         userProfileImageView.layer.cornerRadius = 40 / 2
-
+        
         usernameLabel.anchor(top: userProfileImageView.topAnchor, left: userProfileImageView.rightAnchor, bottom: nil,right: nil, paddingTop: 0, paddingLeft: 8, paddingBottom: 0, paddingRight: 0, width: frame.size.width - 100 , height: 40)
         shareButton.anchor(top: userProfileImageView.topAnchor, left: nil, bottom: nil,right: rightAnchor, paddingTop: 0, paddingLeft: 8, paddingBottom: 0, paddingRight: 8, width: 35, height: 35)
-
-
+        
+        
         //usernameLabel.anchor(top: userProfileImageView.topAnchor, left: userProfileImageView.rightAnchor, bottom: nil,right: nil, paddingTop: 0, paddingLeft: 8, paddingBottom: 0, paddingRight: 0, width: frame.size.width - 100 , height: 40)
         shareButton.anchor(top: userProfileImageView.topAnchor, left: nil, bottom: nil,right: rightAnchor, paddingTop: 0, paddingLeft: 8, paddingBottom: 0, paddingRight: 8, width: 35, height: 35)
         
@@ -601,7 +600,7 @@ class HomePostCell: MDCCardCollectionCell , UICollectionViewDataSource, UICollec
         mapButton.anchor (top: imageCollectionView.bottomAnchor, left: bookmarkButton.rightAnchor, bottom: nil, right: nil, paddingTop: 0, paddingLeft: 4, paddingBottom: 0, paddingRight: -15  , width: 50, height: 40)
         
         timeAgoLabel.anchor (top: imageCollectionView.bottomAnchor, left: bookmarkButton.rightAnchor, bottom: nil, right: nil, paddingTop: 0, paddingLeft: 100, paddingBottom: 0, paddingRight: 0 , width: 0, height: 20)
-       
+        
         commentBadge.anchor(top: topDividerView.topAnchor, left: commentButton.rightAnchor, bottom: nil, right: nil, paddingTop: 2, paddingLeft: -20, paddingBottom: 0, paddingRight: 0 , width: 0, height: 0)
         likeBadge.anchor(top: topDividerView.topAnchor, left: likeButton.rightAnchor, bottom: nil, right: nil, paddingTop: 2, paddingLeft: -20, paddingBottom: 0, paddingRight: 0 , width: 0, height: 0)
         bookMarkBadge.anchor(top: topDividerView.topAnchor, left: bookmarkButton.rightAnchor, bottom: nil, right: nil, paddingTop: 2, paddingLeft: -22, paddingBottom: 0, paddingRight: 0 , width: 0, height: 0)
@@ -610,8 +609,13 @@ class HomePostCell: MDCCardCollectionCell , UICollectionViewDataSource, UICollec
         //bottomDividerView.anchor(top: captionLabel.bottomAnchor, left: leftAnchor, bottom: nil, right: rightAnchor,paddingTop: 5 , paddingLeft: 0, paddingBottom: 0, paddingRight: 5, width: 0, height: 0.5)
         
         /* Place a component here to view the last three comments if any ... if none hide the component */
-       
+        
 
+    }
+    
+    override init(frame: CGRect) {
+        super.init(frame: frame)
+        setupCollectionCell()
     }
     
     required init?(coder aDecoder: NSCoder) {

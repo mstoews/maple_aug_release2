@@ -137,7 +137,7 @@ class MapViewCell: UICollectionViewCell,
         let button = UIButton(type: .system)
         //
         let title = "Navigation"
-        let attributedText = NSMutableAttributedString(string: title, attributes: [NSAttributedStringKey.font: UIFont.boldSystemFont(ofSize: 14)])
+        let attributedText = NSMutableAttributedString(string: title, attributes: [NSAttributedString.Key.font: UIFont.boldSystemFont(ofSize: 14)])
         button.setImage(#imageLiteral(resourceName: "ic_map"), for: .normal)
         button.setAttributedTitle(attributedText, for: .normal)
         button.addTarget(self, action: #selector(handleOpenMapView), for: .touchUpInside)

@@ -113,12 +113,12 @@ class ProductController: UICollectionViewController, ProductCellDelegate, Produc
     
     override init(collectionViewLayout layout: UICollectionViewLayout) {
         super.init(collectionViewLayout: layout)
-        addChildViewController(headerViewController)
+        addChild(headerViewController)
     }
     
     required init?(coder aDecoder: NSCoder) {
         super.init(coder: aDecoder)
-         addChildViewController(headerViewController)
+        addChild(headerViewController)
     }
     
     override func scrollViewDidScroll(_ scrollView: UIScrollView) {
@@ -391,7 +391,7 @@ class ProductController: UICollectionViewController, ProductCellDelegate, Produc
         NotificationCenter.default.addObserver(self, selector: #selector(handleUpdateFeed), name: SharePhotoController.updateFeedNotificationName, object: nil)
         collectionView?.backgroundColor = UIColor.collectionBackGround()
         collectionView?.register(ProductCell.self, forCellWithReuseIdentifier: productCellId)
-        collectionView?.register(ProductHeaderCard.self, forSupplementaryViewOfKind: UICollectionElementKindSectionHeader, withReuseIdentifier: productHeaderId)
+        collectionView?.register(ProductHeaderCard.self, forSupplementaryViewOfKind: UICollectionView.elementKindSectionHeader, withReuseIdentifier: productHeaderId)
         let refreshControl = UIRefreshControl()
         refreshControl.addTarget(self, action: #selector(handleRefresh), for: .valueChanged)
         collectionView?.refreshControl = refreshControl
@@ -401,7 +401,7 @@ class ProductController: UICollectionViewController, ProductCellDelegate, Produc
         
         headerViewController.view.frame = view.bounds
         view.addSubview(headerViewController.view)
-        headerViewController.didMove(toParentViewController: self)
+        headerViewController.didMove(toParent: self)
         
     }
     
@@ -611,7 +611,7 @@ class ProductController: UICollectionViewController, ProductCellDelegate, Produc
         
         let approximateWidthOfBioTextView = view.frame.width
         let size = CGSize(width: approximateWidthOfBioTextView, height: 1000)
-        let attributes = [NSAttributedStringKey.font : UIFont.systemFont(ofSize: CGFloat(15))]
+        let attributes = [NSAttributedString.Key.font : UIFont.systemFont(ofSize: CGFloat(15))]
         let post = posts[indexPath.item]
         let estimatedFrame = NSString(string: post.description).boundingRect(with: size, options: .usesLineFragmentOrigin, attributes: attributes, context: nil)
         return CGSize(width: view.frame.width - 15 , height: estimatedFrame.height + view.frame.width - 45 )
@@ -662,7 +662,7 @@ class ProductController: UICollectionViewController, ProductCellDelegate, Produc
 //    }
 //    
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, insetForSectionAt section: Int) -> UIEdgeInsets {
-        return UIEdgeInsetsMake(7, 1, 1, 1)
+        return UIEdgeInsets(top: 7, left: 1, bottom: 1, right: 1)
     }
     
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, referenceSizeForHeaderInSection section: Int) -> CGSize {

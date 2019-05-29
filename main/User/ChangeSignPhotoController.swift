@@ -193,7 +193,7 @@ class ChangeSignPhotoController: UIViewController, UIImagePickerControllerDelega
         spinner = displaySpinner()
         
            guard let image = self.plusPhotoButton.imageView?.image else {
-                let alertController = UIAlertController(title: "", message: "select a photo", preferredStyle: UIAlertControllerStyle.actionSheet)
+            let alertController = UIAlertController(title: "", message: "select a photo", preferredStyle: UIAlertController.Style.actionSheet)
                 let cancelAction = UIAlertAction(title: "戻る", style: .cancel) { (result : UIAlertAction) -> Void in
                     //action when pressed button
                 }
@@ -317,15 +317,41 @@ class ChangeSignPhotoController: UIViewController, UIImagePickerControllerDelega
         print("Photos value is \(sender.isOn)")
     }
     
+    private let greenView = UIView()
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         
         let Width : CGFloat  = 80
         
         fetchUser()
-        view.backgroundColor = .white
-        view.addSubview(plusPhotoButton)
-        plusPhotoButton.anchor(top: view.topAnchor, left: nil, bottom: nil, right: nil, paddingTop: 100 , paddingLeft: 0, paddingBottom: 0, paddingRight: 0, width: Width, height: Width)
+        greenView.translatesAutoresizingMaskIntoConstraints = false
+        greenView.backgroundColor = .white
+        view.addSubview(greenView)
+        
+        let margins = view.layoutMarginsGuide
+        NSLayoutConstraint.activate([
+            greenView.leadingAnchor.constraint(equalTo: margins.leadingAnchor),
+            greenView.trailingAnchor.constraint(equalTo: margins.trailingAnchor)
+            ])
+        
+        if #available(iOS 11, *) {
+            let guide = view.safeAreaLayoutGuide
+            NSLayoutConstraint.activate([
+                greenView.topAnchor.constraint(equalToSystemSpacingBelow: guide.topAnchor, multiplier: 1.0),
+                guide.bottomAnchor.constraint(equalToSystemSpacingBelow: greenView.bottomAnchor, multiplier: 1.0)
+                ])
+            
+        } else {
+            let standardSpacing: CGFloat = 8.0
+            NSLayoutConstraint.activate([
+                greenView.topAnchor.constraint(equalTo: topLayoutGuide.bottomAnchor, constant: standardSpacing),
+                bottomLayoutGuide.topAnchor.constraint(equalTo: greenView.bottomAnchor, constant: standardSpacing)
+                ])
+        }
+        greenView.addSubview(plusPhotoButton)
+        plusPhotoButton.anchor(top: greenView.topAnchor, left: nil, bottom: nil, right: nil, paddingTop: 0 , paddingLeft: 0, paddingBottom: 0, paddingRight: 0, width: Width, height: Width)
+        
         plusPhotoButton.layer.cornerRadius =  Width  / 2
         plusPhotoButton.clipsToBounds = true
         plusPhotoButton.centerXAnchor.constraint(equalTo: view.centerXAnchor).isActive = true

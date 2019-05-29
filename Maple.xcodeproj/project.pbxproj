@@ -13,6 +13,7 @@
 		024EDBC32078EFFA0069C77F /* CommentCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 48B4450C1FE7342200DFD412 /* CommentCell.swift */; };
 		024EDBC52078EFFD0069C77F /* CommentInputAccessoryView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 02DC63432001BDD600AE9662 /* CommentInputAccessoryView.swift */; };
 		0252AF3822938A46004DA3BB /* AdvancedNavigationController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0252AF3722938A46004DA3BB /* AdvancedNavigationController.swift */; };
+		02BB2407229EB3A70020601D /* BaseCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 02BB2406229EB3A70020601D /* BaseCell.swift */; };
 		02C40A4A211A8F9300A73B51 /* SharePhotoControllerMD.swift in Sources */ = {isa = PBXBuildFile; fileRef = 02C40A49211A8F9300A73B51 /* SharePhotoControllerMD.swift */; };
 		02D8690F228233530093BD18 /* MapBoxViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 02D8690E228233530093BD18 /* MapBoxViewController.swift */; };
 		02D869112285A0C70093BD18 /* Navigation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 02D869102285A0C70093BD18 /* Navigation.swift */; };
@@ -28,17 +29,13 @@
 		482FC10520DE15D900E23DAE /* SharePhotoController+Save.swift in Sources */ = {isa = PBXBuildFile; fileRef = 482FC0FC20DE15CC00E23DAE /* SharePhotoController+Save.swift */; };
 		482FC10620DE15D900E23DAE /* MapCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 482FC0FD20DE15D000E23DAE /* MapCell.swift */; };
 		482FC10720DE15D900E23DAE /* PostImageCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 482FC0FE20DE15D400E23DAE /* PostImageCell.swift */; };
-		482FC11820DE168200E23DAE /* LoginController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 482FC10920DE164C00E23DAE /* LoginController.swift */; };
 		482FC11920DE168200E23DAE /* FPAuthPickerViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 482FC10A20DE165000E23DAE /* FPAuthPickerViewController.swift */; };
 		482FC11A20DE168200E23DAE /* UserProfileGridCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 482FC10B20DE165300E23DAE /* UserProfileGridCell.swift */; };
-		482FC11B20DE168200E23DAE /* SignUpController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 482FC10C20DE165800E23DAE /* SignUpController.swift */; };
 		482FC11C20DE168200E23DAE /* UserProfileController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 482FC10D20DE165B00E23DAE /* UserProfileController.swift */; };
-		482FC11D20DE168200E23DAE /* SettingCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 482FC10E20DE165F00E23DAE /* SettingCell.swift */; };
 		482FC11E20DE168200E23DAE /* FPAuthPickerViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 482FC10F20DE166300E23DAE /* FPAuthPickerViewController.xib */; };
 		482FC11F20DE168200E23DAE /* UserGridPostCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 482FC11020DE166700E23DAE /* UserGridPostCell.swift */; };
 		482FC12020DE168200E23DAE /* ChangeSignPhotoController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 482FC11120DE166B00E23DAE /* ChangeSignPhotoController.swift */; };
 		482FC12120DE168200E23DAE /* UserGridCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 482FC11220DE166E00E23DAE /* UserGridCell.swift */; };
-		482FC12220DE168200E23DAE /* UserPostSettingsController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 482FC11320DE167200E23DAE /* UserPostSettingsController.swift */; };
 		482FC12320DE168200E23DAE /* UserProfilePhotoCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 482FC11420DE167600E23DAE /* UserProfilePhotoCell.swift */; };
 		482FC12520DE168200E23DAE /* MapViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 482FC11620DE167E00E23DAE /* MapViewCell.swift */; };
 		482FC12620DE168200E23DAE /* UserProfileHeader.swift in Sources */ = {isa = PBXBuildFile; fileRef = 482FC11720DE168200E23DAE /* UserProfileHeader.swift */; };
@@ -112,16 +109,13 @@
 		4876BCA020DA16280057E5E0 /* CustomAnimationPresentor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4876BC8820DA16280057E5E0 /* CustomAnimationPresentor.swift */; };
 		4876BCA120DA16280057E5E0 /* PhotoSelectorHeader.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4876BC8920DA16280057E5E0 /* PhotoSelectorHeader.swift */; };
 		4876BCA220DA16280057E5E0 /* Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4876BC8A20DA16280057E5E0 /* Extensions.swift */; };
-		4876BCA320DA16280057E5E0 /* PhotoSelectorController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4876BC8B20DA16280057E5E0 /* PhotoSelectorController.swift */; };
 		4876BCA520DA16290057E5E0 /* FirestoreUtilities.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4876BC8D20DA16280057E5E0 /* FirestoreUtilities.swift */; };
-		4876BCAB20DA16290057E5E0 /* PhotoSelectorCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4876BC9320DA16280057E5E0 /* PhotoSelectorCell.swift */; };
 		4876BCAD20DA16290057E5E0 /* CustomImageView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4876BC9520DA16280057E5E0 /* CustomImageView.swift */; };
 		4876BCAE20DA16290057E5E0 /* PhotoViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4876BC9620DA16280057E5E0 /* PhotoViewModel.swift */; };
 		4876BD0120DA164E0057E5E0 /* Localizable.strings in Resources */ = {isa = PBXBuildFile; fileRef = 4876BCB120DA164E0057E5E0 /* Localizable.strings */; };
 		4876BD0220DA164E0057E5E0 /* MapLocationSearchController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4876BCBD20DA164E0057E5E0 /* MapLocationSearchController.swift */; };
 		4876BD0320DA164E0057E5E0 /* MapSearchController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4876BCC520DA164E0057E5E0 /* MapSearchController.swift */; };
 		4876BD0620DA164E0057E5E0 /* MapLocationController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4876BCCA20DA164E0057E5E0 /* MapLocationController.swift */; };
-		4876BD0720DA164E0057E5E0 /* MapShowSettings.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4876BCCD20DA164E0057E5E0 /* MapShowSettings.swift */; };
 		4876BD0820DA164E0057E5E0 /* LocationSearchCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4876BCD120DA164E0057E5E0 /* LocationSearchCell.swift */; };
 		4876BD0920DA164E0057E5E0 /* PickAPlaceViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 4876BCD620DA164E0057E5E0 /* PickAPlaceViewController.xib */; };
 		4876BD0A20DA164E0057E5E0 /* PickAPlaceViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4876BCD720DA164E0057E5E0 /* PickAPlaceViewController.swift */; };
@@ -176,6 +170,7 @@
 		0225F2E120FE0F7300137084 /* UserImageCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UserImageCell.swift; sourceTree = "<group>"; };
 		024EDB9F2078EE760069C77F /* maple_release.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; name = maple_release.app; path = Maple_release.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		0252AF3722938A46004DA3BB /* AdvancedNavigationController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AdvancedNavigationController.swift; sourceTree = "<group>"; };
+		02BB2406229EB3A70020601D /* BaseCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BaseCell.swift; sourceTree = "<group>"; };
 		02C40A49211A8F9300A73B51 /* SharePhotoControllerMD.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SharePhotoControllerMD.swift; sourceTree = "<group>"; };
 		02D8690E228233530093BD18 /* MapBoxViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MapBoxViewController.swift; sourceTree = "<group>"; };
 		02D869102285A0C70093BD18 /* Navigation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Navigation.swift; sourceTree = "<group>"; };
@@ -192,17 +187,13 @@
 		482FC0FC20DE15CC00E23DAE /* SharePhotoController+Save.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "SharePhotoController+Save.swift"; sourceTree = "<group>"; };
 		482FC0FD20DE15D000E23DAE /* MapCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MapCell.swift; sourceTree = "<group>"; };
 		482FC0FE20DE15D400E23DAE /* PostImageCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PostImageCell.swift; sourceTree = "<group>"; };
-		482FC10920DE164C00E23DAE /* LoginController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LoginController.swift; sourceTree = "<group>"; };
 		482FC10A20DE165000E23DAE /* FPAuthPickerViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FPAuthPickerViewController.swift; sourceTree = "<group>"; };
 		482FC10B20DE165300E23DAE /* UserProfileGridCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UserProfileGridCell.swift; sourceTree = "<group>"; };
-		482FC10C20DE165800E23DAE /* SignUpController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SignUpController.swift; sourceTree = "<group>"; };
 		482FC10D20DE165B00E23DAE /* UserProfileController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UserProfileController.swift; sourceTree = "<group>"; };
-		482FC10E20DE165F00E23DAE /* SettingCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SettingCell.swift; sourceTree = "<group>"; };
 		482FC10F20DE166300E23DAE /* FPAuthPickerViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = FPAuthPickerViewController.xib; sourceTree = "<group>"; };
 		482FC11020DE166700E23DAE /* UserGridPostCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UserGridPostCell.swift; sourceTree = "<group>"; };
 		482FC11120DE166B00E23DAE /* ChangeSignPhotoController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ChangeSignPhotoController.swift; sourceTree = "<group>"; };
 		482FC11220DE166E00E23DAE /* UserGridCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UserGridCell.swift; sourceTree = "<group>"; };
-		482FC11320DE167200E23DAE /* UserPostSettingsController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UserPostSettingsController.swift; sourceTree = "<group>"; };
 		482FC11420DE167600E23DAE /* UserProfilePhotoCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UserProfilePhotoCell.swift; sourceTree = "<group>"; };
 		482FC11620DE167E00E23DAE /* MapViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MapViewCell.swift; sourceTree = "<group>"; };
 		482FC11720DE168200E23DAE /* UserProfileHeader.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UserProfileHeader.swift; sourceTree = "<group>"; };
@@ -318,9 +309,7 @@
 		4876BC8820DA16280057E5E0 /* CustomAnimationPresentor.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CustomAnimationPresentor.swift; sourceTree = "<group>"; };
 		4876BC8920DA16280057E5E0 /* PhotoSelectorHeader.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PhotoSelectorHeader.swift; sourceTree = "<group>"; };
 		4876BC8A20DA16280057E5E0 /* Extensions.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Extensions.swift; sourceTree = "<group>"; };
-		4876BC8B20DA16280057E5E0 /* PhotoSelectorController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PhotoSelectorController.swift; sourceTree = "<group>"; };
 		4876BC8D20DA16280057E5E0 /* FirestoreUtilities.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FirestoreUtilities.swift; sourceTree = "<group>"; };
-		4876BC9320DA16280057E5E0 /* PhotoSelectorCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PhotoSelectorCell.swift; sourceTree = "<group>"; };
 		4876BC9520DA16280057E5E0 /* CustomImageView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CustomImageView.swift; sourceTree = "<group>"; };
 		4876BC9620DA16280057E5E0 /* PhotoViewModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PhotoViewModel.swift; sourceTree = "<group>"; };
 		4876BCB220DA164E0057E5E0 /* de */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = de; path = de.lproj/Localizable.strings; sourceTree = "<group>"; };
@@ -346,7 +335,6 @@
 		4876BCCA20DA164E0057E5E0 /* MapLocationController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MapLocationController.swift; sourceTree = "<group>"; };
 		4876BCCB20DA164E0057E5E0 /* ms */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = ms; path = ms.lproj/Localizable.strings; sourceTree = "<group>"; };
 		4876BCCC20DA164E0057E5E0 /* sv */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = sv; path = sv.lproj/Localizable.strings; sourceTree = "<group>"; };
-		4876BCCD20DA164E0057E5E0 /* MapShowSettings.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MapShowSettings.swift; sourceTree = "<group>"; };
 		4876BCCE20DA164E0057E5E0 /* cs */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = cs; path = cs.lproj/Localizable.strings; sourceTree = "<group>"; };
 		4876BCCF20DA164E0057E5E0 /* en_IN */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en_IN; path = en_IN.lproj/Localizable.strings; sourceTree = "<group>"; };
 		4876BCD020DA164E0057E5E0 /* ko */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = ko; path = ko.lproj/Localizable.strings; sourceTree = "<group>"; };
@@ -654,15 +642,12 @@
 				482FC11120DE166B00E23DAE /* ChangeSignPhotoController.swift */,
 				482FC10A20DE165000E23DAE /* FPAuthPickerViewController.swift */,
 				482FC10F20DE166300E23DAE /* FPAuthPickerViewController.xib */,
-				482FC10920DE164C00E23DAE /* LoginController.swift */,
 				482FC11620DE167E00E23DAE /* MapViewCell.swift */,
-				482FC10E20DE165F00E23DAE /* SettingCell.swift */,
-				482FC10C20DE165800E23DAE /* SignUpController.swift */,
 				482FC11020DE166700E23DAE /* UserGridPostCell.swift */,
-				482FC11320DE167200E23DAE /* UserPostSettingsController.swift */,
 				482FC10B20DE165300E23DAE /* UserProfileGridCell.swift */,
 				482FC11420DE167600E23DAE /* UserProfilePhotoCell.swift */,
 				4876BB2620DA14880057E5E0 /* Amaranth-Bold.otf */,
+				02BB2406229EB3A70020601D /* BaseCell.swift */,
 			);
 			name = User;
 			path = main/User;
@@ -713,8 +698,6 @@
 				4876BC8820DA16280057E5E0 /* CustomAnimationPresentor.swift */,
 				4876BC8920DA16280057E5E0 /* PhotoSelectorHeader.swift */,
 				4876BC8A20DA16280057E5E0 /* Extensions.swift */,
-				4876BC8B20DA16280057E5E0 /* PhotoSelectorController.swift */,
-				4876BC9320DA16280057E5E0 /* PhotoSelectorCell.swift */,
 				4876BC9520DA16280057E5E0 /* CustomImageView.swift */,
 				4876BC9620DA16280057E5E0 /* PhotoViewModel.swift */,
 			);
@@ -730,14 +713,9 @@
 				4876BCC520DA164E0057E5E0 /* MapSearchController.swift */,
 				4876BCC620DA164E0057E5E0 /* Resources */,
 				4876BCCA20DA164E0057E5E0 /* MapLocationController.swift */,
-				4876BCCD20DA164E0057E5E0 /* MapShowSettings.swift */,
 				4876BCD120DA164E0057E5E0 /* LocationSearchCell.swift */,
 				4876BCD420DA164E0057E5E0 /* ViewControllers */,
 				4876BCE920DA164E0057E5E0 /* Support */,
-				4876BCF320DA164E0057E5E0 /* ShadowView.swift */,
-				4876BCFC20DA164E0057E5E0 /* RoundedButton.swift */,
-				02D8690E228233530093BD18 /* MapBoxViewController.swift */,
-				0252AF3722938A46004DA3BB /* AdvancedNavigationController.swift */,
 			);
 			name = GoogleMapPicker;
 			path = main/GoogleMapPicker;
@@ -798,6 +776,10 @@
 		4876BCE920DA164E0057E5E0 /* Support */ = {
 			isa = PBXGroup;
 			children = (
+				4876BCF320DA164E0057E5E0 /* ShadowView.swift */,
+				4876BCFC20DA164E0057E5E0 /* RoundedButton.swift */,
+				02D8690E228233530093BD18 /* MapBoxViewController.swift */,
+				0252AF3722938A46004DA3BB /* AdvancedNavigationController.swift */,
 				4876BCEA20DA164E0057E5E0 /* NotificationObserver.swift */,
 				4876BCEB20DA164E0057E5E0 /* Styles.swift */,
 				4876BCEC20DA164E0057E5E0 /* MapController.swift */,
@@ -1338,7 +1320,6 @@
 			buildActionMask = 2147483647;
 			files = (
 				482FC11920DE168200E23DAE /* FPAuthPickerViewController.swift in Sources */,
-				4876BD0720DA164E0057E5E0 /* MapShowSettings.swift in Sources */,
 				48443E7A210990AE00A21FC4 /* GMULineString.m in Sources */,
 				4876BB8C20DA14CC0057E5E0 /* NotificationPostCell.swift in Sources */,
 				48443E79210990AE00A21FC4 /* GMUPoint.m in Sources */,
@@ -1357,6 +1338,7 @@
 				482FC12120DE168200E23DAE /* UserGridCell.swift in Sources */,
 				4800DAFA2272B8CA00B326FC /* APservice.swift in Sources */,
 				48443E6F210990AE00A21FC4 /* GMUGradient.m in Sources */,
+				02BB2407229EB3A70020601D /* BaseCell.swift in Sources */,
 				48443E76210990AE00A21FC4 /* GMUFeature.m in Sources */,
 				48482FC020DA18A00031EBFF /* Location.swift in Sources */,
 				48443E6C210990AE00A21FC4 /* GMUDefaultClusterIconGenerator.m in Sources */,
@@ -1372,7 +1354,6 @@
 				4876BD1C20DA164E0057E5E0 /* CGRect+Extensions.swift in Sources */,
 				4876BD0620DA164E0057E5E0 /* MapLocationController.swift in Sources */,
 				48482FCC20DA18A00031EBFF /* Post.swift in Sources */,
-				482FC11820DE168200E23DAE /* LoginController.swift in Sources */,
 				48443E71210990AE00A21FC4 /* GMUKMLParser.m in Sources */,
 				4876BCAD20DA16290057E5E0 /* CustomImageView.swift in Sources */,
 				4876BD1720DA164E0057E5E0 /* NotificationObserver.swift in Sources */,
@@ -1383,7 +1364,6 @@
 				482FC10520DE15D900E23DAE /* SharePhotoController+Save.swift in Sources */,
 				4878C10120F7486F0054F227 /* ShareHeaderCell.swift in Sources */,
 				4876BC9D20DA16280057E5E0 /* CustomAnimationDismisser.swift in Sources */,
-				4876BCAB20DA16290057E5E0 /* PhotoSelectorCell.swift in Sources */,
 				48443E77210990AE00A21FC4 /* GMUGroundOverlay.m in Sources */,
 				4876BC9E20DA16280057E5E0 /* CircleImage.swift in Sources */,
 				0252AF3822938A46004DA3BB /* AdvancedNavigationController.swift in Sources */,
@@ -1420,7 +1400,6 @@
 				48482FC820DA18A00031EBFF /* User.swift in Sources */,
 				48443E7B210990AE00A21FC4 /* GMUGeoJSONParser.m in Sources */,
 				48443E6B210990AE00A21FC4 /* GMUDefaultClusterRenderer.m in Sources */,
-				482FC12220DE168200E23DAE /* UserPostSettingsController.swift in Sources */,
 				482FC13220DE236D00E23DAE /* SearchAlgoliaCollectionView.swift in Sources */,
 				482FC11A20DE168200E23DAE /* UserProfileGridCell.swift in Sources */,
 				482FC12520DE168200E23DAE /* MapViewCell.swift in Sources */,
@@ -1429,7 +1408,6 @@
 				48482FC720DA18A00031EBFF /* CategoryPicker.swift in Sources */,
 				48443E78210990AE00A21FC4 /* GMUStyle.m in Sources */,
 				48443E66210990AE00A21FC4 /* GMUClusterManager.m in Sources */,
-				4876BCA320DA16280057E5E0 /* PhotoSelectorController.swift in Sources */,
 				48443E6D210990AE00A21FC4 /* GMUStaticCluster.m in Sources */,
 				482FC13920DE236D00E23DAE /* InstantSearch.swift in Sources */,
 				4876BD1B20DA164E0057E5E0 /* MapCollectionView.swift in Sources */,
@@ -1439,7 +1417,6 @@
 				48482FC920DA18A00031EBFF /* Photo.swift in Sources */,
 				482FC13320DE236D00E23DAE /* LocationRecord.swift in Sources */,
 				482FC13520DE236D00E23DAE /* AlgoliaManager.swift in Sources */,
-				482FC11B20DE168200E23DAE /* SignUpController.swift in Sources */,
 				4876BD0F20DA164E0057E5E0 /* PlaceDetailTableViewDataSource.swift in Sources */,
 				48443E6E210990AE00A21FC4 /* GMUWeightedLatLng.m in Sources */,
 				02D8690F228233530093BD18 /* MapBoxViewController.swift in Sources */,
@@ -1458,7 +1435,6 @@
 				4876BD1920DA164E0057E5E0 /* MapController.swift in Sources */,
 				48482FC420DA18A00031EBFF /* Comment.swift in Sources */,
 				482FC13420DE236D00E23DAE /* PostSearchCollectionHeader.swift in Sources */,
-				482FC11D20DE168200E23DAE /* SettingCell.swift in Sources */,
 				48482FC320DA18A00031EBFF /* LocalCollection.swift in Sources */,
 				4876BCA520DA16290057E5E0 /* FirestoreUtilities.swift in Sources */,
 				482FC12320DE168200E23DAE /* UserProfilePhotoCell.swift in Sources */,
@@ -1824,7 +1800,7 @@
 				SWIFT_INSTALL_OBJC_HEADER = YES;
 				SWIFT_OBJC_BRIDGING_HEADER = "maple_release/maple-release-Bridging-Header.h";
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
-				SWIFT_VERSION = 4.0;
+				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = 1;
 				VERSIONING_SYSTEM = "apple-generic";
 			};
@@ -1878,7 +1854,7 @@
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_INSTALL_OBJC_HEADER = YES;
 				SWIFT_OBJC_BRIDGING_HEADER = "maple_release/maple-release-Bridging-Header.h";
-				SWIFT_VERSION = 4.0;
+				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = 1;
 				VERSIONING_SYSTEM = "apple-generic";
 			};

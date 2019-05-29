@@ -19,15 +19,15 @@ import Firebase
 import FirebaseUI
 
 class FPAuthPickerViewController: FUIAuthPickerViewController {
-    let attributes = [NSAttributedStringKey.font: UIFont.preferredFont(forTextStyle: .caption1)]
-    let attributes2 = [NSAttributedStringKey.font: UIFont.preferredFont(forTextStyle: .caption2)]
+    let attributes = [NSAttributedString.Key.font: UIFont.preferredFont(forTextStyle: .caption1)]
+    let attributes2 = [NSAttributedString.Key.font: UIFont.preferredFont(forTextStyle: .caption2)]
     
     override func viewDidLoad() {
         super.viewDidLoad()
         let text = NSMutableAttributedString(string: "By signing up, you agree to our Terms & Privacy Policy." , attributes: attributes2)
-        text.addAttribute(NSAttributedStringKey.font, value: UIFont.preferredFont(forTextStyle: .caption1), range: NSRange(location: 32,
+        text.addAttribute(NSAttributedString.Key.font, value: UIFont.preferredFont(forTextStyle: .caption1), range: NSRange(location: 32,
                                                                                                                            length: 5))
-        text.addAttribute(NSAttributedStringKey.font, value: UIFont.preferredFont(forTextStyle: .caption1), range: NSRange(location: 40,
+        text.addAttribute(NSAttributedString.Key.font, value: UIFont.preferredFont(forTextStyle: .caption1), range: NSRange(location: 40,
                                                                                                                            length: 14))
         policyTermsLabel.attributedText = text
     }

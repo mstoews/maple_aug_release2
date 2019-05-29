@@ -39,7 +39,7 @@ class AdvancedNavigationController: UIViewController, MGLMapViewDelegate, CLLoca
         locationManager.delegate = self
         locationManager.requestWhenInUseAuthorization()
         
-        let url = URL(string: "mapbox://styles/mapbox/streets-v11")
+        let url = URL(string: "mapbox://styles/mapbox/streets-v10")
         navigationItem.title = "Map Page"
         
         mapView = NavigationMapView(frame: view.bounds, styleURL: url)
@@ -63,8 +63,10 @@ class AdvancedNavigationController: UIViewController, MGLMapViewDelegate, CLLoca
         mapView!.addAnnotation(marker)
         
         // Select the annotation so the callout will appear.
-        mapView!.selectAnnotation(marker, animated: false)
+        mapView!.selectAnnotation(marker, animated: true)
+       
         view.addSubview(mapView!)
+        setRoute()
     }
     
     //overriding layout lifecycle callback so we can style the start button
@@ -72,6 +74,25 @@ class AdvancedNavigationController: UIViewController, MGLMapViewDelegate, CLLoca
         super.viewDidLayoutSubviews()
         setupLocationButton()
     }
+    
+    func setRoute()
+    {
+        let location = CLLocationCoordinate2D(latitude: nav!.destinationLocationLatitude! , longitude: nav!.destinationLocationLongitude!)
+        requestRoute(destination: location)
+    }
+    
+    func mapViewDidFinishLoadingMap(_ mapView: MGLMapView) {
+        // Wait for the map to load before initiating the first camera movement.
+        
+        // Create a camera that rotates around the same center point, rotating 180°.
+        // `fromDistance:` is meters above mean sea level that an eye would have to be in order to see what the map view is showing.
+        let camera = MGLMapCamera(lookingAtCenter: mapView.centerCoordinate, altitude: 4500, pitch: 15, heading: 180)
+        //let camera = MGLMapCamera(lookingAtCenter: mapView.centerCoordinate, altitude: 500, pitch: 15, heading: 180)
+        
+        // Animate the camera movement over 5 seconds.
+        mapView.setCamera(camera, withDuration: 5, animationTimingFunction: CAMediaTimingFunction(name: CAMediaTimingFunctionName.easeInEaseOut))
+    }
+
     
     
     // Button creation and autolayout setup
@@ -83,7 +104,7 @@ class AdvancedNavigationController: UIViewController, MGLMapViewDelegate, CLLoca
         navButton.translatesAutoresizingMaskIntoConstraints = false
         let constraints = [
             NSLayoutConstraint(item: navButton, attribute: .top, relatedBy: .greaterThanOrEqual, toItem: topLayoutGuide, attribute: .bottom, multiplier: 1, constant: 10),
-            //NSLayoutConstraint(item: navButton, attribute: .top, relatedBy: .greaterThanOrEqual, toItem: self.view.safeAreaLayoutGuide.bottomAnchor, attribute: .bottom, multiplier: 1, constant: 10),
+            //NSLayoutConstraint(item: navButton, attribute: .top, relatedBy: .greaterThanOrEqual, toItem: view.safeAreaLayoutGuide.bottomAnchor, attribute: .bottom, multiplier: 1, constant: 10),
             NSLayoutConstraint(item: navButton, attribute: .leading, relatedBy: .equal, toItem: view, attribute: .leading, multiplier: 1, constant: 10),
             NSLayoutConstraint(item: navButton, attribute: .height, relatedBy: .equal, toItem: nil, attribute: .notAnAttribute, multiplier: 1, constant: 48 ),
             NSLayoutConstraint(item: navButton, attribute: .width, relatedBy: .equal, toItem: nil, attribute: .notAnAttribute, multiplier: 1, constant: 48)
@@ -118,8 +139,10 @@ class AdvancedNavigationController: UIViewController, MGLMapViewDelegate, CLLoca
     @objc func handleLongPress(_ gesture: UILongPressGestureRecognizer) {
         guard gesture.state == .ended else { return }
         
-        let spot = gesture.location(in: mapView)
-        guard let location = mapView?.convert(spot, toCoordinateFrom: mapView) else { return }
+        //let spot = gesture.location(in: mapView)
+        //guard let location = mapView?.convert(spot, toCoordinateFrom: mapView) else { return }
+        
+        let location = CLLocationCoordinate2D(latitude: nav!.destinationLocationLatitude! , longitude: nav!.destinationLocationLongitude!)
         
         requestRoute(destination: location)
     }
@@ -130,6 +153,7 @@ class AdvancedNavigationController: UIViewController, MGLMapViewDelegate, CLLoca
         let destinationWaypoint = Waypoint(coordinate: destination)
         
         let profileTransport = MBDirectionsProfileIdentifier.walking
+        //MBDirectionsProfileIdentifier.automobile
         
         //let options = NavigationRouteOptions(waypoints: [userWaypoint, destinationWaypoint])
         let options = NavigationRouteOptions(waypoints: [userWaypoint, destinationWaypoint], profileIdentifier: profileTransport)

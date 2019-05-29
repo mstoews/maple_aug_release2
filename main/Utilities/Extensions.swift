@@ -60,10 +60,19 @@ extension UITextView {
     public convenience init(placeholder: String) {
         self.init()
         self.placeholder = placeholder
-        NotificationCenter.default.addObserver(self,
-                                               selector: #selector(textViewDidChange),
-                                               name: NSNotification.Name.UITextViewTextDidChange,
-                                               object: nil)
+//        NotificationCenter.default.addObserver(
+//            self,
+//            selector: #selector(textViewDidChange(notification:)),  name: UIResponder.keyboardDidShowNotification, object: nil)
+//        //You can substitute UIResponder with any of it's subclass
+        
+        NotificationCenter.default.addObserver(  self, selector: #selector(didKeyboardShow(notification:)), name: UIResponder.keyboardDidShowNotification, object: nil)
+    
+    }
+    
+
+    @objc func didKeyboardShow(notification: Notification)
+    {
+        
     }
     
     /// Resize the placeholder when the UITextView bounds change
@@ -140,7 +149,7 @@ extension UIViewController {
     func displaySpinner() -> UIView {
         let spinnerView = UIView.init(frame: view.bounds)
         spinnerView.backgroundColor = UIColor.init(red: 0.5, green: 0.5, blue: 0.5, alpha: 0.5)
-        let ai = UIActivityIndicatorView.init(activityIndicatorStyle: .whiteLarge)
+        let ai = UIActivityIndicatorView.init(style: .whiteLarge)
         ai.startAnimating()
         ai.center = spinnerView.center
         
@@ -165,7 +174,7 @@ extension UILabel {
         }
         set {
             let color = highlightedTextColor ?? self.tintColor ?? UIColor.blue
-            attributedText = newValue == nil ? nil : Highlighter(highlightAttrs: [NSAttributedStringKey(rawValue: NSAttributedStringKey.foregroundColor.rawValue): color]).render(text: newValue!)
+            attributedText = newValue == nil ? nil : Highlighter(highlightAttrs: [NSAttributedString.Key(rawValue: NSAttributedString.Key.foregroundColor.rawValue): color]).render(text: newValue!)
         }
     }
 }
@@ -174,7 +183,7 @@ extension UILabel {
     // MARK: Properties
     
     /// Visual attributes to apply to the highlights.
-    @objc public var highlightAttrs: [NSAttributedStringKey: Any]
+    @objc public var highlightAttrs: [NSAttributedString.Key: Any]
     
     /// Markup identifying the beginning of a highlight. Defaults to `<em>`.
     @objc public var preTag: String = "<em>"
@@ -192,7 +201,7 @@ extension UILabel {
     /// - parameter highlightAttrs: Text attributes to apply to highlights. The content must be suitable for use within
     ///   an `NSAttributedString`.
     ///
-    @objc public init(highlightAttrs: [NSAttributedStringKey: Any]) {
+    @objc public init(highlightAttrs: [NSAttributedString.Key: Any]) {
         self.highlightAttrs = highlightAttrs
     }
     
@@ -356,7 +365,7 @@ extension UIView {
             viewsDictionary[key] = view
         }
         
-        addConstraints(NSLayoutConstraint.constraints(withVisualFormat: format, options: NSLayoutFormatOptions(), metrics: nil, views: viewsDictionary))
+        addConstraints(NSLayoutConstraint.constraints(withVisualFormat: format, options: NSLayoutConstraint.FormatOptions(), metrics: nil, views: viewsDictionary))
     }
 }
 

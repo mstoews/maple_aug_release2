@@ -107,7 +107,7 @@ class MapController: UIViewController, CLLocationManagerDelegate, GMSMapViewDele
         let nav_height = self.navigationController?.navigationBar.frame.height
         let status_height = UIApplication.shared.statusBarFrame.size.height
        
-        mapView.padding = UIEdgeInsetsMake (nav_height!+status_height,0,0,0);
+        mapView.padding = UIEdgeInsets (top: nav_height!+status_height,left: 0,bottom: 0,right: 0);
         mapView.delegate = self
         mapUIView = mapView
         containerView.addSubview(mapUIView)
@@ -317,15 +317,6 @@ class MapController: UIViewController, CLLocationManagerDelegate, GMSMapViewDele
         
     }
     
-    func showControllerForSetting(_ setting: Setting) {
-        let dummySettingsViewController = UIViewController()
-        dummySettingsViewController.view.backgroundColor = UIColor.white
-        dummySettingsViewController.navigationItem.title = setting.name.rawValue
-        navigationController?.navigationBar.tintColor = UIColor.white
-        navigationController?.navigationBar.titleTextAttributes = [NSAttributedStringKey.foregroundColor: UIColor.white]
-        navigationController?.pushViewController(dummySettingsViewController, animated: true)
-    }
-    
     @objc func putMarker()
     {
         print("putMarker")
@@ -452,22 +443,7 @@ class MapController: UIViewController, CLLocationManagerDelegate, GMSMapViewDele
     }
   
     
-    
-    func CreateMarkers()
-    {
-        
-    }
-    
-    let  mapShowSettings = MapShowSettings()
-    
-    func handleEditMenu()
-    {
-        mapShowSettings.showSettings()
-        print ("Handle Edit Menu")
-        
-    }
-    
-   
+
     
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
