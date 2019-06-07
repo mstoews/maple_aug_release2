@@ -228,7 +228,7 @@ class HomePostCell: MDCCardCollectionCell , UICollectionViewDataSource, UICollec
            
              configurePostCaption()
             
-            //self.imageCollectionView.reloadData()
+            self.imageCollectionView.reloadData()
         }
         
     }
@@ -524,7 +524,7 @@ class HomePostCell: MDCCardCollectionCell , UICollectionViewDataSource, UICollec
     
     let captionLabel: ActiveLabel = {
         let label = ActiveLabel()
-        label.numberOfLines = 0
+        label.numberOfLines = 3
         return label
     }()
     

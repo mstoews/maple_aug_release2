@@ -19,6 +19,8 @@ import JGProgressHUD
 import Mapbox
 
 
+// MARK: - Fix the pagination
+
 enum  FetchType {
     case ALL
     case USER
@@ -37,29 +39,28 @@ class HomeController: MDCCollectionViewController, HomePostCellDelegate,  HomeHe
     let cellId = "cellId"
     let cellHeaderId = "cellHeaderId"
     
+     private let refreshControl = UIRefreshControl()
+    
     //var posts = [Post]()
     
     var spinner: UIView?
-    static let postsPerLoad: Int = 5
-    static let postsLimit: Int = 4
+    //static let postsPerLoad: Int = 5
+    //static let postsLimit: Int = 4
     
     var loadingPostCount = 0
     var nextEntry: String?
     let bottomBarView = MDCBottomAppBarView()
     var showFeed = true
-    var refreshPageNationation = 20
+ 
     
     lazy var uid = Auth.auth().currentUser!.uid
     lazy var appDelegate = UIApplication.shared.delegate as! AppDelegate
     
     let red = MDCPalette.red.tint600
-    //var observers = [DatabaseQuery]()
+ 
     var newPost = false
     var followChanged = false
     var isFirstOpen = true
-    
-    
-    
     var locations = [LocationObject]()
     
     func didTapMapButton(post: FSPost) {
@@ -170,7 +171,7 @@ class HomeController: MDCCollectionViewController, HomePostCellDelegate,  HomeHe
         hud.show(in: view)
         
         self.listener = self.db.collection("posts")
-            .order(by: "creationDate", descending: true).limit(to: refreshTotal)
+            .order(by: "creationDate", descending: true).limit(to: 20)
             .addSnapshotListener{  (snapshot, error) in
                 guard let snapshot = snapshot else {
                     print("Error fetching snapshot results: \(error!)")
@@ -187,6 +188,9 @@ class HomeController: MDCCollectionViewController, HomePostCellDelegate,  HomeHe
                         fatalError("Unable to initialize type \(FSPost.self) with dictionary \(document.data())")
                     }
                 }
+                
+                
+                
                 self.posts = models
                 self.documents = snapshot.documents
                 if self.documents.count > 0 {
@@ -216,7 +220,7 @@ class HomeController: MDCCollectionViewController, HomePostCellDelegate,  HomeHe
         hud.show(in: view)
         
         self.listener = self.db.collection("posts")
-            .order(by: "numberOfLikes", descending: false).limit(to: refreshTotal)
+            .order(by: "numberOfLikes", descending: false).limit(to: 5)
             .addSnapshotListener{  (snapshot, error) in
                 guard let snapshot = snapshot else {
                     print("Error fetching snapshot results: \(error!)")
@@ -287,7 +291,7 @@ class HomeController: MDCCollectionViewController, HomePostCellDelegate,  HomeHe
     }
     
     
-    private let refreshControl = UIRefreshControl()
+   
     
     
     override func viewDidAppear(_ animated: Bool) {
@@ -335,6 +339,8 @@ class HomeController: MDCCollectionViewController, HomePostCellDelegate,  HomeHe
     @objc func handleRefresh() {
       refreshControl.beginRefreshing()
       refreshTotal = refreshTotal + 10
+    
+        
       observeQuery()
       refreshControl.endRefreshing()
     }
@@ -408,21 +414,21 @@ class HomeController: MDCCollectionViewController, HomePostCellDelegate,  HomeHe
     }
     
     
-    func fetchFollowingUserIds(completion: @escaping ([String])->() ) {
-        var userFollowing = [String]()
-        guard let uid = Auth.auth().currentUser?.uid else { return }
-        Database.database().reference().child("following").child(uid).observeSingleEvent(of: .value, with: { (snapshot) in
-            guard let userIdsDictionary = snapshot.value as? [String: Any] else { return }
-            userIdsDictionary.forEach({ (key, value) in
-                print(key)
-                userFollowing.append(key)
-            })
-            completion(userFollowing)
-        }) { (err) in
-            print("Failed to fetch following user ids:", err)
-        }
-    }
-    
+//    func fetchFollowingUserIds(completion: @escaping ([String])->() ) {
+//        var userFollowing = [String]()
+//        guard let uid = Auth.auth().currentUser?.uid else { return }
+//        Database.database().reference().child("following").child(uid).observeSingleEvent(of: .value, with: { (snapshot) in
+//            guard let userIdsDictionary = snapshot.value as? [String: Any] else { return }
+//            userIdsDictionary.forEach({ (key, value) in
+//                print(key)
+//                userFollowing.append(key)
+//            })
+//            completion(userFollowing)
+//        }) { (err) in
+//            print("Failed to fetch following user ids:", err)
+//        }
+//    }
+//
     internal func cleanCollectionView() {
         if collectionView!.numberOfItems(inSection: 0) > 0 {
             collectionView!.reloadSections([0])

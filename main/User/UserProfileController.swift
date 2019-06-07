@@ -27,10 +27,9 @@ enum  CellType {
 
 class UserProfileController: MDCCollectionViewController,
     UserProfileHeaderDelegate,
-    ChangeSignPhotoControllerDelegate,
     UserGridPostCellDelegate
 {
-   
+    
 
     let db = Firestore.firestore()
     let cellId = "cellId"
@@ -39,6 +38,7 @@ class UserProfileController: MDCCollectionViewController,
     let mapViewCell = "mapViewCell"
     let userBookmarkCellId = "userBookmarkCellId"
     let headerCellId = "headerCellId"
+    let footerCellId = "footerCellId"
     
     lazy var appDelegate = UIApplication.shared.delegate as! AppDelegate
     
@@ -54,30 +54,30 @@ class UserProfileController: MDCCollectionViewController,
     var selectedImage: UIImage?
     
     var images = [UIImage]()
-    var assets = [PHAsset]()
+    //var assets = [PHAsset]()
     
     private var fs_locations : [LocationObject] = []
     private var locationDoc : [DocumentSnapshot] = []
     
     
-    var isGridView = true
-    var isMapView = false
-    var isFavoritesView = false
+    //var isGridView = true
+    //var isMapView = false
+    //var isFavoritesView = false
     var isCurrentUser = true
     var  cellType = CellType.GRID
     
-    var isFinishedPaging = false
+    //var isFinishedPaging = false
     
-    let database = Database.database()
-    let ref = Database.database().reference()
-    var postIds: [String: Any]?
-    var postSnapshots = [DataSnapshot]()
-    var loadingPostCount = 0
-    var firebaseRefs = [DatabaseReference]()
+    //let database = Database.database()
+    //let ref = Database.database().reference()
+    //var postIds: [String: Any]?
+    //var postSnapshots = [DataSnapshot]()
+    //var loadingPostCount = 0
+    //var firebaseRefs = [DatabaseReference]()
     var insets: UIEdgeInsets!
     
     var user: MapleUser?
-    var profile: MapleUser!
+    //var profile: MapleUser!
     //let uid = Auth.auth().currentUser!.uid
     
     
@@ -86,8 +86,59 @@ class UserProfileController: MDCCollectionViewController,
         stopBookMarkObserving()
     }
     
-        func didOpenSettings() {
+    func didOpenSettings() {
         didChangeSignUpFoto()
+    }
+    
+    override func viewDidLoad() {
+        super.viewDidLoad()
+        
+        collectionView?.backgroundColor = UIColor.collectionBackGround()
+        collectionView?.register(UserProfileHeader.self, forSupplementaryViewOfKind: UICollectionView.elementKindSectionHeader, withReuseIdentifier: headerCellId)
+        collectionView?.register(UserProfilePhotoCell.self, forCellWithReuseIdentifier: cellId)
+        collectionView?.register(UserGridPostCell.self, forCellWithReuseIdentifier: userGridCellId)
+        collectionView?.register(UserListPostCell.self, forCellWithReuseIdentifier: userListCellId)
+        collectionView?.register(MapViewCell.self, forCellWithReuseIdentifier: mapViewCell)
+        
+        refreshControl.addTarget(self, action: #selector(handleRefresh), for: .valueChanged)
+        collectionView?.refreshControl = refreshControl
+        self.navigationItem.title = "User Page"
+        
+        setupSettingsButton()
+        fetchUser()
+    }
+    
+    @objc func handleRefresh()
+    {
+        refreshControl.beginRefreshing()
+        fetchUser()
+        refreshControl.endRefreshing()
+    }
+    
+    func didChangeSignUpPhoto()
+    {
+        fetchUser()
+    }
+    
+    
+    fileprivate func fetchUser() {
+        if let uid = Auth.auth().currentUser?.uid {
+            if let userid = self.user?.uid {
+                if userid != uid {
+                    Firestore.fetchUserWithUID(uid: userid) { (user) in
+                        self.user = user
+                        self.isCurrentUser = false
+                        self.observeQuery(uid: user.uid)
+                    }
+                } else {
+                    Firestore.fetchUserWithUID(uid: uid) { (user) in
+                        self.user = user
+                        self.observeQuery(uid: user.uid)
+                        self.isCurrentUser = true
+                    }
+                }
+            }
+        }
     }
     
     
@@ -291,70 +342,11 @@ class UserProfileController: MDCCollectionViewController,
     public let refreshControl = UIRefreshControl()
     
     
-    override func viewDidLoad() {
-        super.viewDidLoad()
-        
-        collectionView?.backgroundColor = UIColor.collectionBackGround()
-        collectionView?.register(UserProfileHeader.self, forSupplementaryViewOfKind: UICollectionView.elementKindSectionHeader, withReuseIdentifier: headerCellId)
-        collectionView?.register(UserProfilePhotoCell.self, forCellWithReuseIdentifier: cellId)
-        collectionView?.register(UserGridPostCell.self, forCellWithReuseIdentifier: userGridCellId)
-        collectionView?.register(UserListPostCell.self, forCellWithReuseIdentifier: userListCellId)
-        collectionView?.register(MapViewCell.self, forCellWithReuseIdentifier: mapViewCell)
-        
-        refreshControl.addTarget(self, action: #selector(handleRefresh), for: .valueChanged)
-        collectionView?.refreshControl = refreshControl
-        self.navigationItem.title = "User Page"
-               
-        setupSettingsButton()
-        fetchUser()
-    }
-    
-    @objc func handleRefresh()
-    {
-        refreshControl.beginRefreshing()
-        fetchUser()
-        refreshControl.endRefreshing()
-    }
+   
     
     // MARK :  SharePhotoControllerUpdateDelegate.refreshUsers()
     
-    func didChangeSignUpPhoto()
-    {
-        print("didChangeSignUpdate")
-        if let uid = Auth.auth().currentUser?.uid {
-            Firestore.fetchUserWithUID(uid: uid) { (user) in
-                self.user = user
-                //self.navigationItem.title = "User Page"
-                self.isCurrentUser = true
-                
-            }
-        }
-    }
-    
-    
-    fileprivate func fetchUser() {
-        posts.removeAll()
-        if let uid = Auth.auth().currentUser?.uid {
-            if let userid = self.user?.uid {
-                if userid != uid {
-                    Firestore.fetchUserWithUID(uid: userid) { (user) in
-                        self.user = user
-                        //self.navigationItem.title = "User Page"
-                        self.isCurrentUser = false
-                        self.observeQuery(uid: user.uid)
-                    }
-                } else {
-                    Firestore.fetchUserWithUID(uid: uid) { (user) in
-                        self.user = user
-                        //self.navigationItem.title = "User Page"
-                        self.observeQuery(uid: user.uid)
-                        self.isCurrentUser = true
-                    }
-                }
-            }
-        }
-    }
-    
+   
     @objc func didChangeSignUpFoto()
     {
         print ("didChangeSignFoto")
@@ -364,9 +356,9 @@ class UserProfileController: MDCCollectionViewController,
             changePhotoSelectorController.profileImageView.loadImage(urlString: profileImageUrl)
             changePhotoSelectorController.plusPhotoButton.setImage( changePhotoSelectorController.profileImageView.image?.withRenderingMode(.alwaysOriginal), for: .normal)
         }
-        changePhotoSelectorController.delegate = self
+        //changePhotoSelectorController.delegate = self
         
-        let backItem = UIBarButtonItem(title: "", style: .bordered, target: nil, action: nil)
+        let backItem = UIBarButtonItem(title: "Back", style: UIBarButtonItem.Style.plain , target: nil, action: nil)
         navigationItem.backBarButtonItem = backItem
         
         let transition = CATransition()

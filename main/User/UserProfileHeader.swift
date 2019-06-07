@@ -23,9 +23,21 @@
         func didOpenSettings()
     }
     
-    class UserProfileHeader: MDCCardCollectionCell {
+    class UserProfileHeader: MDCCardCollectionCell ,
+          ChangeSignPhotoControllerDelegate
+        
+    {
+      
+        
+        func didChangeSignUpPhoto(user: MapleUser) {
+            profileImageView.loadImage(urlString: user.profileImageUrl)
+            usernameLabel.text = user.username
+            userId = user.uid
+        }
+        
         
         var delegate: UserProfileHeaderDelegate?
+        
         var userId = "USERID"
         var userPhotoURL = "USER PHOTO URL"
         var bSet = false
@@ -52,11 +64,13 @@
             }
         }
         
+       
         var userView: MapleUser? {
             didSet {
                 if bSet == false {
-                    guard let profileImageUrl = userView?.profileImageUrl else { return }
-                    profileImageView.loadImage(urlString: profileImageUrl)
+                    if let url = userView?.profileImageUrl {
+                        profileImageView.loadImage(urlString: url)
+                    }
                     usernameLabel.text = userView?.username
                     if let uid = userView?.uid  {
                         userId = uid
@@ -147,7 +161,7 @@
         @objc func imageTapped(tapGestureRecognizer: UITapGestureRecognizer)
         {
             //let tappedImage = tapGestureRecognizer.view as! UIImageVie
-            delegate?.didChangeSignUpFoto()
+            //delegate?.didChangeSignUpFoto()
         }
         
         
@@ -233,7 +247,6 @@
         lazy var mapButton: UIButton = {
             let button = UIButton(type: .system)
             button.setImage(#imageLiteral(resourceName: "ic_place"), for: .normal)
-            //MDCTextButtonThemer.applyScheme(buttonScheme, to: button)
             button.backgroundColor = UIColor.collectionBackGround()
             button.addTarget(self, action: #selector(handleOpenMapView), for: .touchUpInside)
             button.tintColor = buttonNotPressed()

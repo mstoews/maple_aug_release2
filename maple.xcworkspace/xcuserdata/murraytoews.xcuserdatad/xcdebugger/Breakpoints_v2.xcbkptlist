@@ -26,12 +26,12 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "main/Utilities/FirestoreUtilities.swift"
-            timestampString = "577945142.008943"
+            timestampString = "581565583.3215981"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "338"
-            endingLineNumber = "338"
-            landmarkName = "isPostBoookMarkedByUser(postId:uid:_:)"
+            startingLineNumber = "350"
+            endingLineNumber = "350"
+            landmarkName = "didBookmarkedPost(post:didBookmark:)"
             landmarkType = "7">
          </BreakpointContent>
       </BreakpointProxy>
@@ -42,12 +42,12 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "main/Utilities/FirestoreUtilities.swift"
-            timestampString = "577945142.009033"
+            timestampString = "581565583.321668"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "412"
-            endingLineNumber = "412"
-            landmarkName = "fetchPostByPostId(postId:_:)"
+            startingLineNumber = "424"
+            endingLineNumber = "424"
+            landmarkName = "addPostComment(postId:comment:uid:)"
             landmarkType = "7">
             <Locations>
                <Location
@@ -90,12 +90,12 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "main/Utilities/FirestoreUtilities.swift"
-            timestampString = "577945142.009089"
+            timestampString = "581565583.321715"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "414"
-            endingLineNumber = "414"
-            landmarkName = "fetchPostByPostId(postId:_:)"
+            startingLineNumber = "426"
+            endingLineNumber = "426"
+            landmarkName = "addPostComment(postId:comment:uid:)"
             landmarkType = "7">
             <Locations>
                <Location
@@ -138,12 +138,12 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "main/Utilities/FirestoreUtilities.swift"
-            timestampString = "577945142.009156"
+            timestampString = "581565583.321757"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "415"
-            endingLineNumber = "415"
-            landmarkName = "fetchPostByPostId(postId:_:)"
+            startingLineNumber = "427"
+            endingLineNumber = "427"
+            landmarkName = "addPostComment(postId:comment:uid:)"
             landmarkType = "7">
          </BreakpointContent>
       </BreakpointProxy>
@@ -154,12 +154,12 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "main/Utilities/FirestoreUtilities.swift"
-            timestampString = "577945142.009226"
+            timestampString = "581565583.321798"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "413"
-            endingLineNumber = "413"
-            landmarkName = "fetchPostByPostId(postId:_:)"
+            startingLineNumber = "425"
+            endingLineNumber = "425"
+            landmarkName = "addPostComment(postId:comment:uid:)"
             landmarkType = "7">
             <Locations>
                <Location
@@ -218,12 +218,28 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "main/User/UserProfileController.swift"
-            timestampString = "577945142.009712"
+            timestampString = "581565583.321867"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "340"
-            endingLineNumber = "340"
-            landmarkName = "fetchUser()"
+            startingLineNumber = "610"
+            endingLineNumber = "610"
+            landmarkName = "collectionView(_:numberOfItemsInSection:)"
+            landmarkType = "7">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            shouldBeEnabled = "Yes"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "main/Utilities/CustomImageView.swift"
+            timestampString = "581310426.9571691"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "56"
+            endingLineNumber = "56"
+            landmarkName = "loadImageWithPlaceholder(url:placeHolder:)"
             landmarkType = "7">
          </BreakpointContent>
       </BreakpointProxy>
@@ -233,13 +249,77 @@
             shouldBeEnabled = "No"
             ignoreCount = "0"
             continueAfterRunningActions = "No"
-            filePath = "main/User/UserProfileController.swift"
-            timestampString = "577945142.010034"
+            filePath = "main/MainTabBarController.swift"
+            timestampString = "581565583.322271"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "618"
-            endingLineNumber = "618"
-            landmarkName = "collectionView(_:numberOfItemsInSection:)"
+            startingLineNumber = "226"
+            endingLineNumber = "226"
+            landmarkName = "authUI(_:didSignInWith:error:)"
+            landmarkType = "7">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            shouldBeEnabled = "No"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "main/Utilities/FirestoreUtilities.swift"
+            timestampString = "581565583.32234"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "93"
+            endingLineNumber = "93"
+            landmarkName = "updateUserProfile(user:)"
+            landmarkType = "7">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            shouldBeEnabled = "Yes"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "main/User/UserProfileHeader.swift"
+            timestampString = "581565583.322384"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "35"
+            endingLineNumber = "35"
+            landmarkName = "didChangeSignUpPhoto(user:)"
+            landmarkType = "7">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            shouldBeEnabled = "Yes"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "main/User/UserProfileController.swift"
+            timestampString = "581565583.32243"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "676"
+            endingLineNumber = "676"
+            landmarkName = "collectionView(_:viewForSupplementaryElementOfKind:at:)"
+            landmarkType = "7">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            shouldBeEnabled = "Yes"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "main/User/UserProfileController.swift"
+            timestampString = "581565583.322662"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "125"
+            endingLineNumber = "125"
+            landmarkName = "fetchUser()"
             landmarkType = "7">
          </BreakpointContent>
       </BreakpointProxy>

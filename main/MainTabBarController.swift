@@ -93,7 +93,7 @@ class MainTabBarController: UITabBarController, AuthUIDelegate  {
     }
     
     func tabBarController(_ tabBarController: UITabBarController, shouldSelect viewController: UIViewController) -> Bool {
-        _ = viewControllers?.index(of: viewController)
+        _ = viewControllers?.firstIndex(of: viewController)
         return true
     }
     
@@ -105,8 +105,7 @@ class MainTabBarController: UITabBarController, AuthUIDelegate  {
         
         authUI?.delegate = self
         authUI?.tosurl = kFirebaseTermsOfService
-        //authUI?.isSignInWithEmailHidden = false
-        let providers: [FUIAuthProvider] = [FUIGoogleAuth(), FUIFacebookAuth()]
+        let providers: [FUIAuthProvider] = [FUIEmailAuth(), FUIGoogleAuth(), FUIFacebookAuth()]
         authUI?.providers = providers
         setupViewControllers()
         observeNotifications()
@@ -122,7 +121,6 @@ class MainTabBarController: UITabBarController, AuthUIDelegate  {
         super.viewDidAppear(animated)
         if !isUserSignedIn() {
             showLoginView()
-            setupViewControllers()
         }
         
         
@@ -174,7 +172,7 @@ class MainTabBarController: UITabBarController, AuthUIDelegate  {
             }
         }
         
-        let plusImage = UIImage(named: "plus")?.withRenderingMode(.alwaysTemplate)
+        let plusImage = UIImage(named: "trending")?.withRenderingMode(.alwaysTemplate)
         let button = MDCFloatingButton()
         button.setImage(plusImage, for: .normal)
         //MDCFloatingActionButtonThemer.applyScheme(buttonScheme, to: button)
@@ -187,7 +185,6 @@ class MainTabBarController: UITabBarController, AuthUIDelegate  {
         tabBar.tintColor = UIColor.red
         
         viewControllers = [
-            
             homeNavController,
             searchNavController,
             sharePhotoNavController,
@@ -261,12 +258,15 @@ extension MainTabBarController: FUIAuthDelegate {
     }
     
     func signed(in user: User) {
-        Firestore.updateUserProfile(user: user)
-        // downloadImage(url: user.photoURL!, user: user)
-        // savePhotoImage(user: user)
+        Firestore.fetchUserWithUID(uid: user.uid, completion: { (user) in
+            Firestore.updateUserProfile(user: user)
+            let url = NSURL(fileURLWithPath: user.profileImageUrl)
+            self.downloadImage(url: url as URL, user: user)
+            self.savePhotoImage(user: user)
+        })
     }
     
-    func downloadImage(url: URL, user: User) {
+    func downloadImage(url: URL, user: MapleUser) {
         getDataFromUrl(url: url) { (data, response, error)  in
             guard let data = data, error == nil else { return }
             print(response?.suggestedFilename ?? url.lastPathComponent)
@@ -284,7 +284,7 @@ extension MainTabBarController: FUIAuthDelegate {
             }.resume()
     }
     
-    func savePhotoImage(user: User)
+    func savePhotoImage(user: MapleUser)
     {
         //self.imageView.loadImage(urlString: (user.photoURL?.absoluteString)!)
         if let image = self.imageView.image {

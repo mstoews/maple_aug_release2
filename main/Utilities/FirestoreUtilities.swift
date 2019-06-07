@@ -79,7 +79,7 @@ extension Firestore {
    
     
     /*******  updateUserProfile  *******/
-    static func updateUserProfile(user: User) {
+    static func updateUserProfile(user: MapleUser) {
         var bDocExists  = false
         
         var followedCount = 0
@@ -90,13 +90,13 @@ extension Firestore {
         followerCount = getFollowerCount(user: user)
         postCount = getPostCount(user: user)
             
-        let values: [String: Any] = ["profileImageUrl": user.photoURL?.absoluteString ?? "",
-                                     "username": user.displayName ?? "",
+        let values: [String: Any] = ["profileImageUrl": user.profileImageUrl,
+                                     "username": user.username,
                                      "followCount": followedCount  ,
                                      "followerCount": followerCount ,
                                      "postCount": postCount  ,
-                                     "_search_index": ["full_name": user.displayName?.lowercased(),
-                                                       "reversed_full_name": user.displayName?.components(separatedBy: " ")
+                                     "_search_index": ["full_name": user.username.lowercased(),
+                                                       "reversed_full_name": user.username.components(separatedBy: " ")
                                                         .reversed().joined(separator: "")]]
         
         let docRef = firestore().collection("users").document(user.uid).collection("profile").document(user.uid)
@@ -125,6 +125,18 @@ extension Firestore {
                     print("Error writing document: \(err)")
                 } else {
                     print("Did successfully like : \(values) for user \(user.uid)")
+                }
+            }
+        }
+        
+        let postDocs = firestore().collection("posts").whereField("uid", isEqualTo: user.uid)
+        postDocs.getDocuments() { (querySnapshot, err) in
+            if let err = err {
+                print("Error getting documents: \(err)")
+            } else {
+                for document in querySnapshot!.documents {
+                    let data = document.data()
+                    print(data)
                 }
             }
         }
@@ -204,7 +216,7 @@ extension Firestore {
         
     }
     
-    static func getFollowerCount (user: User) -> Int {
+    static func getFollowerCount (user: MapleUser) -> Int {
         var followerCount = 0
         let followRef = firestore().collection("users").document(user.uid).collection("following").whereField("isFollower", isEqualTo: true)
         followRef.getDocuments() { (querySnapshot, err) in
@@ -230,7 +242,7 @@ extension Firestore {
     }
     
     
-    static func getFollowedCount (user: User) -> Int {
+    static func getFollowedCount (user: MapleUser) -> Int {
         var followedCount = 0
         
         let followRef = firestore().collection("users").document(user.uid).collection("followed").whereField("isFollowed", isEqualTo: true)
@@ -256,7 +268,31 @@ extension Firestore {
         return followedCount
     }
 
-    
+    static func getFollowedUsers (user: MapleUser) -> Int {
+        var followedCount = 0
+        
+        let followRef = firestore().collection("users").document(user.uid).collection("followed").whereField("isFollowed", isEqualTo: true)
+        followRef.getDocuments()
+            { (querySnapshot, err) in
+                if let err = err {
+                    print("Error getting documents: \(err)")
+                } else {
+                    followedCount = querySnapshot!.documents.count
+                    if followedCount > 0 {
+                        let values: [String: Any] = ["followedCount": followedCount as Int]
+                        firestore().collection("users").document(user.uid).collection("profile").document(user.uid).updateData(values)
+                        { err in
+                            if let err = err {
+                                print("Error writing document: \(err)")
+                            } else {
+                                print("Did successfully update from getFollowedCount : \(values) for user \(user.uid)")
+                            }
+                        }
+                    }
+                }
+        }
+        return followedCount
+    }
     
 
     //MARK:- didLikePost
@@ -434,7 +470,7 @@ extension Firestore {
     
     
     
-    static func getPostCount (user: User) -> Int {
+    static func getPostCount (user: MapleUser) -> Int {
         var postCount = 0
         let followRef = firestore().collection("posts").whereField("uid", isEqualTo: user.uid)
         followRef.getDocuments() { (querySnapshot, err) in

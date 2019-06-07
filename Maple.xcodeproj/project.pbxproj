@@ -14,7 +14,6 @@
 		024EDBC52078EFFD0069C77F /* CommentInputAccessoryView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 02DC63432001BDD600AE9662 /* CommentInputAccessoryView.swift */; };
 		0252AF3822938A46004DA3BB /* AdvancedNavigationController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0252AF3722938A46004DA3BB /* AdvancedNavigationController.swift */; };
 		02BB2407229EB3A70020601D /* BaseCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 02BB2406229EB3A70020601D /* BaseCell.swift */; };
-		02BB2409229F34660020601D /* podfile.back in Sources */ = {isa = PBXBuildFile; fileRef = 02BB2408229F34660020601D /* podfile.back */; };
 		02C40A4A211A8F9300A73B51 /* SharePhotoControllerMD.swift in Sources */ = {isa = PBXBuildFile; fileRef = 02C40A49211A8F9300A73B51 /* SharePhotoControllerMD.swift */; };
 		02D8690F228233530093BD18 /* MapBoxViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 02D8690E228233530093BD18 /* MapBoxViewController.swift */; };
 		02D869112285A0C70093BD18 /* Navigation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 02D869102285A0C70093BD18 /* Navigation.swift */; };
@@ -172,7 +171,6 @@
 		024EDB9F2078EE760069C77F /* maple_release.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; name = maple_release.app; path = Maple_release.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		0252AF3722938A46004DA3BB /* AdvancedNavigationController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AdvancedNavigationController.swift; sourceTree = "<group>"; };
 		02BB2406229EB3A70020601D /* BaseCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BaseCell.swift; sourceTree = "<group>"; };
-		02BB2408229F34660020601D /* podfile.back */ = {isa = PBXFileReference; lastKnownFileType = text; path = podfile.back; sourceTree = "<group>"; };
 		02C40A49211A8F9300A73B51 /* SharePhotoControllerMD.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SharePhotoControllerMD.swift; sourceTree = "<group>"; };
 		02D8690E228233530093BD18 /* MapBoxViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MapBoxViewController.swift; sourceTree = "<group>"; };
 		02D869102285A0C70093BD18 /* Navigation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Navigation.swift; sourceTree = "<group>"; };
@@ -815,7 +813,6 @@
 		48B444A21FE7329900DFD412 = {
 			isa = PBXGroup;
 			children = (
-				02BB2408229F34660020601D /* podfile.back */,
 				0225F33220FE144800137084 /* maple_release */,
 				4878C22920F85C940054F227 /* maple_release */,
 				482FC12720DE16CE00E23DAE /* maple-release.entitlements */,
@@ -1135,7 +1132,7 @@
 			files = (
 			);
 			inputPaths = (
-				"${SRCROOT}/Pods/Target Support Files/Pods-Maple/Pods-Maple-frameworks.sh",
+				"${PODS_ROOT}/Target Support Files/Pods-Maple/Pods-Maple-frameworks.sh",
 				"${BUILT_PRODUCTS_DIR}/AFNetworking/AFNetworking.framework",
 				"${BUILT_PRODUCTS_DIR}/ActiveLabel/ActiveLabel.framework",
 				"${BUILT_PRODUCTS_DIR}/Alamofire/Alamofire.framework",
@@ -1160,6 +1157,8 @@
 				"${BUILT_PRODUCTS_DIR}/MDFTextAccessibility/MDFTextAccessibility.framework",
 				"${PODS_ROOT}/Mapbox-iOS-SDK/dynamic/Mapbox.framework",
 				"${PODS_ROOT}/Mapbox-iOS-SDK/dynamic/Mapbox.framework.dSYM",
+				"${PODS_ROOT}/Mapbox-iOS-SDK/dynamic/889347F4-EFF6-36C7-A3A2-222C76C4A2E7.bcsymbolmap",
+				"${PODS_ROOT}/Mapbox-iOS-SDK/dynamic/B1A29F9B-DC14-3A52-ACD0-1BDF517FE210.bcsymbolmap",
 				"${BUILT_PRODUCTS_DIR}/MapboxCoreNavigation/MapboxCoreNavigation.framework",
 				"${BUILT_PRODUCTS_DIR}/MapboxDirections.swift/MapboxDirections.framework",
 				"${BUILT_PRODUCTS_DIR}/MapboxMobileEvents/MapboxMobileEvents.framework",
@@ -1209,6 +1208,8 @@
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/MDFTextAccessibility.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/Mapbox.framework",
 				"${DWARF_DSYM_FOLDER_PATH}/Mapbox.framework.dSYM",
+				"${BUILT_PRODUCTS_DIR}/889347F4-EFF6-36C7-A3A2-222C76C4A2E7.bcsymbolmap",
+				"${BUILT_PRODUCTS_DIR}/B1A29F9B-DC14-3A52-ACD0-1BDF517FE210.bcsymbolmap",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/MapboxCoreNavigation.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/MapboxDirections.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/MapboxMobileEvents.framework",
@@ -1234,7 +1235,7 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-Maple/Pods-Maple-frameworks.sh\"\n";
+			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-Maple/Pods-Maple-frameworks.sh\"\n";
 			showEnvVarsInLog = 0;
 		};
 		D0D75708482C841878DF053D /* [CP] Check Pods Manifest.lock */ = {
@@ -1261,7 +1262,7 @@
 			files = (
 			);
 			inputPaths = (
-				"${SRCROOT}/Pods/Target Support Files/Pods-Maple/Pods-Maple-resources.sh",
+				"${PODS_ROOT}/Target Support Files/Pods-Maple/Pods-Maple-resources.sh",
 				"${PODS_CONFIGURATION_BUILD_DIR}/FirebaseUI/FirebaseAnonymousAuthUI.bundle",
 				"${PODS_CONFIGURATION_BUILD_DIR}/FirebaseUI/FirebaseAuthUI.bundle",
 				"${PODS_CONFIGURATION_BUILD_DIR}/FirebaseUI/FirebaseEmailAuthUI.bundle",
@@ -1288,7 +1289,7 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-Maple/Pods-Maple-resources.sh\"\n";
+			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-Maple/Pods-Maple-resources.sh\"\n";
 			showEnvVarsInLog = 0;
 		};
 /* End PBXShellScriptBuildPhase section */
@@ -1405,7 +1406,6 @@
 				482FC12020DE168200E23DAE /* ChangeSignPhotoController.swift in Sources */,
 				48482FC920DA18A00031EBFF /* Photo.swift in Sources */,
 				482FC13320DE236D00E23DAE /* LocationRecord.swift in Sources */,
-				02BB2409229F34660020601D /* podfile.back in Sources */,
 				482FC13520DE236D00E23DAE /* AlgoliaManager.swift in Sources */,
 				4876BD0F20DA164E0057E5E0 /* PlaceDetailTableViewDataSource.swift in Sources */,
 				48443E6E210990AE00A21FC4 /* GMUWeightedLatLng.m in Sources */,

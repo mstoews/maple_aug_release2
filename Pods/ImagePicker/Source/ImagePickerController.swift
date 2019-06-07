@@ -84,7 +84,7 @@ open class ImagePickerController: UIViewController {
   open var doneButtonTitle: String? {
     didSet {
       if let doneButtonTitle = doneButtonTitle {
-        bottomContainer.doneButton.setTitle(doneButtonTitle, for: UIControl.State())
+        bottomContainer.doneButton.setTitle(doneButtonTitle, for: UIControlState())
       }
     }
   }
@@ -117,7 +117,7 @@ open class ImagePickerController: UIViewController {
     }
 
     view.addSubview(volumeView)
-    view.sendSubviewToBack(volumeView)
+    view.sendSubview(toBack: volumeView)
 
     view.backgroundColor = UIColor.white
     view.backgroundColor = configuration.mainColor
@@ -161,8 +161,8 @@ open class ImagePickerController: UIViewController {
 
     applyOrientationTransforms()
 
-    UIAccessibility.post(notification: UIAccessibility.Notification.screenChanged,
-                         argument: bottomContainer);
+    UIAccessibilityPostNotification(UIAccessibilityScreenChangedNotification,
+                                    bottomContainer);
   }
 
   open func resetAssets() {
@@ -190,7 +190,7 @@ open class ImagePickerController: UIViewController {
     let alertController = UIAlertController(title: configuration.requestPermissionTitle, message: configuration.requestPermissionMessage, preferredStyle: .alert)
 
     let alertAction = UIAlertAction(title: configuration.OKButtonTitle, style: .default) { _ in
-        if let settingsURL = URL(string: UIApplication.openSettingsURLString) {
+      if let settingsURL = URL(string: UIApplicationOpenSettingsURLString) {
         UIApplication.shared.openURL(settingsURL)
       }
     }
@@ -250,12 +250,10 @@ open class ImagePickerController: UIViewController {
       name: NSNotification.Name(rawValue: "AVSystemController_SystemVolumeDidChangeNotification"),
       object: nil)
 
-    
-    NotificationCenter.default.addObserver(
-        self,
-        selector: #selector(handleRotation(_:)),
-        name: UIDevice.orientationDidChangeNotification, object: nil)
-    
+    NotificationCenter.default.addObserver(self,
+      selector: #selector(handleRotation(_:)),
+      name: NSNotification.Name.UIDeviceOrientationDidChange,
+      object: nil)
   }
 
   @objc func didReloadAssets(_ notification: Notification) {
@@ -279,7 +277,7 @@ open class ImagePickerController: UIViewController {
 
     let title = !sender.assets.isEmpty ?
       configuration.doneButtonTitle : configuration.cancelButtonTitle
-    bottomContainer.doneButton.setTitle(title, for: UIControl.State())
+    bottomContainer.doneButton.setTitle(title, for: UIControlState())
   }
   
   @objc func dismissIfNeeded() {

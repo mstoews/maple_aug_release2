@@ -141,8 +141,6 @@ class SharePhotoController:
         
     }
     
-    
-    
     public func layoutImageView() {
         guard imageView.image != nil else { return }
         
@@ -169,15 +167,7 @@ class SharePhotoController:
         }
     }
     
-    func galleryController(_ controller: GalleryController, requestLightbox images: [Image]) {
-        LightboxConfig.DeleteButton.enabled = true
-        SVProgressHUD.show()
-        Image.resolve(images: images, completion: { [weak self] resolvedImages in
-            SVProgressHUD.dismiss()
-            self?.showLightbox(images: resolvedImages.compactMap({ $0 }))
-        })
-    }
-    
+   
     public func updateImageViewWithImage(_ image: UIImage, fromCropViewController cropViewController: CropViewController) {
         imageView.image = image
         layoutImageView()
@@ -215,6 +205,16 @@ class SharePhotoController:
         return thumbnail
     }
     
+    func galleryController(_ controller: GalleryController, requestLightbox images: [Image]) {
+        LightboxConfig.DeleteButton.enabled = true
+        SVProgressHUD.show()
+        Image.resolve(images: images, completion: { [weak self] resolvedImages in
+            SVProgressHUD.dismiss()
+            self?.showLightbox(images: resolvedImages.compactMap({ $0 }))
+        })
+    }
+    
+    
     func galleryController(_ controller: GalleryController, didSelectImages images: [Image]) {
         
         for img in images  {
@@ -245,7 +245,7 @@ class SharePhotoController:
         }
     }
     
-    // MARK: - Helper
+    // MARK: - ShowLightBox
     func showLightbox(images: [UIImage]) {
         guard images.count > 0 else {
             return
@@ -474,9 +474,7 @@ class SharePhotoController:
         case .unknown: return NSLocalizedString("Unkown",comment: "Relative cost for when it is unknown")
         }
     }
-    
-    
-    
+
     
     let loadImages: CustomImageView = {
         let iv = CustomImageView()

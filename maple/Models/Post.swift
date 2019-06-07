@@ -261,8 +261,8 @@ struct FSPost {
     var mine = false
     var likeCount = 0
     var commentCount = 0
-   
     var uid: String
+    
     
 }
 
