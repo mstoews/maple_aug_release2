@@ -11,8 +11,6 @@ import Firebase
 import Photos
 import AssetsLibrary
 import FirebaseUI
-import AlgoliaSearch
-import InstantSearchCore
 import AFNetworking
 import GoogleMaps
 import GooglePlaces
@@ -21,7 +19,6 @@ import os.log
 import AlgoliaSearch
 import InstantSearchCore
 import MaterialComponents
-//import ImagePicker
 import Gallery
 import Lightbox
 import AVFoundation
@@ -37,6 +34,100 @@ enum  CT {
 
 protocol  SharePhotoDelegate {
     func setTabBarHome()
+}
+
+class EditPhotoController: SharePhotoController {
+    
+    var postId: String?
+    
+    let customImageView: CustomImageView = {
+        let iv = CustomImageView()
+        iv.clipsToBounds = true
+        iv.contentMode = .scaleAspectFill
+        return iv
+    }()
+    
+    
+    override func viewDidLoad() {
+        super.viewDidLoad()
+        
+        Gallery.Config.VideoEditor.savesEditedVideoToLibrary = true
+        Gallery.Config.initialTab = Gallery.Config.GalleryTab.imageTab
+        Gallery.Config.tabsToShow = [Gallery.Config.GalleryTab.imageTab, Gallery.Config.GalleryTab.cameraTab]
+        
+        updateConstraints()
+         navigationItem.title = "Edit Post"
+        
+        /***** Set up toasts *****/
+        edgesForExtendedLayout = UIRectEdge()
+        presentWindow = UIApplication.shared.keyWindow
+        
+        imageCollectionView.register(PostImageObject.self, forCellWithReuseIdentifier: imageCellId)
+        locationCollectionView.register(MapCell.self, forCellWithReuseIdentifier: mapCellId)
+        
+        view.backgroundColor = UIColor.collectionCell()
+        self.view.tintColor  = UIColor.buttonThemeColor()
+        imageCollectionView.backgroundView = backGroundView
+        
+        //Products.delegate = self
+        Description.textView?.delegate = self
+        tableProductsView.delegate = self
+        tableProductsView.dataSource =  self
+        
+        setupImageAndTextViews()
+        setNavigationButtons()
+        
+        guard let uid = Auth.auth().currentUser?.uid else { return }
+        
+        Firestore.fetchUserWithUID(uid: uid, completion: { (user) in
+            self.user = user
+        })
+        
+        /****** Tap to dismiss KeyBoard ******/
+        
+        let tapImageCollectionView = UITapGestureRecognizer(target: self, action: #selector(imageCollectionViewTapped(tapGestureRecognizer: )))
+        imageCollectionView.isUserInteractionEnabled = true
+        imageCollectionView.addGestureRecognizer(tapImageCollectionView)
+        view.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(dissmissKeyboard)))
+        /****** End Gestures           ******/
+        
+        
+        /******  Algolia Search Products ******/
+        tableProductsView.register(SearchTableCell.self, forCellReuseIdentifier: searchTableCellId)
+        postSearcher = Searcher(index: AlgoliaManager.sharedInstance.posts, resultHandler: self.handleSearchResults)
+        postSearcher.params.hitsPerPage = 15
+        postSearcher.params.attributesToRetrieve = ["*" ]
+        postSearcher.params.attributesToHighlight = ["product"]
+        tableProductsView.tableHeaderView?.isHidden = true
+        
+        definesPresentationContext = true
+        
+        VIEW_SCROLL_HEIGHT? = 400.0
+        print("Keyboard adjusted value \(VIEW_SCROLL_HEIGHT ?? 0.0)")
+        
+        if let postId = postId {
+            Firestore.fetchPostByPostId(postId: postId) { (post) in
+                Firestore.fetchUserWithUID(uid: post.uid) { (user) in
+                    self.Products.text = post.product
+                    self.Description.text = post.description
+                    
+                   
+                   
+                }
+                for url in post.imageUrlArray {
+                    self.imageUrlArray.append(url)
+                    self.customImageView.loadImage(urlString: url)
+                    self.imageArray.append(self.customImageView.image!)
+                    self.CellType = CT.PIC
+                    self.imageCollectionView.reloadData()
+                    
+                }
+                //self.locationCollectionView.reloadData()
+            }
+        }
+    }
+    
+    
 }
 
 
@@ -115,7 +206,7 @@ class SharePhotoController:
     
     public var imageConstraint: NSLayoutConstraint?
     public var imageWidthConstraint: NSLayoutConstraint?
-
+    
     
     public func cropViewController(_ cropViewController: CropViewController, didCropToImage image: UIImage, withRect cropRect: CGRect, angle: Int) {
         self.croppedRect = cropRect
@@ -167,7 +258,7 @@ class SharePhotoController:
         }
     }
     
-   
+    
     public func updateImageViewWithImage(_ image: UIImage, fromCropViewController cropViewController: CropViewController) {
         imageView.image = image
         layoutImageView()
@@ -263,19 +354,19 @@ class SharePhotoController:
         gallery = nil
     }
     
-//    func wrapperDidPress(_ imagePicker: ImagePickerController, images: [UIImage]) {
-//        guard images.count > 0 else { return }
-//        
-//        let lightboxImages = images.map {
-//            return LightboxImage(image: $0)
-//        }
-//        
-//        let lightbox = LightboxController(images: lightboxImages, startIndex: 0)
-//        imagePicker.present(lightbox, animated: true, completion: nil)
-//    }
+    //    func wrapperDidPress(_ imagePicker: ImagePickerController, images: [UIImage]) {
+    //        guard images.count > 0 else { return }
+    //
+    //        let lightboxImages = images.map {
+    //            return LightboxImage(image: $0)
+    //        }
+    //
+    //        let lightbox = LightboxController(images: lightboxImages, startIndex: 0)
+    //        imagePicker.present(lightbox, animated: true, completion: nil)
+    //    }
     
     
-   
+    
     
     var post: Post? {
         didSet {
@@ -296,7 +387,7 @@ class SharePhotoController:
     }
     
     
-
+    
     func updateConstraints() {
         let constant = MDCCeil((self.view.frame.width - 2) * 0.65)
         let widthConstant = MDCCeil((self.view.frame.width - 2) * 0.9)
@@ -311,7 +402,7 @@ class SharePhotoController:
         imageConstraint?.constant = constant
         imageWidthConstraint?.constant = widthConstant
     }
-
+    
     
     //var post : Post?
     
@@ -360,7 +451,7 @@ class SharePhotoController:
         Gallery.Config.VideoEditor.savesEditedVideoToLibrary = true
         Gallery.Config.initialTab = Gallery.Config.GalleryTab.imageTab
         Gallery.Config.tabsToShow = [Gallery.Config.GalleryTab.imageTab, Gallery.Config.GalleryTab.cameraTab]
-    
+        
         updateConstraints()
         
         /***** Set up toasts *****/
@@ -375,7 +466,7 @@ class SharePhotoController:
         self.view.tintColor  = UIColor.buttonThemeColor()
         navigationItem.title = "Post Page"
         imageCollectionView.backgroundView = backGroundView
- 
+        
         //Products.delegate = self
         Description.textView?.delegate = self
         tableProductsView.delegate = self
@@ -421,7 +512,7 @@ class SharePhotoController:
     
     var editingIndex: IndexPath!
     
-     // MARK: - Keyboard Handlers
+    // MARK: - Keyboard Handlers
     
     @objc fileprivate func handleKeyboardShow(notification: Notification) {
         // how to figure out how tall the keyboard actually is
@@ -440,21 +531,21 @@ class SharePhotoController:
     @objc func keyboardWillShow(notification: NSNotification) {
         print("Keyboard will show...")
         
-//        let notificationName = NotificationCenter.default.addObserver(
-//            self,
-//            selector: #selector(self.keyboardDidShow(notification:)),
-//            name: UIResponder.keyboardDidShowNotification, object: nil)
+        //        let notificationName = NotificationCenter.default.addObserver(
+        //            self,
+        //            selector: #selector(self.keyboardDidShow(notification:)),
+        //            name: UIResponder.keyboardDidShowNotification, object: nil)
         
         
-//
-//        let isKeyboardShowing = NSNotification.Name(UIR
-//        if let keyboardSize = (notification.userInfo?[UIResponder.keyboardFrameBeginUserInfoKey] as? NSValue)?.cgRectValue {
-//            //let inset = isKeyboardShowing ? -bottomAreaInset : bottomAreaInset
-//            if isKeyboardShowing {
-//                print ("Frame size \(self.view.frame.height)")
-//                 self.view.frame.origin.y = -keyboardSize.height + self.view.frame.height / 2.5
-//            }
-//        }
+        //
+        //        let isKeyboardShowing = NSNotification.Name(UIR
+        //        if let keyboardSize = (notification.userInfo?[UIResponder.keyboardFrameBeginUserInfoKey] as? NSValue)?.cgRectValue {
+        //            //let inset = isKeyboardShowing ? -bottomAreaInset : bottomAreaInset
+        //            if isKeyboardShowing {
+        //                print ("Frame size \(self.view.frame.height)")
+        //                 self.view.frame.origin.y = -keyboardSize.height + self.view.frame.height / 2.5
+        //            }
+        //        }
     }
     
     @objc func keyboardWillHide(notification: NSNotification) {
@@ -474,7 +565,7 @@ class SharePhotoController:
         case .unknown: return NSLocalizedString("Unkown",comment: "Relative cost for when it is unknown")
         }
     }
-
+    
     
     let loadImages: CustomImageView = {
         let iv = CustomImageView()
@@ -607,7 +698,7 @@ class SharePhotoController:
         containerView.addSubview(Photos)
         containerView.addSubview(FloatingPlusButton)
         
-    
+        
         if #available(iOS 11.0, *) {
             containerView.anchor(top: view.safeAreaLayoutGuide.topAnchor , left: view.leftAnchor, bottom: view.safeAreaLayoutGuide.bottomAnchor, right: view.rightAnchor,
                                  paddingTop: paddingSize,
@@ -678,8 +769,8 @@ class SharePhotoController:
         FloatingPlusButton.anchor(top: nil, left: nil, bottom: containerView.bottomAnchor, right: containerView.rightAnchor, paddingTop: 80, paddingLeft: 0, paddingBottom: 0, paddingRight: 10, width: 0, height: 0)
         
         VIEW_SCROLL_HEIGHT = 400
-   
-     }
+        
+    }
     
     
     let FloatingPlusButton : MDCFloatingButton = {
@@ -745,17 +836,17 @@ class SharePhotoController:
         return collectionView
     }()
     
-//
-//    func showControllerForSetting(_ setting: ShareSetting) {
-//        let dummySettingsViewController = UIViewController()
-//        dummySettingsViewController.view.backgroundColor = UIColor.white
-//        dummySettingsViewController.navigationItem.title = setting.name.rawValue
-//        navigationController?.navigationBar.tintColor = UIColor.white
-//        navigationController?.navigationBar.titleTextAttributes = [NSAttributedStringKey.foregroundColor: UIColor.white]
-//        navigationController?.pushViewController(dummySettingsViewController, animated: true)
-//    }
+    //
+    //    func showControllerForSetting(_ setting: ShareSetting) {
+    //        let dummySettingsViewController = UIViewController()
+    //        dummySettingsViewController.view.backgroundColor = UIColor.white
+    //        dummySettingsViewController.navigationItem.title = setting.name.rawValue
+    //        navigationController?.navigationBar.tintColor = UIColor.white
+    //        navigationController?.navigationBar.titleTextAttributes = [NSAttributedStringKey.foregroundColor: UIColor.white]
+    //        navigationController?.pushViewController(dummySettingsViewController, animated: true)
+    //    }
     
-//    let  shareShowSettings = ShareShowSettings()
+    //    let  shareShowSettings = ShareShowSettings()
     
     @objc func handleEditMenu()
     {
@@ -1026,11 +1117,11 @@ class SharePhotoController:
                     if item >= 0  {
                         if let img = self.imageArray[item] as UIImage? {
                             // let image = img.images![indexPath.item]
-//                            let vc = SHViewController(image: img)
-//                            vc.delegate = self as SHViewControllerDelegate
-//                            self.currentImageItem = item
-//                            os_log("Filtering an item", log: OSLog.default, type: .debug)
-//                            self.present(vc, animated: true, completion: nil)
+                            //                            let vc = SHViewController(image: img)
+                            //                            vc.delegate = self as SHViewControllerDelegate
+                            //                            self.currentImageItem = item
+                            //                            os_log("Filtering an item", log: OSLog.default, type: .debug)
+                            //                            self.present(vc, animated: true, completion: nil)
                         }
                     }
                 }

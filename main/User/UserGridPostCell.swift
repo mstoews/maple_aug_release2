@@ -11,7 +11,7 @@ import Firebase
 import FirebaseFirestore
 import BadgeSwift
 import MaterialComponents
-
+import ActiveLabel
 
 protocol UserGridPostCellDelegate {
     func didTapComment(post: FSPost)
@@ -150,9 +150,157 @@ class UserGridPostCell: MDCCardCollectionCell , UICollectionViewDataSource, UICo
     
     var horizontalCellId = "postImageCellId"
     var images = [ImageObject]()
-    
     var delegate : UserGridPostCellDelegate?
+    var uid : String?
     
+    
+    var post: FSPost? {
+        
+        didSet {
+            if post == nil
+            {
+                return
+            }
+            images = []
+            
+            self.setButtonImage(button: self.likeButton, btnName: "ic_favorite_border", color: UIColor.red)
+            self.uid = post?.uid
+            
+            isLikedByUid(uid: self.uid!, postId: self.post!.id!) { (isLiked) in
+                if isLiked == true {
+                    self.setButtonImage(button: self.likeButton, btnName: "ic_favorite", color: UIColor.red)
+                }
+                else{
+                    self.setButtonImage(button: self.likeButton, btnName: "ic_favorite_border", color: UIColor.red)
+                }
+            }
+            
+            
+            isBookMarkedByUid(uid: self.uid!, postId: self.post!.id!) { (isBookmarked) in
+                if isBookmarked == true {
+                    self.setButtonImage(button: self.bookmarkButton, btnName: "ic_bookmark", color: UIColor.orange)
+                }
+                else
+                {
+                    self.setButtonImage(button: self.bookmarkButton, btnName: "ic_bookmark_border", color: UIColor.orange)
+                }
+            }
+            
+            self.hideLikesBadge(0)
+            self.hideMarkBadge(0)
+            self.hideCommentBadge(0)
+            
+            usernameLabel.text = "TEST USERNAME"
+            if let userName = post?.userName {
+                //if let product = fs_post?.product {
+                usernameLabel.attributedText = setUserName(userName: userName, caption: "")
+                //}
+                
+            }
+            
+            if let profileURL = post?.profileURL {
+                self.userProfileImageView.loadImage(urlString: profileURL)
+            }
+            
+            
+            if let postid = post?.id {
+                if let count = post?.imageUrlArray.count {
+                    if count > 0 {
+                        for url in (post?.imageUrlArray)! {
+                            let obj = ImageObject(postid: postid, imageid: url , url: url)
+                            images.append(obj)
+                        }
+                    }
+                }
+            }
+            
+            if let likeCount = post?.likeCount {
+                self.putNumberOfLikes(likes: likeCount)
+            }
+            
+            if let commentCount = post?.commentCount {
+                self.putNumberOfComments(likes: commentCount)
+            }
+            
+            
+            if let timeAgoDisplay = post?.creationDate.timeAgoToDisplay() {
+                let timeAttributedText = NSMutableAttributedString(string: timeAgoDisplay, attributes: [NSAttributedString.Key.font: UIFont.systemFont(ofSize: 12)])
+                timeAgoLabel.attributedText = timeAttributedText
+            }
+            
+            configurePostCaption()
+            
+            self.imageCollectionView.reloadData()
+        }
+        
+    }
+    
+    // MARK: - Is Liked
+    fileprivate func isLikedByUid(uid: String, postId: String, completion: @escaping (Bool)->() ) {
+        Firestore.isPostLikeByUser(postId: postId, uid: uid,  { (isLiked) in
+            completion(isLiked)
+        })
+    }
+    
+    // MARK: - Is Bookmarked
+    fileprivate func isBookMarkedByUid(uid: String, postId: String, completion: @escaping (Bool)->() ){
+        Firestore.isPostBookMarkedByUser(postId: postId, uid: uid,  { (isBookmarked) in
+            completion(isBookmarked)
+        })
+    }
+    
+    
+    func setButtonImage(button: UIButton, btnName: String,  color: UIColor)
+    {
+        let origImage = UIImage(named: btnName);
+        let tintedImage = origImage?.withRenderingMode(UIImage.RenderingMode.alwaysTemplate)
+        button.setImage(tintedImage, for: .normal)
+        button.tintColor = color
+    }
+    
+    func configurePostCaption() {
+        guard let post = self.post else { return }
+        guard let caption = self.post?.description else { return }
+        guard let product = self.post?.product else { return }
+        guard let username = self.post?.userName else { return }
+        
+        // look for username as pattern
+        let customType = ActiveType.custom(pattern: "^\(username)\\b")
+        
+        // enable username as custom type
+        captionLabel.enabledTypes = [.mention, .hashtag, .url, customType]
+        
+        // configure usnerame link attributes
+        captionLabel.configureLinkAttribute = { (type, attributes, isSelected) in
+            var atts = attributes
+            
+            switch type {
+            case .custom:
+                atts[NSAttributedString.Key.font] = UIFont.boldSystemFont(ofSize: 12)
+            default: ()
+            }
+            return atts
+        }
+        
+        captionLabel.customize { (label) in
+            label.text = "\(product) \(caption)"
+            label.customColor[customType] = .black
+            label.font = UIFont.systemFont(ofSize: 12)
+            label.textColor = .black
+            captionLabel.numberOfLines = 2
+        }
+        
+        timeAgoLabel.text = post.creationDate.timeAgoToDisplay()
+    }
+    
+    let captionLabel: ActiveLabel = {
+        let label = ActiveLabel()
+        label.numberOfLines = 3
+        return label
+    }()
+    
+    
+    /*
     var post: FSPost? {
         
         didSet {
@@ -248,6 +396,8 @@ class UserGridPostCell: MDCCardCollectionCell , UICollectionViewDataSource, UICo
         }
         
     }
+    */
+    
     
     fileprivate func setUserName(userName: String, caption: String) -> NSMutableAttributedString
     {
@@ -422,7 +572,10 @@ class UserGridPostCell: MDCCardCollectionCell , UICollectionViewDataSource, UICo
     
     lazy var editButton: UIButton = {
         let button = UIButton(type: .system)
-        button.setImage(#imageLiteral(resourceName: "ic_edit").withRenderingMode(.alwaysOriginal), for: .normal)
+         let origImage = UIImage(named: "ic_edit");
+        let tintedImage = origImage?.withRenderingMode(UIImage.RenderingMode.alwaysTemplate)
+        button.setImage(tintedImage, for: .normal)
+        button.tintColor = .purple
         button.addTarget(self, action: #selector(handleEditMenu), for: .touchUpInside)
         return button
     }()
@@ -430,11 +583,14 @@ class UserGridPostCell: MDCCardCollectionCell , UICollectionViewDataSource, UICo
     
     lazy var commentButton: UIButton = {
         let button = UIButton(type: .system)
-        button.setImage(#imageLiteral(resourceName: "ic_comment").withRenderingMode(.alwaysOriginal), for: .normal)
-        button.tintColor = .black
+        let origImage = UIImage(named: "ic_comment");
+        let tintedImage = origImage?.withRenderingMode(UIImage.RenderingMode.alwaysTemplate)
+        button.setImage(tintedImage, for: .normal)
+        button.tintColor = .blue
         button.addTarget(self, action: #selector(handleComment), for: .touchUpInside)
         return button
     }()
+    
     
     lazy var bookmarkButton: UIButton = {
         let button = UIButton(type: .system)
@@ -533,23 +689,12 @@ class UserGridPostCell: MDCCardCollectionCell , UICollectionViewDataSource, UICo
     }()
     
     
-    let captionLabel: UILabel = {
-        let label = UILabel()
-        label.numberOfLines = 0
-        return label
-    }()
+  
     
     let timeAgoLabel: UILabel = {
         let label = UILabel()
         label.numberOfLines = 0
         return label
-    }()
-    
-    lazy var optionsButton: UIButton = {
-        let button = UIButton(type: .system)
-        button.setImage(#imageLiteral(resourceName: "icons8-Edit Property-b_w").withRenderingMode(.alwaysOriginal), for: .normal)
-        button.addTarget(self, action: #selector(handleEditMenu), for: .touchUpInside)
-        return button
     }()
     
     @objc func handleEditMenu()

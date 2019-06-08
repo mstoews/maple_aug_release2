@@ -35,7 +35,6 @@
 		482FC11E20DE168200E23DAE /* FPAuthPickerViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 482FC10F20DE166300E23DAE /* FPAuthPickerViewController.xib */; };
 		482FC11F20DE168200E23DAE /* UserGridPostCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 482FC11020DE166700E23DAE /* UserGridPostCell.swift */; };
 		482FC12020DE168200E23DAE /* ChangeSignPhotoController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 482FC11120DE166B00E23DAE /* ChangeSignPhotoController.swift */; };
-		482FC12120DE168200E23DAE /* UserGridCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 482FC11220DE166E00E23DAE /* UserGridCell.swift */; };
 		482FC12320DE168200E23DAE /* UserProfilePhotoCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 482FC11420DE167600E23DAE /* UserProfilePhotoCell.swift */; };
 		482FC12520DE168200E23DAE /* MapViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 482FC11620DE167E00E23DAE /* MapViewCell.swift */; };
 		482FC12620DE168200E23DAE /* UserProfileHeader.swift in Sources */ = {isa = PBXBuildFile; fileRef = 482FC11720DE168200E23DAE /* UserProfileHeader.swift */; };
@@ -193,7 +192,6 @@
 		482FC10F20DE166300E23DAE /* FPAuthPickerViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = FPAuthPickerViewController.xib; sourceTree = "<group>"; };
 		482FC11020DE166700E23DAE /* UserGridPostCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UserGridPostCell.swift; sourceTree = "<group>"; };
 		482FC11120DE166B00E23DAE /* ChangeSignPhotoController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ChangeSignPhotoController.swift; sourceTree = "<group>"; };
-		482FC11220DE166E00E23DAE /* UserGridCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UserGridCell.swift; sourceTree = "<group>"; };
 		482FC11420DE167600E23DAE /* UserProfilePhotoCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UserProfilePhotoCell.swift; sourceTree = "<group>"; };
 		482FC11620DE167E00E23DAE /* MapViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MapViewCell.swift; sourceTree = "<group>"; };
 		482FC11720DE168200E23DAE /* UserProfileHeader.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UserProfileHeader.swift; sourceTree = "<group>"; };
@@ -637,7 +635,6 @@
 				4800DAE8226FDC6400B326FC /* UserProductController.swift */,
 				482FC10D20DE165B00E23DAE /* UserProfileController.swift */,
 				482FC11720DE168200E23DAE /* UserProfileHeader.swift */,
-				482FC11220DE166E00E23DAE /* UserGridCell.swift */,
 				482FC13C20DE23C800E23DAE /* UserFollowingController.swift */,
 				482FC11120DE166B00E23DAE /* ChangeSignPhotoController.swift */,
 				482FC10A20DE165000E23DAE /* FPAuthPickerViewController.swift */,
@@ -1325,7 +1322,6 @@
 				02C40A4A211A8F9300A73B51 /* SharePhotoControllerMD.swift in Sources */,
 				482FC11C20DE168200E23DAE /* UserProfileController.swift in Sources */,
 				48443E6A210990AE00A21FC4 /* GMUNonHierarchicalDistanceBasedAlgorithm.m in Sources */,
-				482FC12120DE168200E23DAE /* UserGridCell.swift in Sources */,
 				4800DAFA2272B8CA00B326FC /* APservice.swift in Sources */,
 				48443E6F210990AE00A21FC4 /* GMUGradient.m in Sources */,
 				02BB2407229EB3A70020601D /* BaseCell.swift in Sources */,

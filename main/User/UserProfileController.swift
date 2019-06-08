@@ -546,9 +546,15 @@ class UserProfileController: MDCCollectionViewController,
         alertController.addAction(UIAlertAction(title: "Delete Current Post", style: .default, handler: { (_) in
             do {
                  Firestore.deletePost(postId: postId)
-            } catch let signOutErr {
-                print("Failed to sign out:", signOutErr)
             }
+        }))
+        
+        alertController.addAction(UIAlertAction(title: "Edit Post", style: .default, handler: { (_) in
+            do {
+                let editController = EditPhotoController()
+                editController.postId = postId
+                self.navigationController?.pushViewController(editController, animated: true)
+            } 
         }))
         
         alertController.addAction(UIAlertAction(title: "Cancel", style: .cancel, handler: nil))

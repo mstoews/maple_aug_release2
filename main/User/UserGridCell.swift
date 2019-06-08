@@ -6,6 +6,8 @@
     import UIKit
     import Firebase
     import MaterialComponents
+    import ActiveLabel
+    import BadgeSwift
 
     fileprivate class PostImageCell: BaseCell
     {
@@ -83,41 +85,319 @@
     var postImagesCellId = "postImagesCellId"
     var images = [ImageObject]()
     
-    var post: Post? {
+//    var post: Post? {
+//        didSet {
+//            images = []
+//            bookmarkButton.setImage(post?.hasBookmark == true ? #imageLiteral(resourceName: "bookmarkFilled").withRenderingMode(.alwaysOriginal) : #imageLiteral(resourceName: "bookmark").withRenderingMode(.alwaysOriginal), for: .normal)
+//            if post?.hasLiked == true {
+//                print ("Post liked \(String(describing: post?.hasLiked))")
+//                likeButton.setImage(#imageLiteral(resourceName: "Heart_Selected").withRenderingMode(.alwaysOriginal), for: .normal)
+//            }
+//            else {
+//                print ("Post unliked \(String(describing: post?.hasLiked))")
+//                likeButton.setImage(#imageLiteral(resourceName: "Heart_Unselected").withRenderingMode(.alwaysOriginal), for: .normal)
+//            }
+//
+//            usernameLabel.text = "TEST USERNAME"
+//            usernameLabel.text = (post?.user.username)! + " : " + (post?.caption)!
+//            guard let profileImageUrl = post?.user.profileImageUrl else { return }
+//            userProfileImageView.loadImage(urlString: profileImageUrl)
+//
+//            if let count = post?.imageUrlArray.count {
+//                if count > 0 {
+//                    for url in (post?.imageUrlArray)! {
+//                        print(url)
+//                        let obj = ImageObject(postid: (post?.id)!, imageid: "" , url: url)
+//                        images.append(obj)
+//                    }
+//                }
+//            }
+//            //getNumberOfLikes(likes: (post?.noOfLikes)!)
+//            //getNumberOfComments(likes: (post?.noOfComments)!)
+//            //getNumberOfBookmarks(likes: (post?.noOfBookMarks)!)
+//            setupAttributedCaption()
+//            self.imageCollectionView.reloadData()
+//        }
+//    }
+    
+    public var imageConstraint: NSLayoutConstraint?
+    public var imageWidthContraint: NSLayoutConstraint?
+    
+    let attributeTitle = [NSAttributedString.Key.font: UIFont.mdc_preferredFont(forMaterialTextStyle: .title)]
+    let attributeCaption = [NSAttributedString.Key.font: UIFont.mdc_preferredFont(forMaterialTextStyle: .body2 )]
+    let attributeSubline = [NSAttributedString.Key.font: UIFont.mdc_preferredFont(forMaterialTextStyle:  .subheadline )]
+
+    var uid : String?
+    
+    var post: FSPost? {
+        
         didSet {
+            if post == nil
+            {
+                return
+            }
             images = []
-            bookmarkButton.setImage(post?.hasBookmark == true ? #imageLiteral(resourceName: "bookmarkFilled").withRenderingMode(.alwaysOriginal) : #imageLiteral(resourceName: "bookmark").withRenderingMode(.alwaysOriginal), for: .normal)
-            if post?.hasLiked == true {
-                print ("Post liked \(String(describing: post?.hasLiked))")
-                likeButton.setImage(#imageLiteral(resourceName: "Heart_Selected").withRenderingMode(.alwaysOriginal), for: .normal)
+            
+            self.setButtonImage(button: self.likeButton, btnName: "ic_favorite_border", color: UIColor.red)
+            self.uid = post?.uid
+            
+            isLikedByUid(uid: self.uid!, postId: self.post!.id!) { (isLiked) in
+                if isLiked == true {
+                    self.setButtonImage(button: self.likeButton, btnName: "ic_favorite", color: UIColor.red)
+                }
+                else{
+                    self.setButtonImage(button: self.likeButton, btnName: "ic_favorite_border", color: UIColor.red)
+                }
             }
-            else {
-                print ("Post unliked \(String(describing: post?.hasLiked))")
-                likeButton.setImage(#imageLiteral(resourceName: "Heart_Unselected").withRenderingMode(.alwaysOriginal), for: .normal)
+            
+            
+            isBookMarkedByUid(uid: self.uid!, postId: self.post!.id!) { (isBookmarked) in
+                if isBookmarked == true {
+                    self.setButtonImage(button: self.bookmarkButton, btnName: "ic_bookmark", color: UIColor.orange)
+                }
+                else
+                {
+                    self.setButtonImage(button: self.bookmarkButton, btnName: "ic_bookmark_border", color: UIColor.orange)
+                }
             }
+            
+            self.hideLikesBadge(0)
+            self.hideMarkBadge(0)
+            self.hideCommentBadge(0)
             
             usernameLabel.text = "TEST USERNAME"
-            usernameLabel.text = (post?.user.username)! + " : " + (post?.caption)!
-            guard let profileImageUrl = post?.user.profileImageUrl else { return }
-            userProfileImageView.loadImage(urlString: profileImageUrl)
+            if let userName = post?.userName {
+                //if let product = fs_post?.product {
+                usernameLabel.attributedText = setUserName(userName: userName, caption: "")
+                //}
+                
+            }
             
-            if let count = post?.imageUrlArray.count {
-                if count > 0 {
-                    for url in (post?.imageUrlArray)! {
-                        print(url)
-                        let obj = ImageObject(postid: (post?.id)!, imageid: "" , url: url)
-                        images.append(obj)
+            if let profileURL = post?.profileURL {
+                self.userProfileImageView.loadImage(urlString: profileURL)
+            }
+            
+            
+            if let postid = post?.id {
+                if let count = post?.imageUrlArray.count {
+                    if count > 0 {
+                        for url in (post?.imageUrlArray)! {
+                            let obj = ImageObject(postid: postid, imageid: url , url: url)
+                            images.append(obj)
+                        }
                     }
                 }
             }
-            //getNumberOfLikes(likes: (post?.noOfLikes)!)
-            //getNumberOfComments(likes: (post?.noOfComments)!)
-            //getNumberOfBookmarks(likes: (post?.noOfBookMarks)!)
-            setupAttributedCaption()
+            
+            if let likeCount = post?.likeCount {
+                self.putNumberOfLikes(likes: likeCount)
+            }
+            
+            if let commentCount = post?.commentCount {
+                self.putNumberOfComments(likes: commentCount)
+            }
+            
+            
+            if let timeAgoDisplay = post?.creationDate.timeAgoToDisplay() {
+                let timeAttributedText = NSMutableAttributedString(string: timeAgoDisplay, attributes: [NSAttributedString.Key.font: UIFont.systemFont(ofSize: 12)])
+                timeAgoLabel.attributedText = timeAttributedText
+            }
+            
+            configurePostCaption()
+            
             self.imageCollectionView.reloadData()
         }
+        
     }
-
+    
+    let timeAgoLabel: UILabel = {
+        let label = UILabel()
+        label.numberOfLines = 0
+        return label
+    }()
+    
+    
+    lazy var commentBadge : BadgeSwift = {
+        let badge = BadgeSwift()
+        badge.text = ""
+        badge.insets = CGSize(width: 2, height: 2)
+        badge.font = UIFont.preferredFont(forTextStyle: UIFont.TextStyle.caption1)
+        badge.textColor = UIColor.white
+        badge.badgeColor = UIColor.red
+        badge.shadowOpacityBadge = 0.5
+        badge.shadowOffsetBadge = CGSize(width: 0, height: 0)
+        badge.shadowRadiusBadge = 0.5
+        badge.shadowColorBadge = UIColor.black
+        badge.shadowOpacityBadge = 0
+        badge.borderWidth = 1.0
+        badge.borderColor = UIColor.themeColor()
+        return badge
+    }()
+    
+    lazy var likeBadge : BadgeSwift = {
+        let badge = BadgeSwift()
+        badge.text = ""
+        badge.insets = CGSize(width: 2, height: 2)
+        badge.font = UIFont.preferredFont(forTextStyle: UIFont.TextStyle.caption1)
+        badge.textColor = UIColor.white
+        badge.badgeColor = UIColor.red
+        badge.shadowOpacityBadge = 0.5
+        badge.shadowOffsetBadge = CGSize(width: 0, height: 0)
+        badge.shadowRadiusBadge = 0.5
+        badge.shadowColorBadge = UIColor.black
+        badge.shadowOpacityBadge = 0
+        badge.borderWidth = 1.0
+        badge.borderColor = UIColor.themeColor()
+        return badge
+    }()
+    lazy var bookMarkBadge : BadgeSwift = {
+        let badge = BadgeSwift()
+        badge.text = ""
+        badge.insets = CGSize(width: 2, height: 2)
+        badge.font = UIFont.preferredFont(forTextStyle: UIFont.TextStyle.caption1)
+        badge.textColor = UIColor.white
+        badge.badgeColor = UIColor.red
+        badge.shadowOpacityBadge = 0.5
+        badge.shadowOffsetBadge = CGSize(width: 0, height: 0)
+        badge.shadowRadiusBadge = 0.5
+        badge.shadowColorBadge = UIColor.black
+        badge.shadowOpacityBadge = 0
+        badge.borderWidth = 1.0
+        badge.borderColor = UIColor.themeColor()
+        return badge
+    }()
+    
+    
+    fileprivate func setUserName(userName: String, caption: String) -> NSMutableAttributedString
+    {
+        var attributedText: NSMutableAttributedString?
+        attributedText = NSMutableAttributedString(string: "" , attributes: attributeCaption)
+        attributedText?.append(NSMutableAttributedString(string: userName , attributes:attributeCaption))
+        attributedText?.append(NSMutableAttributedString(string: "" , attributes: attributeCaption))
+        attributedText?.append(NSMutableAttributedString(string: caption , attributes: attributeCaption))
+        
+        return attributedText!
+    }
+    
+    fileprivate func hideLikesBadge(_ likes: Int) {
+        if (likes > 0 ) { self.likeBadge.isHidden = false } else { self.likeBadge.isHidden = true }
+    }
+    
+    fileprivate func putNumberOfLikes(likes: Int)
+    {
+        self.likeBadge.isHidden = true
+        var attributedText: NSMutableAttributedString?
+        let sLikes = "\(likes)"
+        attributedText = NSMutableAttributedString(string: sLikes , attributes: [NSAttributedString.Key.font: UIFont.boldSystemFont(ofSize: 8)])
+        self.likeBadge.attributedText = attributedText
+        hideLikesBadge(likes)
+    }
+    
+    fileprivate func hideCommentBadge(_ likes: Int) {
+        if (likes > 0 ) { self.commentBadge.isHidden = false } else { self.commentBadge.isHidden = true }
+    }
+    
+    fileprivate func putNumberOfComments(likes: Int)
+    {
+        self.commentBadge.isHidden = true
+        var attributedText: NSMutableAttributedString?
+        let sLikes = "\(likes)"
+        attributedText = NSMutableAttributedString(string: sLikes , attributes: [NSAttributedString.Key.font: UIFont.boldSystemFont(ofSize: 8)])
+        self.commentBadge.attributedText = attributedText
+        hideCommentBadge(likes)
+    }
+    
+    
+    
+    fileprivate func hideMarkBadge(_ likes: Int) {
+        if (likes > 0 ) { self.bookMarkBadge.isHidden = false } else { self.bookMarkBadge.isHidden = true }
+    }
+    
+    fileprivate func putNumberOfBookmarks(likes: Int)
+    {
+        self.bookMarkBadge.isHidden = true
+        var attributedText: NSMutableAttributedString?
+        let sLikes = "\(likes)"
+        attributedText = NSMutableAttributedString(string: sLikes , attributes: [NSAttributedString.Key.font: UIFont.boldSystemFont(ofSize: 8)])
+        self.bookMarkBadge.attributedText = attributedText
+        hideMarkBadge(likes)
+    }
+    
+    
+    
+    let captionLabel: ActiveLabel = {
+        let label = ActiveLabel()
+        label.numberOfLines = 3
+        return label
+    }()
+    
+    func configurePostCaption() {
+        guard let post = self.post else { return }
+        guard let caption = self.post?.description else { return }
+        guard let product = self.post?.product else { return }
+        guard let username = self.post?.userName else { return }
+        
+        // look for username as pattern
+        let customType = ActiveType.custom(pattern: "^\(username)\\b")
+        
+        // enable username as custom type
+        captionLabel.enabledTypes = [.mention, .hashtag, .url, customType]
+        
+        // configure usnerame link attributes
+        captionLabel.configureLinkAttribute = { (type, attributes, isSelected) in
+            var atts = attributes
+            
+            switch type {
+            case .custom:
+                atts[NSAttributedString.Key.font] = UIFont.boldSystemFont(ofSize: 12)
+            default: ()
+            }
+            return atts
+        }
+    }
+        
+    override func updateConstraints() {
+        
+        super.updateConstraints()
+            
+            let constant = MDCCeil((self.bounds.width - 2) * 0.65)
+            let widthConstant = MDCCeil((self.bounds.width - 2) * 0.9)
+            if imageConstraint == nil {
+                imageConstraint = imageCollectionView.heightAnchor.constraint(equalToConstant: constant)
+                imageConstraint?.isActive = true
+            }
+            if imageWidthContraint == nil {
+                imageWidthContraint = imageCollectionView.widthAnchor.constraint(equalToConstant: widthConstant)
+                imageWidthContraint?.isActive = true
+            }
+            imageConstraint?.constant = constant
+            imageWidthContraint?.constant = widthConstant
+        }
+        
+        
+        // MARK: - Is Liked
+        fileprivate func isLikedByUid(uid: String, postId: String, completion: @escaping (Bool)->() ) {
+            Firestore.isPostLikeByUser(postId: postId, uid: uid,  { (isLiked) in
+                completion(isLiked)
+            })
+        }
+        
+        // MARK: - Is Bookmarked
+        fileprivate func isBookMarkedByUid(uid: String, postId: String, completion: @escaping (Bool)->() ){
+            Firestore.isPostBookMarkedByUser(postId: postId, uid: uid,  { (isBookmarked) in
+                completion(isBookmarked)
+            })
+        }
+        
+        
+        func setButtonImage(button: UIButton, btnName: String,  color: UIColor)
+        {
+            let origImage = UIImage(named: btnName);
+            let tintedImage = origImage?.withRenderingMode(UIImage.RenderingMode.alwaysTemplate)
+            button.setImage(tintedImage, for: .normal)
+            button.tintColor = color
+        }
+    
         func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
             return images.count
         }
@@ -142,18 +422,18 @@
         }
         
         
-        fileprivate func setupAttributedCaption() {
-            guard let post = self.post else { return }
-            
-            let attributedText = NSMutableAttributedString(string: "\(post.caption)", attributes: [NSAttributedString.Key.font: UIFont.systemFont(ofSize: 12)])
-            attributedText.append(NSAttributedString(string:   "\n\(post.description)", attributes: [NSAttributedString.Key.font: UIFont.systemFont(ofSize: 12)]))
-            attributedText.append(NSAttributedString(string:   "\n", attributes: [NSAttributedString.Key.font: UIFont.systemFont(ofSize: 4)]))
-            
-            let timeAgoDisplay = post.creationDate.timeAgoToDisplay()
-            attributedText.append(NSAttributedString(string: timeAgoDisplay, attributes: [NSAttributedString.Key.font: UIFont.systemFont(ofSize: 12), NSAttributedString.Key.foregroundColor: UIColor.gray]))
-            captionLabel.attributedText = attributedText
-        }
-        
+//        fileprivate func setupAttributedCaption() {
+//            guard let post = self.post else { return }
+//            
+//            let attributedText = NSMutableAttributedString(string: "\(post.caption)", attributes: [NSAttributedString.Key.font: UIFont.systemFont(ofSize: 12)])
+//            attributedText.append(NSAttributedString(string:   "\n\(post.description)", attributes: [NSAttributedString.Key.font: UIFont.systemFont(ofSize: 12)]))
+//            attributedText.append(NSAttributedString(string:   "\n", attributes: [NSAttributedString.Key.font: UIFont.systemFont(ofSize: 4)]))
+//            
+//            let timeAgoDisplay = post.creationDate.timeAgoToDisplay()
+//            attributedText.append(NSAttributedString(string: timeAgoDisplay, attributes: [NSAttributedString.Key.font: UIFont.systemFont(ofSize: 12), NSAttributedString.Key.foregroundColor: UIColor.gray]))
+//            captionLabel.attributedText = attributedText
+//        }
+//        
         
         let userProfileImageView: CustomImageView = {
             let iv = CustomImageView()
@@ -227,13 +507,7 @@
             collectionView.translatesAutoresizingMaskIntoConstraints = false
             return collectionView
         }()
-        
-        
-        let captionLabel: UILabel = {
-            let label = UILabel()
-            label.numberOfLines = 0
-            return label
-        }()
+    
     
         override init(frame: CGRect) {
             super.init(frame: frame)
