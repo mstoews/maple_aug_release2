@@ -311,32 +311,20 @@ extension Firestore {
     
     // MARK : -  isPostLikeByUser
     static func isPostLikeByUser(postId: String, uid: String, _ completion: @escaping (Bool) -> () ) {
-        
-        let docRef = firestore().collection("posts").document(postId).collection("likes").document(uid)
-        docRef.getDocument { (document, error) in
+        let docRef = firestore().collection("posts").document(postId).collection("likes").whereField("Liked", isEqualTo: true)
+        docRef.getDocuments { (query, error) in
             if let error = error {
                 print ("Error in data structure : \(error)")
                 completion(false)
-            }
-            if let document = document, document.exists {
-                print ("Post: \(postId) user id : \(uid)")
-                var isBookMarked: Bool
-                isBookMarked = (document["Liked"] != nil)
-                if isBookMarked == false {
-                    completion(false)
-                }
-                else
-                {
-                    completion(true)
-                }
-                
             } else {
-                print("Document does not exist")
+                if query!.documents.count > 0 {
+                        print("Post \(postId) is likde by \(uid)")
+                        completion(true)
+                    }
+                }
             }
         }
-    }
-    
-    
+
     //MARK:- Bookmark
     
     static func didBookmarkedPost(post: FSPost, didBookmark: Bool) {
@@ -467,7 +455,6 @@ extension Firestore {
             }
         }
     }
-    
     
     
     static func getPostCount (user: MapleUser) -> Int {

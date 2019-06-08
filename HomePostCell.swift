@@ -12,36 +12,6 @@ import BadgeSwift
 import MaterialComponents
 import ActiveLabel
 
-class LoadingImageIndicator: UIView {
-    
-    var indicator: UIActivityIndicatorView!
-    
-    init() {
-        super.init(frame: CGRect(x: 0, y: 0, width: 60, height: 60))
-        
-        backgroundColor = UIColor.darkGray
-        layer.cornerRadius = bounds.size.width / 2
-        clipsToBounds = true
-        alpha = 0
-        
-        indicator = UIActivityIndicatorView()
-        //indicator.activityIndicatorViewStyleityIndicatorViewStyle = .whiteLarge
-        indicator.startAnimating()
-        
-        addSubview(indicator)
-    }
-    
-    required init?(coder aDecoder: NSCoder) {
-        fatalError("init(coder:) has not been implemented")
-    }
-    
-    override func layoutSubviews() {
-        super.layoutSubviews()
-        
-        indicator.center = CGPoint(x: bounds.size.width/2, y: bounds.size.height/2)
-    }
-}
-
 
 protocol HomePostCellDelegate {
     func didTapComment(post: FSPost)
@@ -160,8 +130,8 @@ class HomePostCell: MDCCardCollectionCell , UICollectionViewDataSource, UICollec
                 return
             }
             images = []
-            
-            self.likeButton.setImage(#imageLiteral(resourceName: "ic_favorite_border").withRenderingMode(.alwaysOriginal), for: .normal)
+        
+            self.setButtonImage(button: self.likeButton, btnName: "ic_favorite_border", color: UIColor.red)
             self.uid = post?.uid
             
             isLikedByUid(uid: self.uid!, postId: self.post!.id!) { (isLiked) in
