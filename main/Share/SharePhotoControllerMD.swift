@@ -103,31 +103,41 @@ class EditPhotoController: SharePhotoController {
         definesPresentationContext = true
         
         VIEW_SCROLL_HEIGHT? = 400.0
-        print("Keyboard adjusted value \(VIEW_SCROLL_HEIGHT ?? 0.0)")
+        print("viewDidLoad")
+        
+    }
+    
+    override func viewDidAppear(_ animated: Bool) {
+        super.viewDidAppear(true)
+        print("viewDidAppear")
         
         if let postId = postId {
             Firestore.fetchPostByPostId(postId: postId) { (post) in
                 Firestore.fetchUserWithUID(uid: post.uid) { (user) in
                     self.Products.text = post.product
                     self.Description.text = post.description
-                    
-                   
-                   
-                }
-                for url in post.imageUrlArray {
-                    self.imageUrlArray.append(url)
-                    self.customImageView.loadImage(urlString: url)
-                    self.imageArray.append(self.customImageView.image!)
-                    self.CellType = CT.PIC
-                    self.imageCollectionView.reloadData()
+                    for url in post.imageUrlArray {
+                        print(url)
+                        self.imageUrlArray.append(url)
+                        let ci = CustomImageView()
+                        ci.loadImage(urlString: url)
+                        // self.customImageView.loadImage(urlString: url)
+                        self.imageArray.append(ci.image!)
+                        print("Number of images: \(self.imageArray.count)")
+                        self.CellType = CT.PIC
+                        self.imageCollectionView.reloadData()
+                        
+                    }
+                    self.CellType = CT.MAP
+                    self.locationCollectionView.reloadData()
                     
                 }
                 //self.locationCollectionView.reloadData()
+               
             }
+            
         }
     }
-    
-    
 }
 
 
