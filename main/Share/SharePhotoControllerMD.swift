@@ -69,10 +69,10 @@ class EditPhotoController: SharePhotoController {
         self.view.tintColor  = UIColor.buttonThemeColor()
         imageCollectionView.backgroundView = backGroundView
         
-        //Products.delegate = self
-        Description.textView?.delegate = self
-        tableProductsView.delegate = self
-        tableProductsView.dataSource =  self
+        Products.delegate = self
+        Description.delegate = self
+        //tableProductsView.delegate = self
+        //tableProductsView.dataSource =  self
         
         setupImageAndTextViews()
         setNavigationButtons()
@@ -93,12 +93,12 @@ class EditPhotoController: SharePhotoController {
         
         
         /******  Algolia Search Products ******/
-        tableProductsView.register(SearchTableCell.self, forCellReuseIdentifier: searchTableCellId)
-        postSearcher = Searcher(index: AlgoliaManager.sharedInstance.posts, resultHandler: self.handleSearchResults)
-        postSearcher.params.hitsPerPage = 15
-        postSearcher.params.attributesToRetrieve = ["*" ]
-        postSearcher.params.attributesToHighlight = ["product"]
-        tableProductsView.tableHeaderView?.isHidden = true
+        //tableProductsView.register(SearchTableCell.self, forCellReuseIdentifier: searchTableCellId)
+        //postSearcher = Searcher(index: AlgoliaManager.sharedInstance.posts, resultHandler: self.handleSearchResults)
+        //postSearcher.params.hitsPerPage = 15
+        //postSearcher.params.attributesToRetrieve = ["*" ]
+        //postSearcher.params.attributesToHighlight = ["product"]
+        //tableProductsView.tableHeaderView?.isHidden = true
         
         definesPresentationContext = true
         
@@ -149,9 +149,9 @@ class SharePhotoController:
     UISearchDisplayDelegate,
     UITextViewDelegate,
     UITextFieldDelegate,
-    UITableViewDataSource,
+   // UITableViewDataSource,
     UIImageEditFilterDelegate,
-    UITableViewDelegate,
+   // UITableViewDelegate,
     UISearchBarDelegate,
     UISearchResultsUpdating,
     SearchProgressDelegate,
@@ -377,24 +377,24 @@ class SharePhotoController:
     
     
     
-    
-    var post: Post? {
-        didSet {
-            if let post = post  {
-                print("Post ID : \(post.id!)")
-                self.CellType = CT.PIC
-                imageCollectionView.reloadData()
-                Products.text = post.caption
-                Description.text = post.description
-                
-                DispatchQueue.main.async {
-                    self.CellType = CT.MAP
-                    self.locationCollectionView.reloadData()
-                }
-                
-            }
-        }
-    }
+//
+//    var post: Post? {
+//        didSet {
+//            if let post = post  {
+//                print("Post ID : \(post.id!)")
+//                self.CellType = CT.PIC
+//                imageCollectionView.reloadData()
+//                Products.text = post.caption
+//                Description.text = post.description
+//
+//                DispatchQueue.main.async {
+//                    self.CellType = CT.MAP
+//                    self.locationCollectionView.reloadData()
+//                }
+//
+//            }
+//        }
+//    }
     
     
     
@@ -477,10 +477,10 @@ class SharePhotoController:
         navigationItem.title = "Post Page"
         imageCollectionView.backgroundView = backGroundView
         
-        //Products.delegate = self
-        Description.textView?.delegate = self
-        tableProductsView.delegate = self
-        tableProductsView.dataSource =  self
+        Products.delegate = self
+        Description.delegate = self
+        //tableProductsView.delegate = self
+        //tableProductsView.dataSource =  self
         
         setupImageAndTextViews()
         setNavigationButtons()
@@ -501,69 +501,93 @@ class SharePhotoController:
         
         
         /******  Algolia Search Products ******/
-        tableProductsView.register(SearchTableCell.self, forCellReuseIdentifier: searchTableCellId)
-        postSearcher = Searcher(index: AlgoliaManager.sharedInstance.posts, resultHandler: self.handleSearchResults)
-        postSearcher.params.hitsPerPage = 15
-        postSearcher.params.attributesToRetrieve = ["*" ]
-        postSearcher.params.attributesToHighlight = ["product"]
-        tableProductsView.tableHeaderView?.isHidden = true
+        //tableProductsView.register(SearchTableCell.self, forCellReuseIdentifier: searchTableCellId)
+        //postSearcher = Searcher(index: AlgoliaManager.sharedInstance.posts, resultHandler: self.handleSearchResults)
+       // postSearcher.params.hitsPerPage = 15
+        //postSearcher.params.attributesToRetrieve = ["*" ]
+        //postSearcher.params.attributesToHighlight = ["product"]
+        //tableProductsView.tableHeaderView?.isHidden = true
         
         definesPresentationContext = true
         //updateSearchResults(for: Products)
         
-        
-        //NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillShow), name: NSNotification.Name. keyboardWillShowNotification, object: nil)
-        //NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillHide), name: NSNotification.Name.keyboardWillHideNotification, object: nil)
+        let notificationCenter = NotificationCenter.default
+        notificationCenter.addObserver(self, selector: #selector(adjustForKeyboard), name: UIResponder.keyboardWillHideNotification, object: nil)
+        notificationCenter.addObserver(self, selector: #selector(adjustForKeyboard), name: UIResponder.keyboardWillChangeFrameNotification, object: nil)
         
         VIEW_SCROLL_HEIGHT? = 400.0
         print("Keyboard adjusted value \(VIEW_SCROLL_HEIGHT ?? 0.0)")
         
     }
     
+    
+    @objc func adjustForKeyboard(notification: Notification) {
+        guard let keyboardValue = notification.userInfo?[UIResponder.keyboardFrameEndUserInfoKey] as? NSValue else { return }
+        
+        let keyboardScreenEndFrame = keyboardValue.cgRectValue
+        // let keyboardViewEndFrame = view.convert(keyboardScreenEndFrame, from: view.window)
+        
+        if notification.name == UIResponder.keyboardWillHideNotification {
+            // how to figure out how tall the keyboard actually is
+            guard let value = notification.userInfo?[UIResponder.keyboardFrameEndUserInfoKey] as? NSValue else { return }
+            let keyboardFrame = value.cgRectValue
+            //
+            //        // let's try to figure out how tall the gap is from the register button to the bottom of the screen
+            let bottomSpace = view.frame.height
+            let difference = keyboardFrame.height - bottomSpace
+            Description.contentInset = .zero
+            self.view.transform = CGAffineTransform(translationX: 0, y: -difference - 8)
+            print("Keyboard is hiding ... ")
+        }
+        else {
+            print ("keyboard is showing...")
+            if let keyboardSize = (notification.userInfo?[UIResponder.keyboardFrameBeginUserInfoKey] as? NSValue)?.cgRectValue {
+                    self.view.frame.origin.y = -keyboardSize.height + 100
+            }
+        }
+        
+    }
+    
+    
     var editingIndex: IndexPath!
     
     // MARK: - Keyboard Handlers
     
-    @objc fileprivate func handleKeyboardShow(notification: Notification) {
-        // how to figure out how tall the keyboard actually is
-        //guard let value = notification.userInfo?[UIResponder.UIKeyboardFrameEndUserInfoKey] as? NSValue else { return }
-        guard let value = notification.userInfo?[UIResponder.keyboardFrameEndUserInfoKey] as? NSValue else { return }
-        let keyboardFrame = value.cgRectValue
-        
-        // let's try to figure out how tall the gap is from the register button to the bottom of the screen
-        let bottomSpace = view.frame.height //- overallStackView.frame.origin.y - overallStackView.frame.height
-        print(bottomSpace)
-        
-        let difference = keyboardFrame.height - bottomSpace
-        self.view.transform = CGAffineTransform(translationX: 0, y: -difference - 8)
-    }
-    
-    @objc func keyboardWillShow(notification: NSNotification) {
-        print("Keyboard will show...")
-        
-        //        let notificationName = NotificationCenter.default.addObserver(
-        //            self,
-        //            selector: #selector(self.keyboardDidShow(notification:)),
-        //            name: UIResponder.keyboardDidShowNotification, object: nil)
-        
-        
-        //
-        //        let isKeyboardShowing = NSNotification.Name(UIR
-        //        if let keyboardSize = (notification.userInfo?[UIResponder.keyboardFrameBeginUserInfoKey] as? NSValue)?.cgRectValue {
-        //            //let inset = isKeyboardShowing ? -bottomAreaInset : bottomAreaInset
-        //            if isKeyboardShowing {
-        //                print ("Frame size \(self.view.frame.height)")
-        //                 self.view.frame.origin.y = -keyboardSize.height + self.view.frame.height / 2.5
-        //            }
-        //        }
-    }
-    
-    @objc func keyboardWillHide(notification: NSNotification) {
-        print("Keyboard will hide...")
-        //let isKeyboardShowing = notification.name == NSNotification.Name.UIKeyboardWillShow
-        self.view.frame.origin.y =  130
-    }
-    
+//    @objc fileprivate func handleKeyboardShow(notification: Notification) {
+//        // how to figure out how tall the keyboard actually is
+//        //guard let value = notification.userInfo?[UIResponder.UIKeyboardFrameEndUserInfoKey] as? NSValue else { return }
+//        guard let value = notification.userInfo?[UIResponder.keyboardFrameEndUserInfoKey] as? NSValue else { return }
+//        let keyboardFrame = value.cgRectValue
+//
+//        // let's try to figure out how tall the gap is from the register button to the bottom of the screen
+//        let bottomSpace = view.frame.height //- overallStackView.frame.origin.y - overallStackView.frame.height
+//        print(bottomSpace)
+//
+//        let difference = keyboardFrame.height - bottomSpace
+//        self.view.transform = CGAffineTransform(translationX: 0, y: -difference - 8)
+//    }
+//
+//    @objc func keyboardWillShow(notification: NSNotification) {
+//        print("Keyboard will show...")
+//
+//                let notificationName = NotificationCenter.default.addObserver(
+//                    self,
+//                    selector: #selector(self.keyboardDidShow(notification:)),
+//                    name: UIResponder.keyboardDidShowNotification, object: nil)
+//
+//
+//                let isKeyboardShowing = notification.name == NSNotification.Name.MDCKeyboardWatcherKeyboardWillShow
+//
+//
+//                if let keyboardSize = (notification.userInfo?[UIResponder.keyboardFrameBeginUserInfoKey] as? NSValue)?.cgRectValue {
+//                    //let inset = isKeyboardShowing ? -bottomAreaInset : bottomAreaInset
+//                    if isKeyboardShowing {
+//                        print ("Frame size \(self.view.frame.height)")
+//                         self.view.frame.origin.y = -keyboardSize.height + self.view.frame.height / 2.5
+//                    }
+//                }
+//    }
+//
     
     func text(for priceLevel: GMSPlacesPriceLevel) -> String {
         switch priceLevel {
@@ -573,6 +597,9 @@ class SharePhotoController:
         case .high: return NSLocalizedString("High",comment: "Relative cost for a high cost location")
         case .expensive: return NSLocalizedString("Expensive",comment: "Relative cost for an expensive location")
         case .unknown: return NSLocalizedString("Unkown",comment: "Relative cost for when it is unknown")
+        @unknown default:
+            print("Fatal error...")
+            fatalError()
         }
     }
     
@@ -628,6 +655,8 @@ class SharePhotoController:
         handleAddPhotos()
     }
     
+   
+    
     // MARK: - Arrange Fields
     
     func setupImageAndTextViews() {
@@ -641,6 +670,7 @@ class SharePhotoController:
         let productsHeight = CGFloat(45.0)
         let paddingSize = CGFloat(7.0)
         let paddingTopBottom = CGFloat(7.0)
+        let containerView = MDCCard()
         
         imageCollectionView.dataSource = self
         imageCollectionView.delegate = self
@@ -650,6 +680,7 @@ class SharePhotoController:
         
         let locationCard = UIView()
         locationCard.addSubview(locationCollectionView)
+    
         
         locationCollectionView.anchor(top: locationCard.topAnchor, left: locationCard.leftAnchor, bottom: locationCard.bottomAnchor, right: locationCard.rightAnchor)
         
@@ -665,7 +696,7 @@ class SharePhotoController:
         
         
         
-        let containerView = MDCCard()
+        
         containerView.setShadowElevation(ShadowElevation.cardResting, for: UIControl.State.normal)
         
         containerView.inkView.inkColor = .lightGray
@@ -687,11 +718,11 @@ class SharePhotoController:
         
         
         //let stackButtonsVerical = UIStackView(arrangedSubviews: [addPhotos,filterPhotos,erasePhotos])
-        let stackButtonsVerical = UIStackView(arrangedSubviews: [addPhotos, mapsButton, clearAllFields])
-        stackButtonsVerical.axis = .vertical
-        stackButtonsVerical.distribution = .fillProportionally
-        
-        buttonMenus.addSubview(stackButtonsVerical)
+//        let stackButtonsVerical = UIStackView(arrangedSubviews: [addPhotos, mapsButton, clearAllFields])
+//        stackButtonsVerical.axis = .vertical
+//        stackButtonsVerical.distribution = .fillProportionally
+//        
+//        buttonMenus.addSubview(stackButtonsVerical)
         
         
         view.addSubview(containerView)
@@ -763,7 +794,7 @@ class SharePhotoController:
                            paddingLeft: paddingSize,
                            paddingBottom: paddingTopBottom,
                            paddingRight: paddingSize,
-                           width: 0 , height: 3 * productsHeight)
+                           width: 0 , height: 2.5 * productsHeight)
         
         RunningCountLabel.anchor(top: nil, left: nil, bottom: Description.bottomAnchor, right: Description.rightAnchor , paddingTop: 4 , paddingLeft: 0, paddingBottom: 1 , paddingRight: 0, width: 50 , height: 30)
         
@@ -793,8 +824,8 @@ class SharePhotoController:
     
     var textFieldControllerFloating : MDCTextInputController?
     
-    let Products:  MDCMultilineTextField = {
-        let TextField =  MDCMultilineTextField()
+    let Products:  UITextField = {
+        let TextField =  UITextField()
         TextField.placeholder = "Caption"
         TextField.font = UIFont.systemFont(ofSize: 15)
         TextField.translatesAutoresizingMaskIntoConstraints = true
@@ -805,8 +836,8 @@ class SharePhotoController:
     }()
     
     
-    let Description:  MDCMultilineTextField = {
-        let TextField =  MDCMultilineTextField()
+    let Description:  UITextView = {
+        let TextField =  UITextView()
         TextField.placeholder = "Description"
         TextField.font = UIFont.systemFont(ofSize: 15)
         TextField.translatesAutoresizingMaskIntoConstraints = true
@@ -894,45 +925,13 @@ class SharePhotoController:
         return pl
     }()
     
-    lazy var clearAllFields: UIButton = {
-        let button = UIButton(type: .system)
-        button.setImage(#imageLiteral(resourceName: "ic_delete"), for: .normal)
-        button.tintColor = UIColor.buttonThemeColor()
-        button.sizeToFit()
-        button.addTarget(self, action: #selector(didClearAllFields), for: .touchUpInside)
-        //button.setElevation(ShadowElevation.raisedButtonResting, for: .normal)
-        //button.setElevation(ShadowElevation.raisedButtonPressed, for: .highlighted)
-        CellType = CT.PIC
-        return button
-    }()
-    
-    
-    lazy var addPhotos: UIButton = {
-        let button = UIButton(type: .system)
-        //button.setImage(#imageLiteral(resourceName: "ic_camera"), for: .normal)
-        button.sizeToFit()
-        button.tintColor = UIColor.buttonThemeColor()
-        button.addTarget(self, action: #selector(handleAddPhotos), for: .touchUpInside)
-        CellType = CT.PIC
-        return button
-    }()
-    
-    lazy var erasePhotos: UIButton = {
-        let button = UIButton(type: .system)
-        //button.setImage(#imageLiteral(resourceName: "ic_delete_forever_white"), for: .normal)
-        button.sizeToFit()
-        button.tintColor = .black
-        button.addTarget(self, action: #selector(handleClearAllFields), for: .touchUpInside)
-        CellType = CT.PIC
-        return button
-    }()
+  
     
     func didReturnMapPlace(place: GMSPlace){
         print (place)
     }
     
     func textFieldShouldClear(_ textField: UITextField) -> Bool {
-        
         textField.resignFirstResponder()
         return true
     }
@@ -949,10 +948,6 @@ class SharePhotoController:
     
     @objc func handleClearAllFields()
     {
-        CellType = CT.PIC
-        
-        if post == nil
-        {
             let alert = UIAlertController(title: "Clear All Fields", message: "Current fields will be cleared. Continue?", preferredStyle: UIAlertController.Style.alert)
             
             // add the actions (buttons)
@@ -972,12 +967,12 @@ class SharePhotoController:
                         
                     case .destructive:
                         print("destructive")
+                    @unknown default:
+                        fatalError()
                     }}))
             alert.addAction(UIAlertAction(title: "Cancel", style: UIAlertAction.Style.cancel, handler: nil))
             self.present(alert, animated: true, completion: nil)
-        }
     }
-    
     
     
     @objc func openMapSelector() {
@@ -1008,52 +1003,7 @@ class SharePhotoController:
     }
     
     
-    func numberOfSections(in tableView: UITableView) -> Int {
-        return 1
-    }
-    
-    func tableView(_ tableView: UITableView, numberOfRowsInSection: Int) -> Int {
-        print("Post Hits : \(postHits.count)")
-        return postHits.count
-    }
-    
-    func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
-        return 30;
-    }
-    
-    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let cell = tableView.dequeueReusableCell(withIdentifier: searchTableCellId, for: indexPath) as! SearchTableCell
-        
-        // Load more?
-        if indexPath.row + 5 >= postHits.count {
-            postSearcher.loadMore()
-        }
-        cell.post = PostRecord(json: postHits[indexPath.row])
-        return cell
-    }
-    
-    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        if Products.tag == 1 {
-            let Post = PostRecord(json: postHits[indexPath.row])
-            Products.text = Post.product
-            tableProductsView.isHidden = true
-            dissmissKeyboard()
-        }
-    }
-    
-    
-    
-    func handleSearchResults(results: SearchResults?, error: Error?, userInfo: [String: Any]) {
-        guard let results = results else { return }
-        if results.page == 0 {
-            postHits = results.hits
-        } else {
-            postHits.append(contentsOf: results.hits)
-        }
-        originIsLocal = results.content["origin"] as? String == "local"
-        self.tableProductsView.reloadData()
-    }
-    
+  
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
         // Dispose of any resources that can be recreated.

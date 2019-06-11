@@ -205,12 +205,12 @@ class PlaceDetailViewController: BaseContainerViewController {
     
     // Add a constraint to the top of the navigation bar so that it respects the top layout guide.
      if #available(iOS 11.0, *) {
-        NSLayoutConstraint(item: navigationBar, attribute: .top, relatedBy: .equal,
+        NSLayoutConstraint(item: navigationBar as Any, attribute: .top, relatedBy: .equal,
                        toItem: view.safeAreaLayoutGuide, attribute: .bottom, multiplier: 1,
                        constant: 0).isActive = true
     }
      else{
-        NSLayoutConstraint(item: navigationBar, attribute: .top, relatedBy: .equal,
+        NSLayoutConstraint(item: navigationBar as Any, attribute: .top, relatedBy: .equal,
                            toItem: view.topAnchor, attribute: .bottom, multiplier: 1,
                            constant: 0).isActive = true
     }

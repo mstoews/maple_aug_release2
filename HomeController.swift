@@ -201,7 +201,9 @@ class HomeController: MDCCollectionViewController, HomePostCellDelegate,  HomeHe
                 {
                     self.collectionView?.backgroundView = nil
                 }
-                self.collectionView?.reloadData()
+                DispatchQueue.main.async { [weak self] in 
+                    self?.collectionView?.reloadData()
+                }
         }
          hud.dismiss()
     }
@@ -339,8 +341,6 @@ class HomeController: MDCCollectionViewController, HomePostCellDelegate,  HomeHe
     @objc func handleRefresh() {
       refreshControl.beginRefreshing()
       refreshTotal = refreshTotal + 10
-    
-        
       observeQuery()
       refreshControl.endRefreshing()
     }

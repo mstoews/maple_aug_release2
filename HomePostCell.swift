@@ -229,10 +229,10 @@ class HomePostCell: MDCCardCollectionCell , UICollectionViewDataSource, UICollec
         
         captionLabel.customize { (label) in
             label.text = "\(product) \(caption)"
-            label.customColor[customType] = .black
+            label.customColor[customType] = .red
             label.font = UIFont.systemFont(ofSize: 12)
             label.textColor = .black
-            captionLabel.numberOfLines = 2
+            captionLabel.numberOfLines = 6
         }
         
         timeAgoLabel.text = post.creationDate.timeAgoToDisplay()
@@ -494,7 +494,7 @@ class HomePostCell: MDCCardCollectionCell , UICollectionViewDataSource, UICollec
     
     let captionLabel: ActiveLabel = {
         let label = ActiveLabel()
-        label.numberOfLines = 3
+        label.numberOfLines = 4
         return label
     }()
     
