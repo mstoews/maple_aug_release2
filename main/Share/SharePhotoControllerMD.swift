@@ -36,109 +36,10 @@ protocol  SharePhotoDelegate {
     func setTabBarHome()
 }
 
-class EditPhotoController: SharePhotoController {
-    
-    var postId: String?
-    
-    let customImageView: CustomImageView = {
-        let iv = CustomImageView()
-        iv.clipsToBounds = true
-        iv.contentMode = .scaleAspectFill
-        return iv
-    }()
-    
-    
-    override func viewDidLoad() {
-        super.viewDidLoad()
-        
-        Gallery.Config.VideoEditor.savesEditedVideoToLibrary = true
-        Gallery.Config.initialTab = Gallery.Config.GalleryTab.imageTab
-        Gallery.Config.tabsToShow = [Gallery.Config.GalleryTab.imageTab, Gallery.Config.GalleryTab.cameraTab]
-        
-        updateConstraints()
-         navigationItem.title = "Edit Post"
-        
-        /***** Set up toasts *****/
-        edgesForExtendedLayout = UIRectEdge()
-        presentWindow = UIApplication.shared.keyWindow
-        
-        imageCollectionView.register(PostImageObject.self, forCellWithReuseIdentifier: imageCellId)
-        locationCollectionView.register(MapCell.self, forCellWithReuseIdentifier: mapCellId)
-        
-        view.backgroundColor = UIColor.collectionCell()
-        self.view.tintColor  = UIColor.buttonThemeColor()
-        imageCollectionView.backgroundView = backGroundView
-        
-        Products.delegate = self
-        Description.delegate = self
-        //tableProductsView.delegate = self
-        //tableProductsView.dataSource =  self
-        
-        setupImageAndTextViews()
-        setNavigationButtons()
-        
-        guard let uid = Auth.auth().currentUser?.uid else { return }
-        
-        Firestore.fetchUserWithUID(uid: uid, completion: { (user) in
-            self.user = user
-        })
-        
-        /****** Tap to dismiss KeyBoard ******/
-        
-        let tapImageCollectionView = UITapGestureRecognizer(target: self, action: #selector(imageCollectionViewTapped(tapGestureRecognizer: )))
-        imageCollectionView.isUserInteractionEnabled = true
-        imageCollectionView.addGestureRecognizer(tapImageCollectionView)
-        view.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(dissmissKeyboard)))
-        /****** End Gestures           ******/
-        
-        
-        /******  Algolia Search Products ******/
-        //tableProductsView.register(SearchTableCell.self, forCellReuseIdentifier: searchTableCellId)
-        //postSearcher = Searcher(index: AlgoliaManager.sharedInstance.posts, resultHandler: self.handleSearchResults)
-        //postSearcher.params.hitsPerPage = 15
-        //postSearcher.params.attributesToRetrieve = ["*" ]
-        //postSearcher.params.attributesToHighlight = ["product"]
-        //tableProductsView.tableHeaderView?.isHidden = true
-        
-        definesPresentationContext = true
-        
-        VIEW_SCROLL_HEIGHT? = 400.0
-        print("viewDidLoad")
-        
-    }
-    
-    override func viewDidAppear(_ animated: Bool) {
-        super.viewDidAppear(true)
-        print("viewDidAppear")
-        
-        if let postId = postId {
-            Firestore.fetchPostByPostId(postId: postId) { (post) in
-                Firestore.fetchUserWithUID(uid: post.uid) { (user) in
-                    self.Products.text = post.product
-                    self.Description.text = post.description
-                    for url in post.imageUrlArray {
-                        print(url)
-                        self.imageUrlArray.append(url)
-                        let ci = CustomImageView()
-                        ci.loadImage(urlString: url)
-                        // self.customImageView.loadImage(urlString: url)
-                        self.imageArray.append(ci.image!)
-                        print("Number of images: \(self.imageArray.count)")
-                        self.CellType = CT.PIC
-                        self.imageCollectionView.reloadData()
-                        
-                    }
-                    self.CellType = CT.MAP
-                    self.locationCollectionView.reloadData()
-                    
-                }
-                //self.locationCollectionView.reloadData()
-               
-            }
-            
-        }
-    }
-}
+
+
+
+
 
 
 class SharePhotoController:
@@ -149,9 +50,9 @@ class SharePhotoController:
     UISearchDisplayDelegate,
     UITextViewDelegate,
     UITextFieldDelegate,
-   // UITableViewDataSource,
+    // UITableViewDataSource,
     UIImageEditFilterDelegate,
-   // UITableViewDelegate,
+    // UITableViewDelegate,
     UISearchBarDelegate,
     UISearchResultsUpdating,
     SearchProgressDelegate,
@@ -166,10 +67,15 @@ class SharePhotoController:
     private var croppedRect = CGRect.zero
     private var croppedAngle = 0
     var VIEW_SCROLL_HEIGHT: CGFloat?
+    var uploadTask: StorageUploadTask?
     
     var shareDelegate :SharePhotoDelegate?
     var searchController: UISearchController!
     var searchProgressController: SearchProgressController!
+    
+    var keyboardNotification: NSNotification?
+    
+    var scrollView: UIScrollView!
     
     var postSearcher: Searcher!
     var postHits: [JSONObject] = []
@@ -216,6 +122,50 @@ class SharePhotoController:
     
     public var imageConstraint: NSLayoutConstraint?
     public var imageWidthConstraint: NSLayoutConstraint?
+    
+    
+    lazy var touchView: UIView = {
+        
+        let _touchView = UIView()
+        
+        _touchView.backgroundColor = UIColor(red:1.00, green:1.00, blue:1.00, alpha: 0.0)
+        
+        let touchViewTapped = UITapGestureRecognizer(target: self, action: #selector(dismissKeyboard))
+        
+        _touchView.addGestureRecognizer(touchViewTapped)
+        
+        _touchView.isUserInteractionEnabled = true
+        
+        _touchView.frame = CGRect(x: 0, y: 0, width: view.frame.width, height: view.frame.height)
+        
+        return _touchView
+        
+    }()
+    
+    
+    func registerForKeyboardNotifications() {
+        
+        NotificationCenter.default.addObserver(self, selector: #selector(keyboardWasShown(notification:)), name: UIWindow.keyboardWillShowNotification, object: nil)
+        
+        NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillBeHidden(notification:)), name: UIWindow.keyboardWillHideNotification, object: nil)
+        
+    }
+    
+    func deregisterFromKeyboardNotifications() {
+        
+        NotificationCenter.default.removeObserver(self, name: UIWindow.keyboardWillShowNotification, object: nil)
+        
+        NotificationCenter.default.removeObserver(self, name: UIWindow.keyboardWillHideNotification, object: nil)
+        
+    }
+    
+    @objc func dismissKeyboard() {
+        
+        view.endEditing(true)
+        
+    }
+    
+    
     
     
     public func cropViewController(_ cropViewController: CropViewController, didCropToImage image: UIImage, withRect cropRect: CGRect, angle: Int) {
@@ -364,38 +314,6 @@ class SharePhotoController:
         gallery = nil
     }
     
-    //    func wrapperDidPress(_ imagePicker: ImagePickerController, images: [UIImage]) {
-    //        guard images.count > 0 else { return }
-    //
-    //        let lightboxImages = images.map {
-    //            return LightboxImage(image: $0)
-    //        }
-    //
-    //        let lightbox = LightboxController(images: lightboxImages, startIndex: 0)
-    //        imagePicker.present(lightbox, animated: true, completion: nil)
-    //    }
-    
-    
-    
-//
-//    var post: Post? {
-//        didSet {
-//            if let post = post  {
-//                print("Post ID : \(post.id!)")
-//                self.CellType = CT.PIC
-//                imageCollectionView.reloadData()
-//                Products.text = post.caption
-//                Description.text = post.description
-//
-//                DispatchQueue.main.async {
-//                    self.CellType = CT.MAP
-//                    self.locationCollectionView.reloadData()
-//                }
-//
-//            }
-//        }
-//    }
-    
     
     
     func updateConstraints() {
@@ -457,12 +375,15 @@ class SharePhotoController:
     override func viewDidLoad() {
         super.viewDidLoad()
         
+        self.scrollView = UIScrollView()
         
         Gallery.Config.VideoEditor.savesEditedVideoToLibrary = true
         Gallery.Config.initialTab = Gallery.Config.GalleryTab.imageTab
         Gallery.Config.tabsToShow = [Gallery.Config.GalleryTab.imageTab, Gallery.Config.GalleryTab.cameraTab]
         
         updateConstraints()
+        
+        registerForKeyboardNotifications()
         
         /***** Set up toasts *****/
         edgesForExtendedLayout = UIRectEdge()
@@ -482,6 +403,27 @@ class SharePhotoController:
         //tableProductsView.delegate = self
         //tableProductsView.dataSource =  self
         
+        imageCard = MDCCard()
+        
+        imageCollectionView.dataSource = self
+        imageCollectionView.delegate = self
+        
+        locationCollectionView.dataSource = self
+        locationCollectionView.delegate = self
+        
+        
+        containerView = MDCCard()
+        locationCard = UIView()
+        
+        let tapLocation = UITapGestureRecognizer(target: self, action: #selector(userTappedLocationCollection(tapGestureRecognizer: )))
+        locationCard?.isUserInteractionEnabled = true
+        locationCard?.addGestureRecognizer(tapLocation)
+        
+        let tapPhotos = UITapGestureRecognizer(target: self, action: #selector(userTappedPhotoCollection(tapGestureRecognizer: )))
+        imageCollectionView.isUserInteractionEnabled = true
+        imageCollectionView.addGestureRecognizer(tapPhotos)
+        
+        
         setupImageAndTextViews()
         setNavigationButtons()
         
@@ -499,95 +441,55 @@ class SharePhotoController:
         view.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(dissmissKeyboard)))
         /****** End Gestures           ******/
         
-        
-        /******  Algolia Search Products ******/
-        //tableProductsView.register(SearchTableCell.self, forCellReuseIdentifier: searchTableCellId)
-        //postSearcher = Searcher(index: AlgoliaManager.sharedInstance.posts, resultHandler: self.handleSearchResults)
-       // postSearcher.params.hitsPerPage = 15
-        //postSearcher.params.attributesToRetrieve = ["*" ]
-        //postSearcher.params.attributesToHighlight = ["product"]
-        //tableProductsView.tableHeaderView?.isHidden = true
-        
         definesPresentationContext = true
-        //updateSearchResults(for: Products)
-        
-        let notificationCenter = NotificationCenter.default
-        notificationCenter.addObserver(self, selector: #selector(adjustForKeyboard), name: UIResponder.keyboardWillHideNotification, object: nil)
-        notificationCenter.addObserver(self, selector: #selector(adjustForKeyboard), name: UIResponder.keyboardWillChangeFrameNotification, object: nil)
         
         VIEW_SCROLL_HEIGHT? = 400.0
         print("Keyboard adjusted value \(VIEW_SCROLL_HEIGHT ?? 0.0)")
         
     }
     
-    
-    @objc func adjustForKeyboard(notification: Notification) {
-        guard let keyboardValue = notification.userInfo?[UIResponder.keyboardFrameEndUserInfoKey] as? NSValue else { return }
+    @objc func keyboardWasShown(notification: NSNotification) {
+        //HideImagesAndMaps()
+        print("Keyboard is shown ... ")
         
-        let keyboardScreenEndFrame = keyboardValue.cgRectValue
-        // let keyboardViewEndFrame = view.convert(keyboardScreenEndFrame, from: view.window)
-        
-        if notification.name == UIResponder.keyboardWillHideNotification {
-            // how to figure out how tall the keyboard actually is
-            guard let value = notification.userInfo?[UIResponder.keyboardFrameEndUserInfoKey] as? NSValue else { return }
-            let keyboardFrame = value.cgRectValue
-            //
-            //        // let's try to figure out how tall the gap is from the register button to the bottom of the screen
-            let bottomSpace = view.frame.height
-            let difference = keyboardFrame.height - bottomSpace
-            Description.contentInset = .zero
-            self.view.transform = CGAffineTransform(translationX: 0, y: -difference - 8)
-            print("Keyboard is hiding ... ")
-        }
-        else {
-            print ("keyboard is showing...")
-            if let keyboardSize = (notification.userInfo?[UIResponder.keyboardFrameBeginUserInfoKey] as? NSValue)?.cgRectValue {
-                    self.view.frame.origin.y = -keyboardSize.height + 100
+        if let keyboardSize = (notification.userInfo?[UIResponder.keyboardFrameEndUserInfoKey] as? NSValue)?.cgRectValue {
+            let isKeyboardShowing = notification.name == UIResponder.keyboardWillShowNotification
+            bottomAreaInset = -100
+            bottomConstraint?.constant = isKeyboardShowing ? -keyboardSize.height : 0
+            let inset = isKeyboardShowing ? -bottomAreaInset : bottomAreaInset
+            print("Keyboard is showing : \(inset)")
+            heightConstraint?.constant += inset
+            inputBottomConstraint?.constant = isKeyboardShowing ? 0 : bottomAreaInset
+            sendBottomConstraint?.constant = isKeyboardShowing ? 12 : (12 + bottomAreaInset)
+            if let animationDuration = notification.userInfo![UIResponder.keyboardAnimationDurationUserInfoKey] as? Double {
+                UIView.animate(withDuration: animationDuration, delay: 0, options: .curveEaseOut, animations: {
+                    self.view.layoutIfNeeded()
+                }, completion: { completed in
+                    if isKeyboardShowing {
+                        if self.Description.isHidden == false {
+                         self.view.frame.origin.y -= keyboardSize.height + self.bottomAreaInset
+                        }
+                    } else {
+                        MDCSnackbarManager.setBottomOffset(0)
+                    }
+                })
             }
         }
         
+        
     }
-    
+
+    @objc func keyboardWillBeHidden(notification: NSNotification) {
+        if let keyboardSize = (notification.userInfo?[UIResponder.keyboardFrameEndUserInfoKey] as? NSValue)?.cgRectValue {
+            let isKeyboardShowing = notification.name == UIResponder.keyboardWillShowNotification
+            self.view.frame.origin.y += keyboardSize.height + bottomAreaInset
+        }
+        print("Hide keyboard ...")
+        
+    }
     
     var editingIndex: IndexPath!
     
-    // MARK: - Keyboard Handlers
-    
-//    @objc fileprivate func handleKeyboardShow(notification: Notification) {
-//        // how to figure out how tall the keyboard actually is
-//        //guard let value = notification.userInfo?[UIResponder.UIKeyboardFrameEndUserInfoKey] as? NSValue else { return }
-//        guard let value = notification.userInfo?[UIResponder.keyboardFrameEndUserInfoKey] as? NSValue else { return }
-//        let keyboardFrame = value.cgRectValue
-//
-//        // let's try to figure out how tall the gap is from the register button to the bottom of the screen
-//        let bottomSpace = view.frame.height //- overallStackView.frame.origin.y - overallStackView.frame.height
-//        print(bottomSpace)
-//
-//        let difference = keyboardFrame.height - bottomSpace
-//        self.view.transform = CGAffineTransform(translationX: 0, y: -difference - 8)
-//    }
-//
-//    @objc func keyboardWillShow(notification: NSNotification) {
-//        print("Keyboard will show...")
-//
-//                let notificationName = NotificationCenter.default.addObserver(
-//                    self,
-//                    selector: #selector(self.keyboardDidShow(notification:)),
-//                    name: UIResponder.keyboardDidShowNotification, object: nil)
-//
-//
-//                let isKeyboardShowing = notification.name == NSNotification.Name.MDCKeyboardWatcherKeyboardWillShow
-//
-//
-//                if let keyboardSize = (notification.userInfo?[UIResponder.keyboardFrameBeginUserInfoKey] as? NSValue)?.cgRectValue {
-//                    //let inset = isKeyboardShowing ? -bottomAreaInset : bottomAreaInset
-//                    if isKeyboardShowing {
-//                        print ("Frame size \(self.view.frame.height)")
-//                         self.view.frame.origin.y = -keyboardSize.height + self.view.frame.height / 2.5
-//                    }
-//                }
-//    }
-//
     
     func text(for priceLevel: GMSPlacesPriceLevel) -> String {
         switch priceLevel {
@@ -655,39 +557,32 @@ class SharePhotoController:
         handleAddPhotos()
     }
     
-   
+    var containerView : MDCCard?
     
     // MARK: - Arrange Fields
     
+    var imageCard: MDCCard?
+    var locationCard: UIView?
+    
     func setupImageAndTextViews() {
-        
-        // Construct a window and the split split pane view controller we are going to embed our UI in.
-        // Wrap the split pane controller in a inset controller to get the map displaying behind our
-        // Make the window visible and allow the app to continue initialization.
-        
-        //docRef = Firestore.firestore().document("maplefirebase/posts")
         
         let productsHeight = CGFloat(45.0)
         let paddingSize = CGFloat(7.0)
         let paddingTopBottom = CGFloat(7.0)
-        let containerView = MDCCard()
         
-        imageCollectionView.dataSource = self
-        imageCollectionView.delegate = self
         
-        locationCollectionView.dataSource = self
-        locationCollectionView.delegate = self
+        guard let cView = containerView else { return }
         
-        let locationCard = UIView()
-        locationCard.addSubview(locationCollectionView)
-    
         
-        locationCollectionView.anchor(top: locationCard.topAnchor, left: locationCard.leftAnchor, bottom: locationCard.bottomAnchor, right: locationCard.rightAnchor)
+        locationCard?.addSubview(locationCollectionView)
         
-        let imageCard = MDCCard()
-        imageCard.setShadowElevation(ShadowElevation.menu, for: UIControl.State.normal)
-        imageCard.addSubview(imageCollectionView)
-        imageCollectionView.anchor(top: imageCard.topAnchor, left: imageCard.leftAnchor, bottom: imageCard.bottomAnchor , right: imageCard.rightAnchor,
+        
+        locationCollectionView.anchor(top: locationCard?.topAnchor, left: locationCard?.leftAnchor, bottom: locationCard?.bottomAnchor, right: locationCard?.rightAnchor)
+        
+        
+        imageCard?.setShadowElevation(ShadowElevation.menu, for: UIControl.State.normal)
+        imageCard?.addSubview(imageCollectionView)
+        imageCollectionView.anchor(top: imageCard?.topAnchor, left: imageCard?.leftAnchor, bottom: imageCard?.bottomAnchor , right: imageCard?.rightAnchor,
                                    paddingTop: paddingTopBottom,
                                    paddingLeft: paddingSize,
                                    paddingBottom: paddingTopBottom,
@@ -697,10 +592,10 @@ class SharePhotoController:
         
         
         
-        containerView.setShadowElevation(ShadowElevation.cardResting, for: UIControl.State.normal)
+        containerView?.setShadowElevation(ShadowElevation.cardResting, for: UIControl.State.normal)
         
-        containerView.inkView.inkColor = .lightGray
-        containerView.backgroundColor = UIColor.collectionBackGround()
+        containerView?.inkView.inkColor = .lightGray
+        containerView?.backgroundColor = UIColor.collectionBackGround()
         
         buttonMenus.backgroundColor = UIColor.rgb(red: 240, green: 240, blue: 240)
         buttonMenus.layer.cornerRadius = 10
@@ -708,70 +603,50 @@ class SharePhotoController:
         buttonMenus.layer.borderWidth = 2
         buttonMenus.layer.borderColor = UIColor.black.cgColor
         
-        let tapLocation = UITapGestureRecognizer(target: self, action: #selector(userTappedLocationCollection(tapGestureRecognizer: )))
-        locationCard.isUserInteractionEnabled = true
-        locationCard.addGestureRecognizer(tapLocation)
         
-        let tapPhotos = UITapGestureRecognizer(target: self, action: #selector(userTappedPhotoCollection(tapGestureRecognizer: )))
-        imageCollectionView.isUserInteractionEnabled = true
-        imageCollectionView.addGestureRecognizer(tapPhotos)
-        
-        
-        //let stackButtonsVerical = UIStackView(arrangedSubviews: [addPhotos,filterPhotos,erasePhotos])
-//        let stackButtonsVerical = UIStackView(arrangedSubviews: [addPhotos, mapsButton, clearAllFields])
-//        stackButtonsVerical.axis = .vertical
-//        stackButtonsVerical.distribution = .fillProportionally
-//        
-//        buttonMenus.addSubview(stackButtonsVerical)
-        
-        
-        view.addSubview(containerView)
-        
-        containerView.addSubview(imageCard)
-        containerView.addSubview(Products)
-        containerView.addSubview(Description)
-        containerView.addSubview(DescriptionLabel)
-        containerView.addSubview(locationCard)
-        containerView.addSubview(RunningCountLabel)
-        containerView.addSubview(tableProductsView)
-        containerView.addSubview(buttonMenus)
-        containerView.addSubview(mapLabel)
-        containerView.addSubview(Photos)
-        containerView.addSubview(FloatingPlusButton)
+        view.addSubview(containerView!)
+        cView.addSubview(imageCard!)
+        cView.addSubview(Products)
+        cView.addSubview(Description)
+        cView.addSubview(DescriptionLabel)
+        cView.addSubview(locationCard!)
+        cView.addSubview(RunningCountLabel)
+        cView.addSubview(tableProductsView)
+        cView.addSubview(buttonMenus)
+        cView.addSubview(mapLabel)
+        cView.addSubview(Photos)
+        cView.addSubview(FloatingPlusButton)
         
         
         if #available(iOS 11.0, *) {
-            containerView.anchor(top: view.safeAreaLayoutGuide.topAnchor , left: view.leftAnchor, bottom: view.safeAreaLayoutGuide.bottomAnchor, right: view.rightAnchor,
-                                 paddingTop: paddingSize,
-                                 paddingLeft: paddingSize,
-                                 paddingBottom: paddingSize ,
-                                 paddingRight: paddingSize,
-                                 width: 0 ,
-                                 height: 0)
+            cView.anchor(top: view.safeAreaLayoutGuide.topAnchor , left: view.leftAnchor, bottom: view.safeAreaLayoutGuide.bottomAnchor, right: view.rightAnchor,
+                         paddingTop: paddingSize,
+                         paddingLeft: paddingSize,
+                         paddingBottom: paddingSize ,
+                         paddingRight: paddingSize,
+                         width: 0 ,
+                         height: 0)
         } else {
-            containerView.anchor(top: view.topAnchor , left: view.leftAnchor, bottom: view.bottomAnchor , right: view.rightAnchor)
+            cView.anchor(top: view.topAnchor , left: view.leftAnchor, bottom: view.bottomAnchor , right: view.rightAnchor)
         }
         
         
-        self.pictureSize = containerView.frame.size.width
+        self.pictureSize = cView.frame.size.width
         
         //let heightCollectionView = imageConstraint?.constant
         
-        imageCard.anchor(top: containerView.topAnchor, left: containerView.leftAnchor, bottom: nil , right: containerView.rightAnchor,
-                         paddingTop: paddingTopBottom,
-                         paddingLeft: paddingSize,
-                         paddingBottom: paddingTopBottom,
-                         paddingRight: paddingSize,
-                         width: 0 , height: (imageConstraint?.constant)!)
-        
-        //let bounds = UIScreen.main.bounds
-        //let width = bounds.size.width - (2 * (paddingSize + 8) )
+        imageCard?.anchor(top: cView.topAnchor, left: cView.leftAnchor, bottom: nil , right: cView.rightAnchor,
+                          paddingTop: paddingTopBottom,
+                          paddingLeft: paddingSize,
+                          paddingBottom: paddingTopBottom,
+                          paddingRight: paddingSize,
+                          width: 0 , height: (imageConstraint?.constant)!)
         
         
-        Products.anchor(top:  imageCard.bottomAnchor,
-                        left: containerView.leftAnchor,
+        Products.anchor(top:  imageCard?.bottomAnchor,
+                        left: cView.leftAnchor,
                         bottom: nil ,
-                        right: containerView.rightAnchor ,
+                        right: cView.rightAnchor ,
                         paddingTop: paddingTopBottom,
                         paddingLeft: paddingSize,
                         paddingBottom: paddingTopBottom,
@@ -780,16 +655,16 @@ class SharePhotoController:
                         height: productsHeight)
         
         
-        locationCard.anchor(top: Products.bottomAnchor, left: containerView.leftAnchor, bottom: nil, right: containerView.rightAnchor ,
-                            paddingTop: paddingTopBottom,
-                            paddingLeft: paddingSize,
-                            paddingBottom: paddingTopBottom,
-                            paddingRight: paddingSize,
-                            width: 0, height: 40)
+        locationCard?.anchor(top: Products.bottomAnchor, left: cView.leftAnchor, bottom: nil, right: cView.rightAnchor ,
+                             paddingTop: paddingTopBottom,
+                             paddingLeft: paddingSize,
+                             paddingBottom: paddingTopBottom,
+                             paddingRight: paddingSize,
+                             width: 0, height: 40)
         
         
         
-        Description.anchor(top: locationCard.bottomAnchor, left: containerView.leftAnchor, bottom: nil , right: containerView.rightAnchor,
+        Description.anchor(top: locationCard?.bottomAnchor, left: cView.leftAnchor, bottom: nil , right: cView.rightAnchor,
                            paddingTop: paddingTopBottom ,
                            paddingLeft: paddingSize,
                            paddingBottom: paddingTopBottom,
@@ -799,17 +674,8 @@ class SharePhotoController:
         RunningCountLabel.anchor(top: nil, left: nil, bottom: Description.bottomAnchor, right: Description.rightAnchor , paddingTop: 4 , paddingLeft: 0, paddingBottom: 1 , paddingRight: 0, width: 50 , height: 30)
         
         
+        FloatingPlusButton.anchor(top: Description.bottomAnchor, left: nil, bottom: nil, right: cView.rightAnchor, paddingTop: 10, paddingLeft: 0, paddingBottom: 0, paddingRight: 10, width: 0, height: 0)
         
-        //stackButtonsVerical.anchor(top: buttonMenus.topAnchor, left: buttonMenus.leftAnchor, bottom: buttonMenus.bottomAnchor, right: buttonMenus.rightAnchor)
-        
-        //buttonMenus.anchor(top: imageCard.topAnchor, left: nil, bottom: nil, right: containerView.rightAnchor, paddingTop: 10, paddingLeft: 5, paddingBottom: 0, paddingRight: 15, width: 40, height: 120)
-        //buttonMenus.isHidden = true
-        
-        //tableProductsView.anchor(top: Products.bottomAnchor, left: Products.leftAnchor, bottom: Description.bottomAnchor , right: Products.rightAnchor)
-        
-        FloatingPlusButton.anchor(top: nil, left: nil, bottom: containerView.bottomAnchor, right: containerView.rightAnchor, paddingTop: 80, paddingLeft: 0, paddingBottom: 0, paddingRight: 10, width: 0, height: 0)
-        
-        VIEW_SCROLL_HEIGHT = 400
         
     }
     
@@ -877,17 +743,6 @@ class SharePhotoController:
         return collectionView
     }()
     
-    //
-    //    func showControllerForSetting(_ setting: ShareSetting) {
-    //        let dummySettingsViewController = UIViewController()
-    //        dummySettingsViewController.view.backgroundColor = UIColor.white
-    //        dummySettingsViewController.navigationItem.title = setting.name.rawValue
-    //        navigationController?.navigationBar.tintColor = UIColor.white
-    //        navigationController?.navigationBar.titleTextAttributes = [NSAttributedStringKey.foregroundColor: UIColor.white]
-    //        navigationController?.pushViewController(dummySettingsViewController, animated: true)
-    //    }
-    
-    //    let  shareShowSettings = ShareShowSettings()
     
     @objc func handleEditMenu()
     {
@@ -925,7 +780,7 @@ class SharePhotoController:
         return pl
     }()
     
-  
+    
     
     func didReturnMapPlace(place: GMSPlace){
         print (place)
@@ -948,30 +803,30 @@ class SharePhotoController:
     
     @objc func handleClearAllFields()
     {
-            let alert = UIAlertController(title: "Clear All Fields", message: "Current fields will be cleared. Continue?", preferredStyle: UIAlertController.Style.alert)
-            
-            // add the actions (buttons)
-            alert.addAction(UIAlertAction(title: "Continue", style: UIAlertAction.Style.default, handler:
-                { action in
-                    switch action.style{
-                    case .default:
-                        self.imageArray.removeAll()
-                        self.mapObjects.removeAll()
-                        self.Products.text?.removeAll()
-                        self.Description.text?.removeAll()
-                        self.imageCollectionView.reloadData()
-                        self.locationCollectionView.reloadData()
-                        
-                    case .cancel:
-                        print("cancel")
-                        
-                    case .destructive:
-                        print("destructive")
-                    @unknown default:
-                        fatalError()
-                    }}))
-            alert.addAction(UIAlertAction(title: "Cancel", style: UIAlertAction.Style.cancel, handler: nil))
-            self.present(alert, animated: true, completion: nil)
+        let alert = UIAlertController(title: "Clear All Fields", message: "Current fields will be cleared. Continue?", preferredStyle: UIAlertController.Style.alert)
+        
+        // add the actions (buttons)
+        alert.addAction(UIAlertAction(title: "Continue", style: UIAlertAction.Style.default, handler:
+            { action in
+                switch action.style{
+                case .default:
+                    self.imageArray.removeAll()
+                    self.mapObjects.removeAll()
+                    self.Products.text?.removeAll()
+                    self.Description.text?.removeAll()
+                    self.imageCollectionView.reloadData()
+                    self.locationCollectionView.reloadData()
+                    
+                case .cancel:
+                    print("cancel")
+                    
+                case .destructive:
+                    print("destructive")
+                @unknown default:
+                    fatalError()
+                }}))
+        alert.addAction(UIAlertAction(title: "Cancel", style: UIAlertAction.Style.cancel, handler: nil))
+        self.present(alert, animated: true, completion: nil)
     }
     
     
@@ -1003,7 +858,7 @@ class SharePhotoController:
     }
     
     
-  
+    
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
         // Dispose of any resources that can be recreated.

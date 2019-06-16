@@ -32,9 +32,9 @@ class CustomImageView: UIImageView {
         else {
           urlPlaceholder = URL(string: "https://firebasestorage.googleapis.com/v0/b/maplefirebase.appspot.com/o/profile_images%2F014BCC59-1498-4BC2-B542-77481DB47730?alt=media&token=a3cd97b9-1c82-4bdb-a49b-eb2057b0d9a4")
        }
-    
+        self.sd_cancelCurrentImageLoad()
         self.sd_setShowActivityIndicatorView(true)
-        self.sd_setIndicatorStyle(.gray)
+        self.sd_setIndicatorStyle(.whiteLarge)
         self.sd_setImage(with: urlPlaceholder , placeholderImage: UIImage(named: "windows"))
     }
     
@@ -53,6 +53,9 @@ class CustomImageView: UIImageView {
         
         // url for image location
         if let url = URL(string: url) {
+            self.sd_cancelCurrentImageLoad()
+            self.sd_setShowActivityIndicatorView(true)
+            self.sd_setIndicatorStyle(.whiteLarge)
             sd_setImage(with: url, placeholderImage: UIImage(named: placeHolder))
         }
     }

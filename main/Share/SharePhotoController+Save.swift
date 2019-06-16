@@ -211,11 +211,21 @@ extension SharePhotoController
         hud.dismiss()
     }
     
-    
+    @objc func CancelUpload() {
+        uploadTask?.cancel()
+    }
     
     func saveImages( postid: String,  typeName: String, imageSize: CGFloat, images: [UIImage] ) {
         var urlArray = [String]()
+        
+        
         if postid.count > 0 {
+            
+            DispatchQueue.main.async {
+                self.navigationItem.rightBarButtonItem?.isEnabled = false
+                self.FloatingPlusButton.isEnabled = false
+            }
+            
             guard let uid = Auth.auth().currentUser?.uid else { return }
             for image in images {
                 var uploadData: UIImage!
@@ -233,16 +243,23 @@ extension SharePhotoController
                 metadata.contentType = "image/jpeg"
                 
                 let storeRef = Storage.storage().reference().child(uid).child(postid).child(filename)
-                storeRef.putData(uploadData.sd_imageData()!, metadata: metadata) { (metadata, err) in
+                uploadTask = storeRef.putData(uploadData.sd_imageData()!, metadata: metadata) { [weak self] (metadata, err) in
+                    guard let strongSelf = self else {return}
                     if let err = err {
-                        self.navigationItem.rightBarButtonItem?.isEnabled = true
+                        strongSelf.navigationItem.rightBarButtonItem?.isEnabled = true
+                        strongSelf.FloatingPlusButton.isEnabled = true
                         print("Failed to upload post image:", err)
                         return
                     }
                     
+                    
+                    
                     storeRef.downloadURL { (url, err)  in
                         if let err = err {
-                            self.navigationItem.rightBarButtonItem?.isEnabled = true
+                            DispatchQueue.main.async {
+                                strongSelf.navigationItem.rightBarButtonItem?.isEnabled = true
+                                strongSelf.FloatingPlusButton.isEnabled = true
+                            }
                             print("Failed to upload post image:", err)
                             return
                         }
@@ -258,7 +275,7 @@ extension SharePhotoController
                                            "bucket": storeRef.bucket,
                                            "fullPath":storeRef.fullPath] as [String : Any]
                             
-                            self.db.collection("posts").document(postid).collection(typeName).document().setData(values) { err in
+                            strongSelf.db.collection("posts").document(postid).collection(typeName).document().setData(values) { err in
                                 if let err = err {
                                     print("Error writing document: \(err)")
                                 } else {
@@ -267,7 +284,7 @@ extension SharePhotoController
                             }
                             
                             let valueImages = [ typeName : urlArray ]
-                            self.db.collection("posts").document(postid).updateData(valueImages) { err in
+                            strongSelf.db.collection("posts").document(postid).updateData(valueImages) { err in
                                 if let err = err {
                                     print("Error writing document: \(err)")
                                 } else {

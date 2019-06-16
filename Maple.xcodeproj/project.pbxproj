@@ -26,6 +26,7 @@
 		4800DAF82272B87000B326FC /* podcasts.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4800DAF72272B87000B326FC /* podcasts.swift */; };
 		4800DAFA2272B8CA00B326FC /* APservice.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4800DAF92272B8CA00B326FC /* APservice.swift */; };
 		4800DAFC2272B96500B326FC /* PodcastCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4800DAFB2272B96500B326FC /* PodcastCell.swift */; };
+		481398AC22B21830004A4E20 /* EditPhotoShareController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 481398AB22B21830004A4E20 /* EditPhotoShareController.swift */; };
 		482C01F222AF276000000597 /* MultiLineTextView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 482C01F122AF276000000597 /* MultiLineTextView.swift */; };
 		482FC10520DE15D900E23DAE /* SharePhotoController+Save.swift in Sources */ = {isa = PBXBuildFile; fileRef = 482FC0FC20DE15CC00E23DAE /* SharePhotoController+Save.swift */; };
 		482FC10620DE15D900E23DAE /* MapCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 482FC0FD20DE15D000E23DAE /* MapCell.swift */; };
@@ -184,6 +185,7 @@
 		4800DAF72272B87000B326FC /* podcasts.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = podcasts.swift; sourceTree = "<group>"; };
 		4800DAF92272B8CA00B326FC /* APservice.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = APservice.swift; sourceTree = "<group>"; };
 		4800DAFB2272B96500B326FC /* PodcastCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PodcastCell.swift; sourceTree = "<group>"; };
+		481398AB22B21830004A4E20 /* EditPhotoShareController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditPhotoShareController.swift; sourceTree = "<group>"; };
 		482C01F122AF276000000597 /* MultiLineTextView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MultiLineTextView.swift; sourceTree = "<group>"; };
 		482FC0FC20DE15CC00E23DAE /* SharePhotoController+Save.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "SharePhotoController+Save.swift"; sourceTree = "<group>"; };
 		482FC0FD20DE15D000E23DAE /* MapCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MapCell.swift; sourceTree = "<group>"; };
@@ -626,6 +628,7 @@
 				482FC14020DE29CF00E23DAE /* SearchTableCell.swift */,
 				482FC0FE20DE15D400E23DAE /* PostImageCell.swift */,
 				4878C10020F7486F0054F227 /* ShareHeaderCell.swift */,
+				481398AB22B21830004A4E20 /* EditPhotoShareController.swift */,
 			);
 			name = Share;
 			path = main/Share;
@@ -1406,6 +1409,7 @@
 				482FC12020DE168200E23DAE /* ChangeSignPhotoController.swift in Sources */,
 				48482FC920DA18A00031EBFF /* Photo.swift in Sources */,
 				482FC13320DE236D00E23DAE /* LocationRecord.swift in Sources */,
+				481398AC22B21830004A4E20 /* EditPhotoShareController.swift in Sources */,
 				482FC13520DE236D00E23DAE /* AlgoliaManager.swift in Sources */,
 				4876BD0F20DA164E0057E5E0 /* PlaceDetailTableViewDataSource.swift in Sources */,
 				48443E6E210990AE00A21FC4 /* GMUWeightedLatLng.m in Sources */,
