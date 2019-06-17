@@ -161,7 +161,7 @@ class HomeController: MDCCollectionViewController, HomePostCellDelegate,  HomeHe
     
     private var listener: ListenerRegistration?
     
-    fileprivate func observeQuery()
+    fileprivate func observePostFeed()
     {
         stopObserving()
         self.posts.removeAll()
@@ -172,13 +172,14 @@ class HomeController: MDCCollectionViewController, HomePostCellDelegate,  HomeHe
         
         self.listener = self.db.collection("posts")
             .order(by: "creationDate", descending: true).limit(to: 20)
-            .addSnapshotListener{  (snapshot, error) in
+            .addSnapshotListener{  [weak self] (snapshot, error) in
+                guard let strongSelf = self else { return }
                 guard let snapshot = snapshot else {
                     print("Error fetching snapshot results: \(error!)")
                     return
                 }
                 
-                let models = snapshot.documents.map { (document) -> FSPost in
+                let _fsPost = snapshot.documents.map { (document) -> FSPost in
                     print ("Document Data : \(document.data())")
                     if let model = FSPost(dictionary: document.data(), postId: document.documentID) {
                         return model
@@ -189,20 +190,18 @@ class HomeController: MDCCollectionViewController, HomePostCellDelegate,  HomeHe
                     }
                 }
                 
-                
-                
-                self.posts = models
-                self.documents = snapshot.documents
-                if self.documents.count > 0 {
-                    //print("Number of posts: \(self.documents.count)")
-                    self.collectionView?.backgroundView = nil
+                strongSelf.posts = _fsPost
+                strongSelf.documents = snapshot.documents
+                if strongSelf.documents.count > 0 {
+                   
+                    strongSelf.collectionView?.backgroundView = nil
                 }
                 else
                 {
-                    self.collectionView?.backgroundView = nil
+                    strongSelf.collectionView?.backgroundView = nil
                 }
-                DispatchQueue.main.async { [weak self] in 
-                    self?.collectionView?.reloadData()
+                DispatchQueue.main.async {
+                    strongSelf.collectionView?.reloadData()
                 }
         }
          hud.dismiss()
@@ -214,7 +213,7 @@ class HomeController: MDCCollectionViewController, HomePostCellDelegate,  HomeHe
     }
     
     //MARK:- Top Posts
-    func didShowTopPosts(){
+    func observeTopFeed(){
         stopObserving()
         
         let hud = JGProgressHUD(style: .dark)
@@ -283,13 +282,13 @@ class HomeController: MDCCollectionViewController, HomePostCellDelegate,  HomeHe
     func didShowTopUsers() {
         FETCH_TYPE = FetchType.USER
         print("didShowTopUsers")
-        didShowTopPosts()
+        observeTopFeed()
     }
     
     func didShowFollowersPosts() {
         FETCH_TYPE = FetchType.ALL
         print("didShowFollowerPosts")
-        observeQuery()
+        observePostFeed()
     }
     
     
@@ -314,8 +313,8 @@ class HomeController: MDCCollectionViewController, HomePostCellDelegate,  HomeHe
     override func viewDidLoad() {
         
         super.viewDidLoad()
-        
         NotificationCenter.default.addObserver(self, selector: #selector(handleUpdateFeed), name: HomeController.updateFeedNotificationName, object: nil)
+        
         collectionView?.backgroundColor = UIColor.collectionBackGround()
         collectionView?.register(HomePostCell.self, forCellWithReuseIdentifier: cellId)
         collectionView?.register(HomeHeaderCell.self, forSupplementaryViewOfKind: UICollectionView.elementKindSectionHeader, withReuseIdentifier: cellHeaderId)
@@ -325,7 +324,7 @@ class HomeController: MDCCollectionViewController, HomePostCellDelegate,  HomeHe
         collectionView?.backgroundView = nil
         //Firestore.updateDocCounts()
         setupNavigationItems()
-        observeQuery()
+        observePostFeed()
         collectionView?.delegate = self
         
         // didShowAllPosts()
@@ -341,7 +340,7 @@ class HomeController: MDCCollectionViewController, HomePostCellDelegate,  HomeHe
     @objc func handleRefresh() {
       refreshControl.beginRefreshing()
       refreshTotal = refreshTotal + 10
-      observeQuery()
+      observePostFeed()
       refreshControl.endRefreshing()
     }
     
