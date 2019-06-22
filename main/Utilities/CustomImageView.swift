@@ -35,7 +35,7 @@ class CustomImageView: UIImageView {
         self.sd_cancelCurrentImageLoad()
         self.sd_setShowActivityIndicatorView(true)
         self.sd_setIndicatorStyle(.whiteLarge)
-        self.sd_setImage(with: urlPlaceholder , placeholderImage: UIImage(named: "windows"))
+        self.sd_setImage(with: urlPlaceholder , placeholderImage: UIImage(named: "place_holder"))
     }
     
     func loadImageWithPlaceholder(url: String, placeHolder: String) {

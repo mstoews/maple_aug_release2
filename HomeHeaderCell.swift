@@ -51,7 +51,7 @@ class HomeHeaderCell: MDCCardCollectionCell {
     {
         print("Search Occation")
         resetButtons()
-        followPostsButton.tintColor = .purple
+        followPostsButton.tintColor = UIColor.buttonThemeColor()
         delegate?.didShowFollowersPosts()
     }
     
@@ -60,7 +60,7 @@ class HomeHeaderCell: MDCCardCollectionCell {
     {
         print("Seach Locations")
         resetButtons()
-        topUsersButton.tintColor = .purple
+        topUsersButton.tintColor = UIColor.buttonThemeColor()
         delegate?.didShowTopUsers()
     }
     

@@ -83,24 +83,18 @@ class UserListPostCell : UserGridPostCell {
         addSubview(rightDivider)
         addSubview(topDivider)
         
-        usernameLabel.anchor(top: topAnchor, left: leftAnchor, bottom: nil,right: rightAnchor, paddingTop: 0, paddingLeft: 8, paddingBottom: 0, paddingRight: 0, width: frame.size.width - 100 , height: 30)
         
-        // 30
-        
-        topDivider.anchor(top: usernameLabel.bottomAnchor, left: leftAnchor, bottom: nil, right: rightAnchor, paddingTop: 0 , paddingLeft: 0, paddingBottom: 0, paddingRight: 0, width: 0, height: 0.5)
-        
-        // 1.5
         
         print("what is the width : \(frame.width)")
         
-        imageCollectionView.anchor(top: topDivider.bottomAnchor,
+        imageCollectionView.anchor(top: topAnchor,
                                    left: leftAnchor,
                                    bottom: nil ,
                                    right: rightAnchor,
                                    paddingTop: 2,
-                                   paddingLeft: 4,
+                                   paddingLeft: 0,
                                    paddingBottom: 0,
-                                   paddingRight: 4,
+                                   paddingRight: 0,
                                    width: 0,
                                    height: frame.width / 4)
         
@@ -124,7 +118,6 @@ class UserListPostCell : UserGridPostCell {
         
         bookMarkBadge.anchor(top: topDividerView.topAnchor, left: bookmarkButton.rightAnchor, bottom: nil, right: nil, paddingTop: 2, paddingLeft: -22, paddingBottom: 0, paddingRight: 0 , width: 0, height: 0)
         captionLabel.anchor(top: likeButton.bottomAnchor, left: leftAnchor, bottom: nil, right: rightAnchor, paddingTop: 2, paddingLeft: 4, paddingBottom: 4, paddingRight: 0 , width: 0, height: 0)
-        //bottomDividerView.anchor(top: captionLabel.bottomAnchor, left: leftAnchor, bottom: nil, right: rightAnchor, paddingTop: 0 , paddingLeft: 0, paddingBottom: 0, paddingRight: 0, width: 0, height: 0.5)
     }
 }
 
@@ -298,105 +291,6 @@ class UserGridPostCell: MDCCardCollectionCell , UICollectionViewDataSource, UICo
         label.numberOfLines = 3
         return label
     }()
-    
-    
-    /*
-    var post: FSPost? {
-        
-        didSet {
-            if post == nil
-            {
-                return
-            }
-            images = []
-            
-            var isLikedByUid = false
-            var isBookMarkedByUid = false
-            
-            if let postId = post?.id {
-                if let uid = post?.uid {
-                    Firestore.isPostLikeByUser(postId: postId, uid: uid,  { (isLiked) in
-                        if isLiked == true {
-                            self.likeButton.setImage(#imageLiteral(resourceName: "ic_favorite").withRenderingMode(.alwaysOriginal), for: .normal)
-                            isLikedByUid = true
-                        }
-                        else
-                        {
-                            self.likeButton.setImage(#imageLiteral(resourceName: "ic_favorite_border").withRenderingMode(.alwaysOriginal), for: .normal)
-                            isLikedByUid = false
-                        }
-                        
-                    })
-                    
-                    Firestore.isPostBookMarkedByUser(postId: postId, uid: uid,  { (isBookmarked) in
-                        //self.bookmarkButton.setImage(fs_post?.hasBookmark == true ? #imageLiteral(resourceName: "ic_bookmark").withRenderingMode(.alwaysOriginal) : #imageLiteral(resourceName: "ic_bookmark_border").withRenderingMode(.alwaysOriginal), for: .normal)
-                        self.bookmarkButton.setImage(isBookmarked == true ? #imageLiteral(resourceName: "ic_bookmark").withRenderingMode(.alwaysOriginal) : #imageLiteral(resourceName: "ic_bookmark_border").withRenderingMode(.alwaysOriginal), for: .normal)
-                        isBookMarkedByUid = isBookmarked
-                    })
-                    
-                    
-                }
-            }
-            
-            if let uid = post?.uid {
-                if uid != Auth.auth().currentUser?.uid {
-                    self.editButton.isHidden = true
-                }
-            }
-            
-            post?.isLiked = isLikedByUid
-            post?.isBookmarked = isBookMarkedByUid
-            self.hideLikesBadge(0)
-            self.hideMarkBadge(0)
-            self.hideCommentBadge(0)
-            
-            usernameLabel.text = "TEST USERNAME"
-            if let userName = post?.userName {
-                if let product = post?.product {
-                    usernameLabel.attributedText = setUserName(userName: userName, caption: product)
-                }
-                
-            }
-            
-            if let profileURL = post?.profileURL {
-                self.userProfileImageView.loadImage(urlString: profileURL)
-            }
-            
-            
-            if let postid = post?.id {
-                if let count = post?.imageUrlArray.count {
-                    if count > 0 {
-                        for url in (post?.imageUrlArray)! {
-                            let obj = ImageObject(postid: postid, imageid: url , url: url)
-                            images.append(obj)
-                        }
-                    }
-                }
-            }
-            
-            if let likes = post?.noOfLikes {
-                    self.putNumberOfLikes(likes: likes )
-            }
-            
-            if let comments = post?.noOfLikes {
-                    self.putNumberOfComments(likes: comments)
-            }
-            
-            if let description = post?.description {
-                let attributedText = NSMutableAttributedString(string: description, attributes: attributeCaption)
-                captionLabel.attributedText = attributedText
-            }
-            
-            if let timeAgoDisplay = post?.creationDate.timeAgoToDisplay() {
-                let timeAttributedText = NSMutableAttributedString(string: timeAgoDisplay, attributes: [NSAttributedString.Key.font: UIFont.systemFont(ofSize: 12)])
-                timeAgoLabel.attributedText = timeAttributedText
-            }
-            
-            self.imageCollectionView.reloadData()
-        }
-        
-    }
-    */
     
     
     fileprivate func setUserName(userName: String, caption: String) -> NSMutableAttributedString
@@ -575,7 +469,7 @@ class UserGridPostCell: MDCCardCollectionCell , UICollectionViewDataSource, UICo
          let origImage = UIImage(named: "ic_edit");
         let tintedImage = origImage?.withRenderingMode(UIImage.RenderingMode.alwaysTemplate)
         button.setImage(tintedImage, for: .normal)
-        button.tintColor = .purple
+        button.tintColor = UIColor.buttonThemeColor()
         button.addTarget(self, action: #selector(handleEditMenu), for: .touchUpInside)
         return button
     }()
@@ -750,24 +644,30 @@ class UserGridPostCell: MDCCardCollectionCell , UICollectionViewDataSource, UICo
         addSubview(rightDivider)
         addSubview(topDivider)
         
-        usernameLabel.anchor(top: topAnchor, left: leftAnchor, bottom: nil,right: rightAnchor, paddingTop: 0, paddingLeft: 8, paddingBottom: 0, paddingRight: 0, width: frame.size.width - 100 , height: 30)
+        usernameLabel.anchor(top: topAnchor, left: leftAnchor,
+                             bottom: nil,
+                             right: rightAnchor,
+                             paddingTop: 0,
+                             paddingLeft: 8,
+                             paddingBottom: 0,
+                             paddingRight: 0,
+                             width: frame.size.width - 100 ,
+                             height: 0)
         
         // 30
         
-        topDivider.anchor(top: usernameLabel.bottomAnchor, left: leftAnchor, bottom: nil, right: rightAnchor, paddingTop: 0 , paddingLeft: 0, paddingBottom: 0, paddingRight: 0, width: 0, height: 0.5)
+        //topDivider.anchor(top: usernameLabel.bottomAnchor, left: leftAnchor, bottom: nil, right: rightAnchor, paddingTop: 0 , paddingLeft: 0, paddingBottom: 0, paddingRight: 0, width: 0, height: 0.5)
         
         // 1.5
-        
-        print("what is the width : \(frame.width)")
-        
-        imageCollectionView.anchor(top: topDivider.bottomAnchor,
+      
+        imageCollectionView.anchor(top: topAnchor,
                                    left: leftAnchor,
                                    bottom: nil ,
                                    right: rightAnchor,
-                                   paddingTop: 2,
-                                   paddingLeft: 4,
+                                   paddingTop: 0,
+                                   paddingLeft: 0,
                                    paddingBottom: 0,
-                                   paddingRight: 4,
+                                   paddingRight: 0,
                                    width: 0,
                                    height: frame.width)
         
@@ -782,7 +682,7 @@ class UserGridPostCell: MDCCardCollectionCell , UICollectionViewDataSource, UICo
         commentButton.anchor  (top: imageCollectionView.bottomAnchor, left: likeButton.rightAnchor,     bottom: nil, right: nil, paddingTop: 0, paddingLeft: 0, paddingBottom: 0, paddingRight: -15 , width: 50, height: 40)
         bookmarkButton.anchor (top: imageCollectionView.bottomAnchor, left: commentButton.rightAnchor,  bottom: nil, right: nil, paddingTop: 0, paddingLeft: 4, paddingBottom: 0, paddingRight: -15 , width: 50, height: 40)
         editButton.anchor     (top: imageCollectionView.bottomAnchor, left: bookmarkButton.rightAnchor, bottom: nil, right: nil, paddingTop: 0, paddingLeft: 4, paddingBottom: 0, paddingRight: -15 , width: 50, height: 40)
-        timeAgoLabel.anchor      (top: imageCollectionView.bottomAnchor, left: editButton.rightAnchor,     bottom: nil, right: nil, paddingTop: 0, paddingLeft: 50, paddingBottom: 0, paddingRight: 0 , width: 0, height: 20)
+        timeAgoLabel.anchor    (top: imageCollectionView.bottomAnchor, left: editButton.rightAnchor,     bottom: nil, right: nil, paddingTop: 0, paddingLeft: 50, paddingBottom: 0, paddingRight: 0 , width: 0, height: 20)
         
         commentBadge.anchor(top: topDividerView.topAnchor, left: commentButton.rightAnchor, bottom: nil, right: nil, paddingTop: 2, paddingLeft: -20, paddingBottom: 0, paddingRight: 0 , width: 0, height: 0)
         
@@ -792,10 +692,6 @@ class UserGridPostCell: MDCCardCollectionCell , UICollectionViewDataSource, UICo
         
         captionLabel.anchor(top: likeButton.bottomAnchor, left: leftAnchor, bottom: nil, right: rightAnchor, paddingTop: 2, paddingLeft: 4, paddingBottom: 4, paddingRight: 0 , width: 0, height: 0)
         
-        
-        //bottomDividerView.anchor(top: captionLabel.bottomAnchor, left: leftAnchor, bottom: nil, right: rightAnchor, paddingTop: 0 , paddingLeft: 0, paddingBottom: 0, paddingRight: 0, width: 0, height: 0.5)
-        //leftDivider.anchor(top: topAnchor, left: leftAnchor, bottom: bottomAnchor, right: nil,  paddingTop: 0 , paddingLeft: 0, paddingBottom: 0, paddingRight: 0, width: 1.5, height: 0 )
-        //rightDivider.anchor(top: topAnchor, left: nil, bottom: bottomAnchor, right: rightAnchor , paddingTop: 0 , paddingLeft: 0, paddingBottom: 0, paddingRight: -1.5, width: 1.5, height: 0 )
         
     }
     

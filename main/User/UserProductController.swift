@@ -30,14 +30,14 @@ class UserProductController: UserProfileController {
     
     override func didChangeToListView() {
         print("didChangeToListView")
-        cellType = CellType.LIST
+        cellType = .LIST
         observeQuery(postId: postId)
         collectionView?.reloadData()
     }
     
     override func didChangeToGridView() {
         print("didChangeToGridView")
-        cellType = CellType.GRID
+        cellType = .GRID
         observeQuery(postId: postId)
         collectionView?.reloadData()
     }
@@ -50,10 +50,12 @@ class UserProductController: UserProfileController {
     fileprivate  func observeQuery(postId : String)
     {
         stopObserving()
+        
         self.listener = self.db.collection("posts")
             .whereField("postid", isEqualTo: postId)
             .order(by: "creationDate", descending: true)
-            .addSnapshotListener{  (snapshot, error) in
+            .addSnapshotListener{ [weak self] (snapshot, error) in
+                guard let strongSelf = self else { return }
                 guard let snapshot = snapshot else {
                     print("Error fetching snapshot results: \(error!)")
                     return
@@ -64,23 +66,24 @@ class UserProductController: UserProfileController {
                         return model
                     }
                     else {
-                        // Don't use fatalError here in a real app.
                         fatalError("Unable to initialize type \(FSPost.self) with dictionary \(document.data())")
                     }
                 }
                 
-                self.fs_posts = models
-                print (self.fs_posts)
-                self.docs = snapshot.documents
+                strongSelf.fs_posts = models
+                strongSelf.docs = snapshot.documents
                 
-                if self.docs.count > 0 {
-                    self.collectionView?.backgroundView = nil
+                if strongSelf.docs.count > 0 {
+                    strongSelf.collectionView?.backgroundView = nil
                 }
                 else
                 {
-                    self.collectionView?.backgroundView = nil
+                    strongSelf.collectionView?.backgroundView = nil
                 }
-                self.collectionView?.reloadData()
+                DispatchQueue.main.async {
+                    strongSelf.collectionView?.reloadData()
+                }
+                
         }
     }
     
@@ -94,7 +97,6 @@ class UserProductController: UserProfileController {
         collectionView?.register(UserGridPostCell.self, forCellWithReuseIdentifier: userGridCellId)
         collectionView?.register(UserListPostCell.self, forCellWithReuseIdentifier: userListCellId)
         collectionView?.register(MapViewCell.self, forCellWithReuseIdentifier: mapViewCell)
-        
         refreshControl.addTarget(self, action: #selector(handleRefresh), for: .valueChanged)
         collectionView?.refreshControl = refreshControl
         self.navigationItem.title = "Product Page"
@@ -122,19 +124,19 @@ class UserProductController: UserProfileController {
         var rc = 0
         switch cellType
         {
-        case CellType.BKMK :
+        case .BKMK :
             rc = fs_posts.count
             break
             
-        case CellType.GRID :
+        case .GRID :
             rc = fs_posts.count
             break
             
-        case CellType.LIST:
+        case .LIST:
             rc = fs_posts.count
             break
             
-        case CellType.MAP :
+        case .MAP :
             rc = fs_posts.count
             break
         }
@@ -148,14 +150,14 @@ class UserProductController: UserProfileController {
         var rc  = collectionView.dequeueReusableCell(withReuseIdentifier: userGridCellId, for: indexPath)
         switch cellType
         {
-        case CellType.BKMK :
+        case .BKMK :
             let cell = collectionView.dequeueReusableCell(withReuseIdentifier: userGridCellId, for: indexPath) as! UserGridPostCell
             cell.post = fs_posts[indexPath.item]
             cell.delegate = self
             rc = cell
             break
             
-        case CellType.GRID :
+        case .GRID :
             let cell = collectionView.dequeueReusableCell(withReuseIdentifier: userGridCellId, for: indexPath) as! UserGridPostCell
             if (fs_posts.count > 0 ){
                 cell.post = fs_posts[indexPath.item]
@@ -164,7 +166,7 @@ class UserProductController: UserProfileController {
             rc = cell
             break
             
-        case CellType.LIST :
+        case .LIST :
             let cell = collectionView.dequeueReusableCell(withReuseIdentifier: userListCellId, for: indexPath) as! UserListPostCell
             if (fs_posts.count > 0 ){
                 cell.post = fs_posts[indexPath.item]
@@ -173,9 +175,9 @@ class UserProductController: UserProfileController {
             rc = cell
             break
             
-        case CellType.MAP :
+        case .MAP :
             let cell = collectionView.dequeueReusableCell(withReuseIdentifier: mapViewCell, for: indexPath) as! MapViewCell
-            if (fs_posts.count > 0 ){
+            if (fs_posts.count > 0 ) {
                 //cell.mapLocation = fs_locations
             }
             rc = cell
@@ -218,33 +220,33 @@ class UserProductController: UserProfileController {
         var rc = CGSize()
         switch cellType
         {
-        case CellType.GRID :
-            //let width = view.frame.width
+        case .GRID :
+            
             let approximateWidthOfBioTextView = view.frame.width
             let size = CGSize(width: approximateWidthOfBioTextView, height: 1200)
             let attributes = [NSAttributedString.Key.font : UIFont.systemFont(ofSize: CGFloat(15))]
             let post = fs_posts[indexPath.item]
             let estimatedFrame = NSString(string: post.description).boundingRect(with: size, options: .usesLineFragmentOrigin, attributes: attributes, context: nil)
-            rc = CGSize(width: view.frame.width - 15 , height: estimatedFrame.height + view.frame.width - 60 )
+            rc = CGSize(width: view.frame.width - 15 , height: estimatedFrame.height - 50 )
             break
             
-        case CellType.LIST  :
-            //let width = view.frame.width
+        case .LIST  :
+            
             let approximateWidthOfBioTextView = view.frame.width
             let size = CGSize(width: approximateWidthOfBioTextView, height: 1200)
             let attributes = [NSAttributedString.Key.font : UIFont.systemFont(ofSize: CGFloat(15))]
             let post = fs_posts[indexPath.item]
             let estimatedFrame = NSString(string: post.description).boundingRect(with: size, options: .usesLineFragmentOrigin, attributes: attributes, context: nil)
-            rc = CGSize(width: view.frame.width - 15, height: estimatedFrame.height + view.frame.width - 180 )
+            rc = CGSize(width: view.frame.width - 15, height: estimatedFrame.height - 50)
             break
             
-        case CellType.MAP :
+        case .MAP :
             let width = view.frame.width
             let height = view.frame.height
             rc = CGSize(width: width, height: height)
             break
             
-        case CellType.BKMK :
+        case .BKMK :
             let approximateWidthOfBioTextView = view.frame.width
             let size = CGSize(width: approximateWidthOfBioTextView, height: 1200)
             let attributes = [NSAttributedString.Key.font : UIFont.systemFont(ofSize: CGFloat(15))]

@@ -28,7 +28,7 @@ import CropViewController
 import ActiveLabel
 
 
-class EditPhotoController: SharePhotoController {
+class EditPhotoController: ShareController {
     
     var postId: String?
     
@@ -60,10 +60,10 @@ class EditPhotoController: SharePhotoController {
         
         view.backgroundColor = UIColor.collectionCell()
         self.view.tintColor  = UIColor.buttonThemeColor()
-        imageCollectionView.backgroundView = backGroundView
+        imageCollectionView.backgroundView = backGroundViewImages
         
-        Products.delegate = self
-        Description.delegate = self
+        products.delegate = self
+        descriptionTextView.delegate = self
         //tableProductsView.delegate = self
         //tableProductsView.dataSource =  self
         
@@ -95,8 +95,7 @@ class EditPhotoController: SharePhotoController {
         
         definesPresentationContext = true
         
-        VIEW_SCROLL_HEIGHT? = 400.0
-        print("viewDidLoad")
+
         
 }
     override func viewDidAppear(_ animated: Bool) {
@@ -106,8 +105,8 @@ class EditPhotoController: SharePhotoController {
         if let postId = postId {
             Firestore.fetchPostByPostId(postId: postId) { (post) in
                 Firestore.fetchUserWithUID(uid: post.uid) { (user) in
-                    self.Products.text = post.product
-                    self.Description.text = post.description
+                    self.products.text = post.product
+                    self.descriptionTextView.text = post.description
                     for url in post.imageUrlArray {
                         print(url)
                         self.imageUrlArray.append(url)

@@ -1,6 +1,4 @@
 //
-//  ShrineInkOverlay.swift
-//  maple_release
 //
 //  Created by Murray Toews on 2018/05/23.
 //  Copyright © 2018 Murray Toews. All rights reserved.
@@ -9,7 +7,7 @@
 import UIKit
 import MaterialComponents.MaterialInk
 
-class ShrineInkOverlay: UIView, MDCInkTouchControllerDelegate {
+class MapleInkOverlay: UIView, MDCInkTouchControllerDelegate {
     
     fileprivate var inkTouchController: MDCInkTouchController?
     

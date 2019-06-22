@@ -388,7 +388,7 @@ class ProductController: UICollectionViewController, ProductCellDelegate, Produc
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        NotificationCenter.default.addObserver(self, selector: #selector(handleUpdateFeed), name: SharePhotoController.updateFeedNotificationName, object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(handleUpdateFeed), name: ShareController.updateFeedNotificationName, object: nil)
         collectionView?.backgroundColor = UIColor.collectionBackGround()
         collectionView?.register(ProductCell.self, forCellWithReuseIdentifier: productCellId)
         collectionView?.register(ProductHeaderCard.self, forSupplementaryViewOfKind: UICollectionView.elementKindSectionHeader, withReuseIdentifier: productHeaderId)

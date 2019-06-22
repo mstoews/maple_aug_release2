@@ -5,7 +5,6 @@
 //  Created by Murray Toews on 2018/06/17.
 //  Copyright © 2018 Murray Toews. All rights reserved.
 //
-
 import Foundation
 import Firebase
 import FirebaseFirestore
@@ -26,7 +25,7 @@ extension Firestore {
                 print("Document  nb bbbbbdoes not exist")
             }
         }
-     }
+    }
     
     //MARK:- Notification
     static func fetchNotifications(uid : String, completion: @escaping ([NotificationObject]) -> () )
@@ -48,6 +47,50 @@ extension Firestore {
     }
     
     
+    static func fetchUserFollowingByUserId(uid: String, completion: @escaping ([String]) -> ())
+    {
+        var mapleUserArray = [String]()
+        let docRef = firestore().collection("users").document(uid).collection("following")
+        docRef.getDocuments() { (querySnapshot, err) in
+            if let err = err {
+                print("Error getting documents: \(err)")
+            } else {
+                for document in querySnapshot!.documents {
+                    if let followingUser = FollowUser(dictionary: document.data()){
+                        if let uid = followingUser.uid {
+                             mapleUserArray.append(uid)
+                        }
+                    }
+                }
+                completion(mapleUserArray)
+            }
+        }
+        
+    }
+    
+    
+    static func fetchUserFollowedByUserId(uid: String, completion: @escaping ([String]) -> ())
+    {
+        var mapleUserArray = [String]()
+        let docRef = firestore().collection("users").document(uid).collection("followed")
+        docRef.getDocuments() { (querySnapshot, err) in
+            if let err = err {
+                print("Error getting documents: \(err)")
+            } else {
+                for document in querySnapshot!.documents {
+                    if let followedUser = FollowUser(dictionary: document.data()){
+                        if let uid = followedUser.uid {
+                            mapleUserArray.append(uid)
+                        }
+                    }
+                }
+                completion(mapleUserArray)
+            }
+        }
+        
+    }
+    
+    
     static func removeNotification (notificationItem: Int) -> Bool {
         if notificationsFire.count > 0 {
             let notificationObj = notificationsFire[notificationItem]
@@ -62,21 +105,21 @@ extension Firestore {
                                 for document in querySnapshot!.documents {
                                     let docID = document.documentID
                                     print(docID)
-                                     let values: [String: Any] = ["deleted": true as Bool]
+                                    let values: [String: Any] = ["deleted": true as Bool]
                                     firestore().collection("users").document(uid).collection("events").document(document.documentID).updateData(values)
                                 }
-                                    
+                                
                             }
                         }
                 }
-               return true
+                return true
             }
         }
         return false
     }
     
-   
-   
+    
+    
     
     /*******  updateUserProfile  *******/
     static func updateUserProfile(user: MapleUser) {
@@ -89,7 +132,7 @@ extension Firestore {
         followedCount = getFollowedCount(user: user)
         followerCount = getFollowerCount(user: user)
         postCount = getPostCount(user: user)
-            
+        
         let values: [String: Any] = ["profileImageUrl": user.profileImageUrl,
                                      "username": user.username,
                                      "followCount": followedCount  ,
@@ -140,12 +183,12 @@ extension Firestore {
                 }
             }
         }
-       
+        
     }
     
-   
+    
     //MARK:- Location
-     /*******  fetchLocationByPostId  *******/
+    /*******  fetchLocationByPostId  *******/
     static func fetchLocationByPostId(postId: String, _ completion: @escaping ([LocationObject]) -> () ){
         
         var locationObjects = [LocationObject]()
@@ -267,7 +310,7 @@ extension Firestore {
         }
         return followedCount
     }
-
+    
     static func getFollowedUsers (user: MapleUser) -> Int {
         var followedCount = 0
         
@@ -294,7 +337,7 @@ extension Firestore {
         return followedCount
     }
     
-
+    
     //MARK:- didLikePost
     
     static func didLikePost(postId: String, uidLiked: String, didLike: Bool) {
@@ -318,13 +361,13 @@ extension Firestore {
                 completion(false)
             } else {
                 if query!.documents.count > 0 {
-                        print("Post \(postId) is likde by \(uid)")
-                        completion(true)
-                    }
+                    print("Post \(postId) is likde by \(uid)")
+                    completion(true)
                 }
             }
         }
-
+    }
+    
     //MARK:- Bookmark
     
     static func didBookmarkedPost(post: FSPost, didBookmark: Bool) {
@@ -371,7 +414,7 @@ extension Firestore {
     }
     
     
-   
+    
     static func isPostBookMarkedByUser(postId: String, uid: String, _ completion: @escaping (Bool) -> () ) {
         let docRef = firestore().collection("posts").document(postId).collection("bookmarked").document(uid)
         
@@ -405,12 +448,12 @@ extension Firestore {
         
         firestore().collection("posts").document(postId).collection("comments").document().setData(values)
         {
-                err in
-                if let err = err {
-                    print("Error writing document: \(err)")
-                } else {
-                    print("Document successfully postId: " + postId)
-                }
+            err in
+            if let err = err {
+                print("Error writing document: \(err)")
+            } else {
+                print("Document successfully postId: " + postId)
+            }
         }
     }
     
@@ -424,8 +467,8 @@ extension Firestore {
             }
             else  {
                 for document in querySnapshot!.documents {
-                   let doc = Comment(user: user, dictionary: document.data())
-                   commentsArray.append(doc)
+                    let doc = Comment(user: user, dictionary: document.data())
+                    commentsArray.append(doc)
                 }
                 completion(commentsArray)
             }
@@ -434,7 +477,7 @@ extension Firestore {
     
     //MARK:- Post
     static func deletePost(postId : String){
-          firestore().collection("posts").document(postId).delete()
+        firestore().collection("posts").document(postId).delete()
     }
     
     static func fetchPostByPostId (postId: String, _ completion: @escaping (FSPost) -> () ) {
@@ -482,7 +525,7 @@ extension Firestore {
         return postCount
     }
     
-   
+    
     
     //MARK:- Algolia
     static func updateAlgoliaPost(postId: String) {
@@ -514,7 +557,7 @@ extension Firestore {
             }
         }
     }
-
+    
     static func updateAlgoliaPost(post: FSPost) {
         if let postId = post.id {
             let values : [String: Any] = ["userid" : post.uid,
@@ -604,6 +647,5 @@ extension Firestore {
         }
     }
     
-   
+    
 }
-

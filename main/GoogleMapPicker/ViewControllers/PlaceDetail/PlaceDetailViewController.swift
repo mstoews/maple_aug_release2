@@ -19,12 +19,12 @@ import GooglePlaces
 //import Floaty
 
 protocol PlaceDetailViewControllerDelegate : class {
-    func didFinishTask(sender: SharePhotoController)
+    func didFinishTask(sender: ShareController)
     func didSaveMapPlace(place: GMSPlace)
 }
 
-extension SharePhotoController : PlaceDetailViewControllerDelegate {
-    func didFinishTask(sender: SharePhotoController) {
+extension ShareController : PlaceDetailViewControllerDelegate {
+    func didFinishTask(sender: ShareController) {
         
     }
     func didSaveMapPlace(place: GMSPlace) {

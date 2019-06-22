@@ -36,9 +36,9 @@ class PostImage: BaseCell
     
     var photoImageView: CustomImageView = {
         let iv = CustomImageView()
-        iv.contentMode = .scaleToFill
-        iv.backgroundColor = UIColor.white
+        iv.contentMode = .scaleAspectFill
         iv.clipsToBounds = true
+        iv.backgroundColor = UIColor.white
         return iv
     }()
     
@@ -445,7 +445,7 @@ class HomePostCell: MDCCardCollectionCell , UICollectionViewDataSource, UICollec
         let origImage = UIImage(named: "ic_bookmark_border");
         let tintedImage = origImage?.withRenderingMode(UIImage.RenderingMode.alwaysTemplate)
         button.setImage(tintedImage, for: .normal)
-        button.tintColor = UIColor.purple
+        button.tintColor = UIColor.buttonThemeColor()
         button.addTarget(self, action: #selector(handleBookmark), for: .touchUpInside)
         return button
     }()
@@ -455,7 +455,7 @@ class HomePostCell: MDCCardCollectionCell , UICollectionViewDataSource, UICollec
         let origImage = UIImage(named: "ic_map");
         let tintedImage = origImage?.withRenderingMode(UIImage.RenderingMode.alwaysTemplate)
         button.setImage(tintedImage, for: .normal)
-        button.tintColor = UIColor.purple
+        button.tintColor = UIColor.buttonThemeColor()
         button.addTarget(self, action: #selector(handleMapButton), for: .touchUpInside)
         return button
     }()

@@ -249,7 +249,7 @@ struct MapleHeaderPage {
         cyanBox.backgroundColor = cyanBoxColor
         (page as AnyObject).addSubview(cyanBox)
         
-        let inkOverlay = ShrineInkOverlay(frame: (page as AnyObject).bounds)
+        let inkOverlay = MapleInkOverlay(frame: (page as AnyObject).bounds)
         inkOverlay.autoresizingMask = [.flexibleWidth, .flexibleHeight]
         (page as AnyObject).addSubview(inkOverlay)
         

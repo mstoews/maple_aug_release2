@@ -32,17 +32,12 @@ enum  CT {
     case MAP
 }
 
-protocol  SharePhotoDelegate {
+protocol  SharePhotoDelegates {
     func setTabBarHome()
 }
 
 
-
-
-
-
-
-class SharePhotoController:
+class SharePhotoControllers:
     UIViewController,
     UIScrollViewDelegate,
     UICollectionViewDelegateFlowLayout,
@@ -367,8 +362,15 @@ class SharePhotoController:
     
     let backGroundView : UIImageView = {
         let iv = UIImageView()
-        iv.image = UIImage(named:"windows")
-        //iv.contentMode = .scaleAspectFill
+        iv.image = UIImage(named:"place_holder")
+        iv.contentMode = .scaleAspectFill
+        return iv
+    }()
+    
+    let backGroundViewMaps : UIImageView = {
+        let iv = UIImageView()
+        iv.image = UIImage(named:"placeholder_map_navigation")
+        iv.contentMode = .scaleAspectFill
         return iv
     }()
     
@@ -387,7 +389,6 @@ class SharePhotoController:
         
         /***** Set up toasts *****/
         edgesForExtendedLayout = UIRectEdge()
-        //UIView.hr_setToastThemeColor(color: UIColor.themeColor())
         presentWindow = UIApplication.shared.keyWindow
         
         imageCollectionView.register(PostImageObject.self, forCellWithReuseIdentifier: imageCellId)
@@ -397,11 +398,10 @@ class SharePhotoController:
         self.view.tintColor  = UIColor.buttonThemeColor()
         navigationItem.title = "Post Page"
         imageCollectionView.backgroundView = backGroundView
+        locationCollectionView.backgroundView = backGroundViewMaps
         
         Products.delegate = self
         Description.delegate = self
-        //tableProductsView.delegate = self
-        //tableProductsView.dataSource =  self
         
         imageCard = MDCCard()
         
@@ -410,7 +410,7 @@ class SharePhotoController:
         
         locationCollectionView.dataSource = self
         locationCollectionView.delegate = self
-        
+       
         
         containerView = MDCCard()
         locationCard = UIView()
@@ -418,6 +418,7 @@ class SharePhotoController:
         let tapLocation = UITapGestureRecognizer(target: self, action: #selector(userTappedLocationCollection(tapGestureRecognizer: )))
         locationCard?.isUserInteractionEnabled = true
         locationCard?.addGestureRecognizer(tapLocation)
+        
         
         let tapPhotos = UITapGestureRecognizer(target: self, action: #selector(userTappedPhotoCollection(tapGestureRecognizer: )))
         imageCollectionView.isUserInteractionEnabled = true
@@ -539,18 +540,7 @@ class SharePhotoController:
     let buttonMenus = UIView()
     
     
-    @objc func userTappedLocationCollection(tapGestureRecognizer: UITapGestureRecognizer)
-    {
-        CellType = CT.MAP
-        print("Open the maps window")
-        let config = GMSPlacePickerConfig(viewport: nil)
-        let placePicker = GMSPlacePickerViewController(config: config)
-        placePicker.delegate = self
-        placePicker.modalPresentationStyle = .popover
-        placePicker.popoverPresentationController?.sourceView = view
-        placePicker.popoverPresentationController?.sourceRect = mapsButton.bounds
-        self.present(placePicker, animated: true, completion: nil)
-    }
+   
     
     @objc func userTappedPhotoCollection(tapGestureRecognizer: UITapGestureRecognizer)
     {
@@ -684,7 +674,7 @@ class SharePhotoController:
         let fb = MDCFloatingButton()
         fb.backgroundColor = UIColor.buttonThemeColor()
         fb.setImage(#imageLiteral(resourceName: "ic_add_to_photos_white"), for: .normal)
-        fb.addTarget(self, action: #selector(handleShareAll(_:)), for: .touchUpInside)
+        fb.addTarget(self, action: #selector(handleShare(_:)), for: .touchUpInside)
         return fb
     }()
     
@@ -702,8 +692,8 @@ class SharePhotoController:
     }()
     
     
-    let Description:  UITextView = {
-        let TextField =  UITextView()
+    let Description:  MultilineTextField = {
+        handleSharextField =  MultilineTextField ()
         TextField.placeholder = "Description"
         TextField.font = UIFont.systemFont(ofSize: 15)
         TextField.translatesAutoresizingMaskIntoConstraints = true
@@ -830,18 +820,7 @@ class SharePhotoController:
     }
     
     
-    @objc func openMapSelector() {
-        CellType = CT.MAP
-        print("Open the maps window")
-        let config = GMSPlacePickerConfig(viewport: nil)
-        let placePicker = GMSPlacePickerViewController(config: config)
-        placePicker.delegate = self
-        placePicker.modalPresentationStyle = .popover
-        placePicker.popoverPresentationController?.sourceView = mapsButton
-        placePicker.popoverPresentationController?.sourceRect = mapsButton.bounds
-        self.present(placePicker, animated: true, completion: nil)
-    }
-    
+  
     
     var selectedImage: UIImage? {
         didSet {
@@ -1034,10 +1013,13 @@ class SharePhotoController:
         }
     }
     
-    func shViewControllerImageDidFilter(image: UIImage) {
+    func ViewControllerImageDidFilter(image: UIImage) {
         if currentImageItem! >= 0 {
             imageArray[currentImageItem!] = image
-            imageCollectionView.reloadData()
+            DispatchQueue.main.async {
+               self.imageCollectionView.reloadData()
+            }
+           
         }
     }
     
@@ -1152,6 +1134,9 @@ class SharePhotoController:
         if textField.tag == 1 {
             tableProductsView.isHidden = true
         }
+        if textField.tag == 2 {
+            textField.placeholder = ""
+        }
         
     }
     
@@ -1181,7 +1166,7 @@ class SharePhotoController:
         
     }
     
-    func refreshMapCollection(completion: @escaping (Error?) -> Void) {
+    func refreshMapCollection(completion: @escaping (Error?) -> Void){
         CellType = CT.MAP
         locationCollectionView.reloadData()
         completion(nil)
@@ -1194,45 +1179,4 @@ class SharePhotoController:
     }
     
 }
-
-
-extension SharePhotoController : GMSPlacePickerViewControllerDelegate {
-    
-    func placePicker(_ viewController: GMSPlacePickerViewController, didPick place: GMSPlace) {
-        // Create the next view controller we are going to display and present it.
-        let nextScreen = PlaceDetailViewController(place: place)
-        self.splitPaneViewController?.push(viewController: nextScreen, animated: false)
-        self.mapViewController?.coordinate = place.coordinate
-        // Dismiss the place picker.
-        let placePickerObject = locObject(place: place)
-        mapObjects.append(placePickerObject!)
-        refreshMapCollection { error in
-            if let error = error {
-                print("Oops! Something went wrong... : ", error)
-            } else {
-                print("It has finished")
-            }
-        }
-        viewController.dismiss(animated: true, completion: nil)
-    }
-    
-    
-    
-    func placePicker(_ viewController: GMSPlacePickerViewController, didFailWithError error: Error) {
-        // In your own app you should handle this better, but for the demo we are just going to log
-        // a message.
-        NSLog("An error occurred while picking a place: \(error)")
-    }
-    
-    func placePickerDidCancel(_ viewController: GMSPlacePickerViewController) {
-        NSLog("The place picker was canceled by the user")
-        
-        // Dismiss the place picker.
-        viewController.dismiss(animated: true, completion: nil)
-        dismiss(animated: true, completion: nil)
-    }
-}
-
-
-
 

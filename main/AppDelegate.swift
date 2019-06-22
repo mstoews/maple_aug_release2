@@ -16,12 +16,8 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     let mdcAction = MDCSnackbarMessageAction()
     var window: UIWindow?
     lazy var database = Database.database()
-    var blockedRef: DatabaseReference!
-    var blockingRef: DatabaseReference!
     let gcmMessageIDKey = "gcm.message_id"
     var notificationGranted = false
-    var blocked = Set<String>()
-    var blocking = Set<String>()
     
     func application(_ application: UIApplication, didFinishLaunchingWithOptions
         launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
@@ -69,7 +65,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         
         let db = Firestore.firestore()
         let setting = db.settings
-        setting.areTimestampsInSnapshotsEnabled = true
+        //setting.areTimestampsInSnapshotsEnabled = true
         db.settings = setting
        
         application.registerForRemoteNotifications()

@@ -9,6 +9,18 @@ import Foundation
 import Firebase
 
 
+struct FollowUser {
+    var uid : String?
+}
+
+extension FollowUser: UserFollowSerialable {
+    init?(dictionary: [String: Any])
+    {
+        self.uid = dictionary["uid"] as? String ?? ""
+    }
+}
+
+
 struct PostSearch {
     
     var id: String?

@@ -259,7 +259,7 @@ class MapController: UIViewController, CLLocationManagerDelegate, GMSMapViewDele
                 }
                 
                 // self.dismiss(animated: true, completion: nil)
-                NotificationCenter.default.post(name: SharePhotoController.updateFeedNotificationName, object: nil)
+                NotificationCenter.default.post(name: ShareController.updateFeedNotificationName, object: nil)
             }
         }
         dismiss(animated: true, completion: nil)

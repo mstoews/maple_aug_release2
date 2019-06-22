@@ -60,11 +60,9 @@ extension UITextView {
     public convenience init(placeholder: String) {
         self.init()
         self.placeholder = placeholder
-//        NotificationCenter.default.addObserver(
-//            self,
-//            selector: #selector(textViewDidChange(notification:)),  name: UIResponder.keyboardDidShowNotification, object: nil)
-//        //You can substitute UIResponder with any of it's subclass
-        
+        NotificationCenter.default.addObserver(
+            self,
+            selector: #selector(textViewDidChange(notification:)),  name: UIResponder.keyboardDidShowNotification, object: nil)
         NotificationCenter.default.addObserver(  self, selector: #selector(didKeyboardShow(notification:)), name: UIResponder.keyboardDidShowNotification, object: nil)
     
     }
@@ -72,6 +70,10 @@ extension UITextView {
 
     @objc func didKeyboardShow(notification: Notification)
     {
+        
+    }
+    
+    @objc func textViewDidChange(notification: Notification) {
         
     }
     
@@ -89,6 +91,7 @@ extension UITextView {
             
             if let placeholderLabel = self.viewWithTag(100) as? UILabel {
                 placeholderText = placeholderLabel.text
+            
             }
             
             return placeholderText
@@ -261,8 +264,8 @@ extension UIColor {
     }
     
     static func buttonThemeColor() -> UIColor {
-        // return UIColor.rgb(red: 199, green: 63, blue: 74)
-        return .purple 
+        let mapleThemeColor = UIColor.rgb(red: 199, green: 63, blue: 74)
+        return mapleThemeColor
     }
     
     static func mainBlack() -> UIColor{

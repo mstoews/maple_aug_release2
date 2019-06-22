@@ -18,10 +18,7 @@ import MaterialComponents
 
 
 enum  CellType {
-    case GRID
-    case LIST
-    case BKMK
-    case MAP
+    case GRID,LIST,BKMK,MAP
 }
 
 
@@ -30,7 +27,6 @@ class UserProfileController: MDCCollectionViewController,
     UserGridPostCellDelegate
 {
     
-
     let db = Firestore.firestore()
     let cellId = "cellId"
     let userGridCellId = "userGridCellId"
@@ -47,40 +43,23 @@ class UserProfileController: MDCCollectionViewController,
     private var bookMarkListener: ListenerRegistration?
    
     private var posts: [FSPost] = []
-    private var fs_bookmarks: [FSPost] = []
+    private var bookMarkPosts: [FSPost] = []
     public var documents: [DocumentSnapshot] = []
     
     var headerView: UserProfileHeader?
     var selectedImage: UIImage?
     
     var images = [UIImage]()
-    //var assets = [PHAsset]()
     
-    private var fs_locations : [LocationObject] = []
+    private var locationPosts : [LocationObject] = []
     private var locationDoc : [DocumentSnapshot] = []
     
-    
-    //var isGridView = true
-    //var isMapView = false
-    //var isFavoritesView = false
     var isCurrentUser = true
-    var  cellType = CellType.GRID
-    
-    //var isFinishedPaging = false
-    
-    //let database = Database.database()
-    //let ref = Database.database().reference()
-    //var postIds: [String: Any]?
-    //var postSnapshots = [DataSnapshot]()
-    //var loadingPostCount = 0
-    //var firebaseRefs = [DatabaseReference]()
+    var cellType = CellType.GRID
     var insets: UIEdgeInsets!
     
     var user: MapleUser?
-    //var profile: MapleUser!
-    //let uid = Auth.auth().currentUser!.uid
-    
-    
+   
     deinit {
         stopObserving()
         stopBookMarkObserving()
@@ -150,7 +129,8 @@ class UserProfileController: MDCCollectionViewController,
         self.listener = self.db.collection("posts")
             .whereField("uid", isEqualTo: uid)
             .order(by: "creationDate", descending: true)
-            .addSnapshotListener{  (snapshot, error) in
+            .addSnapshotListener{ [weak self] (snapshot, error) in
+                guard let strongSelf = self else { return }
                 guard let snapshot = snapshot else {
                     print("Error fetching snapshot results: \(error!)")
                     return
@@ -166,18 +146,20 @@ class UserProfileController: MDCCollectionViewController,
                     }
                 }
                 
-                self.posts = models
-                self.documents = snapshot.documents
+                strongSelf.posts = models
+                strongSelf.documents = snapshot.documents
                 
-                if self.documents.count > 0 {
-                    //print("Number of posts: \(self.documents.count)")
-                    self.collectionView?.backgroundView = nil
+                if strongSelf.documents.count > 0 {
+                    strongSelf.collectionView?.backgroundView = nil
                 }
                 else
                 {
-                    self.collectionView?.backgroundView = nil
+                    strongSelf.collectionView?.backgroundView = nil
                 }
-                self.collectionView?.reloadData()
+                DispatchQueue.main.async {
+                     strongSelf.collectionView?.reloadData()
+                }
+               
         }
     }
     
@@ -195,7 +177,8 @@ class UserProfileController: MDCCollectionViewController,
             self.db.collection("users")
                 .document(uid)
                 .collection("bookmarked")
-                 .addSnapshotListener{  (snapshot, error) in
+                 .addSnapshotListener{ [weak self] (snapshot, error) in
+                    guard let strongSelf = self else { return }
                     guard let snapshot = snapshot else {
                         print("Error fetching snapshot results: \(error!)")
                         return
@@ -212,18 +195,19 @@ class UserProfileController: MDCCollectionViewController,
                         }
                     }
                     
-                    self.fs_bookmarks = models
-                    self.documents = snapshot.documents
+                    strongSelf.bookMarkPosts = models
+                    strongSelf.documents = snapshot.documents
                     
-                    if self.documents.count > 0 {
-                        //print("Number of posts: \(self.documents.count)")
-                        self.collectionView?.backgroundView = nil
+                    if strongSelf.documents.count > 0 {
+                        strongSelf.collectionView?.backgroundView = nil
                     }
                     else
                     {
-                        self.collectionView?.backgroundView = nil
+                        strongSelf.collectionView?.backgroundView = nil
                     }
-                    self.collectionView?.reloadData()
+                    DispatchQueue.main.async {
+                        strongSelf.collectionView?.reloadData()
+                    }
             }
         }
     }
@@ -412,15 +396,15 @@ class UserProfileController: MDCCollectionViewController,
     
     func fetchLocations()
     {
-        fs_locations.removeAll()
+        locationPosts.removeAll()
         let uid = Auth.auth().currentUser!.uid
         Firestore.fetchLocationByUserId( uid: uid) { (locObj) in
             for location in locObj {
-                self.fs_locations.append(location)
+                self.locationPosts.append(location)
             }
         }
         
-        if self.fs_locations.count > 0 {
+        if self.locationPosts.count > 0 {
             self.collectionView?.reloadData()
             self.collectionView?.backgroundView = nil
         }
@@ -429,7 +413,7 @@ class UserProfileController: MDCCollectionViewController,
     func fetchMapMarkers()
     {
        guard let uid = Auth.auth().currentUser?.uid else { return }
-        fs_locations.removeAll()
+        locationPosts.removeAll()
         
         db.collection("location").whereField("uid", isEqualTo: uid).getDocuments()  { (snapshot, err) in
             
@@ -441,14 +425,14 @@ class UserProfileController: MDCCollectionViewController,
                         return model
                     } else {
                         // Don't use fatalError here in a real app.
-                        fatalError("Unable to initialize type \(self.fs_locations) with dictionary \(document.data())")
+                        fatalError("Unable to initialize type \(self.locationPosts) with dictionary \(document.data())")
                     }
                 }
-                self.fs_locations = models!
+                self.locationPosts = models!
                 self.documents = (snapshot?.documents)!
             }
             
-            if self.fs_locations.count > 0 {
+            if self.locationPosts.count > 0 {
                 self.collectionView?.reloadData()
                 self.collectionView?.backgroundView = nil
             }
@@ -601,7 +585,7 @@ class UserProfileController: MDCCollectionViewController,
         switch cellType
         {
             case CellType.BKMK :
-                rc = fs_bookmarks.count
+                rc = bookMarkPosts.count
                 break
        
             case CellType.GRID :
@@ -613,7 +597,7 @@ class UserProfileController: MDCCollectionViewController,
                 break
             
             case CellType.MAP :
-                rc = fs_locations.count
+                rc = locationPosts.count
                 break
             }
         
@@ -628,7 +612,7 @@ class UserProfileController: MDCCollectionViewController,
         {
             case CellType.BKMK :
                 let cell = collectionView.dequeueReusableCell(withReuseIdentifier: userGridCellId, for: indexPath) as! UserGridPostCell
-                cell.post = fs_bookmarks[indexPath.item]
+                cell.post = bookMarkPosts[indexPath.item]
                 cell.delegate = self
                 rc = cell
                 break
@@ -653,8 +637,8 @@ class UserProfileController: MDCCollectionViewController,
             
             case CellType.MAP :
                 let cell = collectionView.dequeueReusableCell(withReuseIdentifier: mapViewCell, for: indexPath) as! MapViewCell
-                if (fs_locations.count > 0 ){
-                    cell.mapLocation = fs_locations
+                if (locationPosts.count > 0 ){
+                    cell.mapLocation = locationPosts
                 }
                 rc = cell
                 break
@@ -705,7 +689,7 @@ class UserProfileController: MDCCollectionViewController,
             let attributes = [NSAttributedString.Key.font : UIFont.systemFont(ofSize: CGFloat(15))]
             let post = posts[indexPath.item]
             let estimatedFrame = NSString(string: post.description).boundingRect(with: size, options: .usesLineFragmentOrigin, attributes: attributes, context: nil)
-            rc = CGSize(width: view.frame.width - 15 , height: estimatedFrame.height + view.frame.width - 60 )
+            rc = CGSize(width: view.frame.width - 15 , height: estimatedFrame.height + view.frame.width - 100 )
             break
             
         case CellType.LIST  :
@@ -715,7 +699,7 @@ class UserProfileController: MDCCollectionViewController,
             let attributes = [NSAttributedString.Key.font : UIFont.systemFont(ofSize: CGFloat(15))]
             let post = posts[indexPath.item]
             let estimatedFrame = NSString(string: post.description).boundingRect(with: size, options: .usesLineFragmentOrigin, attributes: attributes, context: nil)
-            rc = CGSize(width: view.frame.width - 15, height: estimatedFrame.height + view.frame.width - 180 )
+            rc = CGSize(width: view.frame.width - 15, height: estimatedFrame.height + view.frame.width - 260 )
             break
    
         case CellType.MAP :
@@ -728,7 +712,7 @@ class UserProfileController: MDCCollectionViewController,
             let approximateWidthOfBioTextView = view.frame.width
             let size = CGSize(width: approximateWidthOfBioTextView, height: 1200)
             let attributes = [NSAttributedString.Key.font : UIFont.systemFont(ofSize: CGFloat(15))]
-            let post = fs_bookmarks[indexPath.item]
+            let post = bookMarkPosts[indexPath.item]
             let estimatedFrame = NSString(string: post.description).boundingRect(with: size, options: .usesLineFragmentOrigin, attributes: attributes, context: nil)
             rc = CGSize(width: view.frame.width - 15 , height: estimatedFrame.height + view.frame.width - 60 )
             break

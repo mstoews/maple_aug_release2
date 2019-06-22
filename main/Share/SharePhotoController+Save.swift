@@ -1,3 +1,4 @@
+
 //
 //  SharePhotoController+Save.swift
 //  maple-release
@@ -14,7 +15,7 @@ import MaterialComponents
 import JGProgressHUD
 
 
-extension SharePhotoController
+extension ShareController
     
 {
     
@@ -98,7 +99,7 @@ extension SharePhotoController
         }
         
         
-        guard let product = Products.text, product.count > 0  else {
+        guard let product = products.text, product.count > 0  else {
             message.text = "Please enter a product name ..."
             MDCSnackbarManager.show(message)
             
@@ -115,24 +116,16 @@ extension SharePhotoController
             return
         }
         
-        guard let description = Description.text,  description.count > 0  else {
+        guard let description = descriptionTextView.text,  description.count > 0  else {
             message.text = "Please enter a description ..."
             MDCSnackbarManager.show(message)
             return
         }
         
-        
-       
-        /*
-         
-         let values = [ "url": url.absoluteString,
-         "creationDate": Date().timeIntervalSince1970,
-         "fileName": filename,
-         "bucket": storeRef.bucket,
-         "fullPath":storeRef.fullPath] as [String : Any]
-         
-         */
-        
+        progressIndicator.isHidden = false
+        cancelButton.isHidden = false
+        descriptionTextView.isHidden = true
+        runningCountLabel.isHidden = true
         
         navigationItem.rightBarButtonItem?.isEnabled = false
         var docId = docRef.document().documentID
@@ -160,143 +153,137 @@ extension SharePhotoController
         }
         
         
-     
-//        myGroup.enter()
-//        self.saveImages(postid: docId, typeName: "originalImages", imageSize: 640 , images: self.imageArray) { (imgId) in
-//            docId = imgId
-//            print("original completed")
-//            myGroup.leave()
-//        }
-//
-        
         let hud = JGProgressHUD(style: .dark)
         hud.textLabel.text = "Updating post ..."
         hud.show(in: view)
         
-        
-        let myGroup = DispatchGroup()
-        
-        /*
-         dispatchGroup.enter()
-         Service.shared.fetchGames { (appGroup, err) in
-         print("Done with games")
-         dispatchGroup.leave()
-         group1 = appGroup
-         }
-        */
-        
-        myGroup.enter()
-        saveImages(postid: docId, typeName: "thumbImages", imageSize: 320, images: self.imageArray)
-        
-        myGroup.enter()
-        self.saveLocations(docId) { (locId) in
+        saveLocations(docId) { (locId) in
             docId = locId
             print("Locations completed")
         }
         
-         myGroup.notify(queue: .main) {
-            self.imageArray.removeAll()
-            self.mapObjects.removeAll()
-            self.Products.text?.removeAll()
-            self.Description.text?.removeAll()
-            self.imageCollectionView.reloadData()
-            self.locationCollectionView.reloadData()
-            print("main queue updated")
-            message.text = "Upload completed successfully"
-            MDCSnackbarManager.show(message)
-            hud.dismiss()
-            self.navigationItem.rightBarButtonItem?.isEnabled = true
+        //saveImages(postid: docId, typeName: "thumbImages", imageSize: 160, images: self.imageArray)
+        
+        urlArray.removeAll()
+        
+        for image in imageArray {
+            let size = CGSize(width: 1080, height: 1080)
+            let uploadData = image.RBResizeImage(image: image, targetSize: size)
+            if let data =  uploadData.jpegData(compressionQuality: 0.75)  {
+                uploadImage(data: data, postId: docId)
+            }
         }
         
+        imageArray.removeAll()
+        mapObjects.removeAll()
+        products.text?.removeAll()
+        descriptionTextView.text?.removeAll()
+        imageCollectionView.reloadData()
+        locationCollectionView.reloadData()
+        progressIndicator.isHidden = true
+        cancelButton.isHidden = true
+        descriptionTextView.isHidden = false
+        runningCountLabel.isHidden = false
+        message.text = "Upload completed successfully"
+        MDCSnackbarManager.show(message)
+        navigationItem.rightBarButtonItem?.isEnabled = true
         hud.dismiss()
     }
     
-    @objc func CancelUpload() {
-        uploadTask?.cancel()
-    }
-    
-    func saveImages( postid: String,  typeName: String, imageSize: CGFloat, images: [UIImage] ) {
-        var urlArray = [String]()
+    func uploadImage(data: Data, postId: String)
+    {
         
-        
-        if postid.count > 0 {
+        if let uid = Auth.auth().currentUser?.uid {
             
-            DispatchQueue.main.async {
-                self.navigationItem.rightBarButtonItem?.isEnabled = false
-                self.FloatingPlusButton.isEnabled = false
+            
+            let filename = NSUUID().uuidString
+            let metadata = StorageMetadata()
+            metadata.contentType = "image/jpeg"
+            
+            progressIndicator.progress = Float(0)
+            
+            let storeRef = Storage.storage().reference().child(uid).child(postId).child(filename)
+            uploadTask = storeRef.putData(data, metadata: metadata) { [weak self] (metadata, err) in
+                guard let strongSelf = self else { return }
+                
+                DispatchQueue.main.async {
+                    strongSelf.progressIndicator.isHidden = true
+                    strongSelf.cancelButton.isHidden = true
+                }
+                
+                
+                if let err = err {
+                    strongSelf.navigationItem.rightBarButtonItem?.isEnabled = true
+                    print("Failed to upload post image:", err)
+                    return
+                }
+                
+                storeRef.downloadURL { (url, err)  in
+                    if let err = err {
+                        strongSelf.navigationItem.rightBarButtonItem?.isEnabled = true
+                        print("Failed to upload post image:", err.localizedDescription)
+                        return
+                    }
+                    if let url = url {
+                        strongSelf.urlArray.append(url.absoluteString)
+                        
+                        let values = [ "url": url.absoluteString,
+                                       "creationDate": Date().timeIntervalSince1970,
+                                       "fileName": filename,
+                                       "bucket": storeRef.bucket,
+                                       "fullPath":storeRef.fullPath] as [String : Any]
+                        
+                        
+                        strongSelf.db.collection("posts").document(postId).collection("thumbImages").document().setData(values) { err in
+                            if let err = err {
+                                print("Error writing document: \(err.localizedDescription)")
+                            } else {
+                                print("Document successfully images postId: " + postId)
+                            }
+                        }
+                        
+                        let valueImages = [ "thumbImages" : strongSelf.urlArray ]
+                        strongSelf.db.collection("posts").document(postId).updateData(valueImages) { err in
+                            if let err = err {
+                                print("Error writing document: \(err.localizedDescription)")
+                            } else {
+                                print("Document urlArray postId: " + postId)
+                            }
+                        }
+                        
+                    }
+                }
             }
             
-            guard let uid = Auth.auth().currentUser?.uid else { return }
+            uploadTask?.observe(.progress) { [weak self] (snapshot) in
+                guard let strongSelf = self else {return}
+                let percentageComplete = 100.0 * Double(snapshot.progress!.completedUnitCount)/Double(snapshot.progress!.totalUnitCount)
+                DispatchQueue.main.async {
+                    strongSelf.progressIndicator.setProgress(Float(percentageComplete), animated: true)
+                }
+            }
+        }
+    }
+    
+    
+    func saveImages( postid: String,  typeName: String, imageSize: CGFloat, images: [UIImage] ) {
+        
+        if postid.count > 0 {
             for image in images {
                 var uploadData: UIImage!
                 
                 if imageSize == 160 {
-                    let size = CGSize(width: 320.0, height: 320)
+                    let size = CGSize(width: 1080, height: 1080)
                     uploadData = image.RBResizeImage(image: image, targetSize: size)
                 }
                 else {
                     uploadData = image.resizeImage(imageSize)
                 }
                 
-                let filename = NSUUID().uuidString
-                let metadata = StorageMetadata()
-                metadata.contentType = "image/jpeg"
-                
-                let storeRef = Storage.storage().reference().child(uid).child(postid).child(filename)
-                uploadTask = storeRef.putData(uploadData.sd_imageData()!, metadata: metadata) { [weak self] (metadata, err) in
-                    guard let strongSelf = self else {return}
-                    if let err = err {
-                        strongSelf.navigationItem.rightBarButtonItem?.isEnabled = true
-                        strongSelf.FloatingPlusButton.isEnabled = true
-                        print("Failed to upload post image:", err)
-                        return
-                    }
-                    
-                    
-                    
-                    storeRef.downloadURL { (url, err)  in
-                        if let err = err {
-                            DispatchQueue.main.async {
-                                strongSelf.navigationItem.rightBarButtonItem?.isEnabled = true
-                                strongSelf.FloatingPlusButton.isEnabled = true
-                            }
-                            print("Failed to upload post image:", err)
-                            return
-                        }
-                        if let url = url {
-                            urlArray.append(url.absoluteString)
-                            //imageUrl = url.absoluteString
-                            
-                            //let values = [ "url": url.absoluteString, "creationDate": Date().timeIntervalSince1970] as [String : Any]
-                            
-                            let values = [ "url": url.absoluteString,
-                                           "creationDate": Date().timeIntervalSince1970,
-                                           "fileName": filename,
-                                           "bucket": storeRef.bucket,
-                                           "fullPath":storeRef.fullPath] as [String : Any]
-                            
-                            strongSelf.db.collection("posts").document(postid).collection(typeName).document().setData(values) { err in
-                                if let err = err {
-                                    print("Error writing document: \(err)")
-                                } else {
-                                    print("Document successfully images postId: " + postid)
-                                }
-                            }
-                            
-                            let valueImages = [ typeName : urlArray ]
-                            strongSelf.db.collection("posts").document(postid).updateData(valueImages) { err in
-                                if let err = err {
-                                    print("Error writing document: \(err)")
-                                } else {
-                                    print("Document urlArray postId: " + postid)
-                                }
-                            }
-                            
-                        }
-                    }
+                if let data =  uploadData.jpegData(compressionQuality: 0.75)  {
+                    uploadImage(data: data, postId: postid)
                 }
             }
-            //myGroup.leave()
         }
     }
     
@@ -334,7 +321,7 @@ extension SharePhotoController
                         print("Failed to upload post image:", err)
                         return
                     }
-                     if let url = url {
+                    if let url = url {
                         urlArray.append(url.absoluteString)
                         //imageUrl = url.absoluteString
                         
@@ -355,11 +342,11 @@ extension SharePhotoController
                                 print("Document urlArray postId: " + postid)
                             }
                         }
-                       
+                        
                     }
                 }
             }
-           
+            
         }
     }
     
@@ -395,8 +382,8 @@ extension SharePhotoController
     
     fileprivate func saveToDatabase( _ completion: @escaping (String) -> () )
     {
-        guard let product = Products.text else { Products.text = "Set a product" ; return }
-        guard let desc = Description.text else { return }
+        guard let product = products.text else { products.text = "Set a product" ; return }
+        guard let desc = descriptionTextView.text else { return }
         guard let uid = Auth.auth().currentUser?.uid else { return }
         
         let userPostRef = Database.database().reference().child("posts").child(uid)

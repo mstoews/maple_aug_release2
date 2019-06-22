@@ -14,6 +14,10 @@ protocol DocumentSerializable {
     init?(dictionary: [String: Any], postId: String)
 }
 
+protocol UserFollowSerialable {
+     init?(dictionary: [String: Any])
+}
+
 protocol NotificationSerializable {
     init?(dictionary: [String : Any])
 }

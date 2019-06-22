@@ -368,10 +368,6 @@ static NSString *const kMaterialDialogsBundle = @"MaterialDialogs.bundle";
 }
 
 - (void)setupAlertView {
-  // Explicitly overwrite the view default if true
-  if (_mdc_adjustsFontForContentSizeCategory) {
-    self.alertView.mdc_adjustsFontForContentSizeCategory = YES;
-  }
   self.alertView.titleLabel.text = self.title;
   self.alertView.messageLabel.text = self.message;
   self.alertView.titleFont = self.titleFont;
@@ -397,10 +393,17 @@ static NSString *const kMaterialDialogsBundle = @"MaterialDialogs.bundle";
   self.alertView.titleIcon = self.titleIcon;
   self.alertView.titleIconTintColor = self.titleIconTintColor;
   self.alertView.cornerRadius = self.cornerRadius;
+  self.alertView.enableRippleBehavior = self.enableRippleBehavior;
 
   // Create buttons for the actions (if not already created) and apply default styling
   for (MDCAlertAction *action in self.actions) {
     [self addButtonToAlertViewForAction:action];
+  }
+  // Explicitly overwrite the view default if true
+  // We set this last to make sure all other properties are set first and no overridden by setting
+  // this.
+  if (self.mdc_adjustsFontForContentSizeCategory) {
+    self.alertView.mdc_adjustsFontForContentSizeCategory = YES;
   }
 }
 

@@ -177,7 +177,7 @@ public class MultilineTextField: UITextView {
         NotificationCenter.default.removeObserver(self)
     }
     
-    @objc private func textViewDidChange(notification: Notification) {
+    @objc internal override func textViewDidChange(notification: Notification) {
         guard let textView = notification.object as? MultilineTextField else {
             return
         }

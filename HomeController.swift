@@ -26,11 +26,6 @@ enum  FetchType {
     case USER
 }
 
-/*
- let viewController = MapBoxViewController()
- navigationController?.pushViewController(viewController, animated: true)
- //present(viewController, animated: true, completion: nil)
- */
 
 class HomeController: MDCCollectionViewController, HomePostCellDelegate,  HomeHeaderCellDelegate {
   
@@ -39,21 +34,10 @@ class HomeController: MDCCollectionViewController, HomePostCellDelegate,  HomeHe
     let cellId = "cellId"
     let cellHeaderId = "cellHeaderId"
     
-     private let refreshControl = UIRefreshControl()
-    
-    //var posts = [Post]()
-    
+    var PAGINATION_LIMIT : Int = 0
+    private let refreshControl = UIRefreshControl()
     var spinner: UIView?
-    //static let postsPerLoad: Int = 5
-    //static let postsLimit: Int = 4
-    
-    var loadingPostCount = 0
-    var nextEntry: String?
     let bottomBarView = MDCBottomAppBarView()
-    var showFeed = true
- 
-    
-    lazy var uid = Auth.auth().currentUser!.uid
     lazy var appDelegate = UIApplication.shared.delegate as! AppDelegate
     
     let red = MDCPalette.red.tint600
@@ -62,6 +46,44 @@ class HomeController: MDCCollectionViewController, HomePostCellDelegate,  HomeHe
     var followChanged = false
     var isFirstOpen = true
     var locations = [LocationObject]()
+    let backgroundView = UIImageView()
+    
+    private var posts: [FSPost] = []
+    private var documents: [DocumentSnapshot] = []
+
+    static let updateFeedNotificationName = NSNotification.Name(rawValue: "handleRefresh")
+    
+    override func viewDidLoad() {
+        
+        super.viewDidLoad()
+        NotificationCenter.default.addObserver(self, selector: #selector(handleUpdateFeed), name: HomeController.updateFeedNotificationName, object: nil)
+        
+        collectionView?.backgroundColor = UIColor.collectionBackGround()
+        collectionView?.register(HomePostCell.self, forCellWithReuseIdentifier: cellId)
+        collectionView?.register(HomeHeaderCell.self, forSupplementaryViewOfKind: UICollectionView.elementKindSectionHeader, withReuseIdentifier: cellHeaderId)
+        refreshControl.addTarget(self, action: #selector(handleRefresh), for: .valueChanged )
+        
+        collectionView?.refreshControl = refreshControl
+        collectionView?.backgroundView = nil
+        Firestore.updateDocCounts()
+        setupNavigationItems()
+        collectionView?.delegate = self
+        PAGINATION_LIMIT = 0
+        handleRefresh()
+    }
+    
+    @objc func handleUpdateFeed() {
+        
+        handleRefresh()
+    }
+    
+    @objc func handleRefresh() {
+        refreshControl.beginRefreshing()
+        PAGINATION_LIMIT = PAGINATION_LIMIT + 5
+        observePostFeed()
+        refreshControl.endRefreshing()
+    }
+    
     
     func didTapMapButton(post: FSPost) {
         print("Did tap map button ... ")
@@ -71,7 +93,6 @@ class HomeController: MDCCollectionViewController, HomePostCellDelegate,  HomeHe
         
         // Get the current location here and add it below.
         // If there are multiple locations the user will be directed to the latest location
-        
         
         locations.removeAll()
         if let postId = post.id {
@@ -151,8 +172,7 @@ class HomeController: MDCCollectionViewController, HomePostCellDelegate,  HomeHe
         return messageLabel
     }()
     
-    private var posts: [FSPost] = []
-    private var documents: [DocumentSnapshot] = []
+   
     
     
     deinit {
@@ -160,6 +180,8 @@ class HomeController: MDCCollectionViewController, HomePostCellDelegate,  HomeHe
     }
     
     private var listener: ListenerRegistration?
+    
+   
     
     fileprivate func observePostFeed()
     {
@@ -171,7 +193,7 @@ class HomeController: MDCCollectionViewController, HomePostCellDelegate,  HomeHe
         hud.show(in: view)
         
         self.listener = self.db.collection("posts")
-            .order(by: "creationDate", descending: true).limit(to: 20)
+            .order(by: "creationDate", descending: true).limit(to: PAGINATION_LIMIT)
             .addSnapshotListener{  [weak self] (snapshot, error) in
                 guard let strongSelf = self else { return }
                 guard let snapshot = snapshot else {
@@ -180,31 +202,17 @@ class HomeController: MDCCollectionViewController, HomePostCellDelegate,  HomeHe
                 }
                 
                 let _fsPost = snapshot.documents.map { (document) -> FSPost in
-                    print ("Document Data : \(document.data())")
-                    if let model = FSPost(dictionary: document.data(), postId: document.documentID) {
-                        return model
-                    }
-                    else {
-                        // Don't use fatalError here in a real app.
-                        fatalError("Unable to initialize type \(FSPost.self) with dictionary \(document.data())")
-                    }
+                    return  FSPost(dictionary: document.data(), postId: document.documentID)!
                 }
                 
                 strongSelf.posts = _fsPost
                 strongSelf.documents = snapshot.documents
-                if strongSelf.documents.count > 0 {
-                   
-                    strongSelf.collectionView?.backgroundView = nil
-                }
-                else
-                {
-                    strongSelf.collectionView?.backgroundView = nil
-                }
+       
                 DispatchQueue.main.async {
                     strongSelf.collectionView?.reloadData()
                 }
         }
-         hud.dismiss()
+        hud.dismiss()
     }
     
     
@@ -305,62 +313,6 @@ class HomeController: MDCCollectionViewController, HomePostCellDelegate,  HomeHe
         //stopObserving()
     }
     
-    let backgroundView = UIImageView()
-    var refreshTotal = 50
-    
-    static let updateFeedNotificationName = NSNotification.Name(rawValue: "handleRefresh")
-    
-    override func viewDidLoad() {
-        
-        super.viewDidLoad()
-        NotificationCenter.default.addObserver(self, selector: #selector(handleUpdateFeed), name: HomeController.updateFeedNotificationName, object: nil)
-        
-        collectionView?.backgroundColor = UIColor.collectionBackGround()
-        collectionView?.register(HomePostCell.self, forCellWithReuseIdentifier: cellId)
-        collectionView?.register(HomeHeaderCell.self, forSupplementaryViewOfKind: UICollectionView.elementKindSectionHeader, withReuseIdentifier: cellHeaderId)
-        refreshControl.addTarget(self, action: #selector(handleRefresh), for: .valueChanged )
-        
-        collectionView?.refreshControl = refreshControl
-        collectionView?.backgroundView = nil
-        //Firestore.updateDocCounts()
-        setupNavigationItems()
-        observePostFeed()
-        collectionView?.delegate = self
-        
-        // didShowAllPosts()
-        // didShowFollowersPosts()
-        // sidUploadUsersAglolia()
-        
-    }
-    
-    @objc func handleUpdateFeed() {
-        handleRefresh()
-    }
-    
-    @objc func handleRefresh() {
-      refreshControl.beginRefreshing()
-      refreshTotal = refreshTotal + 10
-      observePostFeed()
-      refreshControl.endRefreshing()
-    }
-    
-    
-    func fetchAllPosts() {
-        spinner = displaySpinner()
-        //posts.removeAll()
-        cleanCollectionView()
-        let myGroup = DispatchGroup()
-        myGroup.enter()
-        //if (posts.count == 0){
-        //     self.fetchPostsByUser()
-        //     myGroup.leave()
-        //}
-        myGroup.notify(queue: .main) {
-            if let spinner = self.spinner {
-                self.removeSpinner(spinner)
-            }
-        }
-    }
     
     
     func updateFireStore (post: Post)

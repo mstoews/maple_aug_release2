@@ -32,7 +32,6 @@ class MainTabBarController: UITabBarController, AuthUIDelegate  {
     let imageView = CustomImageView()
     
     var posts = [Post]()
-    //var sizingCell: FPCardCollectionViewCell!
     var observers = [DatabaseQuery]()
     lazy var appDelegate = UIApplication.shared.delegate as! AppDelegate
     
@@ -111,8 +110,11 @@ class MainTabBarController: UITabBarController, AuthUIDelegate  {
         observeNotifications()
         
         UINavigationBar.appearance().prefersLargeTitles = true
+        UINavigationBar.appearance().backgroundColor = UIColor.themeColor()
+        UINavigationBar.appearance().alpha = CGFloat(0.1)
+    
         
-        tabBar.tintColor = .purple
+        tabBar.tintColor = UIColor.buttonThemeColor()
         
         //NotificationCenter.default.addObserver(self, selector: #selector(resetBadges), name: NSNotification.Name(rawValue : "Badge Changed"), object: nil)
     }
@@ -153,7 +155,7 @@ class MainTabBarController: UITabBarController, AuthUIDelegate  {
         
         // let searchNavController = templateNavController(unselectedImage: #imageLiteral(resourceName: "ic_search_white"), selectedImage: #imageLiteral(resourceName: "ic_search"), rootViewController: PodcastsSearchController())
         
-        let sharePhotoNavController = templateNavController(unselectedImage: #imageLiteral(resourceName: "plus_unselected"), selectedImage: #imageLiteral(resourceName: "plus_unselected"), rootViewController: SharePhotoController())
+        let sharePhotoNavController = templateNavController(unselectedImage: #imageLiteral(resourceName: "plus_unselected"), selectedImage: #imageLiteral(resourceName: "plus_unselected"), rootViewController: ShareController())
         
         //let notificationNavController = templateNavController(unselectedImage: #imageLiteral(resourceName: "ic_favorite_border"), selectedImage: #imageLiteral(resourceName: "ic_favorite"), rootViewController: NotificationViewController(collectionViewLayout: UICollectionViewFlowLayout()))
         
@@ -182,7 +184,7 @@ class MainTabBarController: UITabBarController, AuthUIDelegate  {
         button.anchor(top: tabBar.bottomAnchor, left: nil, bottom: nil, right: view.rightAnchor, paddingTop: 10, paddingLeft: 0, paddingBottom: 100, paddingRight: 10, width: 50, height: 50)
         
         
-        tabBar.tintColor = UIColor.red
+       
         
         viewControllers = [
             homeNavController,

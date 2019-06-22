@@ -32,11 +32,11 @@ class PostImageObject: MDCCardCollectionCell
         
         
         let buttonMenus = UIView()
-        buttonMenus.backgroundColor = UIColor.buttonThemeColor()
-        buttonMenus.layer.cornerRadius = 10
-        buttonMenus.backgroundColor = UIColor(displayP3Red: 255, green: 200, blue: 150, alpha: 1.3)
-        buttonMenus.layer.borderWidth = 2
-        buttonMenus.layer.borderColor = UIColor.black.cgColor
+   
+        buttonMenus.layer.cornerRadius = 5
+        buttonMenus.backgroundColor =  UIColor.collectionBackGround().withAlphaComponent(0.6)
+        buttonMenus.layer.borderWidth = 1
+        buttonMenus.layer.borderColor = UIColor.buttonThemeColor().cgColor
         
         //let stackButtonsVerical = UIStackView(arrangedSubviews: [deleteButton,filterButton,editButton])
         let stackButtonsVerical = UIStackView(arrangedSubviews: [deleteButton,editButton])

@@ -206,7 +206,7 @@
             let button = UIButton(type: .system)
             button.setTitle("Settings\t", for: .normal)
             button.setImage(#imageLiteral(resourceName: "ic_settings"), for: .normal )
-            button.tintColor = UIColor.black
+            button.tintColor = UIColor.buttonThemeColor()
             button.backgroundColor = .white
             button.addTarget(self, action: #selector(handleSettings), for: .touchUpInside)
             return button
