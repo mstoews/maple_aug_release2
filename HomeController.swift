@@ -144,8 +144,7 @@ class HomeController: MDCCollectionViewController, HomePostCellDelegate,  HomeHe
         
     }
     
-    
-    
+   
     func setButtonImage(button: UIButton, btnName: String,  color: UIColor)
     {
         let origImage = UIImage(named: btnName);
@@ -183,6 +182,34 @@ class HomeController: MDCCollectionViewController, HomePostCellDelegate,  HomeHe
     
    
     
+    
+    func updateAlgoliaStore(post: FSPost)
+    {
+        var imageUrl: String?
+        if post.imageUrlArray.count > 0 {
+            imageUrl = post.imageUrlArray[0]
+        }
+        
+        
+        if let imageUrl = imageUrl {
+        let values : [String: Any] = ["userid" : post.uid,
+                                      "name" : post.userName,
+                                      "profileUrl" : post.imageUrl,
+                                      "product": post.product ,
+                                      "description" : post.description,
+                                      "urlArray" : imageUrl,
+                                      "creationDate": Date().timeIntervalSince1970]
+        
+        AlgoliaManager.sharedInstance.posts.addObject(values, withID: post.id! , completionHandler: { (content, error) -> Void in
+            if error == nil {
+                if let objectID = content!["objectID"] as? String {
+                    print("Object ID: \(objectID)")
+                }
+            }
+        })
+        }
+    }
+    
     fileprivate func observePostFeed()
     {
         stopObserving()
@@ -196,13 +223,16 @@ class HomeController: MDCCollectionViewController, HomePostCellDelegate,  HomeHe
             .order(by: "creationDate", descending: true).limit(to: PAGINATION_LIMIT)
             .addSnapshotListener{  [weak self] (snapshot, error) in
                 guard let strongSelf = self else { return }
+                
                 guard let snapshot = snapshot else {
                     print("Error fetching snapshot results: \(error!)")
                     return
                 }
                 
                 let _fsPost = snapshot.documents.map { (document) -> FSPost in
-                    return  FSPost(dictionary: document.data(), postId: document.documentID)!
+                    let post = FSPost(dictionary: document.data(), postId: document.documentID)!
+                    strongSelf.updateAlgoliaStore(post: post)
+                    return post
                 }
                 
                 strongSelf.posts = _fsPost

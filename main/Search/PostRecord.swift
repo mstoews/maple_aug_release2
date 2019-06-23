@@ -31,35 +31,9 @@ struct PostRecord {
         Then we could just remove the top bit of the function for urlArray field in Algolia.
      **/
     
-
-    var productImagineUrl : String? {
-        var dict = "URL"
-        var bFound = false
-        if let dictionaryURL = json["thumbImages"] as? [String] {
-            if dictionaryURL.count > 0 {
-                dict = dictionaryURL[0]
-                bFound = true
-            }
-        }
-        if bFound == false {
-            if let imagesUrl = json["thumbImages"] as? [String: Any]
-            {
-                if imagesUrl.count > 0 {
-                    imagesUrl.forEach ({ (key, value) in
-                        if let urldata = value as? [String: Any]  {
-                            let url = urldata["url"] as! String
-                            dict = url
-                        }
-                    })
-                }
-            }
-        }
-        return dict
-    }
-    
     
     var imageUrl: URL? {
-        if let urlString = json["imageURL"] as? String {
+        if let urlString = json["urlArray"] as? String {
              return URL(string: urlString)
         }
         else

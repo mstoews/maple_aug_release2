@@ -79,8 +79,9 @@ class SearchTableCell: UITableViewCell {
                 detailLabel.attributedText = NSMutableAttributedString(string: desc, attributes: [NSAttributedString.Key.font: UIFont.boldSystemFont(ofSize: 10)])
             }
             
-            let url = post?.productImagineUrl
-            posterImageView.loadImage(urlString: url!)
+            if let url = post?.imageUrl {
+                posterImageView.loadImage(urlString: url.absoluteString)
+            }
         }
     }
 }

@@ -42,17 +42,18 @@ class PostCollectionCell: MDCCardCollectionCell  {
         backgroundColor = UIColor.collectionCell()
         
         addSubview(posterImageView)
-        addSubview(titleLabel)
-        addSubview(detailLabel)
-        addSubview(usernameLabel)
+        //addSubview(titleLabel)
+        //addSubview(detailLabel)
+        //addSubview(usernameLabel)
         
-        titleLabel.anchor(top: topAnchor, left: leftAnchor, bottom: nil, right: nil ,paddingTop: 5, paddingLeft: 5, paddingBottom: 5, paddingRight: 0, width: 0, height: 25)
+        //titleLabel.anchor(top: topAnchor, left: leftAnchor, bottom: nil, right: nil ,paddingTop: 5, paddingLeft: 5, paddingBottom: 5, paddingRight: 0, width: 0, height: 25)
         
-        posterImageView.anchor(top: titleLabel.bottomAnchor , left: leftAnchor, bottom: nil, right: nil,paddingTop: 5, paddingLeft: 5, paddingBottom: 5, paddingRight: 0, width: 100, height: 100)
+        //posterImageView.anchor(top: titleLabel.bottomAnchor , left: leftAnchor, bottom: nil, right: nil,paddingTop: 5, paddingLeft: 5, paddingBottom: 5, paddingRight: 0, width: 100, height: 100)
+        posterImageView.anchor(top: topAnchor , left: leftAnchor, bottom: bottomAnchor, right: rightAnchor)
         
-        usernameLabel.anchor(top: titleLabel.bottomAnchor, left: posterImageView.rightAnchor, bottom: nil, right: nil,paddingTop: 4, paddingLeft: 5, paddingBottom: 0, paddingRight: 0, width: 0, height: 20)
+        //usernameLabel.anchor(top: titleLabel.bottomAnchor, left: posterImageView.rightAnchor, bottom: nil, right: nil,paddingTop: 4, paddingLeft: 5, paddingBottom: 0, paddingRight: 0, width: 0, height: 20)
         
-        detailLabel.anchor(top: usernameLabel.bottomAnchor, left: posterImageView.rightAnchor, bottom: nil, right: rightAnchor ,paddingTop: 5, paddingLeft: 5, paddingBottom: 5, paddingRight: 5 , width: 0, height: 0)
+        //detailLabel.anchor(top: usernameLabel.bottomAnchor, left: posterImageView.rightAnchor, bottom: nil, right: rightAnchor ,paddingTop: 5, paddingLeft: 5, paddingBottom: 5, paddingRight: 5 , width: 0, height: 0)
     }
     
     
@@ -70,7 +71,7 @@ class PostCollectionCell: MDCCardCollectionCell  {
     let posterImageView : CustomImageView = {
         let iv = CustomImageView()
         iv.contentMode = .scaleAspectFill
-        iv.layer.cornerRadius = 40/8
+        //iv.layer.cornerRadius = 40/8
         iv.clipsToBounds = true
         return iv
     }()
@@ -136,8 +137,8 @@ class PostCollectionCell: MDCCardCollectionCell  {
                
             }
             
-            if  let url = post?.productImagineUrl {
-                posterImageView.loadImage(urlString: url)
+            if  let url = post?.imageUrl {
+                posterImageView.loadImage(urlString: url.absoluteString)
             }
         }
     }

@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <Scheme
-   LastUpgradeVersion = "0930"
+   LastUpgradeVersion = "1100"
    version = "1.3">
    <BuildAction
       parallelizeBuildables = "YES"
@@ -14,10 +14,10 @@
             buildForArchiving = "YES">
             <BuildableReference
                BuildableIdentifier = "primary"
-               BlueprintIdentifier = "51EF1B58F4FC691FFEA602614348BF3E"
+               BlueprintIdentifier = "A8E4C927B2E899954BC2FD3314BCA9DA"
+               BuildableName = "MDFTextAccessibility.framework"
                BlueprintName = "MDFTextAccessibility"
-               ReferencedContainer = "container:Pods.xcodeproj"
-               BuildableName = "MDFTextAccessibility.framework">
+               ReferencedContainer = "container:Pods.xcodeproj">
             </BuildableReference>
          </BuildActionEntry>
       </BuildActionEntries>

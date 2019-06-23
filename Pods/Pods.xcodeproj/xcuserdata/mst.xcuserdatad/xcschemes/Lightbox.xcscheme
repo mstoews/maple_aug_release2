@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <Scheme
-   LastUpgradeVersion = "0930"
+   LastUpgradeVersion = "1100"
    version = "1.3">
    <BuildAction
       parallelizeBuildables = "YES"
@@ -14,10 +14,10 @@
             buildForArchiving = "YES">
             <BuildableReference
                BuildableIdentifier = "primary"
-               BlueprintIdentifier = "C1BF2D9DF91DD1E11D29926C7591D3A4"
+               BlueprintIdentifier = "2FF67131BF0A388437610695C3724017"
+               BuildableName = "Lightbox.framework"
                BlueprintName = "Lightbox"
-               ReferencedContainer = "container:Pods.xcodeproj"
-               BuildableName = "Lightbox.framework">
+               ReferencedContainer = "container:Pods.xcodeproj">
             </BuildableReference>
          </BuildActionEntry>
       </BuildActionEntries>

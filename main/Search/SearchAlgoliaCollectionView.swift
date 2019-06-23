@@ -77,10 +77,10 @@ class SearchAlgoliaCollectionView: MDCCollectionViewController , UISearchBarDele
         hud.textLabel.text = NSLocalizedString("FetchUsers", comment: "Fetching Users")
         hud.show(in: view)
         
-        TYPE = SearchType.USR
+        TYPE = .USR
         // refresh with Users Search
         fullTextSearch = Searcher(index: AlgoliaManager.sharedInstance.users, resultHandler: self.handleUserResults)
-        fullTextSearch.params.hitsPerPage = 15
+        fullTextSearch.params.hitsPerPage = 30
         
         fullTextSearch.params.attributesToRetrieve = ["*" ]
         fullTextSearch.params.attributesToHighlight = ["user"]
@@ -100,12 +100,9 @@ class SearchAlgoliaCollectionView: MDCCollectionViewController , UISearchBarDele
         hud.textLabel.text = NSLocalizedString("FetchProd", comment: "Fetch Products")
         hud.show(in: view)
         
-        TYPE = SearchType.PRD
-        //spinner = displaySpinner()
-        //refresh with products search
+        TYPE = .PRD
         fullTextSearch = Searcher(index: AlgoliaManager.sharedInstance.posts, resultHandler: self.handleSearchResults)
-        fullTextSearch.params.hitsPerPage = 15
-        
+        fullTextSearch.params.hitsPerPage = 30
         fullTextSearch.params.attributesToRetrieve = ["*" ]
         fullTextSearch.params.attributesToHighlight = ["product"]
         
@@ -129,27 +126,27 @@ class SearchAlgoliaCollectionView: MDCCollectionViewController , UISearchBarDele
         
         switch index {
              case "product" :
-                 TYPE = SearchType.PRD
+                 TYPE = .PRD
                  algoIndex = AlgoliaManager.sharedInstance.posts
                  fullTextSearch = Searcher(index: algoIndex  , resultHandler: self.handleSearchResults)
                  fullTextSearch.params.attributesToHighlight = [index]
                  break
             case "user":
-                 TYPE = SearchType.USR
+                 TYPE = .USR
                  algoIndex = AlgoliaManager.sharedInstance.users
                  fullTextSearch = Searcher(index: algoIndex  , resultHandler: self.handleUserResults)
                 break
             case "location":
-                 TYPE = SearchType.LOC
+                 TYPE = .LOC
                  algoIndex = AlgoliaManager.sharedInstance.location
                  fullTextSearch = Searcher(index: algoIndex  , resultHandler: self.handleLocationResults)
                 break
             default:
-            TYPE = SearchType.PRD
+            TYPE = .PRD
         }
         
         
-        fullTextSearch.params.hitsPerPage = 10
+        fullTextSearch.params.hitsPerPage = 30
         
         fullTextSearch.params.attributesToRetrieve = ["*" ]
         fullTextSearch.params.attributesToHighlight = [index]
@@ -257,16 +254,17 @@ class SearchAlgoliaCollectionView: MDCCollectionViewController , UISearchBarDele
         
         switch TYPE
         {
-            case SearchType.USR :
+            case .USR :
                 let userRecord = UserRecord(json: userHits[indexPath.item])
                 self.openUserSelected(userRecord: userRecord)
                 break
-            case SearchType.LOC :
+            case .LOC :
                 let locationRecord = LocationRecord(json: locationHits[indexPath.item])
                 self.openLocationSelected(locationRecord: locationRecord)
                 break
-            case SearchType.PRD :
+            case .PRD :
                 let postRecord = PostRecord(json: postHits[indexPath.item])
+                print("Post Record from Search Prod .... \(postRecord)")
                 self.openSearchSelected(postRecord: postRecord)
                 break
         }
@@ -283,23 +281,23 @@ class SearchAlgoliaCollectionView: MDCCollectionViewController , UISearchBarDele
     override func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
          switch TYPE
             {
-            case SearchType.USR :
+            case .USR :
                 let userCell = collectionView.dequeueReusableCell(withReuseIdentifier: userCellId, for: indexPath) as! UserCollectionCell
-                if indexPath.row + 10 >= userHits.count {
+                if indexPath.row + 30 >= userHits.count {
                     fullTextSearch.loadMore()
                 }
                 userCell.userRecord = UserRecord(json: userHits[indexPath.row])
                 return userCell
-            case SearchType.LOC :
+            case .LOC :
                 let locationCell = collectionView.dequeueReusableCell(withReuseIdentifier: mapCellId, for: indexPath) as! MapCollectionCell
-                if indexPath.row + 10 >= locationHits.count {
+                if indexPath.row + 30 >= locationHits.count {
                     fullTextSearch.loadMore()
                 }
                 locationCell.locationRecord = LocationRecord(json: locationHits[indexPath.row])
                 return locationCell
-            case SearchType.PRD :
+            case .PRD :
                 let postcell = collectionView.dequeueReusableCell(withReuseIdentifier: postCellId, for: indexPath) as! PostCollectionCell
-                if indexPath.row + 10 >= postHits.count {
+                if indexPath.row + 30 >= postHits.count {
                     fullTextSearch.loadMore()
                 }
                 postcell.post = PostRecord(json: postHits[indexPath.row])
@@ -319,10 +317,16 @@ class SearchAlgoliaCollectionView: MDCCollectionViewController , UISearchBarDele
         return UIEdgeInsets(top: 1, left: 1, bottom: 1, right: 1)
     }
     
-    override func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, referenceSizeForHeaderInSection section: Int) -> CGSize {
+//    override func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, referenceSizeForHeaderInSection section: Int) -> CGSize {
+//        return CGSize(width: view.frame.width, height: 40)
+//    }
+//
+
+    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: CollectionLayout, referenceSizeForHeaderInSection section: Int) -> CGSize {
         return CGSize(width: view.frame.width, height: 40)
     }
-    
+
+
     
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
@@ -343,13 +347,19 @@ class SearchAlgoliaCollectionView: MDCCollectionViewController , UISearchBarDele
     
     private func handleSearchResults(results: SearchResults?, error: Error?, userInfo: [String: Any]) {
         guard let results = results else { return }
+        print ("Results hits : \(results.hits.count)")
         if results.page == 0 {
             postHits = results.hits
         } else {
             postHits.append(contentsOf: results.hits)
         }
-        originIsLocal = results.content["origin"] as? String == "local"
-        self.collectionView?.reloadData()
+        DispatchQueue.main.async {
+            self.collectionView?.collectionViewLayout.invalidateLayout()
+            self.collectionView.collectionViewLayout.invalidateLayout()
+            self.collectionView.collectionViewLayout.prepare()
+            self.collectionView?.reloadData()
+        }
+        
     }
     
     private func handleLocationResults(results: SearchResults?, error: Error?, userInfo: [String: Any]) {
@@ -371,6 +381,7 @@ class SearchAlgoliaCollectionView: MDCCollectionViewController , UISearchBarDele
             userHits.append(contentsOf: results.hits)
         }
         originIsLocal = results.content["origin"] as? String == "local"
+        
         self.collectionView?.reloadData()
     }
     
@@ -379,9 +390,9 @@ class SearchAlgoliaCollectionView: MDCCollectionViewController , UISearchBarDele
         
         switch TYPE
         {
-        case SearchType.USR :
+        case .USR :
             return CGSize(width: view.frame.width - 15 , height: 110)
-        case SearchType.LOC :
+        case .LOC :
             let approximateWidthOfBioTextView = view.frame.width
             let size = CGSize(width: approximateWidthOfBioTextView, height: 60)
             let attributes = [NSAttributedString.Key.font : UIFont.systemFont(ofSize: CGFloat(15))]
@@ -394,7 +405,7 @@ class SearchAlgoliaCollectionView: MDCCollectionViewController , UISearchBarDele
             else {
                 return CGSize(width: view.frame.width - 15 , height: 120)
             }
-        case SearchType.PRD :
+        case .PRD :
             let approximateWidthOfBioTextView = view.frame.width
             let size = CGSize(width: approximateWidthOfBioTextView, height: 60)
             let attributes = [NSAttributedString.Key.font : UIFont.systemFont(ofSize: CGFloat(15))]
@@ -420,13 +431,18 @@ class SearchAlgoliaCollectionView: MDCCollectionViewController , UISearchBarDele
     {
         if let postId = postRecord.objectID {
             Firestore.fetchPostByPostId(postId: postId) { (post) in
-               
-                    Firestore.fetchUserWithUID(uid: post.uid) { (user) in
-                        let userProductController = UserProductController(collectionViewLayout: UICollectionViewFlowLayout())
-                        userProductController.setPostId(postId: postId)
-                        userProductController.user = user
-                        self.navigationController?.pushViewController(userProductController, animated: true)
-                    
+                    Firestore.fetchUserWithUID(uid: post.uid) { [weak self] (user) in
+                        guard let strongSelf = self else {return}
+                        DispatchQueue.main.async {
+                            //let userProfileController = UserProfileController(collectionViewLayout: UICollectionViewFlowLayout())
+                            //userProfileController.user = user
+                            //strongSelf.navigationController?.pushViewController(userProfileController, animated: true)
+                            
+                            let userProductController = UserProductController(collectionViewLayout: UICollectionViewFlowLayout())
+                            userProductController.setPostId(postId: postId)
+                            userProductController.user = user
+                            strongSelf.navigationController?.pushViewController(userProductController, animated: true)
+                        }
                 }
             }
         }

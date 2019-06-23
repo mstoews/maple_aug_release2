@@ -227,7 +227,7 @@ class UserProductController: UserProfileController {
             let attributes = [NSAttributedString.Key.font : UIFont.systemFont(ofSize: CGFloat(15))]
             let post = fs_posts[indexPath.item]
             let estimatedFrame = NSString(string: post.description).boundingRect(with: size, options: .usesLineFragmentOrigin, attributes: attributes, context: nil)
-            rc = CGSize(width: view.frame.width - 15 , height: estimatedFrame.height - 50 )
+            rc = CGSize(width: view.frame.width - 15 , height: estimatedFrame.height )
             break
             
         case .LIST  :
@@ -237,7 +237,7 @@ class UserProductController: UserProfileController {
             let attributes = [NSAttributedString.Key.font : UIFont.systemFont(ofSize: CGFloat(15))]
             let post = fs_posts[indexPath.item]
             let estimatedFrame = NSString(string: post.description).boundingRect(with: size, options: .usesLineFragmentOrigin, attributes: attributes, context: nil)
-            rc = CGSize(width: view.frame.width - 15, height: estimatedFrame.height - 50)
+            rc = CGSize(width: view.frame.width - 15, height: estimatedFrame.height )
             break
             
         case .MAP :

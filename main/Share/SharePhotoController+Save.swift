@@ -173,20 +173,21 @@ extension ShareController
                 uploadImage(data: data, postId: docId)
             }
         }
-        
-        imageArray.removeAll()
-        mapObjects.removeAll()
-        products.text?.removeAll()
-        descriptionTextView.text?.removeAll()
-        imageCollectionView.reloadData()
-        locationCollectionView.reloadData()
-        progressIndicator.isHidden = true
-        cancelButton.isHidden = true
-        descriptionTextView.isHidden = false
-        runningCountLabel.isHidden = false
-        message.text = "Upload completed successfully"
-        MDCSnackbarManager.show(message)
-        navigationItem.rightBarButtonItem?.isEnabled = true
+        DispatchQueue.main.async {
+            self.imageArray.removeAll()
+            self.mapObjects.removeAll()
+            self.products.text?.removeAll()
+            self.descriptionTextView.text?.removeAll()
+            self.imageCollectionView.reloadData()
+            self.locationCollectionView.reloadData()
+            self.progressIndicator.isHidden = true
+            self.cancelButton.isHidden = true
+            self.descriptionTextView.isHidden = false
+            self.runningCountLabel.isHidden = false
+                message.text = "Upload completed successfully"
+                MDCSnackbarManager.show(message)
+                self.navigationItem.rightBarButtonItem?.isEnabled = true
+            }
         hud.dismiss()
     }
     

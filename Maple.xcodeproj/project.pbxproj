@@ -14,6 +14,7 @@
 		024EDBC52078EFFD0069C77F /* CommentInputAccessoryView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 02DC63432001BDD600AE9662 /* CommentInputAccessoryView.swift */; };
 		0252AF3822938A46004DA3BB /* AdvancedNavigationController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0252AF3722938A46004DA3BB /* AdvancedNavigationController.swift */; };
 		02BB2407229EB3A70020601D /* BaseCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 02BB2406229EB3A70020601D /* BaseCell.swift */; };
+		02BB241122BF46640020601D /* CollectionLayout.swift in Sources */ = {isa = PBXBuildFile; fileRef = 02BB241022BF46640020601D /* CollectionLayout.swift */; };
 		02D8690F228233530093BD18 /* MapBoxViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 02D8690E228233530093BD18 /* MapBoxViewController.swift */; };
 		02D869112285A0C70093BD18 /* Navigation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 02D869102285A0C70093BD18 /* Navigation.swift */; };
 		02DC63442001BDD600AE9662 /* CommentInputAccessoryView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 02DC63432001BDD600AE9662 /* CommentInputAccessoryView.swift */; };
@@ -171,6 +172,7 @@
 		024EDB9F2078EE760069C77F /* maple_release.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; name = maple_release.app; path = Maple_release.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		0252AF3722938A46004DA3BB /* AdvancedNavigationController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AdvancedNavigationController.swift; sourceTree = "<group>"; };
 		02BB2406229EB3A70020601D /* BaseCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BaseCell.swift; sourceTree = "<group>"; };
+		02BB241022BF46640020601D /* CollectionLayout.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CollectionLayout.swift; sourceTree = "<group>"; };
 		02D8690E228233530093BD18 /* MapBoxViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MapBoxViewController.swift; sourceTree = "<group>"; };
 		02D869102285A0C70093BD18 /* Navigation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Navigation.swift; sourceTree = "<group>"; };
 		02DC63432001BDD600AE9662 /* CommentInputAccessoryView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CommentInputAccessoryView.swift; sourceTree = "<group>"; };
@@ -656,6 +658,7 @@
 		4876BB5420DA14B70057E5E0 /* Search */ = {
 			isa = PBXGroup;
 			children = (
+				02BB241022BF46640020601D /* CollectionLayout.swift */,
 				482FC12820DE234800E23DAE /* SearchAlgoliaCollectionView.swift */,
 				0225F2E120FE0F7300137084 /* UserImageCell.swift */,
 				482FC12B20DE235500E23DAE /* AlgoliaManager.swift */,
@@ -1384,6 +1387,7 @@
 				4876BC9820DA16280057E5E0 /* MapleInkOverlay.swift in Sources */,
 				4876BD1820DA164E0057E5E0 /* Styles.swift in Sources */,
 				48482FC620DA18A00031EBFF /* Image.swift in Sources */,
+				02BB241122BF46640020601D /* CollectionLayout.swift in Sources */,
 				4876BCA020DA16280057E5E0 /* CustomAnimationPresentor.swift in Sources */,
 				48482FC820DA18A00031EBFF /* User.swift in Sources */,
 				48443E7B210990AE00A21FC4 /* GMUGeoJSONParser.m in Sources */,
