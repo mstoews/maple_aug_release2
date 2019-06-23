@@ -44,7 +44,7 @@ class SearchCollectionLayout: UICollectionViewFlowLayout {
 
         }
         
-        cache.removeAll()
+        cleanCache()
         
         let itemsPerRow: UInt = 3
         
