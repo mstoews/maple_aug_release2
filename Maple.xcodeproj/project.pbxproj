@@ -14,7 +14,7 @@
 		024EDBC52078EFFD0069C77F /* CommentInputAccessoryView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 02DC63432001BDD600AE9662 /* CommentInputAccessoryView.swift */; };
 		0252AF3822938A46004DA3BB /* AdvancedNavigationController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0252AF3722938A46004DA3BB /* AdvancedNavigationController.swift */; };
 		02BB2407229EB3A70020601D /* BaseCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 02BB2406229EB3A70020601D /* BaseCell.swift */; };
-		02BB241122BF46640020601D /* CollectionLayout.swift in Sources */ = {isa = PBXBuildFile; fileRef = 02BB241022BF46640020601D /* CollectionLayout.swift */; };
+		02BB241122BF46640020601D /* SearchCollectionLayout.swift in Sources */ = {isa = PBXBuildFile; fileRef = 02BB241022BF46640020601D /* SearchCollectionLayout.swift */; };
 		02D8690F228233530093BD18 /* MapBoxViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 02D8690E228233530093BD18 /* MapBoxViewController.swift */; };
 		02D869112285A0C70093BD18 /* Navigation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 02D869102285A0C70093BD18 /* Navigation.swift */; };
 		02DC63442001BDD600AE9662 /* CommentInputAccessoryView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 02DC63432001BDD600AE9662 /* CommentInputAccessoryView.swift */; };
@@ -29,6 +29,10 @@
 		481398AC22B21830004A4E20 /* EditPhotoShareController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 481398AB22B21830004A4E20 /* EditPhotoShareController.swift */; };
 		481398B022BA09B4004A4E20 /* ShareController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 481398AF22BA09B4004A4E20 /* ShareController.swift */; };
 		482C01F222AF276000000597 /* MultiLineTextView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 482C01F122AF276000000597 /* MultiLineTextView.swift */; };
+		482C621D22C08FFF0058EE89 /* BetterSnappyLayout.swift in Sources */ = {isa = PBXBuildFile; fileRef = 482C621C22C08FFF0058EE89 /* BetterSnappyLayout.swift */; };
+		482C622422C327940058EE89 /* CustomLayoutAttributes.swift in Sources */ = {isa = PBXBuildFile; fileRef = 482C622322C327940058EE89 /* CustomLayoutAttributes.swift */; };
+		482C622822C329970058EE89 /* CustomLayoutSettings.swift in Sources */ = {isa = PBXBuildFile; fileRef = 482C622722C329970058EE89 /* CustomLayoutSettings.swift */; };
+		482C622A22C32A1E0058EE89 /* CustomLayout.swift in Sources */ = {isa = PBXBuildFile; fileRef = 482C622922C32A1E0058EE89 /* CustomLayout.swift */; };
 		482FC10520DE15D900E23DAE /* SharePhotoController+Save.swift in Sources */ = {isa = PBXBuildFile; fileRef = 482FC0FC20DE15CC00E23DAE /* SharePhotoController+Save.swift */; };
 		482FC10620DE15D900E23DAE /* MapCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 482FC0FD20DE15D000E23DAE /* MapCell.swift */; };
 		482FC10720DE15D900E23DAE /* PostImageCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 482FC0FE20DE15D400E23DAE /* PostImageCell.swift */; };
@@ -172,7 +176,7 @@
 		024EDB9F2078EE760069C77F /* maple_release.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; name = maple_release.app; path = Maple_release.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		0252AF3722938A46004DA3BB /* AdvancedNavigationController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AdvancedNavigationController.swift; sourceTree = "<group>"; };
 		02BB2406229EB3A70020601D /* BaseCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BaseCell.swift; sourceTree = "<group>"; };
-		02BB241022BF46640020601D /* CollectionLayout.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CollectionLayout.swift; sourceTree = "<group>"; };
+		02BB241022BF46640020601D /* SearchCollectionLayout.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchCollectionLayout.swift; sourceTree = "<group>"; };
 		02D8690E228233530093BD18 /* MapBoxViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MapBoxViewController.swift; sourceTree = "<group>"; };
 		02D869102285A0C70093BD18 /* Navigation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Navigation.swift; sourceTree = "<group>"; };
 		02DC63432001BDD600AE9662 /* CommentInputAccessoryView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CommentInputAccessoryView.swift; sourceTree = "<group>"; };
@@ -188,6 +192,10 @@
 		481398AB22B21830004A4E20 /* EditPhotoShareController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditPhotoShareController.swift; sourceTree = "<group>"; };
 		481398AF22BA09B4004A4E20 /* ShareController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ShareController.swift; sourceTree = "<group>"; };
 		482C01F122AF276000000597 /* MultiLineTextView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MultiLineTextView.swift; sourceTree = "<group>"; };
+		482C621C22C08FFF0058EE89 /* BetterSnappyLayout.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BetterSnappyLayout.swift; sourceTree = "<group>"; };
+		482C622322C327940058EE89 /* CustomLayoutAttributes.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomLayoutAttributes.swift; sourceTree = "<group>"; };
+		482C622722C329970058EE89 /* CustomLayoutSettings.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomLayoutSettings.swift; sourceTree = "<group>"; };
+		482C622922C32A1E0058EE89 /* CustomLayout.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomLayout.swift; sourceTree = "<group>"; };
 		482FC0FC20DE15CC00E23DAE /* SharePhotoController+Save.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "SharePhotoController+Save.swift"; sourceTree = "<group>"; };
 		482FC0FD20DE15D000E23DAE /* MapCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MapCell.swift; sourceTree = "<group>"; };
 		482FC0FE20DE15D400E23DAE /* PostImageCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PostImageCell.swift; sourceTree = "<group>"; };
@@ -658,7 +666,7 @@
 		4876BB5420DA14B70057E5E0 /* Search */ = {
 			isa = PBXGroup;
 			children = (
-				02BB241022BF46640020601D /* CollectionLayout.swift */,
+				02BB241022BF46640020601D /* SearchCollectionLayout.swift */,
 				482FC12820DE234800E23DAE /* SearchAlgoliaCollectionView.swift */,
 				0225F2E120FE0F7300137084 /* UserImageCell.swift */,
 				482FC12B20DE235500E23DAE /* AlgoliaManager.swift */,
@@ -672,6 +680,9 @@
 				482FC12920DE234D00E23DAE /* LocationRecord.swift */,
 				4800DAF52272B6BF00B326FC /* SearchController.swift */,
 				4800DAFB2272B96500B326FC /* PodcastCell.swift */,
+				482C622322C327940058EE89 /* CustomLayoutAttributes.swift */,
+				482C622722C329970058EE89 /* CustomLayoutSettings.swift */,
+				482C622922C32A1E0058EE89 /* CustomLayout.swift */,
 			);
 			name = Search;
 			path = main/Search;
@@ -704,6 +715,7 @@
 				4876BC9520DA16280057E5E0 /* CustomImageView.swift */,
 				4876BC9620DA16280057E5E0 /* PhotoViewModel.swift */,
 				482C01F122AF276000000597 /* MultiLineTextView.swift */,
+				482C621C22C08FFF0058EE89 /* BetterSnappyLayout.swift */,
 			);
 			name = Utilities;
 			path = main/Utilities;
@@ -1322,6 +1334,7 @@
 				4876BB8A20DA14CC0057E5E0 /* Notification.swift in Sources */,
 				48443E69210990AE00A21FC4 /* GMUSimpleClusterAlgorithm.m in Sources */,
 				48443E75210990AE00A21FC4 /* GMUPolygon.m in Sources */,
+				482C622422C327940058EE89 /* CustomLayoutAttributes.swift in Sources */,
 				48482FCE20DA18A00031EBFF /* SinglePhotoPost.swift in Sources */,
 				4876BD1F20DA164E0057E5E0 /* RoundedButton.swift in Sources */,
 				48443E74210990AE00A21FC4 /* GMUPlacemark.m in Sources */,
@@ -1336,6 +1349,7 @@
 				4876BCAE20DA16290057E5E0 /* PhotoViewModel.swift in Sources */,
 				481398B022BA09B4004A4E20 /* ShareController.swift in Sources */,
 				4800DAF82272B87000B326FC /* podcasts.swift in Sources */,
+				482C621D22C08FFF0058EE89 /* BetterSnappyLayout.swift in Sources */,
 				482FC10720DE15D900E23DAE /* PostImageCell.swift in Sources */,
 				4800DAE9226FDC6500B326FC /* UserProductController.swift in Sources */,
 				48B445AB1FE7342D00DFD412 /* CommentCell.swift in Sources */,
@@ -1387,7 +1401,7 @@
 				4876BC9820DA16280057E5E0 /* MapleInkOverlay.swift in Sources */,
 				4876BD1820DA164E0057E5E0 /* Styles.swift in Sources */,
 				48482FC620DA18A00031EBFF /* Image.swift in Sources */,
-				02BB241122BF46640020601D /* CollectionLayout.swift in Sources */,
+				02BB241122BF46640020601D /* SearchCollectionLayout.swift in Sources */,
 				4876BCA020DA16280057E5E0 /* CustomAnimationPresentor.swift in Sources */,
 				48482FC820DA18A00031EBFF /* User.swift in Sources */,
 				48443E7B210990AE00A21FC4 /* GMUGeoJSONParser.m in Sources */,
@@ -1411,6 +1425,8 @@
 				482FC13320DE236D00E23DAE /* LocationRecord.swift in Sources */,
 				481398AC22B21830004A4E20 /* EditPhotoShareController.swift in Sources */,
 				482FC13520DE236D00E23DAE /* AlgoliaManager.swift in Sources */,
+				482C622A22C32A1E0058EE89 /* CustomLayout.swift in Sources */,
+				482C622822C329970058EE89 /* CustomLayoutSettings.swift in Sources */,
 				4876BD0F20DA164E0057E5E0 /* PlaceDetailTableViewDataSource.swift in Sources */,
 				48443E6E210990AE00A21FC4 /* GMUWeightedLatLng.m in Sources */,
 				02D8690F228233530093BD18 /* MapBoxViewController.swift in Sources */,

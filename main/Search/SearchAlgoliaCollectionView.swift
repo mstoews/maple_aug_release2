@@ -14,13 +14,23 @@ import InstantSearchCore
 import JGProgressHUD
 
 
-enum SearchType {
+enum SearchType : String {
+    
     case USR
     case PRD
     case LOC
+    
+    var id: String {
+        return self.rawValue
+    }
+    
+    var kind: String {
+        return "Kind\(self.rawValue.capitalized)"
+    }
 }
 
-class SearchAlgoliaCollectionView: MDCCollectionViewController , UISearchBarDelegate, UISearchControllerDelegate, UISearchResultsUpdating, SearchProgressDelegate , SearchHeaderDelegate  {
+class SearchAlgoliaCollectionView: UICollectionViewController , UICollectionViewDelegateFlowLayout, UISearchBarDelegate, UISearchControllerDelegate, UISearchResultsUpdating, SearchProgressDelegate , SearchHeaderDelegate
+{
     
     var fullTextSearch: Searcher!
     
@@ -30,38 +40,16 @@ class SearchAlgoliaCollectionView: MDCCollectionViewController , UISearchBarDele
     
     var originIsLocal: Bool = false
     
-    let postCellId = "postCellId"
-    let headerId = "headerId"
-    let mapCellId = "mapCellId"
-    let userCellId = "userCellId"
+    fileprivate let postCellId = "postCellId"
+    fileprivate let headerId = "headerId"
+    fileprivate let mapCellId = "mapCellId"
+    fileprivate let userCellId = "userCellId"
+    fileprivate let padding: CGFloat = 16
+    
+     let db = Firestore.firestore()
     
     var TYPE = SearchType.PRD
     var searchProgressController: SearchProgressController!
-    
-    @objc func didSearchLocation() {
-        print("SearchAlgoliaCollectionView::didSearchLocation")
-        let hud = JGProgressHUD(style: .dark)
-        hud.textLabel.text = NSLocalizedString("FetchLocations", comment: "Fetching Locations")
-        hud.show(in: view)
-        
-        //spinner = displaySpinner()
-        TYPE = SearchType.LOC
-        fullTextSearch = Searcher(index: AlgoliaManager.sharedInstance.location, resultHandler: self.handleLocationResults)
-        fullTextSearch.params.hitsPerPage = 15
-        
-        fullTextSearch.params.attributesToRetrieve = ["*" ]
-        fullTextSearch.params.attributesToHighlight = ["location"]
-        
-        // Configure search progress monitoring.
-        searchProgressController = SearchProgressController(searcher: fullTextSearch)
-        searchProgressController.delegate = self
-        updateSearchResults(for: searchController)
-        
-        // refresh with Location seach
-         hud.dismiss(afterDelay: 1)
-        
-    }
-    
     
     fileprivate func setupSearchBar() {
         navigationItem.searchController = searchController
@@ -71,54 +59,11 @@ class SearchAlgoliaCollectionView: MDCCollectionViewController , UISearchBarDele
     }
     
     
-    @objc func didSearchUser() {
-        print("SearchAlgoliaCollectionView::didSearchUser")
-        let hud = JGProgressHUD(style: .dark)
-        hud.textLabel.text = NSLocalizedString("FetchUsers", comment: "Fetching Users")
-        hud.show(in: view)
-        
-        TYPE = .USR
-        // refresh with Users Search
-        fullTextSearch = Searcher(index: AlgoliaManager.sharedInstance.users, resultHandler: self.handleUserResults)
-        fullTextSearch.params.hitsPerPage = 30
-        
-        fullTextSearch.params.attributesToRetrieve = ["*" ]
-        fullTextSearch.params.attributesToHighlight = ["user"]
-        
-        // Configure search progress monitoring.
-        searchProgressController = SearchProgressController(searcher: fullTextSearch)
-        searchProgressController.delegate = self
-        updateSearchResults(for: searchController)
-        hud.dismiss(afterDelay: 1)
-    }
-    
-  
-    @objc func didSearchProducts() {
-        print("SearchAlgoliaCollectionView::didSearchProducts")
-        
-        let hud = JGProgressHUD(style: .dark)
-        hud.textLabel.text = NSLocalizedString("FetchProd", comment: "Fetch Products")
-        hud.show(in: view)
-        
-        TYPE = .PRD
-        fullTextSearch = Searcher(index: AlgoliaManager.sharedInstance.posts, resultHandler: self.handleSearchResults)
-        fullTextSearch.params.hitsPerPage = 30
-        fullTextSearch.params.attributesToRetrieve = ["*" ]
-        fullTextSearch.params.attributesToHighlight = ["product"]
-        
-        // Configure search progress monitoring.
-        searchProgressController = SearchProgressController(searcher: fullTextSearch)
-        searchProgressController.delegate = self
-        updateSearchResults(for: searchController)
-        hud.dismiss(afterDelay: 1)
-    }
-    
     @objc func didSearch(index: String, name: String)
     {
         print("SearchAlgoliaCollectionView::didSearch")
-        
-        var algoIndex = AlgoliaManager.sharedInstance.posts
-        fullTextSearch = Searcher(index: algoIndex  , resultHandler: self.handleSearchResults)
+
+        fullTextSearch = Searcher(index: AlgoliaManager.sharedInstance.posts  , resultHandler: self.handleSearchResults)
         
         let hud = JGProgressHUD(style: .dark)
         hud.textLabel.text = NSLocalizedString(name, comment: name)
@@ -127,29 +72,25 @@ class SearchAlgoliaCollectionView: MDCCollectionViewController , UISearchBarDele
         switch index {
              case "product" :
                  TYPE = .PRD
-                 algoIndex = AlgoliaManager.sharedInstance.posts
-                 fullTextSearch = Searcher(index: algoIndex  , resultHandler: self.handleSearchResults)
+                 fullTextSearch = Searcher(index: AlgoliaManager.sharedInstance.posts  , resultHandler: self.handleSearchResults)
                  fullTextSearch.params.attributesToHighlight = [index]
                  break
             case "user":
                  TYPE = .USR
-                 algoIndex = AlgoliaManager.sharedInstance.users
-                 fullTextSearch = Searcher(index: algoIndex  , resultHandler: self.handleUserResults)
+                 fullTextSearch = Searcher(index:  AlgoliaManager.sharedInstance.users  , resultHandler: self.handleUserResults)
+                 fullTextSearch.params.attributesToHighlight = [index]
                 break
             case "location":
                  TYPE = .LOC
-                 algoIndex = AlgoliaManager.sharedInstance.location
-                 fullTextSearch = Searcher(index: algoIndex  , resultHandler: self.handleLocationResults)
+                 fullTextSearch = Searcher(index: AlgoliaManager.sharedInstance.location  , resultHandler: self.handleLocationResults)
+                 fullTextSearch.params.attributesToHighlight = [index]
                 break
             default:
             TYPE = .PRD
         }
         
-        
         fullTextSearch.params.hitsPerPage = 30
-        
         fullTextSearch.params.attributesToRetrieve = ["*" ]
-        fullTextSearch.params.attributesToHighlight = [index]
         
         // Configure search progress monitoring.
         searchProgressController = SearchProgressController(searcher: fullTextSearch)
@@ -157,23 +98,26 @@ class SearchAlgoliaCollectionView: MDCCollectionViewController , UISearchBarDele
         updateSearchResults(for: searchController)
         hud.dismiss(afterDelay: 1)
         
+        
+        //        let queries = [
+        //            IndexQuery(indexName: "posts", query: Query(query: "Tokyo")),
+        //            IndexQuery(indexName: "users", query: Query(query: "Murray")),
+        //            IndexQuery(indexName: "locations", query: Query(query: "Tokyo"))
+        //        ]
+        //
+        //        AlgoliaManager.client.multipleQueries(queries, completionHandler: { (content, error) -> Void in
+        //            if error == nil {
+        //                print("Result: \(content!)")
+        //            }
+        //        })
+
+        
     }
     
 
     // lets implement a UISearchController
     let searchController = UISearchController(searchResultsController: nil)
     
-    /*
-    
-    lazy var searchController: UISearchController = {
-            let sc = UISearchController(searchResultsController: nil)
-            sc.hidesNavigationBarDuringPresentation = true
-            sc.dimsBackgroundDuringPresentation = true
-            //sc.searchBar.barTintColor = UIColor.collectionBackGround()
-            sc.searchBar.delegate = self
-            return sc
-    }()
-     */
     
     @objc func pressCancelButton(button: UIButton) {
         //searchEvent.isEnabled = true
@@ -217,31 +161,39 @@ class SearchAlgoliaCollectionView: MDCCollectionViewController , UISearchBarDele
         super.viewDidLoad()
         setupSearchBar()
         
-        collectionView?.backgroundColor = UIColor.collectionBackGround()
-        collectionView?.register(PostSearchCollectionHeader.self, forSupplementaryViewOfKind: UICollectionView.elementKindSectionHeader, withReuseIdentifier: headerId)
-
-        // Algolia Search
-        collectionView?.register(PostCollectionCell.self, forCellWithReuseIdentifier: postCellId)
-        collectionView?.register(MapCollectionCell.self,  forCellWithReuseIdentifier: mapCellId)
-        collectionView?.register(UserCollectionCell.self, forCellWithReuseIdentifier: userCellId)
-        definesPresentationContext = false
-        
-
-        self.definesPresentationContext = true
-        searchController.searchResultsUpdater = self
-        searchController.searchBar.delegate = self
-        searchController.dimsBackgroundDuringPresentation = false
-        searchController.definesPresentationContext = true
-        
-        // Search controller
-        didSearch(index: "products", name: "FetchProd")
-        // First load
-        self.navigationItem.title = "Search"
-        UINavigationBar.appearance().prefersLargeTitles = true
+        if let collectionView = collectionView {
+            collectionView.backgroundColor = UIColor.collectionBackGround()
+            
+             // Algolia Search
+            collectionView.register(PostCollectionCell.self, forCellWithReuseIdentifier: postCellId)
+            collectionView.register(MapCollectionCell.self,  forCellWithReuseIdentifier: mapCellId)
+            collectionView.register(UserCollectionCell.self, forCellWithReuseIdentifier: userCellId)
+            
+            collectionView.register(PostSearchCollectionHeader.self, forSupplementaryViewOfKind: UICollectionView.elementKindSectionHeader, withReuseIdentifier: headerId)
+            
+            self.definesPresentationContext = true
+            searchController.searchResultsUpdater = self
+            searchController.searchBar.delegate = self
+            searchController.dimsBackgroundDuringPresentation = false
+            searchController.definesPresentationContext = true
+            
+            // Search controller
+            didSearch(index: SearchType.PRD.rawValue, name: "Fetch Prod")
+            // First load
+            self.navigationItem.title = "Search"
+            UINavigationBar.appearance().prefersLargeTitles = true
+            setupCollectionViewLayout()
+        }
     }
     
     deinit {
         NotificationCenter.default.removeObserver(self)
+    }
+    
+    fileprivate func setupCollectionViewLayout() {
+        if let layout = collectionViewLayout as? UICollectionViewFlowLayout {
+            layout.sectionInset = .init(top: padding, left: padding, bottom: padding, right: padding)
+        }
     }
     
     override func didReceiveMemoryWarning() {
@@ -249,83 +201,6 @@ class SearchAlgoliaCollectionView: MDCCollectionViewController , UISearchBarDele
         // Dispose of any resources that can be recreated.
     }
     
-
-    override func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
-        
-        switch TYPE
-        {
-            case .USR :
-                let userRecord = UserRecord(json: userHits[indexPath.item])
-                self.openUserSelected(userRecord: userRecord)
-                break
-            case .LOC :
-                let locationRecord = LocationRecord(json: locationHits[indexPath.item])
-                self.openLocationSelected(locationRecord: locationRecord)
-                break
-            case .PRD :
-                let postRecord = PostRecord(json: postHits[indexPath.item])
-                print("Post Record from Search Prod .... \(postRecord)")
-                self.openSearchSelected(postRecord: postRecord)
-                break
-        }
-    }
-    
-    override func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, minimumInteritemSpacingForSectionAt section: Int) -> CGFloat {
-        return 7
-    }
-    
-    override func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, minimumLineSpacingForSectionAt section: Int) -> CGFloat {
-        return 7
-    }
-    
-    override func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
-         switch TYPE
-            {
-            case .USR :
-                let userCell = collectionView.dequeueReusableCell(withReuseIdentifier: userCellId, for: indexPath) as! UserCollectionCell
-                if indexPath.row + 30 >= userHits.count {
-                    fullTextSearch.loadMore()
-                }
-                userCell.userRecord = UserRecord(json: userHits[indexPath.row])
-                return userCell
-            case .LOC :
-                let locationCell = collectionView.dequeueReusableCell(withReuseIdentifier: mapCellId, for: indexPath) as! MapCollectionCell
-                if indexPath.row + 30 >= locationHits.count {
-                    fullTextSearch.loadMore()
-                }
-                locationCell.locationRecord = LocationRecord(json: locationHits[indexPath.row])
-                return locationCell
-            case .PRD :
-                let postcell = collectionView.dequeueReusableCell(withReuseIdentifier: postCellId, for: indexPath) as! PostCollectionCell
-                if indexPath.row + 30 >= postHits.count {
-                    fullTextSearch.loadMore()
-                }
-                postcell.post = PostRecord(json: postHits[indexPath.row])
-                return  postcell
-            }
-    }
-    
-     override func collectionView(_ collectionView: UICollectionView, viewForSupplementaryElementOfKind kind: String, at indexPath: IndexPath) -> UICollectionReusableView {
-        let header = collectionView.dequeueReusableSupplementaryView(ofKind: kind, withReuseIdentifier: headerId, for: indexPath) as! PostSearchCollectionHeader
-        header.delegate = self
-        return header
-    }
-    
-    
-    
-    override func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, insetForSectionAt section: Int) -> UIEdgeInsets {
-        return UIEdgeInsets(top: 1, left: 1, bottom: 1, right: 1)
-    }
-    
-//    override func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, referenceSizeForHeaderInSection section: Int) -> CGSize {
-//        return CGSize(width: view.frame.width, height: 40)
-//    }
-//
-
-    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: CollectionLayout, referenceSizeForHeaderInSection section: Int) -> CGSize {
-        return CGSize(width: view.frame.width, height: 40)
-    }
-
 
     
     override func viewDidAppear(_ animated: Bool) {
@@ -362,6 +237,8 @@ class SearchAlgoliaCollectionView: MDCCollectionViewController , UISearchBarDele
         
     }
     
+    
+    
     private func handleLocationResults(results: SearchResults?, error: Error?, userInfo: [String: Any]) {
         guard let results = results else { return }
         if results.page == 0 {
@@ -385,8 +262,22 @@ class SearchAlgoliaCollectionView: MDCCollectionViewController , UISearchBarDele
         self.collectionView?.reloadData()
     }
     
+    // MARK:- CollectionView
     
-    override func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
+    
+    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, referenceSizeForHeaderInSection section: Int) -> CGSize {
+        return .init(width: view.frame.width, height: 40)
+    }
+    
+ 
+    override func collectionView(_ collectionView: UICollectionView, viewForSupplementaryElementOfKind kind: String, at indexPath: IndexPath) -> UICollectionReusableView {
+        print ("CollectionView Header")
+        let header = collectionView.dequeueReusableSupplementaryView(ofKind: kind, withReuseIdentifier: headerId, for: indexPath) as! PostSearchCollectionHeader
+        header.delegate = self
+        return header
+    }
+    
+    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
         
         switch TYPE
         {
@@ -425,7 +316,71 @@ class SearchAlgoliaCollectionView: MDCCollectionViewController , UISearchBarDele
         }
     }
     
-    let db = Firestore.firestore()
+
+    override func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
+        
+        switch TYPE
+        {
+        case .USR :
+            let userRecord = UserRecord(json: userHits[indexPath.item])
+            self.openUserSelected(userRecord: userRecord)
+            break
+        case .LOC :
+            let locationRecord = LocationRecord(json: locationHits[indexPath.item])
+            self.openLocationSelected(locationRecord: locationRecord)
+            break
+        case .PRD :
+            let postRecord = PostRecord(json: postHits[indexPath.item])
+            print("Post Record from Search Prod .... \(postRecord)")
+            self.openSearchSelected(postRecord: postRecord)
+            break
+        }
+    }
+    
+    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, minimumInteritemSpacingForSectionAt section: Int) -> CGFloat {
+        return 7
+    }
+    
+    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, minimumLineSpacingForSectionAt section: Int) -> CGFloat {
+        return 7
+    }
+    
+    override func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
+        switch TYPE
+        {
+        case .USR :
+            let userCell = collectionView.dequeueReusableCell(withReuseIdentifier: userCellId, for: indexPath) as! UserCollectionCell
+            if indexPath.row + 30 >= userHits.count {
+                fullTextSearch.loadMore()
+            }
+            userCell.userRecord = UserRecord(json: userHits[indexPath.row])
+            return userCell
+        case .LOC :
+            let locationCell = collectionView.dequeueReusableCell(withReuseIdentifier: mapCellId, for: indexPath) as! MapCollectionCell
+            if indexPath.row + 30 >= locationHits.count {
+                fullTextSearch.loadMore()
+            }
+            locationCell.locationRecord = LocationRecord(json: locationHits[indexPath.row])
+            return locationCell
+        case .PRD :
+            let postcell = collectionView.dequeueReusableCell(withReuseIdentifier: postCellId, for: indexPath) as! PostCollectionCell
+            if indexPath.row + 30 >= postHits.count {
+                fullTextSearch.loadMore()
+            }
+            postcell.post = PostRecord(json: postHits[indexPath.row])
+            return  postcell
+        }
+    }
+    
+    
+    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, insetForSectionAt section: Int) -> UIEdgeInsets {
+       
+        return UIEdgeInsets(top: 1, left: 1, bottom: 1, right: 1)
+    }
+    
+    
+    
+   
     
     func openSearchSelected(postRecord: PostRecord)
     {

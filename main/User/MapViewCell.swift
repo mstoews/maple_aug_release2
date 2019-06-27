@@ -9,7 +9,8 @@ import Foundation
 import UIKit
 import GoogleMaps
 import GooglePlaces
-import Firebase
+import FirebaseAuth
+import FirebaseFirestore
 
 
 class POIItem: NSObject, GMUClusterItem {

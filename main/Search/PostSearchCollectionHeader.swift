@@ -9,15 +9,12 @@
 import Foundation
 import MaterialComponents
 
-
-
 protocol SearchHeaderDelegate {
- 
     func didSearch(index: String, name: String)
 }
 
 
-class PostSearchCollectionHeader: UICollectionViewCell  {
+class PostSearchCollectionHeader: BaseCell  {
     
     var delegate: SearchHeaderDelegate?
     

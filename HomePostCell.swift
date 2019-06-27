@@ -195,9 +195,7 @@ class HomePostCell: MDCCardCollectionCell , UICollectionViewDataSource, UICollec
                 let timeAttributedText = NSMutableAttributedString(string: timeAgoDisplay, attributes: [NSAttributedString.Key.font: UIFont.systemFont(ofSize: 12)])
                 timeAgoLabel.attributedText = timeAttributedText
             }
-           
-             configurePostCaption()
-            
+            configurePostCaption()
             self.imageCollectionView.reloadData()
         }
         
@@ -478,7 +476,8 @@ class HomePostCell: MDCCardCollectionCell , UICollectionViewDataSource, UICollec
     }
     
     let imageCollectionView: UICollectionView = {
-        let layout = UICollectionViewFlowLayout()
+        //let layout = UICollectionViewFlowLayout()
+        let layout = BetterSnappingLayout()
         layout.scrollDirection = .horizontal
         layout.minimumInteritemSpacing = 0
         layout.minimumLineSpacing = 0

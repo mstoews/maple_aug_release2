@@ -88,14 +88,6 @@ class UserProfileGridCell: MDCCardCollectionCell, UICollectionViewDataSource, UI
         return iv
     }()
     
-    /*
-     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
-     let cell = collectionView.dequeueReusableCell(withReuseIdentifier: cellId, for: indexPath) as! AppCell
-     cell.app = appCategory?.apps?[indexPath.item]
-     return cell
-     }
-     */
-    
     
     private func fetchImagesByUid(uid: String)
     {
@@ -161,39 +153,6 @@ class UserProfileGridCell: MDCCardCollectionCell, UICollectionViewDataSource, UI
         }
     }
     
-    /*
-     ref.child("rooms").observeSingleEventOfType(.Value, withBlock: { (snapshot) in
-     
-     if snapshot.hasChild("room1"){
-     
-     print("true rooms exist")
-     
-     }else{
-     
-     print("false room doesn't exist")
-     }
-     
-     
-     })
-     */
-    
-//    private func loadImages(_ postid: String, _ imageObject: inout [ImageObject] ) {
-//        let ref = Database.database().reference()
-//        ref.child("imagesbypost").child(postid).observeSingleEvent(of: .value, with: { (snapshot) in
-//            let data = snapshot.value as? NSDictionary
-//            data?.forEach({ (key, value) in
-//                guard let urlData = value as? [String: Any] else { return }
-//                let urlstring = urlData["imageUrl"] as! String
-//                let imgObject = ImageObject()
-//                imgObject.postid = postid
-//                imgObject.url = urlstring
-//                imageObject.append(imgObject)
-//            })
-//        }){(error) in
-//            print(error.localizedDescription)
-//        }
-//    }
-    
     fileprivate func setupAttributedCaption() {
         guard let post = self.post else { return }
         
@@ -215,7 +174,6 @@ class UserProfileGridCell: MDCCardCollectionCell, UICollectionViewDataSource, UI
         addSubview(productButton)
         imageCollectionView.dataSource = self
         imageCollectionView.delegate = self
-        
         
         userProfileImageView.anchor(top: topAnchor, left: leftAnchor, bottom: nil, right: nil, paddingTop: 8, paddingLeft: 8, paddingBottom: 0, paddingRight: 0, width: 40, height: 40)
         userProfileImageView.layer.cornerRadius = 40 / 2

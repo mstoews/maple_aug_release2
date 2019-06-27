@@ -79,7 +79,7 @@ class HomeController: MDCCollectionViewController, HomePostCellDelegate,  HomeHe
     
     @objc func handleRefresh() {
         refreshControl.beginRefreshing()
-        PAGINATION_LIMIT = PAGINATION_LIMIT + 5
+        PAGINATION_LIMIT = PAGINATION_LIMIT + 10
         observePostFeed()
         refreshControl.endRefreshing()
     }
@@ -190,24 +190,30 @@ class HomeController: MDCCollectionViewController, HomePostCellDelegate,  HomeHe
             imageUrl = post.imageUrlArray[0]
         }
         
+        if let postId = post.id {
         
-        if let imageUrl = imageUrl {
-        let values : [String: Any] = ["userid" : post.uid,
+        Firestore.fetchLocationByPostId(postId: postId) {   locations   in
+    
+            print("\(locations)")
+            
+            if let imageUrl = imageUrl {
+                let values : [String: Any] = ["userid" : post.uid,
                                       "name" : post.userName,
                                       "profileUrl" : post.imageUrl,
                                       "product": post.product ,
                                       "description" : post.description,
                                       "urlArray" : imageUrl,
                                       "creationDate": Date().timeIntervalSince1970]
-        
-        AlgoliaManager.sharedInstance.posts.addObject(values, withID: post.id! , completionHandler: { (content, error) -> Void in
-            if error == nil {
-                if let objectID = content!["objectID"] as? String {
-                    print("Object ID: \(objectID)")
+                
+                AlgoliaManager.sharedInstance.posts.addObject(values, withID: post.id! , completionHandler: { (content, error) -> Void in
+                        if error == nil {
+                            if let objectID = content!["objectID"] as? String {
+                                print("Object ID: \(objectID)")
                 }
             }
         })
         }
+            }}
     }
     
     fileprivate func observePostFeed()
@@ -435,7 +441,7 @@ class HomeController: MDCCollectionViewController, HomePostCellDelegate,  HomeHe
             let attributes = [NSAttributedString.Key.font : UIFont.systemFont(ofSize: CGFloat(15))]
             let post = posts[indexPath.item]
             let estimatedFrame = NSString(string: post.description).boundingRect(with: size, options: .usesLineFragmentOrigin, attributes: attributes, context: nil)
-            return CGSize(width: view.frame.width - 15 , height: estimatedFrame.height + view.frame.width - 40 )
+            return CGSize(width: view.frame.width - 15 , height: estimatedFrame.height + 335 )
         }
         else
         {

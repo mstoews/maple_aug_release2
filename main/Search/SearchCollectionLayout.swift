@@ -9,6 +9,8 @@ class SearchCollectionLayout: UICollectionViewFlowLayout {
     
     fileprivate var cache = [UICollectionViewLayoutAttributes]()
     
+    private var headerAttributesCache: Array<UICollectionViewLayoutAttributes> = []
+    
     fileprivate var contentWidth: CGFloat {
         
         guard let collectionView = collectionView else {
@@ -28,7 +30,7 @@ class SearchCollectionLayout: UICollectionViewFlowLayout {
     
     override var collectionViewContentSize: CGSize {
         
-        return CGSize(width: contentWidth, height: contentHeight)
+        return CGSize(width: contentWidth, height: contentHeight )
         
     }
     
@@ -38,11 +40,26 @@ class SearchCollectionLayout: UICollectionViewFlowLayout {
     
     override func prepare() {
         
+        //guard  headerAttributesCache.isEmpty else { return }
+        
+        
+        let frame: CGRect
+        
         guard  let collectionView = collectionView else {
 
             return
 
         }
+        
+        if scrollDirection == .vertical {
+            frame = CGRect(x: 0, y: 0, width: contentWidth, height: 40)
+        } else {
+            frame = CGRect(x: 0, y: 0, width: 40, height: contentWidth)
+        }
+        let headerLayoutAttributes = UICollectionViewLayoutAttributes(forSupplementaryViewOfKind: UICollectionView.elementKindSectionHeader, with: IndexPath(item: 0, section: 0))
+        headerLayoutAttributes.frame = frame
+        
+        headerAttributesCache.append(headerLayoutAttributes)
         
         cleanCache()
         
@@ -98,8 +115,6 @@ class SearchCollectionLayout: UICollectionViewFlowLayout {
         
         var itemInSection: Int = 0
         
-        print ("Items in Section : \(collectionView.numberOfItems(inSection: 0))")
-        
         for item in 0..<collectionView.numberOfItems(inSection: 0) {
             
             let indexPath = IndexPath(item: item, section: 0)
@@ -138,13 +153,40 @@ class SearchCollectionLayout: UICollectionViewFlowLayout {
         
     }
     
-    override func layoutAttributesForElements(in rect: CGRect) -> [UICollectionViewLayoutAttributes]? {
+  
+    override func initialLayoutAttributesForAppearingSupplementaryElement(ofKind elementKind: String, at elementIndexPath: IndexPath) -> UICollectionViewLayoutAttributes? {
+        guard elementKind == UICollectionView.elementKindSectionHeader else { return nil }
+        return headerAttributesCache.first {
+            $0.indexPath == elementIndexPath
+        }
+    }
+    
+
+    func layoutAttributesForElementsInRect(rect: CGRect) -> [AnyObject]? {
+        var attributes = [UICollectionViewLayoutAttributes]()
         
-        print ("layoutAttribtuesForElements \(cache.count)")
+        let sectionsCount = self.collectionView!.dataSource!.numberOfSections!(in: self.collectionView!)
+        for section in 0..<sectionsCount {
+            /// add header
+            attributes.append(self.layoutAttributesForSupplementaryView(ofKind: UICollectionView.elementKindSectionHeader, at: NSIndexPath(item: 0, section: section) as IndexPath)!)
+            
+            let itemsCount = self.collectionView!.numberOfItems(inSection: section)
+            for item in 0..<itemsCount {
+                let indexPath = NSIndexPath(item: item, section: section)
+                attributes.append(self.layoutAttributesForItem(at: indexPath as IndexPath)!)
+            }
+        }
+        
+        return attributes
+    }
+    
+    
+    override func layoutAttributesForElements(in rect: CGRect) -> [UICollectionViewLayoutAttributes]? {
         
         var visibleLayoutAttributes = [UICollectionViewLayoutAttributes]()
         
         for attributes in cache {
+            
             
             if attributes.frame.intersects(rect) {
                 
@@ -166,4 +208,3 @@ class SearchCollectionLayout: UICollectionViewFlowLayout {
     
     
 }
-
