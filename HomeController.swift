@@ -192,27 +192,39 @@ class HomeController: MDCCollectionViewController, HomePostCellDelegate,  HomeHe
         
         if let postId = post.id {
         
-        Firestore.fetchLocationByPostId(postId: postId) {   locations   in
-    
-            print("\(locations)")
-            
-            if let imageUrl = imageUrl {
-                let values : [String: Any] = ["userid" : post.uid,
-                                      "name" : post.userName,
-                                      "profileUrl" : post.imageUrl,
-                                      "product": post.product ,
-                                      "description" : post.description,
-                                      "urlArray" : imageUrl,
-                                      "creationDate": Date().timeIntervalSince1970]
+            Firestore.fetchLocationByPostId(postId: postId) {   locations   in
                 
-                AlgoliaManager.sharedInstance.posts.addObject(values, withID: post.id! , completionHandler: { (content, error) -> Void in
-                        if error == nil {
-                            if let objectID = content!["objectID"] as? String {
-                                print("Object ID: \(objectID)")
+                var obj: LocationObject?
+                if locations.count > 0 {
+                    obj = locations[0]
                 }
-            }
-        })
-        }
+                
+                if let obj = obj {
+                    if let imageUrl = imageUrl {
+                        let values : [String: Any] = ["userid"       : post.uid,
+                                                      "name"         : post.userName,
+                                                      "profileUrl"   : post.profileURL,
+                                                      "product"      : post.product ,
+                                                      "description"  : post.description,
+                                                      "urlArray"     : imageUrl,
+                                                      "location"     : obj.location as Any,
+                                                      "latitude"     : obj.latitude as Any,
+                                                      "longitude"    : obj.longitude as Any,
+                                                      "address"      : obj.address as Any,
+                                                      "phone"        : obj.phoneNumber as Any,
+                                                      "priceLevel"   : obj.priceLevel as Any,
+                                                      "rating"       : obj.rating as Any,
+                                                      "creationDate" : Date().timeIntervalSince1970]
+                        
+                        AlgoliaManager.sharedInstance.posts.addObject(values, withID: post.id! , completionHandler: { (content, error) -> Void in
+                            if error == nil {
+                                if let objectID = content!["objectID"] as? String {
+                                    print("Object ID: \(objectID)")
+                                }
+                            }
+                        })
+                    }
+                }
             }}
     }
     
@@ -237,7 +249,7 @@ class HomeController: MDCCollectionViewController, HomePostCellDelegate,  HomeHe
                 
                 let _fsPost = snapshot.documents.map { (document) -> FSPost in
                     let post = FSPost(dictionary: document.data(), postId: document.documentID)!
-                    strongSelf.updateAlgoliaStore(post: post)
+                    //strongSelf.updateAlgoliaStore(post: post)
                     return post
                 }
                 
