@@ -33,6 +33,7 @@
 		482C622422C327940058EE89 /* CustomLayoutAttributes.swift in Sources */ = {isa = PBXBuildFile; fileRef = 482C622322C327940058EE89 /* CustomLayoutAttributes.swift */; };
 		482C622822C329970058EE89 /* CustomLayoutSettings.swift in Sources */ = {isa = PBXBuildFile; fileRef = 482C622722C329970058EE89 /* CustomLayoutSettings.swift */; };
 		482C622A22C32A1E0058EE89 /* CustomLayout.swift in Sources */ = {isa = PBXBuildFile; fileRef = 482C622922C32A1E0058EE89 /* CustomLayout.swift */; };
+		482C622E22C4F4730058EE89 /* CarouselFlowLayout.swift in Sources */ = {isa = PBXBuildFile; fileRef = 482C622D22C4F4730058EE89 /* CarouselFlowLayout.swift */; };
 		482FC10520DE15D900E23DAE /* SharePhotoController+Save.swift in Sources */ = {isa = PBXBuildFile; fileRef = 482FC0FC20DE15CC00E23DAE /* SharePhotoController+Save.swift */; };
 		482FC10620DE15D900E23DAE /* MapCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 482FC0FD20DE15D000E23DAE /* MapCell.swift */; };
 		482FC10720DE15D900E23DAE /* PostImageCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 482FC0FE20DE15D400E23DAE /* PostImageCell.swift */; };
@@ -196,6 +197,7 @@
 		482C622322C327940058EE89 /* CustomLayoutAttributes.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomLayoutAttributes.swift; sourceTree = "<group>"; };
 		482C622722C329970058EE89 /* CustomLayoutSettings.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomLayoutSettings.swift; sourceTree = "<group>"; };
 		482C622922C32A1E0058EE89 /* CustomLayout.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomLayout.swift; sourceTree = "<group>"; };
+		482C622D22C4F4730058EE89 /* CarouselFlowLayout.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CarouselFlowLayout.swift; sourceTree = "<group>"; };
 		482FC0FC20DE15CC00E23DAE /* SharePhotoController+Save.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "SharePhotoController+Save.swift"; sourceTree = "<group>"; };
 		482FC0FD20DE15D000E23DAE /* MapCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MapCell.swift; sourceTree = "<group>"; };
 		482FC0FE20DE15D400E23DAE /* PostImageCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PostImageCell.swift; sourceTree = "<group>"; };
@@ -716,6 +718,7 @@
 				4876BC9620DA16280057E5E0 /* PhotoViewModel.swift */,
 				482C01F122AF276000000597 /* MultiLineTextView.swift */,
 				482C621C22C08FFF0058EE89 /* BetterSnappyLayout.swift */,
+				482C622D22C4F4730058EE89 /* CarouselFlowLayout.swift */,
 			);
 			name = Utilities;
 			path = main/Utilities;
@@ -1379,6 +1382,7 @@
 				48443E67210990AE00A21FC4 /* GMUGridBasedClusterAlgorithm.m in Sources */,
 				4876BCA120DA16280057E5E0 /* PhotoSelectorHeader.swift in Sources */,
 				4876BD0220DA164E0057E5E0 /* MapLocationSearchController.swift in Sources */,
+				482C622E22C4F4730058EE89 /* CarouselFlowLayout.swift in Sources */,
 				48482FC220DA18A00031EBFF /* DataModel.swift in Sources */,
 				482FC13620DE236D00E23DAE /* PostRecord.swift in Sources */,
 				482FC13B20DE236D00E23DAE /* PostCollectionCell.swift in Sources */,

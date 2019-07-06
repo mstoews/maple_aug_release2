@@ -148,7 +148,6 @@ class NotificationViewController: MDCCollectionViewController , NotificationDele
         if let uid = Auth.auth().currentUser?.uid {
             self.listener =
                 Firestore.firestore().collection("users").document(uid).collection("events").order(by: "timestamp", descending: true)
-                //Firestore.firestore().collection("users").document(uid).collection("events").whereField("deleted", isEqualTo: false)
                     .addSnapshotListener{  (snapshot, error) in
                         guard let snapshot = snapshot else {
                             print("Error fetching snapshot results: \(error!)")
@@ -268,24 +267,7 @@ class NotificationViewController: MDCCollectionViewController , NotificationDele
         transition.type = CATransitionType.fade
         self.navigationController?.view.layer.add(transition, forKey: nil)
         _ = self.navigationController?.popToRootViewController(animated: false)
-
-        
-        switch notificationType {
-        case "following":
-            openUserPage(senderUid)
-            break
-        case "followers":
-            openUserPage(senderUid)
-            break
-        case "likes":
-            openPost(postId)
-            break
-        case "comment":
-            openPost(postId)
-            break
-        default:
-            return
-        }
+        openPost(postId)
         
     }
     
