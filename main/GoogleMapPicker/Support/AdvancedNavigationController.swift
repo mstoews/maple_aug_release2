@@ -4,10 +4,11 @@ import MapboxNavigation
 import MapboxDirections
 import Mapbox
 import MaterialComponents
+import JJFloatingActionButton
 
 class AdvancedNavigationController: UIViewController, MGLMapViewDelegate, CLLocationManagerDelegate, NavigationMapViewDelegate, NavigationViewControllerDelegate {
     
-    var nav: Navigation?
+    var nav: NavigationStruct?
     var mapView: NavigationMapView?
     var currentRoute: Route? {
         get {
@@ -61,18 +62,22 @@ class AdvancedNavigationController: UIViewController, MGLMapViewDelegate, CLLoca
         
         // Add marker to the map.
         mapView!.addAnnotation(marker)
-        
         // Select the annotation so the callout will appear.
         mapView!.selectAnnotation(marker, animated: true)
-       
         view.addSubview(mapView!)
-        setRoute()
+       
     }
     
     //overriding layout lifecycle callback so we can style the start button
     override func viewDidLayoutSubviews() {
         super.viewDidLayoutSubviews()
         setupLocationButton()
+        
+    }
+    
+    override func viewDidAppear(_ animated: Bool) {
+        super.viewDidAppear(true)
+         setRoute()
     }
     
     func setRoute()
@@ -87,44 +92,112 @@ class AdvancedNavigationController: UIViewController, MGLMapViewDelegate, CLLoca
         // Create a camera that rotates around the same center point, rotating 180°.
         // `fromDistance:` is meters above mean sea level that an eye would have to be in order to see what the map view is showing.
         let camera = MGLMapCamera(lookingAtCenter: mapView.centerCoordinate, altitude: 4500, pitch: 15, heading: 180)
-        //let camera = MGLMapCamera(lookingAtCenter: mapView.centerCoordinate, altitude: 500, pitch: 15, heading: 180)
         
         // Animate the camera movement over 5 seconds.
-        mapView.setCamera(camera, withDuration: 5, animationTimingFunction: CAMediaTimingFunction(name: CAMediaTimingFunctionName.easeInEaseOut))
+        mapView.setCamera(camera, withDuration: 0.5, animationTimingFunction: CAMediaTimingFunction(name: CAMediaTimingFunctionName.easeIn))
     }
 
     
     
     // Button creation and autolayout setup
     func setupLocationButton() {
-        view.addSubview(navButton)
+        
+        //view.addSubview(navButton)
+        //view.addSubview(navButton2)
+        
+        let buttonMenus = UIView()
+        
+        buttonMenus.layer.cornerRadius = 5
+        buttonMenus.backgroundColor =  UIColor.collectionBackGround().withAlphaComponent(0.0)
+        buttonMenus.layer.borderWidth = 0
+        buttonMenus.layer.borderColor = UIColor.buttonThemeColor().cgColor
+        
+        //let stackButtonsVerical = UIStackView(arrangedSubviews: [deleteButton,filterButton,editButton])
+        let stackButtonsVerical = UIStackView(arrangedSubviews: [navButton2,navButton,navButton3])
+        stackButtonsVerical.axis = .vertical
+        stackButtonsVerical.distribution = .fillEqually
+        
+        buttonMenus.addSubview(stackButtonsVerical)
+        
+        view.addSubview(buttonMenus)
         
         // Setup constraints such that the button is placed within
         // the upper left corner of the view.
-        navButton.translatesAutoresizingMaskIntoConstraints = false
+        buttonMenus.translatesAutoresizingMaskIntoConstraints = false
         let constraints = [
-            NSLayoutConstraint(item: navButton, attribute: .top, relatedBy: .greaterThanOrEqual, toItem: topLayoutGuide, attribute: .bottom, multiplier: 1, constant: 10),
-            //NSLayoutConstraint(item: navButton, attribute: .top, relatedBy: .greaterThanOrEqual, toItem: view.safeAreaLayoutGuide.bottomAnchor, attribute: .bottom, multiplier: 1, constant: 10),
-            NSLayoutConstraint(item: navButton, attribute: .leading, relatedBy: .equal, toItem: view, attribute: .leading, multiplier: 1, constant: 10),
-            NSLayoutConstraint(item: navButton, attribute: .height, relatedBy: .equal, toItem: nil, attribute: .notAnAttribute, multiplier: 1, constant: 48 ),
-            NSLayoutConstraint(item: navButton, attribute: .width, relatedBy: .equal, toItem: nil, attribute: .notAnAttribute, multiplier: 1, constant: 48)
+            NSLayoutConstraint(item: buttonMenus, attribute: .top, relatedBy: .greaterThanOrEqual, toItem: topLayoutGuide, attribute: .bottom, multiplier: 1, constant: 10),
+            NSLayoutConstraint(item: buttonMenus, attribute: .leading, relatedBy: .equal, toItem: view, attribute: .leading, multiplier: 1, constant: 10),
+            NSLayoutConstraint(item: buttonMenus, attribute: .height, relatedBy: .equal, toItem: nil, attribute: .notAnAttribute, multiplier: 1, constant: 130 ),
+            NSLayoutConstraint(item: buttonMenus, attribute: .width, relatedBy: .equal, toItem: nil, attribute: .notAnAttribute, multiplier: 1, constant: 40)
+//            NSLayoutConstraint(item: navButton2, attribute: .top, relatedBy: .greaterThanOrEqual, toItem: navButton, attribute: .bottom, multiplier: 1, constant: 10),
+//            NSLayoutConstraint(item: navButton2, attribute: .leading, relatedBy: .equal, toItem: navButton, attribute: .leading, multiplier: 1, constant: 10),
+//            NSLayoutConstraint(item: navButton2, attribute: .height, relatedBy: .equal, toItem: nil, attribute: .notAnAttribute, multiplier: 1, constant: 48 ),
+//            NSLayoutConstraint(item: navButton2, attribute: .width, relatedBy: .equal, toItem: nil, attribute: .notAnAttribute, multiplier: 1, constant: 48)
         ]
-        
         view.addConstraints(constraints)
+        stackButtonsVerical.anchor(top: buttonMenus.topAnchor, left: buttonMenus.leftAnchor, bottom: buttonMenus.bottomAnchor, right: buttonMenus.rightAnchor)
+
     }
     
     let navButton : MDCFloatingButton = {
         let fb = MDCFloatingButton()
-        fb.backgroundColor = .white
-        fb.tintColor = .white
+        fb.backgroundColor = nil
+        fb.tintColor = .gray
+        fb.setImage(#imageLiteral(resourceName: "ic_poll"), for: .normal)
+        fb.imageTintColor(for: .focused)
+        fb.addTarget(self, action: #selector(tappedButton), for: .touchUpInside)
+        return fb
+    }()
+    
+    let navButton2 : MDCFloatingButton = {
+        let fb = MDCFloatingButton()
+        fb.backgroundColor = nil
+        fb.tintColor = .gray
+        fb.setImage(#imageLiteral(resourceName: "ic_delete"), for: .normal)
+        fb.imageTintColor(for: .focused)
+        fb.addTarget(self, action: #selector(tappedButton), for: .touchUpInside)
+        return fb
+    }()
+    
+    let navButton3 : MDCFloatingButton = {
+        let fb = MDCFloatingButton()
+        fb.backgroundColor = nil
+        fb.tintColor = .gray
         fb.setImage(#imageLiteral(resourceName: "ic_navigation"), for: .normal)
         fb.imageTintColor(for: .focused)
         fb.addTarget(self, action: #selector(tappedButton), for: .touchUpInside)
         return fb
     }()
     
+    lazy var actionButton : JJFloatingActionButton = {
+        let ab = JJFloatingActionButton()
+        ab.itemAnimationConfiguration = .circularSlideIn(withRadius: 120)
+        ab.buttonAnimationConfiguration = .rotation(toAngle: .pi * 3 / 4)
+        ab.buttonAnimationConfiguration.opening.duration = 0.8
+        ab.buttonAnimationConfiguration.closing.duration = 0.6
+        
+        ab.addItem(image: #imageLiteral(resourceName: "ic_whatshot")) { item in
+            Helper.showAlert(for: item)
+        }
+        
+        ab.addItem(image: #imageLiteral(resourceName: "ic_cancel")) { item in
+            Helper.showAlert(for: item)
+        }
+        
+        ab.addItem(image: #imageLiteral(resourceName: "ic_add_to_photos")) { item in
+            Helper.showAlert(for: item)
+        }
+        
+        ab.addItem(image: #imageLiteral(resourceName: "ic_favorite_border")) { item in
+            Helper.showAlert(for: item)
+        }
+        
+        return ab
+    }()
+    
 
     @objc func tappedButton() {
+        setRoute()
         print ("AdvancedNavigationController::tappedbutton")
         guard let route = currentRoute else { return }
         // For demonstration purposes, simulate locations if the Simulate Navigation option is on.
@@ -162,6 +235,7 @@ class AdvancedNavigationController: UIViewController, MGLMapViewDelegate, CLLoca
             guard let routes = routes else { return }
             self.routes = routes
             self.navButton.isHidden = false
+            self.navButton2.isHidden = false
             self.mapView?.showRoutes(routes)
             self.mapView?.showWaypoints(self.currentRoute!)
         }

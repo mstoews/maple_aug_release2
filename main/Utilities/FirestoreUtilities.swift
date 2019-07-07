@@ -370,7 +370,7 @@ extension Firestore {
     
     //MARK:- Bookmark
     
-    static func didBookmarkedPost(post: FSPost, didBookmark: Bool) {
+    static func didBookmarkedPost(post: Post, didBookmark: Bool) {
         
         if let postId = post.id {
             let values =
@@ -480,12 +480,12 @@ extension Firestore {
         firestore().collection("posts").document(postId).delete()
     }
     
-    static func fetchPostByPostId (postId: String, _ completion: @escaping (FSPost) -> () ) {
+    static func fetchPostByPostId (postId: String, _ completion: @escaping (Post) -> () ) {
         let docRef = firestore().collection("posts").document(postId)
         docRef.getDocument { (document, error) in
             if let post = document.flatMap({
                 $0.data().flatMap({ (data) in
-                    let post = FSPost( dictionary: data, postId: postId)
+                    let post = Post( dictionary: data, postId: postId)
                     completion(post!)
                 })
             })
@@ -536,7 +536,7 @@ extension Firestore {
             else  {
                 if snapshot != nil {
                     let postId = snapshot!["postid"] as! String
-                    if let post = FSPost(dictionary: (snapshot?.data())!, postId: postId) {
+                    if let post = Post(dictionary: (snapshot?.data())!, postId: postId) {
                         let values : [String: Any] = ["userid" : post.uid,
                                                       "name" : post.userName,
                                                       "profileUrl" : post.imageUrl,
@@ -558,7 +558,7 @@ extension Firestore {
         }
     }
     
-    static func updateAlgoliaPost(post: FSPost) {
+    static func updateAlgoliaPost(post: Post) {
         if let postId = post.id {
             let values : [String: Any] = ["userid" : post.uid,
                                           "name" : post.userName,
@@ -591,7 +591,7 @@ extension Firestore {
                 var likeCount = 0
                 var commentCount = 0
                 for document in querySnapshot!.documents {
-                    let post = FSPost(dictionary: document.data(), postId: document.documentID)
+                    let post = Post(dictionary: document.data(), postId: document.documentID)
                     if let postId = post?.id {
                         getPostCollectionCount(collection: "likes", postId: postId,  { (likes) in
                             likeCount = likes

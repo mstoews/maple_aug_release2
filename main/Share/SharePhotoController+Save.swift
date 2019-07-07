@@ -35,7 +35,7 @@ extension ShareController
     }
     
     
-    func updateAlgoliaStore(post: FSPost)
+    func updateAlgoliaStore(post: Post)
     {
         let values : [String: Any] = ["userid" : post.uid,
                                       "name" : post.userName,

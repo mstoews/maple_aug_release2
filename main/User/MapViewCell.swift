@@ -10,6 +10,7 @@ import UIKit
 import GoogleMaps
 import GooglePlaces
 import Firebase
+import Mapbox
 
 
 class POIItem: NSObject, GMUClusterItem {
@@ -27,11 +28,14 @@ class POIItem: NSObject, GMUClusterItem {
 
 class MapViewCell: UICollectionViewCell,
     GMSMapViewDelegate,
+    MGLMapViewDelegate,
     CLLocationManagerDelegate,
     GMUClusterManagerDelegate
 {
     
     private var clusterManager: GMUClusterManager!
+    
+    var post : FSPost
     
     let locationManager = CLLocationManager()
     
@@ -49,6 +53,47 @@ class MapViewCell: UICollectionViewCell,
             }
         }
     }
+    
+    let mapBoxView : MGLMapView = {
+        let url = URL(string: "mapbox://styles/mapbox/streets-v11")
+        let mv = MGLMapView(frame: CGRect(x: 20, y: 80, width: 330, height: 560), styleURL: url)
+        mv.autoresizingMask = [.flexibleWidth, .flexibleHeight]
+        //mv.delegate =
+        
+        
+        let values : [String: Any] = [
+            "currentLat" : 36.00,
+            "currentLng" : 27.00,
+            "destinationLat" : 36.00,
+            "destinationLng" : 27.01,
+            "Title": "Title",
+            "SubTitle" : "Ad fake title"]
+        
+        
+        
+        var nav: NavigationStruct = NavigationStruct(dictionary: values)
+        
+        
+        let center = CLLocationCoordinate2D(latitude: nav.currentLocationLatitude! , longitude: nav.currentLocationLongitude!)
+        
+        // Optionally set a starting point.
+        mv.setCenter(center, zoomLevel: 8, direction: 0, animated: false)
+        
+        // Initialize and add the marker annotation.
+        let marker = MGLPointAnnotation()
+        marker.coordinate = CLLocationCoordinate2D(latitude: nav.destinationLocationLatitude! , longitude: nav.destinationLocationLongitude!)
+        
+        // This custom callout example does not implement subtitles.
+        marker.subtitle = "TEST"
+        
+        // Add marker to the map.
+        mv.addAnnotation(marker)
+        
+        // Select the annotation so the callout will appear.
+        mv.selectAnnotation(marker, animated: false)
+        
+        return mv
+    }()
     
     let mapView : GMSMapView = {
         let camera = GMSCameraPosition.camera(withLatitude: 35.652832 , longitude: 139.839478 , zoom: 12.0)
@@ -97,7 +142,7 @@ class MapViewCell: UICollectionViewCell,
     
     func mapView(_ mapView: GMSMapView, didTap marker: GMSMarker) -> Bool {
         if let poiItem = marker.userData as? POIItem {
-            NSLog("Did tap marker for cluster item \(poiItem.name)")
+            NSLog("Did tap marker for cluster item \(String(describing: poiItem.name))")
         } else {
             NSLog("Did tap a normal marker")
         }
@@ -106,7 +151,7 @@ class MapViewCell: UICollectionViewCell,
         locationMarker = marker
         //infoWindow.removeFromSuperview()
         //infoWindow = loadNiB()
-        guard let location = locationMarker?.position else {
+        guard (locationMarker?.position) != nil else {
             print("locationMarker is nil")
             return false
         }
@@ -206,46 +251,62 @@ class MapViewCell: UICollectionViewCell,
     
     override init(frame: CGRect) {
         super.init(frame: frame)
-        addSubview(mapView)
+        addSubview(mapBoxView)
         addSubview(mapButton)
         
         // mapView.anchor(top: topAnchor, left: leftAnchor, bottom: bottomAnchor, right: rightAnchor)
         
-        mapView.anchor(top: topAnchor, left: leftAnchor, bottom: nil,
+        mapBoxView.anchor(top: topAnchor, left: leftAnchor, bottom: nil,
                        right: nil, paddingTop: 0, paddingLeft: 0 ,
                        paddingBottom: 0, paddingRight: 0, width: frame.width, height: frame.height - 350)
         
-        mapButton.anchor(top: topAnchor, left: leftAnchor, bottom: nil, right: nil)
-        
-        let iconGenerator = GMUDefaultClusterIconGenerator()
-        let algorithm = GMUNonHierarchicalDistanceBasedAlgorithm()
-        let renderer = GMUDefaultClusterRenderer(mapView: mapView, clusterIconGenerator: iconGenerator)
-        clusterManager = GMUClusterManager(map: mapView, algorithm: algorithm, renderer: renderer)
-        
-        // Call cluster() after items have been added to perform the clustering and rendering on map.
-        clusterManager.cluster()
-        
-        // Register self to listen to both GMUClusterManagerDelegate and GMSMapViewDelegate events.
-        clusterManager.setDelegate(self, mapDelegate: self)
-        if let uid = Auth.auth().currentUser?.uid {
-            Firestore.fetchLocationByUserId(uid: uid) { (locationObjects) in
-                for location in locationObjects {
-                    let lat = Double(location.latitude!)
-                    let lng = Double(location.longitude!)
-                    let latitude = CLLocationDegrees(lat)
-                    let longitude = CLLocationDegrees(lng)
-                    let position = CLLocationCoordinate2DMake(latitude, longitude)
-                    let marker = GMSMarker(position: position)
-                    self.locations.append(location)
-                    if let product = location.types {
-                        //if let desc = location.address {
-                            let item = POIItem(position: position, name: product, marker: marker)
-                            self.clusterManager.add(item)
-                        //}
-                    }
+        if let postId = post.id {
+            Firestore.fetchLocationByPostId(postId: postId) { (locationObjects) in
+                if locationObjects.count > 0 {
+                    let values : [String: Any] = [
+                        "currentLat" : locationObjects[0].latitude!,
+                        "currentLng" : locationObjects[0].longitude!,
+                        "destinationLat" : locationObjects[0].latitude!,
+                        "destinationLng" : locationObjects[0].longitude!,
+                        "Title": self.post.caption,
+                        "SubTitle" : self.post.description]
+                    let nav = NavigationStruct(dictionary: values)
                 }
             }
         }
+        
+        
+        //mapButton.anchor(top: topAnchor, left: leftAnchor, bottom: nil, right: nil)
+        
+//        let iconGenerator = GMUDefaultClusterIconGenerator()
+//        let algorithm = GMUNonHierarchicalDistanceBasedAlgorithm()
+//        let renderer = GMUDefaultClusterRenderer(mapView: mapView, clusterIconGenerator: iconGenerator)
+//        clusterManager = GMUClusterManager(map: mapView, algorithm: algorithm, renderer: renderer)
+//
+//        // Call cluster() after items have been added to perform the clustering and rendering on map.
+//        clusterManager.cluster()
+//
+//        // Register self to listen to both GMUClusterManagerDelegate and GMSMapViewDelegate events.
+//        clusterManager.setDelegate(self, mapDelegate: self)
+//        if let uid = Auth.auth().currentUser?.uid {
+//            Firestore.fetchLocationByUserId(uid: uid) { (locationObjects) in
+//                for location in locationObjects {
+//                    let lat = Double(location.latitude!)
+//                    let lng = Double(location.longitude!)
+//                    let latitude = CLLocationDegrees(lat)
+//                    let longitude = CLLocationDegrees(lng)
+//                    let position = CLLocationCoordinate2DMake(latitude, longitude)
+//                    let marker = GMSMarker(position: position)
+//                    self.locations.append(location)
+//                    if let product = location.types {
+//                        //if let desc = location.address {
+//                            let item = POIItem(position: position, name: product, marker: marker)
+//                            self.clusterManager.add(item)
+//                        //}
+//                    }
+//                }
+//            }
+//        }
         
     }
     

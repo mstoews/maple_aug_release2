@@ -11,17 +11,18 @@ import MapboxNavigation
 import MapboxDirections
 import Mapbox
 import MaterialComponents
+import JJFloatingActionButton
 
 protocol MapPostDelegate {
-    func didTapNavigation(navigation: Navigation)
+    func didTapNavigation(navigation: NavigationStruct)
 }
 
 class MapPostViewController: UIViewController, MGLMapViewDelegate  {
     
     var delegate: MapPostDelegate?
-    var nav: Navigation?
+    var nav: NavigationStruct?
     var containerView: MDCCard?
-    
+   
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -30,6 +31,7 @@ class MapPostViewController: UIViewController, MGLMapViewDelegate  {
         containerView?.setShadowElevation(ShadowElevation.cardResting, for: UIControl.State.normal)
         containerView?.inkView.inkColor = .lightGray
         containerView?.backgroundColor = UIColor.collectionBackGround()
+    
         
         view.addSubview(containerView!)
         
@@ -60,8 +62,10 @@ class MapPostViewController: UIViewController, MGLMapViewDelegate  {
         // Select the annotation so the callout will appear.
         mapView.selectAnnotation(marker, animated: false)
         containerView?.addSubview(mapView)
-        setupLocationButton()
     
+        setupLocationButton()
+        actionButton.display(inViewController: self)
+        
     }
 
     // Button creation and autolayout setup
@@ -72,13 +76,26 @@ class MapPostViewController: UIViewController, MGLMapViewDelegate  {
         // the upper left corner of the view.
         navButton.translatesAutoresizingMaskIntoConstraints = false
         let constraints = [
-            NSLayoutConstraint(item: navButton, attribute: .top, relatedBy: .greaterThanOrEqual, toItem: topLayoutGuide, attribute: .bottom, multiplier: 1, constant: 10),
+            NSLayoutConstraint(item: navButton, attribute: .top, relatedBy: .greaterThanOrEqual, toItem: view.safeAreaLayoutGuide.bottomAnchor, attribute: .bottom, multiplier: 1, constant: 10),
             NSLayoutConstraint(item: navButton, attribute: .leading, relatedBy: .equal, toItem: view, attribute: .leading, multiplier: 1, constant: 10),
             NSLayoutConstraint(item: navButton, attribute: .height, relatedBy: .equal, toItem: nil, attribute: .notAnAttribute, multiplier: 1, constant: 40 ),
             NSLayoutConstraint(item: navButton, attribute: .width, relatedBy: .equal, toItem: nil, attribute: .notAnAttribute, multiplier: 1, constant: 40)
         ]
         
         view.addConstraints(constraints)
+      
+        
+        containerView?.addSubview(navButton2)
+        navButton2.translatesAutoresizingMaskIntoConstraints = false
+        let abConstraints = [
+            NSLayoutConstraint(item: navButton2, attribute: .top, relatedBy: .greaterThanOrEqual, toItem: view.safeAreaLayoutGuide.bottomAnchor, attribute: .bottom, multiplier: 1, constant: 10),
+            NSLayoutConstraint(item: navButton2, attribute: .left, relatedBy: .equal, toItem: navButton.rightAnchor, attribute: .left, multiplier: 1, constant: 10),
+            NSLayoutConstraint(item: navButton2, attribute: .height, relatedBy: .equal, toItem: nil, attribute: .notAnAttribute, multiplier: 1, constant: 40 ),
+            NSLayoutConstraint(item: navButton2, attribute: .width, relatedBy: .equal, toItem: nil, attribute: .notAnAttribute, multiplier: 1, constant: 40)
+        ]
+        
+        containerView?.addConstraints(abConstraints)
+        
     }
     
     
@@ -118,13 +135,48 @@ class MapPostViewController: UIViewController, MGLMapViewDelegate  {
         let fb = MDCFloatingButton()
         fb.backgroundColor = .white
         fb.tintColor = .white
-        fb.setImage(#imageLiteral(resourceName: "ic_map"), for: .normal)
+        fb.setImage(#imageLiteral(resourceName: "ic_camera_white"), for: .normal)
         fb.imageTintColor(for: .focused)
         fb.addTarget(self, action: #selector(handleNavigate(_:)), for: .touchUpInside)
         return fb
     }()
     
-  
+    let navButton2 : MDCFloatingButton = {
+        let fb = MDCFloatingButton()
+        fb.backgroundColor = .white
+        fb.tintColor = .white
+        fb.setImage(#imageLiteral(resourceName: "carplay_minus"), for: .normal)
+        fb.imageTintColor(for: .focused)
+        fb.addTarget(self, action: #selector(handleNavigate(_:)), for: .touchUpInside)
+        return fb
+    }()
+    
+    let actionButton : JJFloatingActionButton = {
+       let ab = JJFloatingActionButton()
+        ab.itemAnimationConfiguration = .circularSlideIn(withRadius: 120)
+        ab.buttonAnimationConfiguration = .rotation(toAngle: .pi * 3 / 4)
+        ab.buttonAnimationConfiguration.opening.duration = 0.8
+        ab.buttonAnimationConfiguration.closing.duration = 0.6
+        
+        ab.addItem(image: #imageLiteral(resourceName: "ic_settings_white")) { item in
+            Helper.showAlert(for: item)
+        }
+        
+        ab.addItem(image: #imageLiteral(resourceName: "ic_location_on_white")) { item in
+            Helper.showAlert(for: item)
+        }
+        
+        ab.addItem(image: #imageLiteral(resourceName: "ic_notifications_white")) { item in
+            Helper.showAlert(for: item)
+        }
+        
+        ab.addItem(image: #imageLiteral(resourceName: "feedback-confusing-directions")) { item in
+            Helper.showAlert(for: item)
+        }
+        
+        return ab
+    }()
+    
     var navigationViewController: NavigationViewController?
     var options: NavigationRouteOptions?
 
@@ -153,7 +205,6 @@ class MapPostViewController: UIViewController, MGLMapViewDelegate  {
         }
         
     }
-    
 }
 
 extension MapPostViewController: NavigationViewControllerDelegate {

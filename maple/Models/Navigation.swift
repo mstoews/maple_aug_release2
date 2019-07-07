@@ -5,7 +5,7 @@
 
 import Foundation
 
-struct Navigation {
+struct NavigationStruct {
     var currentLocationLatitude: Double?
     var currentLocationLongitude: Double?
     

@@ -13,14 +13,14 @@ import BadgeSwift
 import MaterialComponents
 
 protocol ProductCellDelegate {
-    func didTapComment(post: FSPost)
+    func didTapComment(post: Post)
     func didLike(for cell: ProductCell)
-    func didTapModify(post: FSPost)
+    func didTapModify(post: Post)
     func didTapBookmark(for cell : ProductCell)
-    func didTapImage(for cell : PostImage, post: FSPost)
-    func didSharePost(post: FSPost, imageObject: ImageObject)
+    func didTapImage(for cell : PostImage, post: Post)
+    func didSharePost(post: Post, imageObject: ImageObject)
     func didTapUserNameLabel(uid: String)
-    func didTapImageCell(for cell:  UserImageCell, post: FSPost)
+    func didTapImageCell(for cell:  UserImageCell, post: Post)
 }
 
 protocol ProductHeaderCardDelegate {
@@ -112,7 +112,7 @@ class ProductCell: MDCCardCollectionCell , UICollectionViewDataSource, UICollect
         imageWidthContraint?.constant = widthConstant
     }
 
-    var post: FSPost? {
+    var post: Post? {
         didSet {
             if post == nil
             {

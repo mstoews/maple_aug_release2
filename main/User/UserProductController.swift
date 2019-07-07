@@ -216,43 +216,30 @@ class UserProductController: UserProfileController {
         return header
     }
     
+    fileprivate func resizeTextHeight(_ indexPath: IndexPath, _ rc: inout CGSize) {
+        let approximateWidthOfBioTextView = view.frame.width
+        let size = CGSize(width: approximateWidthOfBioTextView, height: 1200)
+        let attributes = [NSAttributedString.Key.font : UIFont.systemFont(ofSize: CGFloat(15))]
+        let post = fs_posts[indexPath.item]
+        let estimatedFrame = NSString(string: post.description).boundingRect(with: size, options: .usesLineFragmentOrigin, attributes: attributes, context: nil)
+        rc = CGSize(width: view.frame.width - 15 , height: estimatedFrame.height )
+    }
+    
     override func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
         var rc = CGSize()
         switch cellType
         {
         case .GRID :
-            
-            let approximateWidthOfBioTextView = view.frame.width
-            let size = CGSize(width: approximateWidthOfBioTextView, height: 1200)
-            let attributes = [NSAttributedString.Key.font : UIFont.systemFont(ofSize: CGFloat(15))]
-            let post = fs_posts[indexPath.item]
-            let estimatedFrame = NSString(string: post.description).boundingRect(with: size, options: .usesLineFragmentOrigin, attributes: attributes, context: nil)
-            rc = CGSize(width: view.frame.width - 15 , height: estimatedFrame.height )
+            resizeTextHeight(indexPath, &rc)
             break
-            
         case .LIST  :
-            
-            let approximateWidthOfBioTextView = view.frame.width
-            let size = CGSize(width: approximateWidthOfBioTextView, height: 1200)
-            let attributes = [NSAttributedString.Key.font : UIFont.systemFont(ofSize: CGFloat(15))]
-            let post = fs_posts[indexPath.item]
-            let estimatedFrame = NSString(string: post.description).boundingRect(with: size, options: .usesLineFragmentOrigin, attributes: attributes, context: nil)
-            rc = CGSize(width: view.frame.width - 15, height: estimatedFrame.height )
+            resizeTextHeight(indexPath, &rc)
             break
-            
         case .MAP :
-            let width = view.frame.width
-            let height = view.frame.height
-            rc = CGSize(width: width, height: height)
+            rc = CGSize(width: view.frame.width, height: view.frame.height)
             break
-            
         case .BKMK :
-            let approximateWidthOfBioTextView = view.frame.width
-            let size = CGSize(width: approximateWidthOfBioTextView, height: 1200)
-            let attributes = [NSAttributedString.Key.font : UIFont.systemFont(ofSize: CGFloat(15))]
-            let post = fs_posts[indexPath.item]
-            let estimatedFrame = NSString(string: post.description).boundingRect(with: size, options: .usesLineFragmentOrigin, attributes: attributes, context: nil)
-            rc = CGSize(width: view.frame.width - 15 , height: estimatedFrame.height + view.frame.width - 60 )
+           resizeTextHeight(indexPath, &rc)
             break
         }
         return rc

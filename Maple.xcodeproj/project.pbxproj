@@ -16,7 +16,8 @@
 		02BB2407229EB3A70020601D /* BaseCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 02BB2406229EB3A70020601D /* BaseCell.swift */; };
 		02BB241122BF46640020601D /* CollectionLayout.swift in Sources */ = {isa = PBXBuildFile; fileRef = 02BB241022BF46640020601D /* CollectionLayout.swift */; };
 		02D8690F228233530093BD18 /* MapBoxViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 02D8690E228233530093BD18 /* MapBoxViewController.swift */; };
-		02D869112285A0C70093BD18 /* Navigation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 02D869102285A0C70093BD18 /* Navigation.swift */; };
+		02D869112285A0C70093BD18 /* NavigationStruct.swift in Sources */ = {isa = PBXBuildFile; fileRef = 02D869102285A0C70093BD18 /* NavigationStruct.swift */; };
+		02D877BB22CBDABD00F05E85 /* Helper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 02D877BA22CBDABD00F05E85 /* Helper.swift */; };
 		02DC63442001BDD600AE9662 /* CommentInputAccessoryView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 02DC63432001BDD600AE9662 /* CommentInputAccessoryView.swift */; };
 		02DC63462001BE7600AE9662 /* CommentInputTextView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 02DC63452001BE7600AE9662 /* CommentInputTextView.swift */; };
 		02DC634A2004E5C500AE9662 /* HomeHeaderCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 02DC63492004E5C500AE9662 /* HomeHeaderCell.swift */; };
@@ -80,7 +81,6 @@
 		48443E7D210990AE00A21FC4 /* GQTPointQuadTreeChild.m in Sources */ = {isa = PBXBuildFile; fileRef = 48443E61210990AE00A21FC4 /* GQTPointQuadTreeChild.m */; };
 		48482FC020DA18A00031EBFF /* Location.swift in Sources */ = {isa = PBXBuildFile; fileRef = 48482FB020DA18A00031EBFF /* Location.swift */; };
 		48482FC120DA18A00031EBFF /* Situation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 48482FB120DA18A00031EBFF /* Situation.swift */; };
-		48482FC220DA18A00031EBFF /* DataModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 48482FB220DA18A00031EBFF /* DataModel.swift */; };
 		48482FC320DA18A00031EBFF /* LocalCollection.swift in Sources */ = {isa = PBXBuildFile; fileRef = 48482FB320DA18A00031EBFF /* LocalCollection.swift */; };
 		48482FC420DA18A00031EBFF /* Comment.swift in Sources */ = {isa = PBXBuildFile; fileRef = 48482FB420DA18A00031EBFF /* Comment.swift */; };
 		48482FC620DA18A00031EBFF /* Image.swift in Sources */ = {isa = PBXBuildFile; fileRef = 48482FB620DA18A00031EBFF /* Image.swift */; };
@@ -174,7 +174,8 @@
 		02BB2406229EB3A70020601D /* BaseCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BaseCell.swift; sourceTree = "<group>"; };
 		02BB241022BF46640020601D /* CollectionLayout.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CollectionLayout.swift; sourceTree = "<group>"; };
 		02D8690E228233530093BD18 /* MapBoxViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MapBoxViewController.swift; sourceTree = "<group>"; };
-		02D869102285A0C70093BD18 /* Navigation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Navigation.swift; sourceTree = "<group>"; };
+		02D869102285A0C70093BD18 /* NavigationStruct.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NavigationStruct.swift; sourceTree = "<group>"; };
+		02D877BA22CBDABD00F05E85 /* Helper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Helper.swift; sourceTree = "<group>"; };
 		02DC63432001BDD600AE9662 /* CommentInputAccessoryView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CommentInputAccessoryView.swift; sourceTree = "<group>"; };
 		02DC63452001BE7600AE9662 /* CommentInputTextView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CommentInputTextView.swift; sourceTree = "<group>"; };
 		02DC63492004E5C500AE9662 /* HomeHeaderCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeHeaderCell.swift; sourceTree = "<group>"; };
@@ -279,7 +280,6 @@
 		48443E65210990AE00A21FC4 /* GQTBounds.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GQTBounds.h; sourceTree = "<group>"; };
 		48482FB020DA18A00031EBFF /* Location.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Location.swift; sourceTree = "<group>"; };
 		48482FB120DA18A00031EBFF /* Situation.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Situation.swift; sourceTree = "<group>"; };
-		48482FB220DA18A00031EBFF /* DataModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DataModel.swift; sourceTree = "<group>"; };
 		48482FB320DA18A00031EBFF /* LocalCollection.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LocalCollection.swift; sourceTree = "<group>"; };
 		48482FB420DA18A00031EBFF /* Comment.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Comment.swift; sourceTree = "<group>"; };
 		48482FB620DA18A00031EBFF /* Image.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Image.swift; sourceTree = "<group>"; };
@@ -602,8 +602,7 @@
 			children = (
 				48482FB020DA18A00031EBFF /* Location.swift */,
 				48482FB120DA18A00031EBFF /* Situation.swift */,
-				02D869102285A0C70093BD18 /* Navigation.swift */,
-				48482FB220DA18A00031EBFF /* DataModel.swift */,
+				02D869102285A0C70093BD18 /* NavigationStruct.swift */,
 				48482FB320DA18A00031EBFF /* LocalCollection.swift */,
 				48482FB420DA18A00031EBFF /* Comment.swift */,
 				48482FB620DA18A00031EBFF /* Image.swift */,
@@ -704,6 +703,7 @@
 				4876BC9520DA16280057E5E0 /* CustomImageView.swift */,
 				4876BC9620DA16280057E5E0 /* PhotoViewModel.swift */,
 				482C01F122AF276000000597 /* MultiLineTextView.swift */,
+				02D877BA22CBDABD00F05E85 /* Helper.swift */,
 			);
 			name = Utilities;
 			path = main/Utilities;
@@ -1155,6 +1155,7 @@
 				"${BUILT_PRODUCTS_DIR}/Imaginary/Imaginary.framework",
 				"${BUILT_PRODUCTS_DIR}/InstantSearch-Core-Swift/InstantSearchCore.framework",
 				"${BUILT_PRODUCTS_DIR}/JGProgressHUD/JGProgressHUD.framework",
+				"${BUILT_PRODUCTS_DIR}/JJFloatingActionButton/JJFloatingActionButton.framework",
 				"${BUILT_PRODUCTS_DIR}/Lightbox/Lightbox.framework",
 				"${BUILT_PRODUCTS_DIR}/MDFInternationalization/MDFInternationalization.framework",
 				"${BUILT_PRODUCTS_DIR}/MDFTextAccessibility/MDFTextAccessibility.framework",
@@ -1206,6 +1207,7 @@
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/Imaginary.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/InstantSearchCore.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/JGProgressHUD.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/JJFloatingActionButton.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/Lightbox.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/MDFInternationalization.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/MDFTextAccessibility.framework",
@@ -1361,18 +1363,18 @@
 				0252AF3822938A46004DA3BB /* AdvancedNavigationController.swift in Sources */,
 				4876BD1A20DA164E0057E5E0 /* ShadowLineView.swift in Sources */,
 				48443E7C210990AE00A21FC4 /* GQTPointQuadTree.m in Sources */,
+				02D877BB22CBDABD00F05E85 /* Helper.swift in Sources */,
 				4876BD0E20DA164E0057E5E0 /* PlaceNameHeader.swift in Sources */,
 				48443E67210990AE00A21FC4 /* GMUGridBasedClusterAlgorithm.m in Sources */,
 				4876BCA120DA16280057E5E0 /* PhotoSelectorHeader.swift in Sources */,
 				4876BD0220DA164E0057E5E0 /* MapLocationSearchController.swift in Sources */,
-				48482FC220DA18A00031EBFF /* DataModel.swift in Sources */,
 				482FC13620DE236D00E23DAE /* PostRecord.swift in Sources */,
 				482FC13B20DE236D00E23DAE /* PostCollectionCell.swift in Sources */,
 				482FC10620DE15D900E23DAE /* MapCell.swift in Sources */,
 				482FC12620DE168200E23DAE /* UserProfileHeader.swift in Sources */,
 				02DC63442001BDD600AE9662 /* CommentInputAccessoryView.swift in Sources */,
 				4876BC9F20DA16280057E5E0 /* ProductCell.swift in Sources */,
-				02D869112285A0C70093BD18 /* Navigation.swift in Sources */,
+				02D869112285A0C70093BD18 /* NavigationStruct.swift in Sources */,
 				02DC63462001BE7600AE9662 /* CommentInputTextView.swift in Sources */,
 				4876BD0A20DA164E0057E5E0 /* PickAPlaceViewController.swift in Sources */,
 				4876BD1120DA164E0057E5E0 /* MapAPIKeys .swift in Sources */,

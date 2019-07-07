@@ -322,8 +322,8 @@ extension Post: Equatable {
 
 var  postbyUser: [Post]?
 
-extension FSPost: Equatable {
-    static func ==(lhs: FSPost, rhs: FSPost) -> Bool {
+extension PostStruct: Equatable {
+    static func ==(lhs: Post, rhs: Post) -> Bool {
         return lhs.id == rhs.id
     }
 }

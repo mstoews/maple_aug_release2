@@ -5,7 +5,7 @@ import MaterialComponents
 
 class CommentsController: MDCCollectionViewController, CommentInputAccessoryViewDelegate {
     
-    var post: FSPost?
+    var post: Post?
     let cellId = "cellId"
     var sizingCell: CommentCell!
     var insets: UIEdgeInsets!

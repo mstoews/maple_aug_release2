@@ -102,7 +102,7 @@ class ProductPageController:  UIViewController, CLLocationManagerDelegate,  UICo
     
     let locationManager = CLLocationManager()
     
-    var post: FSPost? {
+    var post: Post? {
         didSet {
             title =  "Post"
             setupAttributedCaption()
@@ -152,7 +152,7 @@ class ProductPageController:  UIViewController, CLLocationManagerDelegate,  UICo
     }()
     
 
-    func didTapImage(for cell: ProductImageCell, post: FSPost) {
+    func didTapImage(for cell: ProductImageCell, post: Post) {
         
         var photos: [PhotoViewModel] = []
         

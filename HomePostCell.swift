@@ -14,14 +14,14 @@ import ActiveLabel
 
 
 protocol HomePostCellDelegate {
-    func didTapComment(post: FSPost)
+    func didTapComment(post: Post)
     func didLike(for cell: HomePostCell)
-    func didTapMapButton(post: FSPost)
+    func didTapMapButton(post: Post)
     func didTapBookmark(for cell : HomePostCell)
-    func didTapImage(for cell : PostImage, post: FSPost)
-    func didSharePost(post: FSPost, imageObject: ImageObject)
+    func didTapImage(for cell : PostImage, post: Post)
+    func didSharePost(post: Post, imageObject: ImageObject)
     func didTapUserNameLabel(uid: String)
-    func didTapImageCell(for cell:  UserImageCell, post: FSPost)
+    func didTapImageCell(for cell:  UserImageCell, post: Post)
 }
 
 class PostImage: BaseCell
@@ -122,7 +122,7 @@ class HomePostCell: MDCCardCollectionCell , UICollectionViewDataSource, UICollec
     }
     
     // MARK:- Set Post
-    var post: FSPost? {
+    var post: Post? {
         
         didSet {
             if post == nil

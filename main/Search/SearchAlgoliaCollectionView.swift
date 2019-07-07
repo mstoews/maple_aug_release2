@@ -94,13 +94,12 @@ class SearchAlgoliaCollectionView: MDCCollectionViewController , UISearchBarDele
     
   
     @objc func didSearchProducts() {
+        TYPE = .PRD
         print("SearchAlgoliaCollectionView::didSearchProducts")
-        
         let hud = JGProgressHUD(style: .dark)
         hud.textLabel.text = NSLocalizedString("FetchProd", comment: "Fetch Products")
         hud.show(in: view)
         
-        TYPE = .PRD
         fullTextSearch = Searcher(index: AlgoliaManager.sharedInstance.posts, resultHandler: self.handleSearchResults)
         fullTextSearch.params.hitsPerPage = 30
         fullTextSearch.params.attributesToRetrieve = ["*" ]
@@ -354,10 +353,10 @@ class SearchAlgoliaCollectionView: MDCCollectionViewController , UISearchBarDele
             postHits.append(contentsOf: results.hits)
         }
         DispatchQueue.main.async {
-            self.collectionView?.collectionViewLayout.invalidateLayout()
+            self.collectionView.collectionViewLayout.invalidateLayout()
             self.collectionView.collectionViewLayout.invalidateLayout()
             self.collectionView.collectionViewLayout.prepare()
-            self.collectionView?.reloadData()
+            self.collectionView.reloadData()
         }
         
     }
@@ -464,7 +463,7 @@ class SearchAlgoliaCollectionView: MDCCollectionViewController , UISearchBarDele
                     if let document = document {
                         if let dataDescription = document.data().map(String.init(describing:)) {
                             let data = document.data() as! [String: Any]
-                            let post = FSPost(dictionary: data, postId: postId)
+                            let post = Post(dictionary: data, postId: postId)
                             
                             //editPostController.post = post
                             //self.navigationController?.pushViewController( editPostController, animated: true)

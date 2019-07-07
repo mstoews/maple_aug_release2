@@ -48,7 +48,7 @@ class HomeController: MDCCollectionViewController, HomePostCellDelegate,  HomeHe
     var locations = [LocationObject]()
     let backgroundView = UIImageView()
     
-    private var posts: [FSPost] = []
+    private var posts: [Post] = []
     private var documents: [DocumentSnapshot] = []
 
     static let updateFeedNotificationName = NSNotification.Name(rawValue: "handleRefresh")
@@ -85,7 +85,7 @@ class HomeController: MDCCollectionViewController, HomePostCellDelegate,  HomeHe
     }
     
     
-    func didTapMapButton(post: FSPost) {
+    func didTapMapButton(post: Post) {
         print("Did tap map button ... ")
         //let viewController = MapPostViewController()
         
@@ -106,7 +106,7 @@ class HomeController: MDCCollectionViewController, HomePostCellDelegate,  HomeHe
                         "Title": post.product,
                         "SubTitle" : post.description]
                     
-                    let nav = Navigation(dictionary: values)
+                    let nav = NavigationStruct(dictionary: values)
                     viewController.nav = nav
                     self.navigationController?.pushViewController(viewController, animated: true)
                 }
@@ -115,7 +115,7 @@ class HomeController: MDCCollectionViewController, HomePostCellDelegate,  HomeHe
         }
     }
     
-    func didSharePost(post: FSPost, imageObject: ImageObject) {
+    func didSharePost(post: Post, imageObject: ImageObject) {
     
         shareImageView.loadImage(urlString: imageObject.url)
         
@@ -140,7 +140,7 @@ class HomeController: MDCCollectionViewController, HomePostCellDelegate,  HomeHe
         }
     }
     
-    func didTapImageCell(for cell: UserImageCell, post: FSPost) {
+    func didTapImageCell(for cell: UserImageCell, post: Post) {
         
     }
     
@@ -183,7 +183,7 @@ class HomeController: MDCCollectionViewController, HomePostCellDelegate,  HomeHe
    
     
     
-    func updateAlgoliaStore(post: FSPost)
+    func updateAlgoliaStore(post: Post)
     {
         var imageUrl: String?
         if post.imageUrlArray.count > 0 {
@@ -229,9 +229,9 @@ class HomeController: MDCCollectionViewController, HomePostCellDelegate,  HomeHe
                     return
                 }
                 
-                let _fsPost = snapshot.documents.map { (document) -> FSPost in
-                    let post = FSPost(dictionary: document.data(), postId: document.documentID)!
-                    strongSelf.updateAlgoliaStore(post: post)
+                let _fsPost = snapshot.documents.map { (document) -> Post in
+                    let post = Post(dictionary: document.data(), postId: document.documentID)!
+                    //strongSelf.updateAlgoliaStore(post: post)
                     return post
                 }
                 
@@ -266,14 +266,14 @@ class HomeController: MDCCollectionViewController, HomePostCellDelegate,  HomeHe
                     return
                 }
                 
-                let models = snapshot.documents.map { (document) -> FSPost in
-                    if let model = FSPost(dictionary: document.data(), postId: document.documentID) {
+                let models = snapshot.documents.map { (document) -> Post in
+                    if let model = Post(dictionary: document.data(), postId: document.documentID) {
                         //Firestore.updateAlgoliaPost(post: model)
                         return model
                     }
                     else {
                         // Don't use fatalError here in a real app.
-                        fatalError("Unable to initialize type \(FSPost.self) with dictionary \(document.data())")
+                        fatalError("Unable to initialize type \(Post.self) with dictionary \(document.data())")
                     }
                 }
                 
@@ -511,14 +511,14 @@ class HomeController: MDCCollectionViewController, HomePostCellDelegate,  HomeHe
     {
     }
     
-    func didTapComment(post: FSPost) {
+    func didTapComment(post: Post) {
         print("Message coming from home controller ... didTapComment")
         let commentsController = CommentsController(collectionViewLayout: UICollectionViewFlowLayout())
         commentsController.post = post
         navigationController?.pushViewController(commentsController, animated: true)
     }
     
-    func didTapImage(for cell: PostImage, post: FSPost) {
+    func didTapImage(for cell: PostImage, post: Post) {
         /* var photos: [PhotoViewModel] = []
         
         if post.largeUrlArray.count > 0 {
