@@ -682,7 +682,7 @@ class UserGridPostCell: MDCCardCollectionCell , UICollectionViewDataSource, UICo
         commentButton.anchor  (top: imageCollectionView.bottomAnchor, left: likeButton.rightAnchor,     bottom: nil, right: nil, paddingTop: 0, paddingLeft: 0, paddingBottom: 0, paddingRight: -15 , width: 50, height: 40)
         bookmarkButton.anchor (top: imageCollectionView.bottomAnchor, left: commentButton.rightAnchor,  bottom: nil, right: nil, paddingTop: 0, paddingLeft: 4, paddingBottom: 0, paddingRight: -15 , width: 50, height: 40)
         editButton.anchor     (top: imageCollectionView.bottomAnchor, left: bookmarkButton.rightAnchor, bottom: nil, right: nil, paddingTop: 0, paddingLeft: 4, paddingBottom: 0, paddingRight: -15 , width: 50, height: 40)
-        timeAgoLabel.anchor    (top: imageCollectionView.bottomAnchor, left: editButton.rightAnchor,     bottom: nil, right: nil, paddingTop: 0, paddingLeft: 50, paddingBottom: 0, paddingRight: 0 , width: 0, height: 20)
+        timeAgoLabel.anchor    (top: imageCollectionView.bottomAnchor, left: editButton.rightAnchor,     bottom: nil, right: nil, paddingTop: 0, paddingLeft: 40, paddingBottom: 0, paddingRight: 0 , width: 0, height: 20)
         
         commentBadge.anchor(top: topDividerView.topAnchor, left: commentButton.rightAnchor, bottom: nil, right: nil, paddingTop: 2, paddingLeft: -20, paddingBottom: 0, paddingRight: 0 , width: 0, height: 0)
         

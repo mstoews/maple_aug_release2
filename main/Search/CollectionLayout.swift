@@ -1,7 +1,7 @@
 import Foundation
 import UIKit
 
-class CollectionLayout: UICollectionViewFlowLayout {
+class SearchCollectionLayout: UICollectionViewFlowLayout {
     
     fileprivate var numberOfColumns: Int = 3
     

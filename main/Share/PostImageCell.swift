@@ -51,7 +51,7 @@ class PostImageObject: MDCCardCollectionCell
         imageView.anchor(top: topAnchor, left: leftAnchor, bottom: bottomAnchor, right: rightAnchor)
         
         stackButtonsVerical.anchor(top: buttonMenus.topAnchor, left: buttonMenus.leftAnchor, bottom: buttonMenus.bottomAnchor, right: buttonMenus.rightAnchor)
-        buttonMenus.anchor(top: topAnchor, left: leftAnchor, bottom: nil , right: nil, paddingTop: 20, paddingLeft: 5, paddingBottom: 0, paddingRight: 20,  width: 40, height: 80)
+        buttonMenus.anchor(top: topAnchor, left: leftAnchor, bottom: nil , right: nil, paddingTop: 20, paddingLeft: 5, paddingBottom: 0, paddingRight: 20,  width: 30, height: 60)
     }
     
     var delegate: UIImageEditFilterDelegate?

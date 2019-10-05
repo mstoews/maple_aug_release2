@@ -641,7 +641,6 @@ extension Firestore {
                         count = 0
                     }
                 }
-                print("Count = \(count)");
                 completion(count)
             }
         }

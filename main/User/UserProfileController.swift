@@ -675,51 +675,50 @@ class UserProfileController: MDCCollectionViewController,
         return header
     }
     
+
+    
     override func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
         var rc = CGSize()
-        if posts.count == 0 {
-            return rc
-        }
+        var height : CGFloat = 290.00
+        let marginWidth : CGFloat = 15.00
+        let labelsHeight : CGFloat = 290.00
+        let approximateWidthOfBioTextView = view.frame.width
+        let size = CGSize(width: approximateWidthOfBioTextView, height: 1000)
+        let attributes = [NSAttributedString.Key.font : UIFont.systemFont(ofSize: CGFloat(15))]
+        
         switch cellType
         {
-        case CellType.GRID :
-            //let width = view.frame.width
-            let approximateWidthOfBioTextView = view.frame.width
-            let size = CGSize(width: approximateWidthOfBioTextView, height: 1200)
-            let attributes = [NSAttributedString.Key.font : UIFont.systemFont(ofSize: CGFloat(15))]
-            let post = posts[indexPath.item]
-            let estimatedFrame = NSString(string: post.description).boundingRect(with: size, options: .usesLineFragmentOrigin, attributes: attributes, context: nil)
-            rc = CGSize(width: view.frame.width - 15 , height: estimatedFrame.height + view.frame.width - 100 )
+        case .GRID :
+            if posts.count > 0 {
+                let post = posts[indexPath.item]
+                let estimatedFrame = NSString(string: post.description).boundingRect(with: size, options: .usesLineFragmentOrigin, attributes: attributes, context: nil)
+                height = estimatedFrame.height + labelsHeight
+            }
+            rc = CGSize(width: view.frame.width - marginWidth , height: height)
             break
-            
-        case CellType.LIST  :
-            //let width = view.frame.width
-            let approximateWidthOfBioTextView = view.frame.width
-            let size = CGSize(width: approximateWidthOfBioTextView, height: 1200)
-            let attributes = [NSAttributedString.Key.font : UIFont.systemFont(ofSize: CGFloat(15))]
-            let post = posts[indexPath.item]
-            let estimatedFrame = NSString(string: post.description).boundingRect(with: size, options: .usesLineFragmentOrigin, attributes: attributes, context: nil)
-            rc = CGSize(width: view.frame.width - 15, height: estimatedFrame.height + view.frame.width - 260 )
+        case .LIST :
+            if posts.count > 0 {
+                let post = posts[indexPath.item]
+                let estimatedFrame = NSString(string: post.description).boundingRect(with: size, options: .usesLineFragmentOrigin, attributes: attributes, context: nil)
+                height = estimatedFrame.height + labelsHeight
+            }
+            let labelsHeightAdj : CGFloat = 80
+            rc = CGSize(width: view.frame.width - marginWidth, height:  height - labelsHeightAdj)
             break
-   
-        case CellType.MAP :
-            let width = view.frame.width
-            let height = view.frame.height
-            rc = CGSize(width: width, height: height)
+        case .MAP :
+            rc = CGSize(width: view.frame.width, height: view.frame.height )
             break
-            
-        case CellType.BKMK :
-            let approximateWidthOfBioTextView = view.frame.width
-            let size = CGSize(width: approximateWidthOfBioTextView, height: 1200)
-            let attributes = [NSAttributedString.Key.font : UIFont.systemFont(ofSize: CGFloat(15))]
-            let post = bookMarkPosts[indexPath.item]
-            let estimatedFrame = NSString(string: post.description).boundingRect(with: size, options: .usesLineFragmentOrigin, attributes: attributes, context: nil)
-            rc = CGSize(width: view.frame.width - 15 , height: estimatedFrame.height + view.frame.width - 60 )
+        case .BKMK :
+            if posts.count > 0 {
+                let post = posts[indexPath.item]
+                let estimatedFrame = NSString(string: post.description).boundingRect(with: size, options: .usesLineFragmentOrigin, attributes: attributes, context: nil)
+                height = estimatedFrame.height + labelsHeight
+            }
+            rc = CGSize(width: view.frame.width - marginWidth , height:  height)
             break
         }
         return rc
     }
-    
     
     override func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, referenceSizeForHeaderInSection section: Int) -> CGSize
     {

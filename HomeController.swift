@@ -79,7 +79,7 @@ class HomeController: MDCCollectionViewController, HomePostCellDelegate,  HomeHe
     
     @objc func handleRefresh() {
         refreshControl.beginRefreshing()
-        PAGINATION_LIMIT = PAGINATION_LIMIT + 5
+        PAGINATION_LIMIT = PAGINATION_LIMIT + 10
         observePostFeed()
         refreshControl.endRefreshing()
     }
@@ -190,24 +190,42 @@ class HomeController: MDCCollectionViewController, HomePostCellDelegate,  HomeHe
             imageUrl = post.imageUrlArray[0]
         }
         
+        if let postId = post.id {
         
-        if let imageUrl = imageUrl {
-        let values : [String: Any] = ["userid" : post.uid,
-                                      "name" : post.userName,
-                                      "profileUrl" : post.imageUrl,
-                                      "product": post.product ,
-                                      "description" : post.description,
-                                      "urlArray" : imageUrl,
-                                      "creationDate": Date().timeIntervalSince1970]
-        
-        AlgoliaManager.sharedInstance.posts.addObject(values, withID: post.id! , completionHandler: { (content, error) -> Void in
-            if error == nil {
-                if let objectID = content!["objectID"] as? String {
-                    print("Object ID: \(objectID)")
+            Firestore.fetchLocationByPostId(postId: postId) {   locations   in
+                
+                var obj: LocationObject?
+                if locations.count > 0 {
+                    obj = locations[0]
                 }
-            }
-        })
-        }
+                
+                if let obj = obj {
+                    if let imageUrl = imageUrl {
+                        let values : [String: Any] = ["userid"       : post.uid,
+                                                      "name"         : post.userName,
+                                                      "profileUrl"   : post.profileURL,
+                                                      "product"      : post.product ,
+                                                      "description"  : post.description,
+                                                      "urlArray"     : imageUrl,
+                                                      "location"     : obj.location as Any,
+                                                      "latitude"     : obj.latitude as Any,
+                                                      "longitude"    : obj.longitude as Any,
+                                                      "address"      : obj.address as Any,
+                                                      "phone"        : obj.phoneNumber as Any,
+                                                      "priceLevel"   : obj.priceLevel as Any,
+                                                      "rating"       : obj.rating as Any,
+                                                      "creationDate" : Date().timeIntervalSince1970]
+                        
+                        AlgoliaManager.sharedInstance.posts.addObject(values, withID: post.id! , completionHandler: { (content, error) -> Void in
+                            if error == nil {
+                                if let objectID = content!["objectID"] as? String {
+                                    print("Object ID: \(objectID)")
+                                }
+                            }
+                        })
+                    }
+                }
+            }}
     }
     
     fileprivate func observePostFeed()
@@ -231,7 +249,7 @@ class HomeController: MDCCollectionViewController, HomePostCellDelegate,  HomeHe
                 
                 let _fsPost = snapshot.documents.map { (document) -> FSPost in
                     let post = FSPost(dictionary: document.data(), postId: document.documentID)!
-                    strongSelf.updateAlgoliaStore(post: post)
+                    //strongSelf.updateAlgoliaStore(post: post)
                     return post
                 }
                 
@@ -435,7 +453,7 @@ class HomeController: MDCCollectionViewController, HomePostCellDelegate,  HomeHe
             let attributes = [NSAttributedString.Key.font : UIFont.systemFont(ofSize: CGFloat(15))]
             let post = posts[indexPath.item]
             let estimatedFrame = NSString(string: post.description).boundingRect(with: size, options: .usesLineFragmentOrigin, attributes: attributes, context: nil)
-            return CGSize(width: view.frame.width - 15 , height: estimatedFrame.height + view.frame.width - 40 )
+            return CGSize(width: view.frame.width - 15 , height: estimatedFrame.height + 335 )
         }
         else
         {

@@ -195,9 +195,7 @@ class HomePostCell: MDCCardCollectionCell , UICollectionViewDataSource, UICollec
                 let timeAttributedText = NSMutableAttributedString(string: timeAgoDisplay, attributes: [NSAttributedString.Key.font: UIFont.systemFont(ofSize: 12)])
                 timeAgoLabel.attributedText = timeAttributedText
             }
-           
-             configurePostCaption()
-            
+            configurePostCaption()
             self.imageCollectionView.reloadData()
         }
         
@@ -478,7 +476,9 @@ class HomePostCell: MDCCardCollectionCell , UICollectionViewDataSource, UICollec
     }
     
     let imageCollectionView: UICollectionView = {
-        let layout = UICollectionViewFlowLayout()
+        //let layout = UICollectionViewFlowLayout()
+        let layout = BetterSnappingLayout()
+        //let layout = CarouselFlowLayout()
         layout.scrollDirection = .horizontal
         layout.minimumInteritemSpacing = 0
         layout.minimumLineSpacing = 0
@@ -550,7 +550,7 @@ class HomePostCell: MDCCardCollectionCell , UICollectionViewDataSource, UICollec
         
         
         userProfileImageView.anchor(top: topAnchor, left: leftAnchor, bottom: nil,
-                                    right: nil, paddingTop: 8, paddingLeft: 8,
+                                    right: nil, paddingTop: 2, paddingLeft: 8,
                                     paddingBottom: 0, paddingRight: 0, width: 40, height: 40)
         
         userProfileImageView.layer.cornerRadius = 40 / 2
@@ -558,9 +558,7 @@ class HomePostCell: MDCCardCollectionCell , UICollectionViewDataSource, UICollec
         usernameLabel.anchor(top: userProfileImageView.topAnchor, left: userProfileImageView.rightAnchor, bottom: nil,right: nil, paddingTop: 0, paddingLeft: 8, paddingBottom: 0, paddingRight: 0, width: frame.size.width - 100 , height: 40)
         shareButton.anchor(top: userProfileImageView.topAnchor, left: nil, bottom: nil,right: rightAnchor, paddingTop: 0, paddingLeft: 8, paddingBottom: 0, paddingRight: 8, width: 35, height: 35)
         
-        
-        //usernameLabel.anchor(top: userProfileImageView.topAnchor, left: userProfileImageView.rightAnchor, bottom: nil,right: nil, paddingTop: 0, paddingLeft: 8, paddingBottom: 0, paddingRight: 0, width: frame.size.width - 100 , height: 40)
-        shareButton.anchor(top: userProfileImageView.topAnchor, left: nil, bottom: nil,right: rightAnchor, paddingTop: 0, paddingLeft: 8, paddingBottom: 0, paddingRight: 8, width: 35, height: 35)
+        shareButton.anchor(top: userProfileImageView.topAnchor, left: nil, bottom: nil,right: rightAnchor, paddingTop: 2, paddingLeft: 8, paddingBottom: 0, paddingRight: 8, width: 35, height: 35)
         
         imageCollectionView.anchor(top: userProfileImageView.bottomAnchor, left: leftAnchor, bottom: nil, right: rightAnchor, paddingTop: 2, paddingLeft: 0, paddingBottom: 0, paddingRight: 0, width: 0, height: frame.width )
         topDividerView.anchor(top: imageCollectionView.bottomAnchor, left: leftAnchor, bottom: nil, right: rightAnchor,paddingTop: 2 , paddingLeft: 0, paddingBottom: 0, paddingRight: 5, width: 0, height: 0.5)
