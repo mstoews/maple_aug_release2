@@ -120,11 +120,11 @@ extension UIImage {
     
     static func circleImage(with url: URL, to imageView: UIImageView) {
         let urlString = url.absoluteString
-        if let image = SDImageCache.shared().imageFromCache(forKey: urlString) {
+        if let image = SDImageCache.shared.imageFromCache(forKey: urlString) {
             imageView.image = image
             return
         }
-        SDWebImageDownloader.shared().downloadImage(with: url,
+        SDWebImageDownloader.shared.downloadImage(with: url,
                                                     options: .highPriority, progress: nil) { image, _, error, _ in
                                                         if let error = error {
                                                             print(error)
@@ -132,7 +132,7 @@ extension UIImage {
                                                         }
                                                         if let image = image {
                                                             let circleImage = image.circle
-                                                            SDImageCache.shared().store(circleImage, forKey: urlString, completion: nil)
+                                                            SDImageCache.shared.store(circleImage, forKey: urlString, completion: nil)
                                                             imageView.image = circleImage
                                                         }
         }
@@ -140,14 +140,13 @@ extension UIImage {
     
     static func circleButton(with url: URL, to button: UIBarButtonItem) {
         let urlString = url.absoluteString
-        if let image = SDImageCache.shared().imageFromCache(forKey: urlString) {
+        if let image = SDImageCache.shared.imageFromCache(forKey: urlString) {
             button.image = image.resizeImage(36)
             return
         }
-        SDWebImageDownloader.shared().downloadImage(with: url, options: .highPriority, progress: nil) { image, _, _, _ in
+        SDWebImageDownloader.shared.downloadImage(with: url, options: .highPriority, progress: nil) { image, _, _, _ in
             if let image = image {
                 let circleImage = image.circle
-                SDImageCache.shared().store(circleImage, forKey: urlString, completion: nil)
                 button.image = circleImage?.resizeImage(36)
             }
         }

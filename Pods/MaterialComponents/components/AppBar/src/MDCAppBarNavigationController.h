@@ -17,6 +17,7 @@
 @class MDCAppBar;
 @class MDCAppBarViewController;
 @class MDCAppBarNavigationController;
+@class MDCFlexibleHeaderViewController;
 
 /**
  Defines the events that an MDCAppBarNavigationController may send to a delegate.
@@ -115,12 +116,61 @@
 __attribute__((objc_subclassing_restricted)) @interface MDCAppBarNavigationController
     : UINavigationController
 
+#pragma mark - Changing app bar visibility
+
+/**
+ This property's getter and setter behavior are defined by the value of
+ @c shouldSetNavigationBarHiddenHideAppBar.
+
+ ## Getter behavior
+
+ When @c shouldSetNavigationBarHiddenHideAppBar is enabled, this property will return the visibility
+ of the current view controller's injected app bar, if one exists. Otherwise it will always return
+ YES.
+
+ When @c shouldSetNavigationBarHiddenHideAppBar is disabled, this property will return the
+ visibility of the UINavigationBar.
+
+ ## Setter behavior
+
+ When @c shouldSetNavigationBarHiddenHideAppBar is enabled, invocations of this method will change
+ the visibility of the currently visible view controller's App Bar. This only affects visibility of
+ injected App Bar view controllers.
+
+ When @c shouldSetNavigationBarHiddenHideAppBar is disabled, invocations of this method
+ will always result in the UIKit navigation bar being hidden, regardless of the provided value of @c
+ hidden, and the currently visible view controller's App Bar visibility will not be affected.
+ Attempting to set this property to @c YES will result in a runtime assertion.
+ */
+@property(nonatomic, getter=isNavigationBarHidden) BOOL navigationBarHidden;
+
 #pragma mark - Reacting to state changes
 
 /**
  An extension of the UINavigationController's delegate.
  */
 @property(nonatomic, weak, nullable) id<MDCAppBarNavigationControllerDelegate> delegate;
+
+#pragma mark - Behavioral flags
+
+/**
+ Controls whether the @c setNavigationBarHidden: and @c setNavigationBarHidden:animated: methods
+ will toggle visiblity of the currently visible injected App Bar.
+
+ When enabled, invocations to @c setNavigationBarHidden: and @c setNavigationBarHidden:animated:
+ will change the visibility of the currently visible view controller's App Bar. This only affects
+ visibility of injected App Bar view controllers.
+
+ When disabled, invocations to @c setNavigationBarHidden: and @c setNavigationBarHidden:animated:
+ will always result in the UIKit navigation bar being hidden, regardless of the provided value of @c
+ hidden, and the currently visible view controller's App Bar visibility will not be affected.
+
+ The result of changing this property after app bars have already been presented and/or hidden is
+ undefined.
+
+ Default value is NO.
+ */
+@property(nonatomic, assign) BOOL shouldSetNavigationBarHiddenHideAppBar;
 
 #pragma mark - Getting App Bar view controller instances
 
@@ -130,6 +180,15 @@ __attribute__((objc_subclassing_restricted)) @interface MDCAppBarNavigationContr
  */
 - (nullable MDCAppBarViewController *)appBarViewControllerForViewController:
     (nonnull UIViewController *)viewController;
+
+/**
+ A block that is assigned to each injected @c MDCAppBarViewController's
+ @c traitCollectionDidChangeBlock property. The block will be executed when the injected
+ @c MDCAppBarViewController's @c -traitCollectionDidChange: is called.
+ */
+@property(nonatomic, copy, nullable) void (^traitCollectionDidChangeBlockForAppBarController)
+    (MDCFlexibleHeaderViewController *_Nonnull flexibleHeaderViewController,
+     UITraitCollection *_Nullable previousTraitCollection);
 
 @end
 

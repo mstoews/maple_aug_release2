@@ -511,6 +511,11 @@ static NSString *const kMDCBottomNavigationItemViewTabString = @"tab";
   self.badge.badgeColor = badgeColor;
 }
 
+- (void)setBadgeTextColor:(UIColor *)badgeTextColor {
+  _badgeTextColor = badgeTextColor;
+  self.badge.badgeValueLabel.textColor = badgeTextColor;
+}
+
 - (void)setBadgeValue:(NSString *)badgeValue {
   // Due to KVO, badgeValue may be of type NSNull.
   if ([badgeValue isKindOfClass:[NSNull class]]) {
@@ -578,11 +583,20 @@ static NSString *const kMDCBottomNavigationItemViewTabString = @"tab";
   return self.button.accessibilityValue;
 }
 
-- (void)setAccessibilityIdentifier:(NSString *)accessibilityIdentifier {
-  self.button.accessibilityIdentifier = accessibilityIdentifier;
+- (void)setAccessibilityHint:(NSString *)accessibilityHint {
+  [super setAccessibilityHint:accessibilityHint];
+  self.button.accessibilityHint = accessibilityHint;
 }
 
-- (NSString *)accessibilityIdentifier {
+- (NSString *)accessibilityHint {
+  return self.button.accessibilityHint;
+}
+
+- (void)setAccessibilityElementIdentifier:(NSString *)accessibilityElementIdentifier {
+  self.button.accessibilityIdentifier = accessibilityElementIdentifier;
+}
+
+- (NSString *)accessibilityElementIdentifier {
   return self.button.accessibilityIdentifier;
 }
 

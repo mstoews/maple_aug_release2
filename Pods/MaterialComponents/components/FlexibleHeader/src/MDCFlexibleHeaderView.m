@@ -16,6 +16,8 @@
 
 #import "MDCFlexibleHeaderView+ShiftBehavior.h"
 #import "MaterialApplication.h"
+#import "MaterialMath.h"
+#import "MaterialShadowElevations.h"
 #import "MaterialUIMetrics.h"
 #import "private/MDCFlexibleHeaderMinMaxHeight.h"
 #import "private/MDCFlexibleHeaderTopSafeArea.h"
@@ -189,6 +191,10 @@ static inline MDCFlexibleHeaderShiftBehavior ShiftBehaviorForCurrentAppContext(
   // The block executed when shadow intensity changes.
   MDCFlexibleHeaderShadowIntensityChangeBlock _shadowIntensityChangeBlock;
 
+  // Whether the flexible header is currently within an animate block for changing the tracking
+  // scroll view.
+  BOOL _isAnimatingLayoutUpdate;
+
   Class _wkWebViewClass;
 
 #if DEBUG
@@ -207,6 +213,8 @@ static inline MDCFlexibleHeaderShiftBehavior ShiftBehaviorForCurrentAppContext(
 @dynamic minMaxHeightIncludesSafeArea;
 
 // MDCFlexibleHeader properties
+@synthesize mdc_overrideBaseElevation = _mdc_overrideBaseElevation;
+@synthesize mdc_elevationDidChangeBlock = _mdc_elevationDidChangeBlock;
 @synthesize trackingScrollViewIsBeingScrubbed = _trackingScrollViewIsBeingScrubbed;
 @synthesize scrollPhase = _scrollPhase;
 @synthesize scrollPhaseValue = _scrollPhaseValue;
@@ -290,6 +298,8 @@ static inline MDCFlexibleHeaderShiftBehavior ShiftBehaviorForCurrentAppContext(
   _customShadowLayer.hidden = YES;
   [self.layer addSublayer:_customShadowLayer];
 
+  _shadowColor = UIColor.blackColor;
+
   _topSafeAreaGuide = [[UIView alloc] init];
   _topSafeAreaGuide.frame = CGRectMake(0, 0, 0, [_topSafeArea topSafeAreaInset]);
   [self addSubview:_topSafeAreaGuide];
@@ -310,10 +320,19 @@ static inline MDCFlexibleHeaderShiftBehavior ShiftBehaviorForCurrentAppContext(
   self.layer.shadowRadius = 4;
   self.layer.shadowOpacity = 0;
 
+  NSString *voiceOverNotification;
+  if (@available(iOS 11.0, *)) {
+    voiceOverNotification = UIAccessibilityVoiceOverStatusDidChangeNotification;
+  } else {
+    voiceOverNotification = UIAccessibilityVoiceOverStatusChanged;
+  }
+
   [[NSNotificationCenter defaultCenter] addObserver:self
                                            selector:@selector(fhv_updateLayout)
-                                               name:UIAccessibilityVoiceOverStatusChanged
+                                               name:voiceOverNotification
                                              object:nil];
+
+  _mdc_overrideBaseElevation = -1;
 }
 
 - (void)setVisibleShadowOpacity:(float)visibleShadowOpacity {
@@ -354,6 +373,11 @@ static inline MDCFlexibleHeaderShiftBehavior ShiftBehaviorForCurrentAppContext(
   [self fhv_setShadowLayer:shadowLayer intensityDidChangeBlock:block];
 }
 
+- (void)setShadowColor:(UIColor *)shadowColor {
+  _shadowColor = [shadowColor copy];
+  [self fhv_updateShadowColor];
+}
+
 #pragma mark - UIView
 
 - (CGSize)sizeThatFits:(CGSize)size {
@@ -363,14 +387,15 @@ static inline MDCFlexibleHeaderShiftBehavior ShiftBehaviorForCurrentAppContext(
 - (void)layoutSubviews {
   [super layoutSubviews];
 
+  [self fhv_updateShadowColor];
   [self fhv_updateShadowPath];
+
   [CATransaction begin];
-  BOOL disableActions = [CATransaction disableActions];
-  [CATransaction setDisableActions:YES];
+  BOOL allowCAActions = _isAnimatingLayoutUpdate;
+  [CATransaction setDisableActions:!allowCAActions];
   _defaultShadowLayer.frame = self.bounds;
   _customShadowLayer.frame = self.bounds;
   _shadowLayer.frame = self.bounds;
-  [CATransaction setDisableActions:disableActions];
   [CATransaction commit];
 }
 
@@ -461,6 +486,14 @@ static inline MDCFlexibleHeaderShiftBehavior ShiftBehaviorForCurrentAppContext(
   return _topSafeArea.topSafeAreaSourceViewController;
 }
 
+- (void)setSubtractsAdditionalSafeAreaInsets:(BOOL)subtractsAdditionalSafeAreaInsets {
+  _topSafeArea.subtractsAdditionalSafeAreaInsets = subtractsAdditionalSafeAreaInsets;
+}
+
+- (BOOL)subtractsAdditionalSafeAreaInsets {
+  return _topSafeArea.subtractsAdditionalSafeAreaInsets;
+}
+
 - (void)topSafeAreaInsetDidChange {
   [_topSafeArea safeAreaInsetsDidChange];
 }
@@ -496,7 +529,8 @@ static inline MDCFlexibleHeaderShiftBehavior ShiftBehaviorForCurrentAppContext(
 
 - (BOOL)flexibleHeaderSafeAreaIsStatusBarShifted:(MDCFlexibleHeaderTopSafeArea *)safeAreas {
   return ([self fhv_canShiftOffscreen] &&
-          _shiftBehavior == MDCFlexibleHeaderShiftBehaviorEnabledWithStatusBar &&
+          (_shiftBehavior == MDCFlexibleHeaderShiftBehaviorEnabledWithStatusBar ||
+           _shiftBehavior == MDCFlexibleHeaderShiftBehaviorHideable) &&
           _statusBarShifter.prefersStatusBarHidden);
 }
 
@@ -636,7 +670,7 @@ static inline MDCFlexibleHeaderShiftBehavior ShiftBehaviorForCurrentAppContext(
   insets.top += topInsetAdjustment;
   info.injectedTopContentInset = desiredTopInset;
   info.hasInjectedTopContentInset = YES;
-  if (!UIEdgeInsetsEqualToEdgeInsets(scrollView.contentInset, insets)) {
+  if (!MDCEdgeInsetsEqualToEdgeInsets(scrollView.contentInset, insets)) {
     scrollView.contentInset = insets;
   }
 
@@ -661,6 +695,12 @@ static inline MDCFlexibleHeaderShiftBehavior ShiftBehaviorForCurrentAppContext(
   UIBezierPath *path =
       [UIBezierPath bezierPathWithRect:CGRectInset(self.bounds, -self.layer.shadowRadius, 0)];
   self.layer.shadowPath = [path CGPath];
+}
+
+- (void)fhv_updateShadowColor {
+  _defaultShadowLayer.shadowColor = self.shadowColor.CGColor;
+  _customShadowLayer.shadowColor = self.shadowColor.CGColor;
+  _shadowLayer.shadowColor = self.shadowColor.CGColor;
 }
 
 #pragma mark Typically-used values
@@ -715,14 +755,21 @@ static inline MDCFlexibleHeaderShiftBehavior ShiftBehaviorForCurrentAppContext(
 }
 
 - (BOOL)fhv_canShiftOffscreen {
-  return ((_shiftBehavior == MDCFlexibleHeaderShiftBehaviorEnabled ||
-           _shiftBehavior == MDCFlexibleHeaderShiftBehaviorEnabledWithStatusBar) &&
-          !_trackingScrollView.pagingEnabled);
+  BOOL interactable = ((_shiftBehavior == MDCFlexibleHeaderShiftBehaviorEnabled ||
+                        _shiftBehavior == MDCFlexibleHeaderShiftBehaviorEnabledWithStatusBar) &&
+                       !_trackingScrollView.pagingEnabled);
+  BOOL hideable = _shiftBehavior == MDCFlexibleHeaderShiftBehaviorHideable;
+  return interactable || hideable;
 }
 
 - (BOOL)fhv_isPartiallyShifted {
   return ([self fhv_isDetachedFromTopOfContent] && _shiftAccumulator > 0 &&
           _shiftAccumulator < [self fhv_accumulatorMax]);
+}
+
+- (BOOL)fhv_isFullyShifted {
+  return ([self fhv_isDetachedFromTopOfContent] && _shiftAccumulator > 0 &&
+          _shiftAccumulator >= [self fhv_accumulatorMax]);
 }
 
 - (BOOL)fhv_isPartiallyExpanded {
@@ -1013,7 +1060,12 @@ static inline MDCFlexibleHeaderShiftBehavior ShiftBehaviorForCurrentAppContext(
     [self fhv_stopDisplayLink];
   }
 
-  if (_shiftAccumulatorLastContentOffsetIsValid) {
+  // When the shift behavior is MDCFlexibleHeaderShiftBehaviorHideable, we explicitly disable
+  // interactive shifting behaviors so that the header's visibility is controlled only via direct
+  // invocations to -shiftHeaderOnScreenAnimated: and shiftHeaderOffScreenAnimated:
+  BOOL allowsInteractiveShift = _shiftBehavior != MDCFlexibleHeaderShiftBehaviorHideable;
+
+  if (_shiftAccumulatorLastContentOffsetIsValid && allowsInteractiveShift) {
     // We track the last direction for our target offset behavior.
     CGFloat deltaY = [self fhv_boundedContentOffset].y - _shiftAccumulatorLastContentOffset.y;
 
@@ -1251,6 +1303,16 @@ static inline MDCFlexibleHeaderShiftBehavior ShiftBehaviorForCurrentAppContext(
   [self fhv_updateLayout];
 }
 
+#pragma mark TraitCollection
+
+- (void)traitCollectionDidChange:(UITraitCollection *)previousTraitCollection {
+  [super traitCollectionDidChange:previousTraitCollection];
+
+  if (self.traitCollectionDidChangeBlock) {
+    self.traitCollectionDidChangeBlock(self, previousTraitCollection);
+  }
+}
+
 #pragma mark KVO
 
 - (void)observeValueForKeyPath:(NSString *)keyPath
@@ -1292,9 +1354,10 @@ static inline MDCFlexibleHeaderShiftBehavior ShiftBehaviorForCurrentAppContext(
 }
 
 - (void)setObservesTrackingScrollViewScrollEvents:(BOOL)observesTrackingScrollViewScrollEvents {
-  NSAssert(self.shiftBehavior == MDCFlexibleHeaderShiftBehaviorDisabled ||
-               !observesTrackingScrollViewScrollEvents,
-           @"Please set shiftBehavior to disabled prior to enabling this property.");
+  NSAssert(!observesTrackingScrollViewScrollEvents ||
+               (self.shiftBehavior == MDCFlexibleHeaderShiftBehaviorDisabled ||
+                self.shiftBehavior == MDCFlexibleHeaderShiftBehaviorHideable),
+           @"Please set shiftBehavior to disabled or hideable prior to enabling this property.");
 
   if (_observesTrackingScrollViewScrollEvents == observesTrackingScrollViewScrollEvents) {
     return;
@@ -1519,7 +1582,13 @@ static BOOL isRunningiOS10_3OrAbove() {
     }
   }
 
-  void (^animate)(void) = ^{
+  BOOL animated = wasTrackingScrollView && shouldAnimate;
+
+  void (^animations)(void) = ^{
+    if ([self.animationDelegate respondsToSelector:@selector(flexibleHeaderView:
+                                                       didChangeTrackingScrollViewAnimated:)]) {
+      [self.animationDelegate flexibleHeaderView:self didChangeTrackingScrollViewAnimated:animated];
+    }
     [self fhv_updateLayout];
   };
   void (^completion)(BOOL) = ^(BOOL finished) {
@@ -1532,12 +1601,26 @@ static BOOL isRunningiOS10_3OrAbove() {
       [self fhv_accumulatorDidChange];
     }
   };
-  if (wasTrackingScrollView && shouldAnimate) {
-    [UIView animateWithDuration:kTrackingScrollViewDidChangeAnimationDuration
-                     animations:animate
-                     completion:completion];
+
+  if (animated) {
+    void (^completionWithDelegate)(BOOL) = ^(BOOL finished) {
+      if ([self.animationDelegate
+              respondsToSelector:@selector
+              (flexibleHeaderViewChangeTrackingScrollViewAnimationDidComplete:)]) {
+        [self.animationDelegate
+            flexibleHeaderViewChangeTrackingScrollViewAnimationDidComplete:self];
+      }
+      completion(finished);
+    };
+    if (self.allowShadowLayerFrameAnimationsWhenChangingTrackingScrollView) {
+      [self animateWithAnimations:animations completion:completionWithDelegate];
+    } else {
+      [UIView animateWithDuration:kTrackingScrollViewDidChangeAnimationDuration
+                       animations:animations
+                       completion:completionWithDelegate];
+    }
   } else {
-    animate();
+    animations();
     completion(YES);
   }
 }
@@ -1608,7 +1691,8 @@ static BOOL isRunningiOS10_3OrAbove() {
 }
 
 - (BOOL)hidesStatusBarWhenCollapsed {
-  return (_shiftBehavior == MDCFlexibleHeaderShiftBehaviorEnabledWithStatusBar &&
+  return ((_shiftBehavior == MDCFlexibleHeaderShiftBehaviorEnabledWithStatusBar ||
+           _shiftBehavior == MDCFlexibleHeaderShiftBehaviorHideable) &&
           !_trackingScrollView.pagingEnabled);
 }
 
@@ -1625,7 +1709,8 @@ static BOOL isRunningiOS10_3OrAbove() {
 
 - (void)setShiftBehavior:(MDCFlexibleHeaderShiftBehavior)shiftBehavior {
   NSAssert((self.observesTrackingScrollViewScrollEvents &&
-            shiftBehavior == MDCFlexibleHeaderShiftBehaviorDisabled) ||
+            (shiftBehavior == MDCFlexibleHeaderShiftBehaviorDisabled ||
+             shiftBehavior == MDCFlexibleHeaderShiftBehaviorHideable)) ||
                !self.observesTrackingScrollViewScrollEvents,
            @"Flexible Header shift behavior must be disabled before content offset observation is"
            @" enabled.");
@@ -1856,6 +1941,64 @@ static BOOL isRunningiOS10_3OrAbove() {
   // Translucent content means that the status bar shifter should not use snapshotting. Otherwise,
   // stale visual content under the status bar region may be snapshotted.
   _statusBarShifter.snapshottingEnabled = !contentIsTranslucent;
+}
+
+- (void)animateWithAnimations:(void (^_Nonnull)(void))animations
+                   completion:(void (^_Nullable)(BOOL))completion {
+  NSTimeInterval duration = kTrackingScrollViewDidChangeAnimationDuration;
+
+  // Note: this should match the easing curve passed to UIView's animateWithDuration:... below.
+  CAMediaTimingFunction *timingFunction =
+      [CAMediaTimingFunction functionWithName:kCAMediaTimingFunctionEaseInEaseOut];
+  [UIView animateWithDuration:duration
+                        delay:0.f
+                      // Note: this should match the timing function above.
+                      options:UIViewAnimationOptionCurveEaseInOut
+                   animations:^{
+                     self->_isAnimatingLayoutUpdate = YES;
+
+                     [CATransaction begin];
+#if TARGET_IPHONE_SIMULATOR
+                     [CATransaction setAnimationDuration:duration * [self fhv_dragCoefficient]];
+#else
+        // clang-format is trying to indent this line too far to the left.
+        // clang-format off
+                     [CATransaction setAnimationDuration:duration];
+    // clang-format on
+#endif
+                     [CATransaction setAnimationTimingFunction:timingFunction];
+
+                     animations();
+
+                     [self fhv_updateLayout];
+
+                     // Force any layout changes to be committed during this animation block.
+                     [self layoutIfNeeded];
+
+                     [CATransaction commit];
+
+                     self->_isAnimatingLayoutUpdate = NO;
+                   }
+                   completion:completion];
+}
+
+- (BOOL)isShiftedOffscreen {
+  return _wantsToBeHidden || [self fhv_isFullyShifted];
+}
+
+#pragma mark - MDCElevation
+
+- (void)setElevation:(MDCShadowElevation)elevation {
+  if (MDCCGFloatEqual(elevation, _elevation)) {
+    return;
+  }
+
+  _elevation = elevation;
+  [self mdc_elevationDidChange];
+}
+
+- (CGFloat)mdc_currentElevation {
+  return self.elevation;
 }
 
 @end

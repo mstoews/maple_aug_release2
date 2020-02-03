@@ -28,7 +28,7 @@ NS_SWIFT_NAME(LoginManagerLogger)
 + (FBSDKLoginManagerLogger *)loggerFromParameters:(NSDictionary *)parameters;
 
 - (instancetype)init NS_UNAVAILABLE;
-- (instancetype)new NS_UNAVAILABLE;
++ (instancetype)new NS_UNAVAILABLE;
 
 - (instancetype)initWithLoggingToken:(NSString *)loggingToken NS_DESIGNATED_INITIALIZER;
 
@@ -41,7 +41,6 @@ NS_SWIFT_NAME(LoginManagerLogger)
 
 - (NSDictionary *)parametersWithTimeStampAndClientState:(NSDictionary *)loginParams forAuthMethod:(NSString *)authMethod;
 - (void)willAttemptAppSwitchingBehavior;
-- (void)systemAuthDidShowDialog:(BOOL)didShowDialog isUnTOSedDevice:(BOOL)isUnTOSedDevice;
 
 - (void)logNativeAppDialogResult:(BOOL)result dialogDuration:(NSTimeInterval)dialogDuration;
 @end

@@ -13,7 +13,6 @@ import AlgoliaSearch
 import InstantSearchCore
 import Lightbox
 import GoogleSignIn
-import GoogleToolboxForMac
 import MaterialComponents
 import JGProgressHUD
 import Mapbox
@@ -453,7 +452,7 @@ class HomeController: MDCCollectionViewController, HomePostCellDelegate,  HomeHe
             let attributes = [NSAttributedString.Key.font : UIFont.systemFont(ofSize: CGFloat(15))]
             let post = posts[indexPath.item]
             let estimatedFrame = NSString(string: post.description).boundingRect(with: size, options: .usesLineFragmentOrigin, attributes: attributes, context: nil)
-            return CGSize(width: view.frame.width - 15 , height: estimatedFrame.height + 335 )
+            return CGSize(width: view.frame.width - 15 , height: estimatedFrame.height + 360 )
         }
         else
         {
@@ -586,6 +585,7 @@ class HomeController: MDCCollectionViewController, HomePostCellDelegate,  HomeHe
         if images.count > 0 {
             let controller = LightboxController(images: images)
             controller.dynamicBackground = true
+            controller.modalPresentationStyle = .fullScreen
             present(controller, animated: true, completion: nil)
         }
        
@@ -644,14 +644,12 @@ class HomeController: MDCCollectionViewController, HomePostCellDelegate,  HomeHe
 }
 
 
-extension HomeController: GIDSignInDelegate, GIDSignInUIDelegate {
+extension HomeController: GIDSignInDelegate {
     
     @objc func inviteTapped() {
         GIDSignIn.sharedInstance().clientID = FirebaseApp.app()?.options.clientID
         GIDSignIn.sharedInstance().scopes = ["https://www.googleapis.com/auth/userinfo.email", "https://www.googleapis.com/auth/userinfo.profile"]
-        GIDSignIn.sharedInstance().uiDelegate = self
         GIDSignIn.sharedInstance().delegate = self
-        GIDSignIn.sharedInstance().signInSilently()
     }
     
     func inviteFinished(withInvitations invitationIds: [String], error: Error?) {

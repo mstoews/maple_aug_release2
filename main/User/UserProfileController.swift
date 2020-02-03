@@ -281,6 +281,7 @@ class UserProfileController: MDCCollectionViewController,
         if images.count > 0 {
             let controller = LightboxController(images: images)
             controller.dynamicBackground = true
+            controller.modalPresentationStyle = .fullScreen
             present(controller, animated: true, completion: nil)
         }
     }
@@ -679,9 +680,9 @@ class UserProfileController: MDCCollectionViewController,
     
     override func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
         var rc = CGSize()
-        var height : CGFloat = 290.00
+        var height : CGFloat = 310.00
         let marginWidth : CGFloat = 15.00
-        let labelsHeight : CGFloat = 290.00
+        let labelsHeight : CGFloat = 310.00
         let approximateWidthOfBioTextView = view.frame.width
         let size = CGSize(width: approximateWidthOfBioTextView, height: 1000)
         let attributes = [NSAttributedString.Key.font : UIFont.systemFont(ofSize: CGFloat(15))]
@@ -702,7 +703,7 @@ class UserProfileController: MDCCollectionViewController,
                 let estimatedFrame = NSString(string: post.description).boundingRect(with: size, options: .usesLineFragmentOrigin, attributes: attributes, context: nil)
                 height = estimatedFrame.height + labelsHeight
             }
-            let labelsHeightAdj : CGFloat = 80
+            let labelsHeightAdj : CGFloat = 100
             rc = CGSize(width: view.frame.width - marginWidth, height:  height - labelsHeightAdj)
             break
         case .MAP :

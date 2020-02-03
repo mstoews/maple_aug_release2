@@ -41,7 +41,7 @@ typedef void (^MDCFeatureHighlightCompletion)(BOOL accepted);
  @note Due to a bug in the iOS simulator it is possible that the feature highlight will not render
  correctly in the simulator. If you're encountering issues make sure to test on device.
  */
-@interface MDCFeatureHighlightViewController : UIViewController
+@interface MDCFeatureHighlightViewController : UIViewController <UIContentSizeCategoryAdjusting>
 
 /**
  Initializes the controller.
@@ -151,6 +151,14 @@ typedef void (^MDCFeatureHighlightCompletion)(BOOL accepted);
  Default value is NO.
  */
 @property(nonatomic, readwrite, setter=mdc_setLegacyFontScaling:) BOOL mdc_legacyFontScaling;
+
+/**
+ A block that is invoked when the @c MDCFeatureHighlightViewController receives a call to @c
+ traitCollectionDidChange:. The block is called after the call to the superclass.
+ */
+@property(nonatomic, copy, nullable) void (^traitCollectionDidChangeBlock)
+    (MDCFeatureHighlightViewController *_Nonnull featureHighlight,
+     UITraitCollection *_Nullable previousTraitCollection);
 
 /**
  Dismisses the feature highlight using the 'accept' style dismissal animation and triggers the

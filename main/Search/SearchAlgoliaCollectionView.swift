@@ -319,6 +319,8 @@ class SearchAlgoliaCollectionView: UICollectionViewController , UICollectionView
 
     override func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
         
+        if self.collectionView.isUserInteractionEnabled == true {
+            self.collectionView.isUserInteractionEnabled = false
         switch TYPE
         {
         case .USR :
@@ -330,10 +332,14 @@ class SearchAlgoliaCollectionView: UICollectionViewController , UICollectionView
             self.openLocationSelected(locationRecord: locationRecord)
             break
         case .PRD :
-            let postRecord = PostRecord(json: postHits[indexPath.item])
-            print("Post Record from Search Prod .... \(postRecord)")
-            self.openSearchSelected(postRecord: postRecord)
-            break
+            DispatchQueue.main.async {
+                let postRecord = PostRecord(json: self.postHits[indexPath.item])
+                print("Post Record from Search Prod .... \(postRecord)")
+                self.openSearchSelected(postRecord: postRecord)
+                
+            }
+             break
+            }
         }
     }
     
@@ -384,25 +390,25 @@ class SearchAlgoliaCollectionView: UICollectionViewController , UICollectionView
     
     func openSearchSelected(postRecord: PostRecord)
     {
-        if let postId = postRecord.objectID {
-            Firestore.fetchPostByPostId(postId: postId) { (post) in
+        
+        if let postid = postRecord.objectID {
+            Firestore.fetchPostByPostId(postId: postid) { (post) in
+                if let postId = post.id {
                     Firestore.fetchUserWithUID(uid: post.uid) { [weak self] (user) in
                         guard let strongSelf = self else {return}
                         DispatchQueue.main.async {
-                            //let userProfileController = UserProfileController(collectionViewLayout: UICollectionViewFlowLayout())
-                            //userProfileController.user = user
-                            //strongSelf.navigationController?.pushViewController(userProfileController, animated: true)
-                            
                             let userProductController = UserProductController(collectionViewLayout: UICollectionViewFlowLayout())
                             userProductController.setPostId(postId: postId)
                             userProductController.user = user
                             strongSelf.navigationController?.pushViewController(userProductController, animated: true)
                         }
+                    }
                 }
             }
         }
+         self.collectionView.isUserInteractionEnabled = true
     }
-    
+        
     
     func openLocationSelected(locationRecord: LocationRecord)
     {

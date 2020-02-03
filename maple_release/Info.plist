@@ -42,7 +42,7 @@
 		</dict>
 	</array>
 	<key>CFBundleVersion</key>
-	<string>2019.30.4</string>
+	<string>$(CURRENT_PROJECT_VERSION)</string>
 	<key>Fabric</key>
 	<dict>
 		<key>APIKey</key>
@@ -75,7 +75,7 @@
 	<key>LSRequiresIPhoneOS</key>
 	<true/>
 	<key>MGLMapboxAccessToken</key>
-	<string>pk.eyJ1IjoibXN0b2V3cyIsImEiOiJjam41ZG1jMnIweXljM3BydTdmbnNwbnBjIn0.lI1Dc8J2nLQAiGAKssrKQA</string>
+	<string>pk.eyJ1IjoibXN0b2V3cyIsImEiOiJjazU5YWJtOWkwM3dkM2x2MGU2Znp4NzN0In0.FEzzXLHdUWfmqel9gwm2-g</string>
 	<key>NSCameraUsageDescription</key>
 	<string>We would like to access your camera</string>
 	<key>NSContactsUsageDescription</key>
@@ -107,7 +107,7 @@
 	<key>UIRequiresFullScreen</key>
 	<false/>
 	<key>UIStatusBarStyle</key>
-	<string>UIStatusBarStyleDefault</string>
+	<string>UIStatusBarStyleLightContent</string>
 	<key>UISupportedInterfaceOrientations</key>
 	<array>
 		<string>UIInterfaceOrientationPortrait</string>

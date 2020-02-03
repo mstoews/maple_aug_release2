@@ -18,11 +18,11 @@
 #import "MaterialShadowLayer.h"
 #import "private/MDCDialogShadowedView.h"
 
-static CGFloat MDCDialogMinimumWidth = 280;
+static const CGFloat MDCDialogMinimumWidth = 280;
 // TODO: Spec indicates 40 side margins and 280 minimum width.
 // That is incompatible with a 320 wide device.
 // Side margins set to 20 until we have a resolution
-static UIEdgeInsets MDCDialogEdgeInsets = {24, 20, 24, 20};
+static const UIEdgeInsets MDCDialogEdgeInsets = {24, 20, 24, 20};
 
 @interface MDCDialogPresentationController ()
 
@@ -80,6 +80,14 @@ static UIEdgeInsets MDCDialogEdgeInsets = {24, 20, 24, 20};
   return _trackingView.elevation;
 }
 
+- (void)setDialogShadowColor:(UIColor *)dialogShadowColor {
+  self.trackingView.shadowColor = dialogShadowColor;
+}
+
+- (UIColor *)dialogShadowColor {
+  return self.trackingView.shadowColor;
+}
+
 - (instancetype)initWithPresentedViewController:(UIViewController *)presentedViewController
                        presentingViewController:(UIViewController *)presentingViewController {
   self = [super initWithPresentedViewController:presentedViewController
@@ -95,6 +103,7 @@ static UIEdgeInsets MDCDialogEdgeInsets = {24, 20, 24, 20};
     [_dimmingView addGestureRecognizer:_dismissGestureRecognizer];
 
     _trackingView = [[MDCDialogShadowedView alloc] init];
+    _trackingView.shadowColor = UIColor.blackColor;
 
     [self registerKeyboardNotifications];
   }
@@ -104,6 +113,13 @@ static UIEdgeInsets MDCDialogEdgeInsets = {24, 20, 24, 20};
 
 - (void)dealloc {
   [self unregisterKeyboardNotifications];
+}
+
+- (void)traitCollectionDidChange:(UITraitCollection *)previousTraitCollection {
+  [super traitCollectionDidChange:previousTraitCollection];
+  if (self.traitCollectionDidChangeBlock) {
+    self.traitCollectionDidChangeBlock(self, previousTraitCollection);
+  }
 }
 
 - (CGRect)frameOfPresentedViewInContainerView {
@@ -226,6 +242,14 @@ static UIEdgeInsets MDCDialogEdgeInsets = {24, 20, 24, 20};
     self.dimmingView.alpha = 0;
     self.trackingView.alpha = 0;
   }
+}
+
+- (CGAffineTransform)dialogTransform {
+  return self.trackingView.transform;
+}
+
+- (void)setDialogTransform:(CGAffineTransform)shadowTransform {
+  self.trackingView.transform = shadowTransform;
 }
 
 - (void)dismissalTransitionDidEnd:(BOOL)completed {

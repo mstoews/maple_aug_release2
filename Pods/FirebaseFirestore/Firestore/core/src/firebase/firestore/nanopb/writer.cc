@@ -26,10 +26,7 @@ namespace firebase {
 namespace firestore {
 namespace nanopb {
 
-using nanopb::ByteString;
-
-void Writer::WriteNanopbMessage(const pb_field_t fields[],
-                                const void* src_struct) {
+void Writer::Write(const pb_field_t fields[], const void* src_struct) {
   if (!pb_encode(&stream_, fields, src_struct)) {
     HARD_FAIL(PB_GET_ERROR(&stream_));
   }
@@ -62,14 +59,15 @@ ByteStringWriter::~ByteStringWriter() {
 void ByteStringWriter::Append(const void* data, size_t size) {
   if (size == 0) return;
 
+  pb_size_t pb_size = CheckedSize(size);
   size_t current_size = this->size();
-  size_t min_capacity = current_size + size;
+  size_t min_capacity = current_size + pb_size;
   HARD_ASSERT(min_capacity >= current_size);  // Avoid overflow
 
   Reserve(min_capacity);
   uint8_t* pos = this->pos();
   std::memcpy(pos, data, size);
-  buffer_->size += size;
+  buffer_->size += pb_size;
 }
 
 void ByteStringWriter::Reserve(size_t min_capacity) {

@@ -26,16 +26,26 @@
 - (UIEdgeInsets)safeAreaInsets;  // For pre-iOS 11 SDK targets.
 @end
 
-static inline BOOL ShouldUseLightStatusBarOnBackgroundColor(UIColor *color) {
+static inline UIStatusBarStyle StatusBarStyleOnBackgroundColor(UIColor *color) {
   if (CGColorGetAlpha(color.CGColor) < 1) {
-    return NO;
+    return UIStatusBarStyleDefault;
   }
 
   // We assume that the light iOS status text is white and not big enough to be considered "large"
   // text according to the W3CAG 2.0 spec.
-  return [MDFTextAccessibility textColor:[UIColor whiteColor]
-                 passesOnBackgroundColor:color
-                                 options:MDFTextAccessibilityOptionsNone];
+  if ([MDFTextAccessibility textColor:[UIColor whiteColor]
+              passesOnBackgroundColor:color
+                              options:MDFTextAccessibilityOptionsNone]) {
+    return UIStatusBarStyleLightContent;
+  }
+
+#if defined(__IPHONE_13_0) && (__IPHONE_OS_VERSION_MAX_ALLOWED >= __IPHONE_13_0)
+  if (@available(iOS 13.0, *)) {
+    return UIStatusBarStyleDarkContent;
+  }
+#endif
+
+  return UIStatusBarStyleDefault;
 }
 
 // KVO contexts
@@ -141,6 +151,15 @@ static char *const kKVOContextMDCFlexibleHeaderViewController =
 - (void)didMoveToParentViewController:(UIViewController *)parent {
   [super didMoveToParentViewController:parent];
 
+#if TARGET_OS_UIKITFORMAC
+  // When running under UIKit for Mac, the window size may not match the value returned by
+  // `[UIScreen mainScreen].bounds` when `commonMDCFlexibleHeaderViewControllerInit` was
+  // called, so the width will be updated here to match the hosting view.
+  CGRect headerFrame = _headerView.frame;
+  headerFrame.size.width = CGRectGetWidth(_headerView.superview.bounds);
+  _headerView.frame = headerFrame;
+#endif
+
   // The header depends on the tracking scroll view to know how tall it should be.
   // If there is no tracking scroll view then we have to poke the header into sizing itself.
   if (!_headerView.trackingScrollView) {
@@ -202,8 +221,7 @@ static char *const kKVOContextMDCFlexibleHeaderViewController =
   if (self.inferPreferredStatusBarStyle) {
     UIColor *backgroundColor =
         [MDCFlexibleHeaderView appearance].backgroundColor ?: _headerView.backgroundColor;
-    return (ShouldUseLightStatusBarOnBackgroundColor(backgroundColor) ? UIStatusBarStyleLightContent
-                                                                      : UIStatusBarStyleDefault);
+    return StatusBarStyleOnBackgroundColor(backgroundColor);
   } else {
     return _preferredStatusBarStyle;
   }
@@ -232,6 +250,16 @@ static char *const kKVOContextMDCFlexibleHeaderViewController =
 
   if (self.topLayoutGuideAdjustmentEnabled) {
     [self updateTopLayoutGuide];
+  }
+}
+
+#pragma mark TraitCollection
+
+- (void)traitCollectionDidChange:(UITraitCollection *)previousTraitCollection {
+  [super traitCollectionDidChange:previousTraitCollection];
+
+  if (self.traitCollectionDidChangeBlock) {
+    self.traitCollectionDidChangeBlock(self, previousTraitCollection);
   }
 }
 
@@ -544,6 +572,19 @@ static char *const kKVOContextMDCFlexibleHeaderViewController =
   return _headerView.useAdditionalSafeAreaInsetsForWebKitScrollViews;
 }
 
+- (void)setPermitInferringTopSafeAreaFromTopLayoutGuideViewController:
+    (BOOL)permitInferringTopSafeAreaFromTopLayoutGuideViewController {
+  if (@available(iOS 11, *)) {
+    _permitInferringTopSafeAreaFromTopLayoutGuideViewController =
+        permitInferringTopSafeAreaFromTopLayoutGuideViewController;
+    [self fhv_inferTopSafeAreaSourceViewController];
+  } else {
+    NSAssert(
+        NO,
+        @"permitInferringTopSafeAreaFromTopLayoutGuideViewController is only supported on iOS 11+");
+  }
+}
+
 #pragma mark - Top safe area inset extraction
 
 - (BOOL)fhv_isViewControllerDescendantOfTopLayoutGuideViewController:(UIViewController *)child {
@@ -587,14 +628,18 @@ static char *const kKVOContextMDCFlexibleHeaderViewController =
   if (ancestor == nil) {
     ancestor = [self fhv_rootAncestorOfViewController:parent];
 
-    // Are we attempting to extract the top safe area inset from our top layout guide view
-    // controller?
-    if (self.topLayoutGuideAdjustmentEnabled && ancestor == self.topLayoutGuideViewController) {
-      // We can't use the provided ancestor because it's a child of the top layout guide view
-      // controller. Doing so would result in the top layout guide being infinitely increased.
-      // Let's use the top layout guide view controller's ancestor instead.
-      ancestor = [self
-          fhv_rootAncestorOfViewController:self.topLayoutGuideViewController.parentViewController];
+    // Use instance variable here instead of property, as property is marked as available only on
+    // iOS 11+.
+    if (_permitInferringTopSafeAreaFromTopLayoutGuideViewController) {
+      // On iOS 11, we can subtract the additional safe area insets to find the correct value.
+    } else {
+      // Are we attempting to extract the top safe area inset from our top layout guide view
+      // controller?
+      if (self.topLayoutGuideAdjustmentEnabled && ancestor == self.topLayoutGuideViewController) {
+        // We can't use the provided ancestor because it's a child of the top layout guide view
+        // controller. Doing so would result in the top layout guide being infinitely increased.
+        ancestor = nil;
+      }
     }
   }
 
@@ -602,12 +647,16 @@ static char *const kKVOContextMDCFlexibleHeaderViewController =
   // extract a top safe area inset from. Should we throw an assert?
   NSAssert(ancestor != nil,
            @"inferTopSafeAreaInsetFromViewController is true but we were unable to infer a view "
-           @"controller"
-           @" from which we could extract a safe area. Consider placing your view controller inside"
-           @" a container view controller.");
+           @"controller from which we could extract a safe area. Consider placing your view "
+           @"controller inside a container view controller.");
 
   if (_headerView.topSafeAreaSourceViewController != ancestor) {
     _headerView.topSafeAreaSourceViewController = ancestor;
+    _headerView.subtractsAdditionalSafeAreaInsets =
+        // Use instance variable here instead of property, as property is marked as available only
+        // on iOS 11+.
+        _permitInferringTopSafeAreaFromTopLayoutGuideViewController &&
+        self.topLayoutGuideAdjustmentEnabled && ancestor == self.topLayoutGuideViewController;
 
     BOOL shouldObserveLayoutGuide = YES;
     if (@available(iOS 11.0, *)) {

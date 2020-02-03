@@ -131,7 +131,9 @@ static const CGFloat kMaximumHeight = 80;
     _watcher = watcher;
     _containingView = [[UIView alloc] initWithFrame:frame];
     _containingView.translatesAutoresizingMaskIntoConstraints = NO;
-    _containingView.clipsToBounds = YES;
+    if (MDCSnackbarMessage.usesLegacySnackbar) {
+      _containingView.clipsToBounds = YES;
+    }
     [self addSubview:_containingView];
 
     NSNotificationCenter *nc = [NSNotificationCenter defaultCenter];

@@ -25,15 +25,6 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         
         FirebaseApp.configure()
         Messaging.messaging().delegate = self
-//        if let uid = Auth.auth().currentUser?.uid {
-//            blockedRef = database.reference(withPath: "blocked/\(uid)")
-//            blockingRef = database.reference(withPath: "blocking/\(uid)")
-//            observeBlocks()
-//        }
-//        
-        // Set up an on-disk URL cache.
-        //let urlCache = URLCache(memoryCapacity: 0, diskCapacity:50 * 1024 * 1024, diskPath:nil)
-        //URLCache.shared = urlCache
         
         let settings = FirestoreSettings()
         settings.isPersistenceEnabled = true

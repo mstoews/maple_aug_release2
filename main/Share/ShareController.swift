@@ -771,11 +771,18 @@ class ShareController:
     
     let buttonMenus = UIView()
     
+   
     
     @objc func userTappedLocationCollection(tapGestureRecognizer: UITapGestureRecognizer)
     {
         CellType = CT.MAP
         print("Open the maps window")
+        
+        
+//        let placePicker = LocationPickerController()
+//        placePicker.locationNameLabel = mapLabel
+//        placePicker.modalPresentationStyle = .fullScreen
+
         let config = GMSPlacePickerConfig(viewport: nil)
         let placePicker = GMSPlacePickerViewController(config: config)
         placePicker.delegate = self

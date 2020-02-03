@@ -92,6 +92,14 @@ static const NSTimeInterval MDCProgressViewAnimationDuration = 0.25;
   }
 }
 
+- (void)traitCollectionDidChange:(UITraitCollection *)previousTraitCollection {
+  [super traitCollectionDidChange:previousTraitCollection];
+
+  if (self.traitCollectionDidChangeBlock) {
+    self.traitCollectionDidChangeBlock(self, previousTraitCollection);
+  }
+}
+
 - (UIColor *)progressTintColor {
   return self.progressView.backgroundColor;
 }
@@ -113,6 +121,17 @@ static const NSTimeInterval MDCProgressViewAnimationDuration = 0.25;
         [[self class] defaultTrackTintColorForProgressTintColor:self.progressTintColor];
   }
   self.trackView.backgroundColor = trackTintColor;
+}
+
+- (void)setCornerRadius:(CGFloat)cornerRadius {
+  _cornerRadius = cornerRadius;
+
+  _progressView.layer.cornerRadius = cornerRadius;
+  _trackView.layer.cornerRadius = cornerRadius;
+
+  BOOL hasNonZeroCornerRadius = !MDCCGFloatIsExactlyZero(cornerRadius);
+  _progressView.clipsToBounds = hasNonZeroCornerRadius;
+  _trackView.clipsToBounds = hasNonZeroCornerRadius;
 }
 
 - (void)setProgress:(float)progress {
@@ -244,6 +263,10 @@ static const NSTimeInterval MDCProgressViewAnimationDuration = 0.25;
     UIAccessibilityPostNotification(UIAccessibilityAnnouncementNotification,
                                     [self accessibilityValue]);
   }
+}
+
+- (NSString *)accessibilityLabel {
+  return self.accessibilityProgressView.accessibilityLabel;
 }
 
 #pragma mark Private

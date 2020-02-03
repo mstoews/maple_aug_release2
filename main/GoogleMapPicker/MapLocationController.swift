@@ -17,6 +17,8 @@ protocol MapLocationControllerDelegate {
     func didReturnMapLocation(Location: String, lat: Double, lon: Double)
 }
 
+
+
 class MapLocationController: UIViewController , UISearchBarDelegate , LocateOnTheMap, GMSAutocompleteFetcherDelegate ,GMSMapViewDelegate{
     
     var mapObjectsCollection = [LocationObject]()

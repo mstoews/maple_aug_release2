@@ -104,7 +104,7 @@ class MainTabBarController: UITabBarController, AuthUIDelegate  {
         
         authUI?.delegate = self
         authUI?.tosurl = kFirebaseTermsOfService
-        let providers: [FUIAuthProvider] = [FUIEmailAuth(), FUIGoogleAuth(), FUIFacebookAuth()]
+        let providers: [FUIAuthProvider] = [FUIGoogleAuth(), FUIFacebookAuth()]
         authUI?.providers = providers
         setupViewControllers()
         observeNotifications()
@@ -186,8 +186,6 @@ class MainTabBarController: UITabBarController, AuthUIDelegate  {
         button.anchor(top: tabBar.bottomAnchor, left: nil, bottom: nil, right: view.rightAnchor, paddingTop: 10, paddingLeft: 0, paddingBottom: 100, paddingRight: 10, width: 50, height: 50)
         
         
-       
-        
         viewControllers = [
             homeNavController,
             searchNavController,
@@ -200,8 +198,6 @@ class MainTabBarController: UITabBarController, AuthUIDelegate  {
         for item in items {
             item.imageInsets = UIEdgeInsets(top: 4, left: 0, bottom: -4, right: 0)
         }
-        
-        
     }
     
     

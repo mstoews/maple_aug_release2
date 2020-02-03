@@ -21,8 +21,10 @@ typedef void (^MDCInkCompletionBlock)(void);
 
 /** Ink styles. */
 typedef NS_ENUM(NSInteger, MDCInkStyle) {
-  MDCInkStyleBounded,  /** Ink is clipped to the view's bounds. */
-  MDCInkStyleUnbounded /** Ink is not clipped to the view's bounds. */
+  /** Ink is clipped to the view's bounds. */
+  MDCInkStyleBounded,
+  /** Ink is not clipped to the view's bounds. */
+  MDCInkStyleUnbounded
 };
 
 /**
@@ -60,7 +62,7 @@ typedef NS_ENUM(NSInteger, MDCInkStyle) {
 @property(nonatomic, assign) MDCInkStyle inkStyle;
 
 /** The foreground color of the ink. The default value is defaultInkColor. */
-@property(nonatomic, strong, nonnull) UIColor *inkColor UI_APPEARANCE_SELECTOR;
+@property(nonatomic, strong, null_resettable) UIColor *inkColor UI_APPEARANCE_SELECTOR;
 
 /** Default color used for ink if no color is specified. */
 @property(nonatomic, strong, readonly, nonnull) UIColor *defaultInkColor;
@@ -92,6 +94,13 @@ typedef NS_ENUM(NSInteger, MDCInkStyle) {
  Affects behavior only if both usesCustomInkCenter and usesLegacyInkRipple are enabled.
  */
 @property(nonatomic, assign) CGPoint customInkCenter;
+
+/**
+ A block that is invoked when the @c MDCInkView receives a call to @c
+ traitCollectionDidChange:. The block is called after the call to the superclass.
+ */
+@property(nonatomic, copy, nullable) void (^traitCollectionDidChangeBlock)
+    (MDCInkView *_Nonnull ink, UITraitCollection *_Nullable previousTraitCollection);
 
 /**
  Start the first part of the "press and release" animation at a particular point.
