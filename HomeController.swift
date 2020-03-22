@@ -52,6 +52,13 @@ class HomeController: MDCCollectionViewController, HomePostCellDelegate,  HomeHe
 
     static let updateFeedNotificationName = NSNotification.Name(rawValue: "handleRefresh")
     
+    override func viewDidAppear(_ animated: Bool) {
+      // let newSafeArea = UIEdgeInsets()
+       //let child = self.children[0]
+            MDCSnackbarManager.setBottomOffset(bottomBarView.frame.height)
+       //child.additionalSafeAreaInsets = newSafeArea
+    }
+    
     override func viewDidLoad() {
         
         super.viewDidLoad()
@@ -350,10 +357,7 @@ class HomeController: MDCCollectionViewController, HomePostCellDelegate,  HomeHe
    
     
     
-    override func viewDidAppear(_ animated: Bool) {
-        MDCSnackbarManager.setBottomOffset(bottomBarView.frame.height)
-        //observeQuery()
-    }
+    
     
     override func viewWillDisappear(_ animated: Bool) {
         super.viewWillDisappear(animated)
