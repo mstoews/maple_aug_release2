@@ -14,7 +14,7 @@
  */
 
 import UIKit
-import GooglePlacePicker
+//import GooglePlacePicker
 
 /// A view controller which displays a UI for opening the Place Picker. Once a place is selected
 /// it navigates to the place details screen for the selected location.

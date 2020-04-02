@@ -196,7 +196,7 @@ class SearchAlgoliaCollectionView: MDCCollectionViewController , UISearchBarDele
         }
         
         
-        UINavigationBar.appearance().prefersLargeTitles = true
+        UINavigationBar.appearance().prefersLargeTitles = false
         
         //searchController = UISearchController(searchResultsController: nil)
         searchController.searchResultsUpdater = self
@@ -237,7 +237,7 @@ class SearchAlgoliaCollectionView: MDCCollectionViewController , UISearchBarDele
         didSearch(index: "products", name: "FetchProd")
         // First load
         self.navigationItem.title = "Search"
-        UINavigationBar.appearance().prefersLargeTitles = true
+        UINavigationBar.appearance().prefersLargeTitles = false
     }
     
     deinit {

@@ -76,8 +76,9 @@ static CGRect CGRectVerticallyCentered(CGRect rect,
 }
 
 static inline CGRect MDCChipBuildFrame(
-    UIEdgeInsets insets, CGSize size, CGFloat xOffset, CGFloat chipHeight, CGFloat pixelScale) {
-  CGRect frame = CGRectMake(xOffset + insets.left, insets.top, size.width, size.height);
+    UIEdgeInsets insets, CGSize size, CGPoint originPoint, CGFloat chipHeight, CGFloat pixelScale) {
+  CGRect frame =
+      CGRectMake(originPoint.x + insets.left, originPoint.y + insets.top, size.width, size.height);
   return CGRectVerticallyCentered(frame, insets, chipHeight, pixelScale);
 }
 
@@ -125,6 +126,9 @@ static inline CGSize CGSizeShrinkWithInsets(CGSize size, UIEdgeInsets edgeInsets
   BOOL _mdc_adjustsFontForContentSizeCategory;
 }
 
+@synthesize mdc_overrideBaseElevation = _mdc_overrideBaseElevation;
+@synthesize mdc_elevationDidChangeBlock = _mdc_elevationDidChangeBlock;
+
 @dynamic layer;
 
 + (Class)layerClass {
@@ -133,7 +137,10 @@ static inline CGSize CGSizeShrinkWithInsets(CGSize size, UIEdgeInsets edgeInsets
 
 - (void)commonMDCChipViewInit {
   _minimumSize = kMDCChipMinimumSizeDefault;
+  self.rippleAllowsSelection = YES;
   self.isAccessibilityElement = YES;
+  self.accessibilityTraits = UIAccessibilityTraitButton;
+  _mdc_overrideBaseElevation = -1;
   _adjustsFontForContentSizeCategoryWhenScaledFontIsUnavailable = YES;
 }
 
@@ -235,6 +242,13 @@ static inline CGSize CGSizeShrinkWithInsets(CGSize size, UIEdgeInsets edgeInsets
                                                 object:nil];
 }
 
+- (void)traitCollectionDidChange:(UITraitCollection *)previousTraitCollection {
+  [super traitCollectionDidChange:previousTraitCollection];
+  if (self.traitCollectionDidChangeBlock) {
+    self.traitCollectionDidChangeBlock(self, previousTraitCollection);
+  }
+}
+
 - (void)setShapeGenerator:(id<MDCShapeGenerating>)shapeGenerator {
   if (shapeGenerator) {
     self.layer.cornerRadius = 0;
@@ -255,14 +269,6 @@ static inline CGSize CGSizeShrinkWithInsets(CGSize size, UIEdgeInsets edgeInsets
   return self.layer.shapeGenerator;
 }
 
-- (void)setInkColor:(UIColor *)inkColor {
-  [self setInkColor:inkColor forState:UIControlStateNormal];
-}
-
-- (UIColor *)inkColor {
-  return [self inkColorForState:UIControlStateNormal];
-}
-
 - (void)setEnableRippleBehavior:(BOOL)enableRippleBehavior {
   _enableRippleBehavior = enableRippleBehavior;
 
@@ -274,6 +280,14 @@ static inline CGSize CGSizeShrinkWithInsets(CGSize size, UIEdgeInsets edgeInsets
     [self.rippleView removeFromSuperview];
     [self insertSubview:self.inkView belowSubview:self.imageView];
   }
+}
+
+- (BOOL)rippleAllowsSelection {
+  return self.rippleView.allowsSelection;
+}
+
+- (void)setRippleAllowsSelection:(BOOL)allowsSelection {
+  self.rippleView.allowsSelection = allowsSelection;
 }
 
 #pragma mark - Dynamic Type Support
@@ -297,14 +311,6 @@ static inline CGSize CGSizeShrinkWithInsets(CGSize size, UIEdgeInsets edgeInsets
   }
 
   [self updateTitleFont];
-}
-
-- (void)mdc_setLegacyFontScaling:(BOOL)legacyScaling {
-  _adjustsFontForContentSizeCategoryWhenScaledFontIsUnavailable = legacyScaling;
-}
-
-- (BOOL)mdc_legacyFontScaling {
-  return _adjustsFontForContentSizeCategoryWhenScaledFontIsUnavailable;
 }
 
 - (void)contentSizeCategoryDidChange:(__unused NSNotification *)notification {
@@ -386,6 +392,10 @@ static inline CGSize CGSizeShrinkWithInsets(CGSize size, UIEdgeInsets edgeInsets
   self.layer.shapedBorderWidth = [self borderWidthForState:self.state];
 }
 
+- (CGFloat)mdc_currentElevation {
+  return [self elevationForState:self.state];
+}
+
 - (CGFloat)elevationForState:(UIControlState)state {
   NSNumber *elevation = _elevations[@(state)];
   if (elevation == nil && state != UIControlStateNormal) {
@@ -405,8 +415,9 @@ static inline CGSize CGSizeShrinkWithInsets(CGSize size, UIEdgeInsets edgeInsets
 
 - (void)updateElevation {
   CGFloat newElevation = [self elevationForState:self.state];
-  if (self.layer.elevation != newElevation) {
+  if (!MDCCGFloatEqual(self.layer.elevation, newElevation)) {
     self.layer.elevation = newElevation;
+    [self mdc_elevationDidChange];
   }
 }
 
@@ -432,7 +443,7 @@ static inline CGSize CGSizeShrinkWithInsets(CGSize size, UIEdgeInsets edgeInsets
 
 - (void)updateInkColor {
   UIColor *inkColor = [self inkColorForState:self.state];
-  self.inkView.inkColor = inkColor ? inkColor : self.inkView.defaultInkColor;
+  self.inkView.inkColor = inkColor ?: self.inkView.defaultInkColor;
 }
 
 - (void)updateRippleColor {
@@ -517,7 +528,7 @@ static inline CGSize CGSizeShrinkWithInsets(CGSize size, UIEdgeInsets edgeInsets
 
   // If we are automatically adjusting for Dynamic Type resize the font based on the text style
   if (self.mdc_adjustsFontForContentSizeCategory) {
-    if (titleFont.mdc_scalingCurve && !self.mdc_legacyFontScaling) {
+    if (titleFont.mdc_scalingCurve) {
       titleFont = [titleFont mdc_scaledFontForTraitEnvironment:self];
     } else if (self.adjustsFontForContentSizeCategoryWhenScaledFontIsUnavailable) {
       titleFont =
@@ -638,6 +649,10 @@ static inline CGSize CGSizeShrinkWithInsets(CGSize size, UIEdgeInsets edgeInsets
       subview.frame = flippedRect;
     }
   }
+
+  [self updateBackgroundColor];
+  [self updateBorderColor];
+  [self updateShadowColor];
 }
 
 - (CGRect)contentRect {
@@ -694,11 +709,13 @@ static inline CGSize CGSizeShrinkWithInsets(CGSize size, UIEdgeInsets edgeInsets
 }
 
 - (CGRect)frameForImageView:(UIImageView *)imageView visible:(BOOL)visible {
-  CGRect frame = CGRectMake(CGRectGetMinX(self.contentRect), CGRectGetMidY(self.contentRect), 0, 0);
+  CGRect contentRect = self.contentRect;
+  CGRect frame = CGRectMake(CGRectGetMinX(contentRect), CGRectGetMidY(contentRect), 0, 0);
   if (visible) {
-    CGSize selectedSize = [self sizeForImageView:imageView maxSize:self.contentRect.size];
-    frame = MDCChipBuildFrame(_imagePadding, selectedSize, CGRectGetMinX(self.contentRect),
-                              CGRectGetHeight(self.frame), self.pixelScale);
+    CGSize selectedSize = [self sizeForImageView:imageView maxSize:contentRect.size];
+    frame = MDCChipBuildFrame(_imagePadding, selectedSize,
+                              CGPointMake(CGRectGetMinX(contentRect), CGRectGetMinY(contentRect)),
+                              CGRectGetHeight(contentRect), self.pixelScale);
   }
   return frame;
 }
@@ -710,11 +727,14 @@ static inline CGSize CGSizeShrinkWithInsets(CGSize size, UIEdgeInsets edgeInsets
 
 - (CGRect)accessoryViewFrame {
   CGSize size = CGSizeZero;
+  CGRect contentRect = self.contentRect;
   if (self.showAccessoryView) {
-    size = [self sizeForAccessoryViewWithMaxSize:self.contentRect.size];
+    size = [self sizeForAccessoryViewWithMaxSize:contentRect.size];
   }
-  CGFloat xOffset = CGRectGetMaxX(self.contentRect) - size.width - _accessoryPadding.right;
-  return MDCChipBuildFrame(_accessoryPadding, size, xOffset, CGRectGetHeight(self.frame),
+  CGFloat xOffset =
+      CGRectGetMaxX(self.contentRect) - size.width - UIEdgeInsetsHorizontal(_accessoryPadding);
+  CGPoint frameOrigin = CGPointMake(xOffset, CGRectGetMinY(contentRect));
+  return MDCChipBuildFrame(_accessoryPadding, size, frameOrigin, CGRectGetHeight(contentRect),
                            self.pixelScale);
 }
 
@@ -724,22 +744,37 @@ static inline CGSize CGSizeShrinkWithInsets(CGSize size, UIEdgeInsets edgeInsets
 }
 
 - (CGRect)titleLabelFrame {
-  CGRect imageFrame = CGRectUnion(_imageView.frame, _selectedImageView.frame);
-  CGFloat maximumTitleWidth = CGRectGetWidth(self.contentRect) - CGRectGetWidth(imageFrame) -
-                              UIEdgeInsetsHorizontal(_titlePadding) +
-                              UIEdgeInsetsHorizontal(_imagePadding);
+  // Default to the unselected image, but account for the selected image if it's shown.
+  CGRect imageFrame = _imageView.frame;
+  if (self.showSelectedImageView) {
+    // Both images are present, take the union of their frames.
+    if (self.showImageView) {
+      imageFrame = CGRectUnion(_imageView.frame, _selectedImageView.frame);
+    } else {
+      imageFrame = _selectedImageView.frame;
+    }
+  }
+  CGRect contentRect = self.contentRect;
+  CGFloat maximumTitleWidth = CGRectGetWidth(contentRect) - CGRectGetWidth(imageFrame) -
+                              UIEdgeInsetsHorizontal(_titlePadding);
+  if (self.showImageView || self.showSelectedImageView) {
+    maximumTitleWidth -= UIEdgeInsetsHorizontal(_imagePadding);
+  }
   if (self.showAccessoryView) {
     maximumTitleWidth -=
         CGRectGetWidth(_accessoryView.frame) + UIEdgeInsetsHorizontal(_accessoryPadding);
   }
-  CGFloat maximumTitleHeight =
-      CGRectGetHeight(self.contentRect) - UIEdgeInsetsVertical(_titlePadding);
+  CGFloat maximumTitleHeight = CGRectGetHeight(contentRect) - UIEdgeInsetsVertical(_titlePadding);
   CGSize maximumSize = CGSizeMake(maximumTitleWidth, maximumTitleHeight);
   CGSize titleSize = [_titleLabel sizeThatFits:maximumSize];
   titleSize.width = MAX(0, maximumTitleWidth);
 
-  CGFloat imageRightEdge = CGRectGetMaxX(imageFrame) + _imagePadding.right;
-  return MDCChipBuildFrame(_titlePadding, titleSize, imageRightEdge, CGRectGetHeight(self.frame),
+  CGFloat imageRightEdge = CGRectGetMinX(contentRect);
+  if (self.showImageView || self.showSelectedImageView) {
+    imageRightEdge = CGRectGetMaxX(imageFrame) + _imagePadding.right;
+  }
+  CGPoint frameOrigin = CGPointMake(imageRightEdge, CGRectGetMinY(contentRect));
+  return MDCChipBuildFrame(_titlePadding, titleSize, frameOrigin, CGRectGetHeight(contentRect),
                            self.pixelScale);
 }
 

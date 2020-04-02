@@ -96,11 +96,26 @@
 @property(nonatomic, assign) MDCShadowElevation dialogElevation;
 
 /**
+ The color of the shadow that will be applied to the @c MDCDialogPresentationController.
+
+ Defaults to black.
+ */
+@property(nonatomic, copy, nonnull) UIColor *dialogShadowColor;
+
+/**
  Customize the color of the background scrim.
 
  Defaults to a semi-transparent Black.
  */
 @property(nonatomic, strong, nullable) UIColor *scrimColor;
+
+/**
+ The transform applied to the @c MDCDialogPresentationController. Used to ensure the shadow
+ properly tracks the view.
+
+ The default value is @c CGAffineTransformIdentity.
+ */
+@property(nonatomic, assign) CGAffineTransform dialogTransform;
 
 /**
  Returns the size of the specified child view controller's content.
@@ -123,5 +138,13 @@
  is the size of the containerView subtracting any space taken up by the keyboard.
  */
 - (CGRect)frameOfPresentedViewInContainerView;
+
+/**
+ A block that is invoked when the MDCDialogPresentationController receives a call to @c
+ traitCollectionDidChange:. The block is called after the call to the superclass.
+ */
+@property(nonatomic, copy, nullable) void (^traitCollectionDidChangeBlock)
+    (MDCDialogPresentationController *_Nullable presentationController,
+     UITraitCollection *_Nullable previousTraitCollection);
 
 @end

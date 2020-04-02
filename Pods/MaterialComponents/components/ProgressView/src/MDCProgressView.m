@@ -92,6 +92,14 @@ static const NSTimeInterval MDCProgressViewAnimationDuration = 0.25;
   }
 }
 
+- (void)traitCollectionDidChange:(UITraitCollection *)previousTraitCollection {
+  [super traitCollectionDidChange:previousTraitCollection];
+
+  if (self.traitCollectionDidChangeBlock) {
+    self.traitCollectionDidChangeBlock(self, previousTraitCollection);
+  }
+}
+
 - (UIColor *)progressTintColor {
   return self.progressView.backgroundColor;
 }
@@ -113,6 +121,17 @@ static const NSTimeInterval MDCProgressViewAnimationDuration = 0.25;
         [[self class] defaultTrackTintColorForProgressTintColor:self.progressTintColor];
   }
   self.trackView.backgroundColor = trackTintColor;
+}
+
+- (void)setCornerRadius:(CGFloat)cornerRadius {
+  _cornerRadius = cornerRadius;
+
+  _progressView.layer.cornerRadius = cornerRadius;
+  _trackView.layer.cornerRadius = cornerRadius;
+
+  BOOL hasNonZeroCornerRadius = !MDCCGFloatIsExactlyZero(cornerRadius);
+  _progressView.clipsToBounds = hasNonZeroCornerRadius;
+  _trackView.clipsToBounds = hasNonZeroCornerRadius;
 }
 
 - (void)setProgress:(float)progress {
@@ -246,6 +265,10 @@ static const NSTimeInterval MDCProgressViewAnimationDuration = 0.25;
   }
 }
 
+- (NSString *)accessibilityLabel {
+  return self.accessibilityProgressView.accessibilityLabel;
+}
+
 #pragma mark Private
 
 + (NSTimeInterval)animationDuration {
@@ -269,8 +292,10 @@ static const NSTimeInterval MDCProgressViewAnimationDuration = 0.25;
 
 - (void)updateProgressView {
   // Update progressView with the current progress value.
-  CGFloat progressWidth = MDCCeil(self.progress * CGRectGetWidth(self.bounds));
-  CGRect progressFrame = CGRectMake(0, 0, progressWidth, CGRectGetHeight(self.bounds));
+  CGFloat scale = self.window.screen.scale > 0 ? self.window.screen.scale : 1;
+  CGFloat pointWidth = self.progress * CGRectGetWidth(self.bounds);
+  CGFloat pixelAlignedWidth = MDCRound(pointWidth * scale) / scale;
+  CGRect progressFrame = CGRectMake(0, 0, pixelAlignedWidth, CGRectGetHeight(self.bounds));
   if (self.mdf_effectiveUserInterfaceLayoutDirection == UIUserInterfaceLayoutDirectionRightToLeft) {
     progressFrame = MDFRectFlippedHorizontally(progressFrame, CGRectGetWidth(self.bounds));
   }

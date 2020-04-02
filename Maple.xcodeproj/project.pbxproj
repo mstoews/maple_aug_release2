@@ -8,11 +8,17 @@
 
 /* Begin PBXBuildFile section */
 		0225F32620FE0F7300137084 /* UserImageCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0225F2E120FE0F7300137084 /* UserImageCell.swift */; };
-		0225F32F20FE131200137084 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 484F862E20FDB56D00FAF6AA /* LaunchScreen.storyboard */; };
-		024EDBC02078EFF50069C77F /* HomeHeaderCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 02DC63492004E5C500AE9662 /* HomeHeaderCell.swift */; };
-		024EDBC32078EFFA0069C77F /* CommentCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 48B4450C1FE7342200DFD412 /* CommentCell.swift */; };
-		024EDBC52078EFFD0069C77F /* CommentInputAccessoryView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 02DC63432001BDD600AE9662 /* CommentInputAccessoryView.swift */; };
 		0252AF3822938A46004DA3BB /* AdvancedNavigationController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0252AF3722938A46004DA3BB /* AdvancedNavigationController.swift */; };
+		02922406242AD0B8007D9AB2 /* MapboxViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 02922405242AD0B8007D9AB2 /* MapboxViewController.swift */; };
+		0298091824331241001C31A3 /* RegistrationViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0298091724331241001C31A3 /* RegistrationViewController.swift */; };
+		0298091A24331266001C31A3 /* CustomTextField.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0298091924331266001C31A3 /* CustomTextField.swift */; };
+		0298091C243312C0001C31A3 /* LoginViewDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0298091B243312C0001C31A3 /* LoginViewDelegate.swift */; };
+		0298091E243312F0001C31A3 /* LoginViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0298091D243312F0001C31A3 /* LoginViewModel.swift */; };
+		0298092024331330001C31A3 /* RegistrationViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0298091F24331330001C31A3 /* RegistrationViewModel.swift */; };
+		029809222433135F001C31A3 /* Bindable.swift in Sources */ = {isa = PBXBuildFile; fileRef = 029809212433135F001C31A3 /* Bindable.swift */; };
+		02980924243313C0001C31A3 /* SettingsController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 02980923243313C0001C31A3 /* SettingsController.swift */; };
+		0298092624333231001C31A3 /* SettingsCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0298092524333231001C31A3 /* SettingsCell.swift */; };
+		02980928243335A5001C31A3 /* AgeRangeCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 02980927243335A5001C31A3 /* AgeRangeCell.swift */; };
 		02BB2407229EB3A70020601D /* BaseCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 02BB2406229EB3A70020601D /* BaseCell.swift */; };
 		02BB241122BF46640020601D /* CollectionLayout.swift in Sources */ = {isa = PBXBuildFile; fileRef = 02BB241022BF46640020601D /* CollectionLayout.swift */; };
 		02D8690F228233530093BD18 /* MapBoxViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 02D8690E228233530093BD18 /* MapBoxViewController.swift */; };
@@ -92,7 +98,6 @@
 		48482FCE20DA18A00031EBFF /* SinglePhotoPost.swift in Sources */ = {isa = PBXBuildFile; fileRef = 48482FBE20DA18A00031EBFF /* SinglePhotoPost.swift */; };
 		484F88D620DE327D0083D226 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 484F88D520DE327D0083D226 /* GoogleService-Info.plist */; };
 		485EF5DC212E412000ACD44A /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 485EF5DE212E412000ACD44A /* LaunchScreen.storyboard */; };
-		485EF5DF212E45AA00ACD44A /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 4878C18E20F844C70054F227 /* Assets.xcassets */; };
 		4876BB3D20DA14880057E5E0 /* Amaranth-Bold.otf in Resources */ = {isa = PBXBuildFile; fileRef = 4876BB2620DA14880057E5E0 /* Amaranth-Bold.otf */; };
 		4876BB8A20DA14CC0057E5E0 /* Notification.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4876BB8620DA14CC0057E5E0 /* Notification.swift */; };
 		4876BB8B20DA14CC0057E5E0 /* NotificationViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4876BB8720DA14CC0057E5E0 /* NotificationViewController.swift */; };
@@ -118,8 +123,6 @@
 		4876BD0320DA164E0057E5E0 /* MapSearchController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4876BCC520DA164E0057E5E0 /* MapSearchController.swift */; };
 		4876BD0620DA164E0057E5E0 /* MapLocationController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4876BCCA20DA164E0057E5E0 /* MapLocationController.swift */; };
 		4876BD0820DA164E0057E5E0 /* LocationSearchCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4876BCD120DA164E0057E5E0 /* LocationSearchCell.swift */; };
-		4876BD0920DA164E0057E5E0 /* PickAPlaceViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 4876BCD620DA164E0057E5E0 /* PickAPlaceViewController.xib */; };
-		4876BD0A20DA164E0057E5E0 /* PickAPlaceViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4876BCD720DA164E0057E5E0 /* PickAPlaceViewController.swift */; };
 		4876BD0B20DA164E0057E5E0 /* PlaceAttributeCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 4876BCD920DA164E0057E5E0 /* PlaceAttributeCell.xib */; };
 		4876BD0C20DA164E0057E5E0 /* PlaceDetailViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 4876BCDA20DA164E0057E5E0 /* PlaceDetailViewController.xib */; };
 		4876BD0D20DA164E0057E5E0 /* PlaceAttributeCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4876BCDB20DA164E0057E5E0 /* PlaceAttributeCell.swift */; };
@@ -143,34 +146,24 @@
 		4876BD2320DA16B20057E5E0 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4876BD2220DA16B20057E5E0 /* AppDelegate.swift */; };
 		4878C10120F7486F0054F227 /* ShareHeaderCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4878C10020F7486F0054F227 /* ShareHeaderCell.swift */; };
 		4878C18F20F844C80054F227 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 4878C18E20F844C70054F227 /* Assets.xcassets */; };
-		48B444C41FE7329900DFD412 /* maple_releaseTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 48B444C31FE7329900DFD412 /* maple_releaseTests.swift */; };
-		48B444CF1FE7329900DFD412 /* maple_releaseUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 48B444CE1FE7329900DFD412 /* maple_releaseUITests.swift */; };
 		48B4457F1FE7342D00DFD412 /* HomePostCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 48B444DF1FE7341700DFD412 /* HomePostCell.swift */; };
 		48B445AB1FE7342D00DFD412 /* CommentCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 48B4450C1FE7342200DFD412 /* CommentCell.swift */; };
 		48B445B91FE7342D00DFD412 /* CommentsController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 48B4451A1FE7342600DFD412 /* CommentsController.swift */; };
 /* End PBXBuildFile section */
 
-/* Begin PBXContainerItemProxy section */
-		48B444C01FE7329900DFD412 /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = 48B444A31FE7329900DFD412 /* Project object */;
-			proxyType = 1;
-			remoteGlobalIDString = 48B444AA1FE7329900DFD412;
-			remoteInfo = "maple-release";
-		};
-		48B444CB1FE7329900DFD412 /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = 48B444A31FE7329900DFD412 /* Project object */;
-			proxyType = 1;
-			remoteGlobalIDString = 48B444AA1FE7329900DFD412;
-			remoteInfo = "maple-release";
-		};
-/* End PBXContainerItemProxy section */
-
 /* Begin PBXFileReference section */
 		0225F2E120FE0F7300137084 /* UserImageCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UserImageCell.swift; sourceTree = "<group>"; };
-		024EDB9F2078EE760069C77F /* maple_release.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; name = maple_release.app; path = Maple_release.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		0252AF3722938A46004DA3BB /* AdvancedNavigationController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AdvancedNavigationController.swift; sourceTree = "<group>"; };
+		02922405242AD0B8007D9AB2 /* MapboxViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MapboxViewController.swift; sourceTree = "<group>"; };
+		0298091724331241001C31A3 /* RegistrationViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RegistrationViewController.swift; sourceTree = "<group>"; };
+		0298091924331266001C31A3 /* CustomTextField.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomTextField.swift; sourceTree = "<group>"; };
+		0298091B243312C0001C31A3 /* LoginViewDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginViewDelegate.swift; sourceTree = "<group>"; };
+		0298091D243312F0001C31A3 /* LoginViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginViewModel.swift; sourceTree = "<group>"; };
+		0298091F24331330001C31A3 /* RegistrationViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RegistrationViewModel.swift; sourceTree = "<group>"; };
+		029809212433135F001C31A3 /* Bindable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Bindable.swift; sourceTree = "<group>"; };
+		02980923243313C0001C31A3 /* SettingsController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsController.swift; sourceTree = "<group>"; };
+		0298092524333231001C31A3 /* SettingsCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsCell.swift; sourceTree = "<group>"; };
+		02980927243335A5001C31A3 /* AgeRangeCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AgeRangeCell.swift; sourceTree = "<group>"; };
 		02BB2406229EB3A70020601D /* BaseCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BaseCell.swift; sourceTree = "<group>"; };
 		02BB241022BF46640020601D /* CollectionLayout.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CollectionLayout.swift; sourceTree = "<group>"; };
 		02D8690E228233530093BD18 /* MapBoxViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MapBoxViewController.swift; sourceTree = "<group>"; };
@@ -343,8 +336,6 @@
 		4876BCD120DA164E0057E5E0 /* LocationSearchCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LocationSearchCell.swift; sourceTree = "<group>"; };
 		4876BCD220DA164E0057E5E0 /* hu */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = hu; path = hu.lproj/Localizable.strings; sourceTree = "<group>"; };
 		4876BCD320DA164E0057E5E0 /* zh_HK */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = zh_HK; path = zh_HK.lproj/Localizable.strings; sourceTree = "<group>"; };
-		4876BCD620DA164E0057E5E0 /* PickAPlaceViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = PickAPlaceViewController.xib; sourceTree = "<group>"; };
-		4876BCD720DA164E0057E5E0 /* PickAPlaceViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PickAPlaceViewController.swift; sourceTree = "<group>"; };
 		4876BCD920DA164E0057E5E0 /* PlaceAttributeCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = PlaceAttributeCell.xib; sourceTree = "<group>"; };
 		4876BCDA20DA164E0057E5E0 /* PlaceDetailViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = PlaceDetailViewController.xib; sourceTree = "<group>"; };
 		4876BCDB20DA164E0057E5E0 /* PlaceAttributeCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PlaceAttributeCell.swift; sourceTree = "<group>"; };
@@ -387,10 +378,8 @@
 		4878C18E20F844C70054F227 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		4878C22B20F85D520054F227 /* maple-release-Bridging-Header.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "maple-release-Bridging-Header.h"; sourceTree = "<group>"; };
 		48B444AB1FE7329900DFD412 /* Maple.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Maple.app; sourceTree = BUILT_PRODUCTS_DIR; };
-		48B444BF1FE7329900DFD412 /* MapleTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = MapleTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		48B444C31FE7329900DFD412 /* maple_releaseTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = maple_releaseTests.swift; sourceTree = "<group>"; };
 		48B444C51FE7329900DFD412 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
-		48B444CA1FE7329900DFD412 /* MapleUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = MapleUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		48B444CE1FE7329900DFD412 /* maple_releaseUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = maple_releaseUITests.swift; sourceTree = "<group>"; };
 		48B444D01FE7329900DFD412 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		48B444DF1FE7341700DFD412 /* HomePostCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = HomePostCell.swift; sourceTree = "<group>"; };
@@ -401,32 +390,11 @@
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
-		024EDB9C2078EE760069C77F /* Frameworks */ = {
-			isa = PBXFrameworksBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-		};
 		48B444A81FE7329900DFD412 /* Frameworks */ = {
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
 				2F6DA8E6E451D4E4D137B11B /* Pods_Maple.framework in Frameworks */,
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-		};
-		48B444BC1FE7329900DFD412 /* Frameworks */ = {
-			isa = PBXFrameworksBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-		};
-		48B444C71FE7329900DFD412 /* Frameworks */ = {
-			isa = PBXFrameworksBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -448,6 +416,14 @@
 				4878C22B20F85D520054F227 /* maple-release-Bridging-Header.h */,
 			);
 			path = maple_release;
+			sourceTree = "<group>";
+		};
+		02922404242AD09D007D9AB2 /* MapBox */ = {
+			isa = PBXGroup;
+			children = (
+				02922405242AD0B8007D9AB2 /* MapboxViewController.swift */,
+			);
+			path = MapBox;
 			sourceTree = "<group>";
 		};
 		02ECD2222296D68000A177CD /* Comments */ = {
@@ -745,8 +721,6 @@
 		4876BCD520DA164E0057E5E0 /* PickAPlace */ = {
 			isa = PBXGroup;
 			children = (
-				4876BCD620DA164E0057E5E0 /* PickAPlaceViewController.xib */,
-				4876BCD720DA164E0057E5E0 /* PickAPlaceViewController.swift */,
 			);
 			path = PickAPlace;
 			sourceTree = "<group>";
@@ -809,6 +783,15 @@
 				48B444F51FE7341D00DFD412 /* HomeController.swift */,
 				48B444DF1FE7341700DFD412 /* HomePostCell.swift */,
 				02DC63492004E5C500AE9662 /* HomeHeaderCell.swift */,
+				0298091724331241001C31A3 /* RegistrationViewController.swift */,
+				0298091924331266001C31A3 /* CustomTextField.swift */,
+				0298091B243312C0001C31A3 /* LoginViewDelegate.swift */,
+				0298091D243312F0001C31A3 /* LoginViewModel.swift */,
+				0298091F24331330001C31A3 /* RegistrationViewModel.swift */,
+				029809212433135F001C31A3 /* Bindable.swift */,
+				02980923243313C0001C31A3 /* SettingsController.swift */,
+				0298092524333231001C31A3 /* SettingsCell.swift */,
+				02980927243335A5001C31A3 /* AgeRangeCell.swift */,
 			);
 			name = Home;
 			path = ..;
@@ -835,9 +818,6 @@
 			isa = PBXGroup;
 			children = (
 				48B444AB1FE7329900DFD412 /* Maple.app */,
-				48B444BF1FE7329900DFD412 /* MapleTests.xctest */,
-				48B444CA1FE7329900DFD412 /* MapleUITests.xctest */,
-				024EDB9F2078EE760069C77F /* maple_release.app */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -845,6 +825,7 @@
 		48B444AD1FE7329900DFD412 /* maple */ = {
 			isa = PBXGroup;
 			children = (
+				02922404242AD09D007D9AB2 /* MapBox */,
 				4876BD2220DA16B20057E5E0 /* AppDelegate.swift */,
 				485EF5DE212E412000ACD44A /* LaunchScreen.storyboard */,
 				4876BBB520DA14EF0057E5E0 /* Localizable.strings */,
@@ -895,23 +876,6 @@
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
-		024EDB9E2078EE760069C77F /* Maple_release */ = {
-			isa = PBXNativeTarget;
-			buildConfigurationList = 024EDBB02078EE770069C77F /* Build configuration list for PBXNativeTarget "Maple_release" */;
-			buildPhases = (
-				024EDB9B2078EE760069C77F /* Sources */,
-				024EDB9C2078EE760069C77F /* Frameworks */,
-				024EDB9D2078EE760069C77F /* Resources */,
-			);
-			buildRules = (
-			);
-			dependencies = (
-			);
-			name = Maple_release;
-			productName = maple_release;
-			productReference = 024EDB9F2078EE760069C77F /* maple_release.app */;
-			productType = "com.apple.product-type.application";
-		};
 		48B444AA1FE7329900DFD412 /* Maple */ = {
 			isa = PBXNativeTarget;
 			buildConfigurationList = 48B444D31FE7329900DFD412 /* Build configuration list for PBXNativeTarget "Maple" */;
@@ -922,7 +886,7 @@
 				48B444A91FE7329900DFD412 /* Resources */,
 				029FB5212040F04600E4DBA1 /* ShellScript */,
 				5438991B05C0D2E6F090C183 /* [CP] Embed Pods Frameworks */,
-				F49AF80164766A6A1FA9C474 /* [CP] Copy Pods Resources */,
+				623AD13808DC4D8C20F72F89 /* [CP] Copy Pods Resources */,
 			);
 			buildRules = (
 			);
@@ -932,42 +896,6 @@
 			productName = "maple-release";
 			productReference = 48B444AB1FE7329900DFD412 /* Maple.app */;
 			productType = "com.apple.product-type.application";
-		};
-		48B444BE1FE7329900DFD412 /* MapleTests */ = {
-			isa = PBXNativeTarget;
-			buildConfigurationList = 48B444D61FE7329900DFD412 /* Build configuration list for PBXNativeTarget "MapleTests" */;
-			buildPhases = (
-				48B444BB1FE7329900DFD412 /* Sources */,
-				48B444BC1FE7329900DFD412 /* Frameworks */,
-				48B444BD1FE7329900DFD412 /* Resources */,
-			);
-			buildRules = (
-			);
-			dependencies = (
-				48B444C11FE7329900DFD412 /* PBXTargetDependency */,
-			);
-			name = MapleTests;
-			productName = "maple-releaseTests";
-			productReference = 48B444BF1FE7329900DFD412 /* MapleTests.xctest */;
-			productType = "com.apple.product-type.bundle.unit-test";
-		};
-		48B444C91FE7329900DFD412 /* MapleUITests */ = {
-			isa = PBXNativeTarget;
-			buildConfigurationList = 48B444D91FE7329900DFD412 /* Build configuration list for PBXNativeTarget "MapleUITests" */;
-			buildPhases = (
-				48B444C61FE7329900DFD412 /* Sources */,
-				48B444C71FE7329900DFD412 /* Frameworks */,
-				48B444C81FE7329900DFD412 /* Resources */,
-			);
-			buildRules = (
-			);
-			dependencies = (
-				48B444CC1FE7329900DFD412 /* PBXTargetDependency */,
-			);
-			name = MapleUITests;
-			productName = "maple-releaseUITests";
-			productReference = 48B444CA1FE7329900DFD412 /* MapleUITests.xctest */;
-			productType = "com.apple.product-type.bundle.ui-testing";
 		};
 /* End PBXNativeTarget section */
 
@@ -979,10 +907,6 @@
 				LastUpgradeCheck = 1000;
 				ORGANIZATIONNAME = "Murray Toews";
 				TargetAttributes = {
-					024EDB9E2078EE760069C77F = {
-						CreatedOnToolsVersion = 9.3;
-						ProvisioningStyle = Automatic;
-					};
 					48B444AA1FE7329900DFD412 = {
 						CreatedOnToolsVersion = 9.2;
 						LastSwiftMigration = 0920;
@@ -995,16 +919,6 @@
 								enabled = 1;
 							};
 						};
-					};
-					48B444BE1FE7329900DFD412 = {
-						CreatedOnToolsVersion = 9.2;
-						ProvisioningStyle = Automatic;
-						TestTargetID = 48B444AA1FE7329900DFD412;
-					};
-					48B444C91FE7329900DFD412 = {
-						CreatedOnToolsVersion = 9.2;
-						ProvisioningStyle = Automatic;
-						TestTargetID = 48B444AA1FE7329900DFD412;
 					};
 				};
 			};
@@ -1063,23 +977,11 @@
 			projectRoot = "";
 			targets = (
 				48B444AA1FE7329900DFD412 /* Maple */,
-				48B444BE1FE7329900DFD412 /* MapleTests */,
-				48B444C91FE7329900DFD412 /* MapleUITests */,
-				024EDB9E2078EE760069C77F /* Maple_release */,
 			);
 		};
 /* End PBXProject section */
 
 /* Begin PBXResourcesBuildPhase section */
-		024EDB9D2078EE760069C77F /* Resources */ = {
-			isa = PBXResourcesBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-				485EF5DF212E45AA00ACD44A /* Assets.xcassets in Resources */,
-				0225F32F20FE131200137084 /* LaunchScreen.storyboard in Resources */,
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-		};
 		48B444A91FE7329900DFD412 /* Resources */ = {
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
@@ -1087,7 +989,6 @@
 				4876BD1020DA164E0057E5E0 /* PlaceNameHeader.xib in Resources */,
 				4876BB3D20DA14880057E5E0 /* Amaranth-Bold.otf in Resources */,
 				4876BD0C20DA164E0057E5E0 /* PlaceDetailViewController.xib in Resources */,
-				4876BD0920DA164E0057E5E0 /* PickAPlaceViewController.xib in Resources */,
 				485EF5DC212E412000ACD44A /* LaunchScreen.storyboard in Resources */,
 				4876BD0120DA164E0057E5E0 /* Localizable.strings in Resources */,
 				4876BBBB20DA14F00057E5E0 /* Localizable.strings in Resources */,
@@ -1096,20 +997,6 @@
 				484F88D620DE327D0083D226 /* GoogleService-Info.plist in Resources */,
 				4876BD0B20DA164E0057E5E0 /* PlaceAttributeCell.xib in Resources */,
 				4878C18F20F844C80054F227 /* Assets.xcassets in Resources */,
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-		};
-		48B444BD1FE7329900DFD412 /* Resources */ = {
-			isa = PBXResourcesBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-		};
-		48B444C81FE7329900DFD412 /* Resources */ = {
-			isa = PBXResourcesBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1136,32 +1023,33 @@
 			);
 			inputPaths = (
 				"${PODS_ROOT}/Target Support Files/Pods-Maple/Pods-Maple-frameworks.sh",
-				"${BUILT_PRODUCTS_DIR}/AFNetworking/AFNetworking.framework",
 				"${BUILT_PRODUCTS_DIR}/ActiveLabel/ActiveLabel.framework",
 				"${BUILT_PRODUCTS_DIR}/Alamofire/Alamofire.framework",
 				"${BUILT_PRODUCTS_DIR}/AlgoliaSearch-Client-Swift/AlgoliaSearch.framework",
+				"${BUILT_PRODUCTS_DIR}/AppAuth/AppAuth.framework",
 				"${BUILT_PRODUCTS_DIR}/BadgeSwift/BadgeSwift.framework",
 				"${BUILT_PRODUCTS_DIR}/BoringSSL-GRPC/openssl_grpc.framework",
 				"${BUILT_PRODUCTS_DIR}/Cache/Cache.framework",
 				"${BUILT_PRODUCTS_DIR}/CropViewController/CropViewController.framework",
 				"${BUILT_PRODUCTS_DIR}/FBSDKCoreKit/FBSDKCoreKit.framework",
 				"${BUILT_PRODUCTS_DIR}/FBSDKLoginKit/FBSDKLoginKit.framework",
+				"${BUILT_PRODUCTS_DIR}/GTMAppAuth/GTMAppAuth.framework",
 				"${BUILT_PRODUCTS_DIR}/GTMSessionFetcher/GTMSessionFetcher.framework",
 				"${BUILT_PRODUCTS_DIR}/Gallery/Gallery.framework",
-				"${BUILT_PRODUCTS_DIR}/GoogleToolboxForMac/GoogleToolboxForMac.framework",
 				"${BUILT_PRODUCTS_DIR}/GoogleUtilities/GoogleUtilities.framework",
 				"${BUILT_PRODUCTS_DIR}/Hue/Hue.framework",
 				"${BUILT_PRODUCTS_DIR}/ImagePicker/ImagePicker.framework",
 				"${BUILT_PRODUCTS_DIR}/Imaginary/Imaginary.framework",
 				"${BUILT_PRODUCTS_DIR}/InstantSearch-Core-Swift/InstantSearchCore.framework",
 				"${BUILT_PRODUCTS_DIR}/JGProgressHUD/JGProgressHUD.framework",
+				"${BUILT_PRODUCTS_DIR}/LBTATools/LBTATools.framework",
 				"${BUILT_PRODUCTS_DIR}/Lightbox/Lightbox.framework",
 				"${BUILT_PRODUCTS_DIR}/MDFInternationalization/MDFInternationalization.framework",
 				"${BUILT_PRODUCTS_DIR}/MDFTextAccessibility/MDFTextAccessibility.framework",
 				"${PODS_ROOT}/Mapbox-iOS-SDK/dynamic/Mapbox.framework",
 				"${PODS_ROOT}/Mapbox-iOS-SDK/dynamic/Mapbox.framework.dSYM",
-				"${PODS_ROOT}/Mapbox-iOS-SDK/dynamic/889347F4-EFF6-36C7-A3A2-222C76C4A2E7.bcsymbolmap",
-				"${PODS_ROOT}/Mapbox-iOS-SDK/dynamic/B1A29F9B-DC14-3A52-ACD0-1BDF517FE210.bcsymbolmap",
+				"${PODS_ROOT}/Mapbox-iOS-SDK/dynamic/66495660-FF2A-3226-B17F-5CC56D59F501.bcsymbolmap",
+				"${PODS_ROOT}/Mapbox-iOS-SDK/dynamic/DF79E105-5E91-37A1-A739-B7930EE5C180.bcsymbolmap",
 				"${BUILT_PRODUCTS_DIR}/MapboxCoreNavigation/MapboxCoreNavigation.framework",
 				"${BUILT_PRODUCTS_DIR}/MapboxDirections.swift/MapboxDirections.framework",
 				"${BUILT_PRODUCTS_DIR}/MapboxMobileEvents/MapboxMobileEvents.framework",
@@ -1172,14 +1060,15 @@
 				"${BUILT_PRODUCTS_DIR}/MaterialComponents/MaterialComponents.framework",
 				"${BUILT_PRODUCTS_DIR}/MotionAnimator/MotionAnimator.framework",
 				"${BUILT_PRODUCTS_DIR}/MotionInterchange/MotionInterchange.framework",
-				"${BUILT_PRODUCTS_DIR}/MotionTransitioning/MotionTransitioning.framework",
 				"${BUILT_PRODUCTS_DIR}/Polyline/Polyline.framework",
-				"${BUILT_PRODUCTS_DIR}/Protobuf/Protobuf.framework",
+				"${BUILT_PRODUCTS_DIR}/PromisesObjC/FBLPromises.framework",
+				"${BUILT_PRODUCTS_DIR}/Protobuf/protobuf.framework",
 				"${BUILT_PRODUCTS_DIR}/Reachability/Reachability.framework",
 				"${BUILT_PRODUCTS_DIR}/SDWebImage/SDWebImage.framework",
 				"${BUILT_PRODUCTS_DIR}/SVProgressHUD/SVProgressHUD.framework",
 				"${BUILT_PRODUCTS_DIR}/Solar/Solar.framework",
 				"${BUILT_PRODUCTS_DIR}/Turf/Turf.framework",
+				"${BUILT_PRODUCTS_DIR}/abseil/absl.framework",
 				"${BUILT_PRODUCTS_DIR}/gRPC-C++/grpcpp.framework",
 				"${BUILT_PRODUCTS_DIR}/gRPC-Core/grpc.framework",
 				"${BUILT_PRODUCTS_DIR}/leveldb-library/leveldb.framework",
@@ -1187,32 +1076,33 @@
 			);
 			name = "[CP] Embed Pods Frameworks";
 			outputPaths = (
-				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/AFNetworking.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/ActiveLabel.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/Alamofire.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/AlgoliaSearch.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/AppAuth.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/BadgeSwift.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/openssl_grpc.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/Cache.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/CropViewController.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/FBSDKCoreKit.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/FBSDKLoginKit.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/GTMAppAuth.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/GTMSessionFetcher.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/Gallery.framework",
-				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/GoogleToolboxForMac.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/GoogleUtilities.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/Hue.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/ImagePicker.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/Imaginary.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/InstantSearchCore.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/JGProgressHUD.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/LBTATools.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/Lightbox.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/MDFInternationalization.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/MDFTextAccessibility.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/Mapbox.framework",
 				"${DWARF_DSYM_FOLDER_PATH}/Mapbox.framework.dSYM",
-				"${BUILT_PRODUCTS_DIR}/889347F4-EFF6-36C7-A3A2-222C76C4A2E7.bcsymbolmap",
-				"${BUILT_PRODUCTS_DIR}/B1A29F9B-DC14-3A52-ACD0-1BDF517FE210.bcsymbolmap",
+				"${BUILT_PRODUCTS_DIR}/66495660-FF2A-3226-B17F-5CC56D59F501.bcsymbolmap",
+				"${BUILT_PRODUCTS_DIR}/DF79E105-5E91-37A1-A739-B7930EE5C180.bcsymbolmap",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/MapboxCoreNavigation.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/MapboxDirections.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/MapboxMobileEvents.framework",
@@ -1223,14 +1113,15 @@
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/MaterialComponents.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/MotionAnimator.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/MotionInterchange.framework",
-				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/MotionTransitioning.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/Polyline.framework",
-				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/Protobuf.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/FBLPromises.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/protobuf.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/Reachability.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/SDWebImage.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/SVProgressHUD.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/Solar.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/Turf.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/absl.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/grpcpp.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/grpc.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/leveldb.framework",
@@ -1239,6 +1130,38 @@
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
 			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-Maple/Pods-Maple-frameworks.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
+		623AD13808DC4D8C20F72F89 /* [CP] Copy Pods Resources */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+				"${PODS_ROOT}/Target Support Files/Pods-Maple/Pods-Maple-resources.sh",
+				"${PODS_CONFIGURATION_BUILD_DIR}/FirebaseUI/FirebaseAuthUI.bundle",
+				"${PODS_CONFIGURATION_BUILD_DIR}/FirebaseUI/FirebaseEmailAuthUI.bundle",
+				"${PODS_CONFIGURATION_BUILD_DIR}/FirebaseUI/FirebaseFacebookAuthUI.bundle",
+				"${PODS_CONFIGURATION_BUILD_DIR}/FirebaseUI/FirebaseGoogleAuthUI.bundle",
+				"${PODS_CONFIGURATION_BUILD_DIR}/FirebaseUI/FirebaseOAuthUI.bundle",
+				"${PODS_ROOT}/GoogleMaps/Maps/Frameworks/GoogleMaps.framework/Resources/GoogleMaps.bundle",
+				"${PODS_ROOT}/GooglePlaces/Frameworks/GooglePlaces.framework/Resources/GooglePlaces.bundle",
+				"${PODS_ROOT}/GoogleSignIn/Resources/GoogleSignIn.bundle",
+			);
+			name = "[CP] Copy Pods Resources";
+			outputPaths = (
+				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/FirebaseAuthUI.bundle",
+				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/FirebaseEmailAuthUI.bundle",
+				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/FirebaseFacebookAuthUI.bundle",
+				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/FirebaseGoogleAuthUI.bundle",
+				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/FirebaseOAuthUI.bundle",
+				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/GoogleMaps.bundle",
+				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/GooglePlaces.bundle",
+				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/GoogleSignIn.bundle",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-Maple/Pods-Maple-resources.sh\"\n";
 			showEnvVarsInLog = 0;
 		};
 		D0D75708482C841878DF053D /* [CP] Check Pods Manifest.lock */ = {
@@ -1259,55 +1182,9 @@
 			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
 			showEnvVarsInLog = 0;
 		};
-		F49AF80164766A6A1FA9C474 /* [CP] Copy Pods Resources */ = {
-			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			inputPaths = (
-				"${PODS_ROOT}/Target Support Files/Pods-Maple/Pods-Maple-resources.sh",
-				"${PODS_CONFIGURATION_BUILD_DIR}/FirebaseUI/FirebaseAnonymousAuthUI.bundle",
-				"${PODS_CONFIGURATION_BUILD_DIR}/FirebaseUI/FirebaseAuthUI.bundle",
-				"${PODS_CONFIGURATION_BUILD_DIR}/FirebaseUI/FirebaseEmailAuthUI.bundle",
-				"${PODS_CONFIGURATION_BUILD_DIR}/FirebaseUI/FirebaseFacebookAuthUI.bundle",
-				"${PODS_CONFIGURATION_BUILD_DIR}/FirebaseUI/FirebaseGoogleAuthUI.bundle",
-				"${PODS_CONFIGURATION_BUILD_DIR}/FirebaseUI/FirebasePhoneAuthUI.bundle",
-				"${PODS_ROOT}/GoogleMaps/Maps/Frameworks/GoogleMaps.framework/Resources/GoogleMaps.bundle",
-				"${PODS_ROOT}/GooglePlacePicker/Frameworks/GooglePlacePicker.framework/Resources/GooglePlacePicker.bundle",
-				"${PODS_ROOT}/GooglePlaces/Frameworks/GooglePlaces.framework/Resources/GooglePlaces.bundle",
-				"${PODS_ROOT}/GoogleSignIn/Resources/GoogleSignIn.bundle",
-			);
-			name = "[CP] Copy Pods Resources";
-			outputPaths = (
-				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/FirebaseAnonymousAuthUI.bundle",
-				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/FirebaseAuthUI.bundle",
-				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/FirebaseEmailAuthUI.bundle",
-				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/FirebaseFacebookAuthUI.bundle",
-				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/FirebaseGoogleAuthUI.bundle",
-				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/FirebasePhoneAuthUI.bundle",
-				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/GoogleMaps.bundle",
-				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/GooglePlacePicker.bundle",
-				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/GooglePlaces.bundle",
-				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/GoogleSignIn.bundle",
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-Maple/Pods-Maple-resources.sh\"\n";
-			showEnvVarsInLog = 0;
-		};
 /* End PBXShellScriptBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
-		024EDB9B2078EE760069C77F /* Sources */ = {
-			isa = PBXSourcesBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-				024EDBC02078EFF50069C77F /* HomeHeaderCell.swift in Sources */,
-				024EDBC32078EFFA0069C77F /* CommentCell.swift in Sources */,
-				024EDBC52078EFFD0069C77F /* CommentInputAccessoryView.swift in Sources */,
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-		};
 		48B444A71FE7329900DFD412 /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
@@ -1316,6 +1193,7 @@
 				48443E7A210990AE00A21FC4 /* GMULineString.m in Sources */,
 				4876BB8C20DA14CC0057E5E0 /* NotificationPostCell.swift in Sources */,
 				48443E79210990AE00A21FC4 /* GMUPoint.m in Sources */,
+				0298091824331241001C31A3 /* RegistrationViewController.swift in Sources */,
 				4876BBBC20DA14F00057E5E0 /* MainTabBarController.swift in Sources */,
 				48443E68210990AE00A21FC4 /* GMUWrappingDictionaryKey.m in Sources */,
 				4876BC9A20DA16280057E5E0 /* ProductHeaderContentView.swift in Sources */,
@@ -1336,6 +1214,7 @@
 				4876BCAE20DA16290057E5E0 /* PhotoViewModel.swift in Sources */,
 				481398B022BA09B4004A4E20 /* ShareController.swift in Sources */,
 				4800DAF82272B87000B326FC /* podcasts.swift in Sources */,
+				02980928243335A5001C31A3 /* AgeRangeCell.swift in Sources */,
 				482FC10720DE15D900E23DAE /* PostImageCell.swift in Sources */,
 				4800DAE9226FDC6500B326FC /* UserProductController.swift in Sources */,
 				48B445AB1FE7342D00DFD412 /* CommentCell.swift in Sources */,
@@ -1355,6 +1234,7 @@
 				482FC13820DE236D00E23DAE /* UserRecord.swift in Sources */,
 				482FC10520DE15D900E23DAE /* SharePhotoController+Save.swift in Sources */,
 				4878C10120F7486F0054F227 /* ShareHeaderCell.swift in Sources */,
+				0298091C243312C0001C31A3 /* LoginViewDelegate.swift in Sources */,
 				4876BC9D20DA16280057E5E0 /* CustomAnimationDismisser.swift in Sources */,
 				48443E77210990AE00A21FC4 /* GMUGroundOverlay.m in Sources */,
 				4876BC9E20DA16280057E5E0 /* CircleImage.swift in Sources */,
@@ -1374,7 +1254,6 @@
 				4876BC9F20DA16280057E5E0 /* ProductCell.swift in Sources */,
 				02D869112285A0C70093BD18 /* Navigation.swift in Sources */,
 				02DC63462001BE7600AE9662 /* CommentInputTextView.swift in Sources */,
-				4876BD0A20DA164E0057E5E0 /* PickAPlaceViewController.swift in Sources */,
 				4876BD1120DA164E0057E5E0 /* MapAPIKeys .swift in Sources */,
 				482FC13A20DE236D00E23DAE /* MapCollectionCell.swift in Sources */,
 				48443E70210990AE00A21FC4 /* GMUHeatmapTileLayer.m in Sources */,
@@ -1384,8 +1263,10 @@
 				4876BD2320DA16B20057E5E0 /* AppDelegate.swift in Sources */,
 				4876BC9C20DA16280057E5E0 /* ProductPageController.swift in Sources */,
 				482FC13720DE236D00E23DAE /* UserCollectionCell.swift in Sources */,
+				0298092024331330001C31A3 /* RegistrationViewModel.swift in Sources */,
 				4876BC9820DA16280057E5E0 /* MapleInkOverlay.swift in Sources */,
 				4876BD1820DA164E0057E5E0 /* Styles.swift in Sources */,
+				029809222433135F001C31A3 /* Bindable.swift in Sources */,
 				48482FC620DA18A00031EBFF /* Image.swift in Sources */,
 				02BB241122BF46640020601D /* CollectionLayout.swift in Sources */,
 				4876BCA020DA16280057E5E0 /* CustomAnimationPresentor.swift in Sources */,
@@ -1401,16 +1282,20 @@
 				48443E78210990AE00A21FC4 /* GMUStyle.m in Sources */,
 				48443E66210990AE00A21FC4 /* GMUClusterManager.m in Sources */,
 				48443E6D210990AE00A21FC4 /* GMUStaticCluster.m in Sources */,
+				0298092624333231001C31A3 /* SettingsCell.swift in Sources */,
+				0298091A24331266001C31A3 /* CustomTextField.swift in Sources */,
 				482FC13920DE236D00E23DAE /* InstantSearch.swift in Sources */,
 				4876BD1B20DA164E0057E5E0 /* MapCollectionView.swift in Sources */,
 				4876BCA220DA16280057E5E0 /* Extensions.swift in Sources */,
 				482FC13E20DE295700E23DAE /* HomeController.swift in Sources */,
 				482C01F222AF276000000597 /* MultiLineTextView.swift in Sources */,
 				482FC12020DE168200E23DAE /* ChangeSignPhotoController.swift in Sources */,
+				02922406242AD0B8007D9AB2 /* MapboxViewController.swift in Sources */,
 				48482FC920DA18A00031EBFF /* Photo.swift in Sources */,
 				482FC13320DE236D00E23DAE /* LocationRecord.swift in Sources */,
 				481398AC22B21830004A4E20 /* EditPhotoShareController.swift in Sources */,
 				482FC13520DE236D00E23DAE /* AlgoliaManager.swift in Sources */,
+				02980924243313C0001C31A3 /* SettingsController.swift in Sources */,
 				4876BD0F20DA164E0057E5E0 /* PlaceDetailTableViewDataSource.swift in Sources */,
 				48443E6E210990AE00A21FC4 /* GMUWeightedLatLng.m in Sources */,
 				02D8690F228233530093BD18 /* MapBoxViewController.swift in Sources */,
@@ -1422,6 +1307,7 @@
 				4876BD0D20DA164E0057E5E0 /* PlaceAttributeCell.swift in Sources */,
 				48B445B91FE7342D00DFD412 /* CommentsController.swift in Sources */,
 				4800DAFC2272B96500B326FC /* PodcastCell.swift in Sources */,
+				0298091E243312F0001C31A3 /* LoginViewModel.swift in Sources */,
 				02DC634A2004E5C500AE9662 /* HomeHeaderCell.swift in Sources */,
 				4876BD1320DA164E0057E5E0 /* BackgroundMapViewController.swift in Sources */,
 				4800DAF62272B6C000B326FC /* SearchController.swift in Sources */,
@@ -1436,36 +1322,7 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
-		48B444BB1FE7329900DFD412 /* Sources */ = {
-			isa = PBXSourcesBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-				48B444C41FE7329900DFD412 /* maple_releaseTests.swift in Sources */,
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-		};
-		48B444C61FE7329900DFD412 /* Sources */ = {
-			isa = PBXSourcesBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-				48B444CF1FE7329900DFD412 /* maple_releaseUITests.swift in Sources */,
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-		};
 /* End PBXSourcesBuildPhase section */
-
-/* Begin PBXTargetDependency section */
-		48B444C11FE7329900DFD412 /* PBXTargetDependency */ = {
-			isa = PBXTargetDependency;
-			target = 48B444AA1FE7329900DFD412 /* Maple */;
-			targetProxy = 48B444C01FE7329900DFD412 /* PBXContainerItemProxy */;
-		};
-		48B444CC1FE7329900DFD412 /* PBXTargetDependency */ = {
-			isa = PBXTargetDependency;
-			target = 48B444AA1FE7329900DFD412 /* Maple */;
-			targetProxy = 48B444CB1FE7329900DFD412 /* PBXContainerItemProxy */;
-		};
-/* End PBXTargetDependency section */
 
 /* Begin PBXVariantGroup section */
 		485EF5DE212E412000ACD44A /* LaunchScreen.storyboard */ = {
@@ -1528,110 +1385,6 @@
 /* End PBXVariantGroup section */
 
 /* Begin XCBuildConfiguration section */
-		024EDBAE2078EE770069C77F /* Debug */ = {
-			isa = XCBuildConfiguration;
-			buildSettings = {
-				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
-				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = "LaunchImage-2";
-				CLANG_ENABLE_OBJC_WEAK = YES;
-				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
-				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
-				CODE_SIGN_STYLE = Automatic;
-				DEVELOPMENT_TEAM = EF24PCZNX7;
-				FRAMEWORK_SEARCH_PATHS = (
-					"$(inherited)",
-					"$(PROJECT_DIR)",
-					"$(PROJECT_DIR)/Pods/GooglePlaces/Frameworks",
-					"$(PROJECT_DIR)/Pods/Crashlytics",
-					"$(PROJECT_DIR)/Pods/Crashlytics/iOS",
-					"$(PROJECT_DIR)/Pods/FirebaseCore/Frameworks",
-					"$(PROJECT_DIR)/Pods/FirebaseAuth/Frameworks",
-					"$(PROJECT_DIR)/Pods/FirebaseInstanceID/Frameworks",
-					"$(PROJECT_DIR)/Pods/FirebaseDatabase/Frameworks",
-					"$(PROJECT_DIR)/Pods/FirebaseFirestore/Frameworks",
-					"$(PROJECT_DIR)/Pods/FirebaseUI/FirebaseUIFrameworks/FirebaseFacebookAuthUI/Frameworks",
-					"$(PROJECT_DIR)/Pods/FirebaseUI/FirebaseUIFrameworks/FirebasePhoneAuthUI/Frameworks",
-					"$(PROJECT_DIR)/Pods/FirebaseUI/FirebaseUIFrameworks/FirebaseAuthUI/Frameworks",
-					"$(PROJECT_DIR)/Pods/FirebaseUI/FirebaseUIFrameworks/FirebaseTwitterAuthUI/Frameworks",
-					"$(PROJECT_DIR)/Pods/FirebaseUI/FirebaseUIFrameworks/FirebaseStorageUI/Frameworks",
-					"$(PROJECT_DIR)/Pods/FirebaseUI/FirebaseUIFrameworks/FirebaseGoogleAuthUI/Frameworks",
-					"$(PROJECT_DIR)/Pods/FirebaseUI/FirebaseUIFrameworks/FirebaseDatabaseUI/Frameworks",
-					"$(PROJECT_DIR)/Pods/FirebaseSwizzlingUtilities/Frameworks",
-					"$(PROJECT_DIR)/Pods/GoogleMaps/Maps/Frameworks",
-					"$(PROJECT_DIR)/Pods/GoogleMaps/Base/Frameworks",
-					"$(PROJECT_DIR)/Pods/TwitterKit/iOS",
-					"$(PROJECT_DIR)/Pods/FirebaseAnalytics/Frameworks",
-					"$(PROJECT_DIR)/Pods/FirebaseStorage/Frameworks",
-					"$(PROJECT_DIR)/Pods/FirebaseMessaging/Frameworks",
-					"$(PROJECT_DIR)/Pods/Fabric",
-					"$(PROJECT_DIR)/Pods/Fabric/iOS",
-					"$(PROJECT_DIR)/Pods/GoogleSignIn/Frameworks",
-					"$(PROJECT_DIR)/Pods/TwitterCore/iOS",
-					"$(PROJECT_DIR)/Pods/FirebasePerformance/Frameworks",
-					"$(PROJECT_DIR)/Pods/GooglePlacePicker/Frameworks",
-				);
-				INFOPLIST_FILE = maple_release/Info.plist;
-				IPHONEOS_DEPLOYMENT_TARGET = 11.0;
-				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
-				PRODUCT_BUNDLE_IDENTIFIER = com.mapleon.maple;
-				PRODUCT_NAME = "$(TARGET_NAME)";
-				SWIFT_VERSION = 4.0;
-				TARGETED_DEVICE_FAMILY = "1,2";
-			};
-			name = Debug;
-		};
-		024EDBAF2078EE770069C77F /* Release */ = {
-			isa = XCBuildConfiguration;
-			buildSettings = {
-				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
-				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = "LaunchImage-2";
-				CLANG_ENABLE_OBJC_WEAK = YES;
-				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
-				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
-				CODE_SIGN_STYLE = Automatic;
-				DEVELOPMENT_TEAM = EF24PCZNX7;
-				FRAMEWORK_SEARCH_PATHS = (
-					"$(inherited)",
-					"$(PROJECT_DIR)",
-					"$(PROJECT_DIR)/Pods/GooglePlaces/Frameworks",
-					"$(PROJECT_DIR)/Pods/Crashlytics",
-					"$(PROJECT_DIR)/Pods/Crashlytics/iOS",
-					"$(PROJECT_DIR)/Pods/FirebaseCore/Frameworks",
-					"$(PROJECT_DIR)/Pods/FirebaseAuth/Frameworks",
-					"$(PROJECT_DIR)/Pods/FirebaseInstanceID/Frameworks",
-					"$(PROJECT_DIR)/Pods/FirebaseDatabase/Frameworks",
-					"$(PROJECT_DIR)/Pods/FirebaseFirestore/Frameworks",
-					"$(PROJECT_DIR)/Pods/FirebaseUI/FirebaseUIFrameworks/FirebaseFacebookAuthUI/Frameworks",
-					"$(PROJECT_DIR)/Pods/FirebaseUI/FirebaseUIFrameworks/FirebasePhoneAuthUI/Frameworks",
-					"$(PROJECT_DIR)/Pods/FirebaseUI/FirebaseUIFrameworks/FirebaseAuthUI/Frameworks",
-					"$(PROJECT_DIR)/Pods/FirebaseUI/FirebaseUIFrameworks/FirebaseTwitterAuthUI/Frameworks",
-					"$(PROJECT_DIR)/Pods/FirebaseUI/FirebaseUIFrameworks/FirebaseStorageUI/Frameworks",
-					"$(PROJECT_DIR)/Pods/FirebaseUI/FirebaseUIFrameworks/FirebaseGoogleAuthUI/Frameworks",
-					"$(PROJECT_DIR)/Pods/FirebaseUI/FirebaseUIFrameworks/FirebaseDatabaseUI/Frameworks",
-					"$(PROJECT_DIR)/Pods/FirebaseSwizzlingUtilities/Frameworks",
-					"$(PROJECT_DIR)/Pods/GoogleMaps/Maps/Frameworks",
-					"$(PROJECT_DIR)/Pods/GoogleMaps/Base/Frameworks",
-					"$(PROJECT_DIR)/Pods/TwitterKit/iOS",
-					"$(PROJECT_DIR)/Pods/FirebaseAnalytics/Frameworks",
-					"$(PROJECT_DIR)/Pods/FirebaseStorage/Frameworks",
-					"$(PROJECT_DIR)/Pods/FirebaseMessaging/Frameworks",
-					"$(PROJECT_DIR)/Pods/Fabric",
-					"$(PROJECT_DIR)/Pods/Fabric/iOS",
-					"$(PROJECT_DIR)/Pods/GoogleSignIn/Frameworks",
-					"$(PROJECT_DIR)/Pods/TwitterCore/iOS",
-					"$(PROJECT_DIR)/Pods/FirebasePerformance/Frameworks",
-					"$(PROJECT_DIR)/Pods/GooglePlacePicker/Frameworks",
-				);
-				INFOPLIST_FILE = maple_release/Info.plist;
-				IPHONEOS_DEPLOYMENT_TARGET = 11.0;
-				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
-				PRODUCT_BUNDLE_IDENTIFIER = com.mapleon.maple;
-				PRODUCT_NAME = "$(TARGET_NAME)";
-				SWIFT_VERSION = 4.0;
-				TARGETED_DEVICE_FAMILY = "1,2";
-			};
-			name = Release;
-		};
 		48B444D11FE7329900DFD412 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
@@ -1854,84 +1607,9 @@
 			};
 			name = Release;
 		};
-		48B444D71FE7329900DFD412 /* Debug */ = {
-			isa = XCBuildConfiguration;
-			buildSettings = {
-				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
-				BUNDLE_LOADER = "$(TEST_HOST)";
-				CODE_SIGN_STYLE = Automatic;
-				DEVELOPMENT_TEAM = BJMVJFPS92;
-				INFOPLIST_FILE = "maple-releaseTests/Info.plist";
-				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
-				PRODUCT_BUNDLE_IDENTIFIER = "com.mapleon.maple.maple-releaseTests";
-				PRODUCT_NAME = "$(TARGET_NAME)";
-				SWIFT_VERSION = 4.0;
-				TARGETED_DEVICE_FAMILY = "1,2";
-				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/Maple.app/Maple";
-			};
-			name = Debug;
-		};
-		48B444D81FE7329900DFD412 /* Release */ = {
-			isa = XCBuildConfiguration;
-			buildSettings = {
-				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
-				BUNDLE_LOADER = "$(TEST_HOST)";
-				CODE_SIGN_STYLE = Automatic;
-				DEVELOPMENT_TEAM = BJMVJFPS92;
-				INFOPLIST_FILE = "maple-releaseTests/Info.plist";
-				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
-				PRODUCT_BUNDLE_IDENTIFIER = "com.mapleon.maple.maple-releaseTests";
-				PRODUCT_NAME = "$(TARGET_NAME)";
-				SWIFT_VERSION = 4.0;
-				TARGETED_DEVICE_FAMILY = "1,2";
-				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/Maple.app/Maple";
-			};
-			name = Release;
-		};
-		48B444DA1FE7329900DFD412 /* Debug */ = {
-			isa = XCBuildConfiguration;
-			buildSettings = {
-				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
-				CODE_SIGN_STYLE = Automatic;
-				DEVELOPMENT_TEAM = BJMVJFPS92;
-				INFOPLIST_FILE = "maple-releaseUITests/Info.plist";
-				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
-				PRODUCT_BUNDLE_IDENTIFIER = "com.mapleon.maple.maple-releaseUITests";
-				PRODUCT_NAME = "$(TARGET_NAME)";
-				SWIFT_VERSION = 4.0;
-				TARGETED_DEVICE_FAMILY = "1,2";
-				TEST_TARGET_NAME = "maple-release";
-			};
-			name = Debug;
-		};
-		48B444DB1FE7329900DFD412 /* Release */ = {
-			isa = XCBuildConfiguration;
-			buildSettings = {
-				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
-				CODE_SIGN_STYLE = Automatic;
-				DEVELOPMENT_TEAM = BJMVJFPS92;
-				INFOPLIST_FILE = "maple-releaseUITests/Info.plist";
-				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
-				PRODUCT_BUNDLE_IDENTIFIER = "com.mapleon.maple.maple-releaseUITests";
-				PRODUCT_NAME = "$(TARGET_NAME)";
-				SWIFT_VERSION = 4.0;
-				TARGETED_DEVICE_FAMILY = "1,2";
-				TEST_TARGET_NAME = "maple-release";
-			};
-			name = Release;
-		};
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
-		024EDBB02078EE770069C77F /* Build configuration list for PBXNativeTarget "Maple_release" */ = {
-			isa = XCConfigurationList;
-			buildConfigurations = (
-				024EDBAE2078EE770069C77F /* Debug */,
-				024EDBAF2078EE770069C77F /* Release */,
-			);
-			defaultConfigurationIsVisible = 0;
-			defaultConfigurationName = Debug;
-		};
 		48B444A61FE7329900DFD412 /* Build configuration list for PBXProject "Maple" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
@@ -1946,24 +1624,6 @@
 			buildConfigurations = (
 				48B444D41FE7329900DFD412 /* Debug */,
 				48B444D51FE7329900DFD412 /* Release */,
-			);
-			defaultConfigurationIsVisible = 0;
-			defaultConfigurationName = Debug;
-		};
-		48B444D61FE7329900DFD412 /* Build configuration list for PBXNativeTarget "MapleTests" */ = {
-			isa = XCConfigurationList;
-			buildConfigurations = (
-				48B444D71FE7329900DFD412 /* Debug */,
-				48B444D81FE7329900DFD412 /* Release */,
-			);
-			defaultConfigurationIsVisible = 0;
-			defaultConfigurationName = Debug;
-		};
-		48B444D91FE7329900DFD412 /* Build configuration list for PBXNativeTarget "MapleUITests" */ = {
-			isa = XCConfigurationList;
-			buildConfigurations = (
-				48B444DA1FE7329900DFD412 /* Debug */,
-				48B444DB1FE7329900DFD412 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Debug;

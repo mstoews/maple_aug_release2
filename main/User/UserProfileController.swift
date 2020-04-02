@@ -281,6 +281,7 @@ class UserProfileController: MDCCollectionViewController,
         if images.count > 0 {
             let controller = LightboxController(images: images)
             controller.dynamicBackground = true
+            controller.modalPresentationStyle = .fullScreen
             present(controller, animated: true, completion: nil)
         }
     }
@@ -334,19 +335,16 @@ class UserProfileController: MDCCollectionViewController,
     @objc func didChangeSignUpFoto()
     {
         print ("didChangeSignFoto")
-        let changePhotoSelectorController = ChangeSignPhotoController()
-        //handleLogOut()
-        if let profileImageUrl = user?.profileImageUrl {
-            changePhotoSelectorController.profileImageView.loadImage(urlString: profileImageUrl)
-            changePhotoSelectorController.plusPhotoButton.setImage( changePhotoSelectorController.profileImageView.image?.withRenderingMode(.alwaysOriginal), for: .normal)
-        }
-        //changePhotoSelectorController.delegate = self
+        
+        let changePhotoSelectorController = SettingsController()
+        
+        //let changePhotoSelectorController = ChangeSignPhotoController()
         
         let backItem = UIBarButtonItem(title: "Back", style: UIBarButtonItem.Style.plain , target: nil, action: nil)
         navigationItem.backBarButtonItem = backItem
         
         let transition = CATransition()
-        transition.duration = 0.75
+        transition.duration = 0.5
         transition.timingFunction = CAMediaTimingFunction(name: CAMediaTimingFunctionName.easeInEaseOut)
         transition.type = CATransitionType.fade
         self.view.layer.add(transition, forKey: nil)

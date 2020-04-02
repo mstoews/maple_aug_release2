@@ -1,6 +1,5 @@
 //
 //  MainTabBarController.swift
-//  InstagramFirebase
 //
 //  Created by Murray Toews on 6/3/17.
 //  Copyright © 2017 maple.com
@@ -99,21 +98,34 @@ class MainTabBarController: UITabBarController, AuthUIDelegate  {
     
     let authUI: FUIAuth? = FUIAuth.defaultAuthUI()
     
+    
+    
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         
         authUI?.delegate = self
         authUI?.tosurl = kFirebaseTermsOfService
-        let providers: [FUIAuthProvider] = [FUIEmailAuth(), FUIGoogleAuth(), FUIFacebookAuth()]
+        
+        let actionCodeSettings = ActionCodeSettings()
+        actionCodeSettings.url = URL(string: "https://example.appspot.com")
+        actionCodeSettings.handleCodeInApp = true
+        actionCodeSettings.setAndroidPackageName("com.firebase.example", installIfNotAvailable: false, minimumVersion: "12")
+
+        let provider = FUIEmailAuth(authAuthUI: FUIAuth.defaultAuthUI()!,
+                                    signInMethod: EmailLinkAuthSignInMethod,
+                                    forceSameDevice: false,
+                                    allowNewEmailAccounts: true,
+                                    actionCodeSetting: actionCodeSettings)
+        
+        let providers: [FUIAuthProvider] = [provider, FUIGoogleAuth(), FUIFacebookAuth()]
         authUI?.providers = providers
         setupViewControllers()
         observeNotifications()
         
-        UINavigationBar.appearance().prefersLargeTitles = true
+        UINavigationBar.appearance().prefersLargeTitles = false
         UINavigationBar.appearance().backgroundColor = UIColor.themeColor()
         UINavigationBar.appearance().alpha = CGFloat(0.1)
-    
-        
         tabBar.tintColor = UIColor.buttonThemeColor()
         
         //NotificationCenter.default.addObserver(self, selector: #selector(resetBadges), name: NSNotification.Name(rawValue : "Badge Changed"), object: nil)
@@ -217,6 +229,7 @@ class MainTabBarController: UITabBarController, AuthUIDelegate  {
 
 
 extension MainTabBarController: FUIAuthDelegate {
+    
     func authUI(_ authUI: FUIAuth, didSignInWith authDataResult: AuthDataResult?, error: Error?) {
         switch error {
         case .some(let error as NSError) where UInt(error.code) == FUIAuthErrorCode.userCancelledSignIn.rawValue:
@@ -239,6 +252,7 @@ extension MainTabBarController: FUIAuthDelegate {
     
     private func showLoginView(){
         if let authVC = FUIAuth.defaultAuthUI()?.authViewController() {
+            authVC.modalPresentationStyle = .fullScreen
             present(authVC,animated: true, completion: nil)
         }
     }
@@ -260,7 +274,7 @@ extension MainTabBarController: FUIAuthDelegate {
         }
     }
     
-    func signed(in user: User) {
+    func signed(in user: Firebase.User) {
         Firestore.fetchUserWithUID(uid: user.uid, completion: { (user) in
             Firestore.updateUserProfile(user: user)
             let url = NSURL(fileURLWithPath: user.profileImageUrl)

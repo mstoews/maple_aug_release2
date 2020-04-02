@@ -72,7 +72,6 @@ extension ShareController
     
     @objc func handleShareAll(_ sender: UIButton) {
         
-        
         let docRef =  db.collection("posts")
         guard let uid = Auth.auth().currentUser?.uid else { return }
         
@@ -102,19 +101,19 @@ extension ShareController
         guard let product = products.text, product.count > 0  else {
             message.text = "Please enter a product name ..."
             MDCSnackbarManager.show(message)
-            
+
             return
         }
-        
-        if mapObjects.count == 0 {
-            message.text = "Select at least one location ..."
-            let action = MDCSnackbarMessageAction()
-            action.handler = actionGoToMaps
-            action.title = "OK"
-            message.action = action
-            MDCSnackbarManager.show(message)
-            return
-        }
+
+//        if mapObjects.count == 0 {
+//            message.text = "Select at least one location ..."
+//            let action = MDCSnackbarMessageAction()
+//            action.handler = actionGoToMaps
+//            action.title = "OK"
+//            message.action = action
+//            MDCSnackbarManager.show(message)
+//            return
+//        }
         
         guard let description = descriptionTextView.text,  description.count > 0  else {
             message.text = "Please enter a description ..."
@@ -157,10 +156,10 @@ extension ShareController
         hud.textLabel.text = "Updating post ..."
         hud.show(in: view)
         
-        saveLocations(docId) { (locId) in
-            docId = locId
-            print("Locations completed")
-        }
+//        saveLocations(docId) { (locId) in
+//            docId = locId
+//            print("Locations completed")
+//        }
         
         //saveImages(postid: docId, typeName: "thumbImages", imageSize: 160, images: self.imageArray)
         

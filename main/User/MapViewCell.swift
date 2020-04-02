@@ -8,8 +8,11 @@
 import Foundation
 import UIKit
 import GoogleMaps
+
 import GooglePlaces
 import Firebase
+import Mapbox
+import MaterialComponents
 
 
 class POIItem: NSObject, GMUClusterItem {
@@ -25,7 +28,77 @@ class POIItem: NSObject, GMUClusterItem {
 }
 
 
-class MapViewCell: UICollectionViewCell,
+class MapViewCell: BaseCell, MGLMapViewDelegate
+{
+    private var mapView: MGLMapView!
+    
+    required init?(coder aDecoder: NSCoder) {
+        super.init(coder: aDecoder)
+    }
+    
+    override init(frame: CGRect) {
+    super.init(frame: frame)
+        
+        let containerView = UIView()
+           
+        containerView.layer.borderWidth  = 1
+        containerView.layer.borderColor = UIColor.backGroundTheme().cgColor
+           
+           addSubview(containerView)
+    
+       let url = URL(string: "mapbox://styles/mapbox/streets-v11")
+           mapView = MGLMapView(frame: CGRect(x: 0, y: 0, width: 330, height: frame.height), styleURL: url)
+           mapView.autoresizingMask = [.flexibleWidth, .flexibleHeight]
+           mapView.delegate = self
+           mapView.showsUserLocation = true
+        
+       mapView.setCenter(CLLocationCoordinate2D(latitude: 41.8864, longitude: -87.7135), zoomLevel: 13, animated: false)
+       containerView.addSubview(mapView)
+       mapView.anchor(top: containerView.topAnchor, left: containerView.leftAnchor, bottom: containerView.bottomAnchor,  right: containerView.rightAnchor)
+       containerView.anchor(top: topAnchor, left: leftAnchor, bottom: nil,
+                              right: nil, paddingTop: 0, paddingLeft: 0 ,
+                              paddingBottom: 0, paddingRight: 0, width: frame.width, height: frame.height - 370)
+    }
+    
+    private var LocationsExist = false;
+    
+    
+    var mapLocation: [LocationObject]? {
+        didSet {
+            for location in (mapLocation)! {
+                if mapLocation!.count > 0 && LocationsExist == false {
+                    LocationsExist = true
+                    mapView.setCenter(CLLocationCoordinate2D(latitude: location.latitude!, longitude: location.longitude!), zoomLevel: 13, animated: false)
+                }
+                setMarker(location)
+            }
+        }
+    }
+    
+    
+     func setMarker(_ map: LocationObject) {
+           self.markupMap(map)
+     }
+    
+    func mapView(_ mapView: MGLMapView, annotationCanShowCallout annotation: MGLAnnotation) -> Bool {
+        // Only show callouts for `Hello world!` annotation.
+        return annotation.responds(to: #selector(getter: MGLAnnotation.title)) && annotation.title! == "Hello world!"
+    }
+    
+    func markupMap(_ location: LocationObject) {
+           DispatchQueue.main.async { () -> Void in
+               let position = CLLocationCoordinate2DMake(location.latitude!, location.longitude!)
+               let marker = GMSMarker(position: position)
+               //let camera = GMSCameraPosition.camera(withLatitude: location.latitude!, longitude: location.longitude!, zoom: 14)
+               //self.mapView.camera = camera
+               marker.title = "\(location.location!)"
+               //marker.map = self.mapView
+           }
+    }
+}
+
+
+class MapViewCell2: UICollectionViewCell,
     GMSMapViewDelegate,
     CLLocationManagerDelegate,
     GMUClusterManagerDelegate
@@ -213,7 +286,7 @@ class MapViewCell: UICollectionViewCell,
         
         mapView.anchor(top: topAnchor, left: leftAnchor, bottom: nil,
                        right: nil, paddingTop: 0, paddingLeft: 0 ,
-                       paddingBottom: 0, paddingRight: 0, width: frame.width, height: frame.height - 350)
+                       paddingBottom: 0, paddingRight: 0, width: frame.width, height: frame.height - 400)
         
         mapButton.anchor(top: topAnchor, left: leftAnchor, bottom: nil, right: nil)
         
@@ -276,14 +349,14 @@ class MapViewCell: UICollectionViewCell,
     
 }
 
-extension MapViewCell: GMSAutocompleteResultsViewControllerDelegate {
+extension MapViewCell2: GMSAutocompleteResultsViewControllerDelegate {
     func resultsController(_ resultsController: GMSAutocompleteResultsViewController,
                            didAutocompleteWith place: GMSPlace) {
         // Do something with the selected place.
         
-        print("Place ID: \(place.placeID)")
+        print("Place ID: \(place.placeID ?? "0")")
         print("Place Phone Number: \(String(describing: place.phoneNumber))")
-        print("Place name: \(place.name)")
+        print("Place name: \(place.name ?? "No name found")")
         print("Place address: \(String(describing: place.formattedAddress))")
         print("Place attributions: \(String(describing: place.attributions))")
         

@@ -18,6 +18,7 @@
 #import <MDFInternationalization/MDFInternationalization.h>
 
 #import "MDCBottomNavigationItemBadge.h"
+#import "MaterialAvailability.h"
 #import "MaterialBottomNavigationStrings.h"
 #import "MaterialBottomNavigationStrings_table.h"
 #import "MaterialMath.h"
@@ -61,7 +62,7 @@ static NSString *const kMDCBottomNavigationItemViewTabString = @"tab";
 - (instancetype)initWithFrame:(CGRect)frame {
   self = [super initWithFrame:frame];
   if (self) {
-#if defined(__IPHONE_10_0) && (__IPHONE_OS_VERSION_MAX_ALLOWED >= __IPHONE_10_0)
+#if MDC_AVAILABLE_SDK_IOS(10_0)
 #pragma clang diagnostic push
 #pragma clang diagnostic ignored "-Wunguarded-availability"
 #pragma clang diagnostic ignored "-Wtautological-pointer-compare"
@@ -71,7 +72,7 @@ static NSString *const kMDCBottomNavigationItemViewTabString = @"tab";
 #pragma clang diagnostic pop
 #else
     _shouldPretendToBeATab = YES;
-#endif
+#endif  // MDC_AVAILABLE_SDK_IOS(10_0)
     _titleBelowIcon = YES;
     [self commonMDCBottomNavigationItemViewInit];
   }
@@ -511,6 +512,11 @@ static NSString *const kMDCBottomNavigationItemViewTabString = @"tab";
   self.badge.badgeColor = badgeColor;
 }
 
+- (void)setBadgeTextColor:(UIColor *)badgeTextColor {
+  _badgeTextColor = badgeTextColor;
+  self.badge.badgeValueLabel.textColor = badgeTextColor;
+}
+
 - (void)setBadgeValue:(NSString *)badgeValue {
   // Due to KVO, badgeValue may be of type NSNull.
   if ([badgeValue isKindOfClass:[NSNull class]]) {
@@ -556,6 +562,7 @@ static NSString *const kMDCBottomNavigationItemViewTabString = @"tab";
   _title = [title copy];
   self.label.text = _title;
   self.button.accessibilityLabel = [self accessibilityLabelWithTitle:_title];
+  [self setNeedsLayout];
 }
 
 - (void)setTitleVisibility:(MDCBottomNavigationBarTitleVisibility)titleVisibility {
@@ -578,11 +585,20 @@ static NSString *const kMDCBottomNavigationItemViewTabString = @"tab";
   return self.button.accessibilityValue;
 }
 
-- (void)setAccessibilityIdentifier:(NSString *)accessibilityIdentifier {
-  self.button.accessibilityIdentifier = accessibilityIdentifier;
+- (void)setAccessibilityHint:(NSString *)accessibilityHint {
+  [super setAccessibilityHint:accessibilityHint];
+  self.button.accessibilityHint = accessibilityHint;
 }
 
-- (NSString *)accessibilityIdentifier {
+- (NSString *)accessibilityHint {
+  return self.button.accessibilityHint;
+}
+
+- (void)setAccessibilityElementIdentifier:(NSString *)accessibilityElementIdentifier {
+  self.button.accessibilityIdentifier = accessibilityElementIdentifier;
+}
+
+- (NSString *)accessibilityElementIdentifier {
   return self.button.accessibilityIdentifier;
 }
 
@@ -625,6 +641,32 @@ static NSString *const kMDCBottomNavigationItemViewTabString = @"tab";
   NSBundle *bundle = [NSBundle bundleForClass:[MDCBottomNavigationBar class]];
   NSString *resourcePath = [(nil == bundle ? [NSBundle mainBundle] : bundle) resourcePath];
   return [resourcePath stringByAppendingPathComponent:bundleName];
+}
+
+#pragma mark - UILargeContentViewerItem
+
+- (BOOL)showsLargeContentViewer {
+  return YES;
+}
+
+- (NSString *)largeContentTitle {
+  if (_largeContentTitle) {
+    return _largeContentTitle;
+  }
+
+  return self.title;
+}
+
+- (UIImage *)largeContentImage {
+  if (_largeContentImage) {
+    return _largeContentImage;
+  }
+
+  return self.image;
+}
+
+- (BOOL)scalesLargeContentImage {
+  return _largeContentImage == nil;
 }
 
 @end

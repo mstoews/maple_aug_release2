@@ -44,6 +44,10 @@ class FPAuthPickerViewController: FUIAuthPickerViewController {
         }
         
     }
+    open override func viewWillAppear(_ animated: Bool) {
+    self.navigationItem.leftBarButtonItem = nil
+    self.modalPresentationStyle = .fullScreen
+    }
 }
 
 

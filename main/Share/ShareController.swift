@@ -11,10 +11,10 @@ import Firebase
 import Photos
 import AssetsLibrary
 import FirebaseUI
-import AFNetworking
+//import AFNetworking
 import GoogleMaps
 import GooglePlaces
-import GooglePlacePicker
+//import GooglePlacePicker
 import os.log
 import AlgoliaSearch
 import InstantSearchCore
@@ -325,7 +325,6 @@ class ShareController:
     func registerForKeyboardNotifications() {
         
         NotificationCenter.default.addObserver(self, selector: #selector(keyboardWasShown(notification:)), name: UIWindow.keyboardWillShowNotification, object: nil)
-        
         NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillBeHidden(notification:)), name: UIWindow.keyboardWillHideNotification, object: nil)
         
     }
@@ -333,7 +332,6 @@ class ShareController:
     func deregisterFromKeyboardNotifications() {
         
         NotificationCenter.default.removeObserver(self, name: UIWindow.keyboardWillShowNotification, object: nil)
-        
         NotificationCenter.default.removeObserver(self, name: UIWindow.keyboardWillHideNotification, object: nil)
         
     }
@@ -377,7 +375,7 @@ class ShareController:
     
     @objc func keyboardWillBeHidden(notification: NSNotification) {
         if let keyboardSize = (notification.userInfo?[UIResponder.keyboardFrameEndUserInfoKey] as? NSValue)?.cgRectValue {
-            let isKeyboardShowing = notification.name == UIResponder.keyboardWillShowNotification
+            //let isKeyboardShowing = notification.name == UIResponder.keyboardWillShowNotification
             self.view.frame.origin.y += keyboardSize.height + bottomAreaInset
         }
         print("Hide keyboard ...")
@@ -559,7 +557,7 @@ class ShareController:
     
     
     func updateConstraints() {
-        let constant = MDCCeil((self.view.frame.width - 2) * 0.65)
+        let constant = MDCCeil((self.view.frame.width - 2) * 0.50)
         let widthConstant = MDCCeil((self.view.frame.width - 2) * 0.9)
         if imageConstraint == nil {
             imageConstraint = imageCollectionView.heightAnchor.constraint(equalToConstant: constant)
@@ -661,7 +659,7 @@ class ShareController:
         /****** End Gestures           ******/
         
         definesPresentationContext = true
-        registerForKeyboardNotifications()
+        //registerForKeyboardNotifications()
         
     }
     
@@ -698,43 +696,6 @@ class ShareController:
     
     var editingIndex: IndexPath!
     
-    // MARK: - Keyboard Handlers
-    
-    //    @objc fileprivate func handleKeyboardShow(notification: Notification) {
-    //        // how to figure out how tall the keyboard actually is
-    //        //guard let value = notification.userInfo?[UIResponder.UIKeyboardFrameEndUserInfoKey] as? NSValue else { return }
-    //        guard let value = notification.userInfo?[UIResponder.keyboardFrameEndUserInfoKey] as? NSValue else { return }
-    //        let keyboardFrame = value.cgRectValue
-    //
-    //        // let's try to figure out how tall the gap is from the register button to the bottom of the screen
-    //        let bottomSpace = view.frame.height //- overallStackView.frame.origin.y - overallStackView.frame.height
-    //        print(bottomSpace)
-    //
-    //        let difference = keyboardFrame.height - bottomSpace
-    //        self.view.transform = CGAffineTransform(translationX: 0, y: -difference - 8)
-    //    }
-    //
-    //    @objc func keyboardWillShow(notification: NSNotification) {
-    //        print("Keyboard will show...")
-    //
-    //                let notificationName = NotificationCenter.default.addObserver(
-    //                    self,
-    //                    selector: #selector(self.keyboardDidShow(notification:)),
-    //                    name: UIResponder.keyboardDidShowNotification, object: nil)
-    //
-    //
-    //                let isKeyboardShowing = notification.name == NSNotification.Name.MDCKeyboardWatcherKeyboardWillShow
-    //
-    //
-    //                if let keyboardSize = (notification.userInfo?[UIResponder.keyboardFrameBeginUserInfoKey] as? NSValue)?.cgRectValue {
-    //                    //let inset = isKeyboardShowing ? -bottomAreaInset : bottomAreaInset
-    //                    if isKeyboardShowing {
-    //                        print ("Frame size \(self.view.frame.height)")
-    //                         self.view.frame.origin.y = -keyboardSize.height + self.view.frame.height / 2.5
-    //                    }
-    //                }
-    //    }
-    //
     
     func text(for priceLevel: GMSPlacesPriceLevel) -> String {
         switch priceLevel {
@@ -776,13 +737,13 @@ class ShareController:
     {
         CellType = CT.MAP
         print("Open the maps window")
-        let config = GMSPlacePickerConfig(viewport: nil)
-        let placePicker = GMSPlacePickerViewController(config: config)
-        placePicker.delegate = self
-        placePicker.modalPresentationStyle = .popover
-        placePicker.popoverPresentationController?.sourceView = view
-        placePicker.popoverPresentationController?.sourceRect = mapsButton.bounds
-        self.present(placePicker, animated: true, completion: nil)
+//        let config = GMSPlacePickerConfig(viewport: nil)
+//        let placePicker = GMSPlacePickerViewController(config: config)
+//        placePicker.delegate = self
+//        placePicker.modalPresentationStyle = .popover
+//        placePicker.popoverPresentationController?.sourceView = view
+//        placePicker.popoverPresentationController?.sourceRect = mapsButton.bounds
+//        self.present(placePicker, animated: true, completion: nil)
     }
     
     @objc func userTappedPhotoCollection(tapGestureRecognizer: UITapGestureRecognizer)
@@ -905,7 +866,7 @@ class ShareController:
         //let bounds = UIScreen.main.bounds
         //let width = bounds.size.width - (2 * (paddingSize + 8) )
         
-        
+
         products.anchor(top:  imageCard.bottomAnchor,
                         left: containerView.leftAnchor,
                         bottom: nil ,
@@ -916,23 +877,31 @@ class ShareController:
                         paddingRight: paddingSize,
                         width: 0 ,
                         height: productsHeight)
+
+
+//        locationCard.anchor(top: products.bottomAnchor, left: containerView.leftAnchor, bottom: nil, right: containerView.rightAnchor ,
+//                            paddingTop: paddingTopBottom,
+//                            paddingLeft: paddingSize,
+//                            paddingBottom: paddingTopBottom,
+//                            paddingRight: paddingSize,
+//                            width: 0, height: 40)
         
         
-        locationCard.anchor(top: products.bottomAnchor, left: containerView.leftAnchor, bottom: nil, right: containerView.rightAnchor ,
-                            paddingTop: paddingTopBottom,
-                            paddingLeft: paddingSize,
-                            paddingBottom: paddingTopBottom,
-                            paddingRight: paddingSize,
-                            width: 0, height: 40)
+//
+//        descriptionTextView.anchor(top: locationCard.bottomAnchor, left: containerView.leftAnchor, bottom: nil , right: containerView.rightAnchor,
+//                                   paddingTop: paddingTopBottom ,
+//                                   paddingLeft: paddingSize,
+//                                   paddingBottom: paddingTopBottom,
+//                                   paddingRight: paddingSize,
+//                                   width: 0 , height: 2.5 * productsHeight)
         
-        
-        
-        descriptionTextView.anchor(top: locationCard.bottomAnchor, left: containerView.leftAnchor, bottom: nil , right: containerView.rightAnchor,
-                                   paddingTop: paddingTopBottom ,
-                                   paddingLeft: paddingSize,
-                                   paddingBottom: paddingTopBottom,
-                                   paddingRight: paddingSize,
-                                   width: 0 , height: 2.5 * productsHeight)
+       
+        descriptionTextView.anchor(top: products.bottomAnchor, left: containerView.leftAnchor, bottom: nil , right: containerView.rightAnchor,
+                                       paddingTop: paddingTopBottom ,
+                                       paddingLeft: paddingSize,
+                                       paddingBottom: paddingTopBottom,
+                                       paddingRight: paddingSize,
+                                       width: 0 , height: 2.5 * productsHeight)
         
         runningCountLabel.anchor(top: nil, left: nil, bottom: descriptionTextView.bottomAnchor, right: descriptionTextView.rightAnchor , paddingTop: 4 , paddingLeft: 0, paddingBottom: 1 , paddingRight: 0, width: 50 , height: 30)
         floatingAddButton.anchor(top: nil, left: nil, bottom: containerView.bottomAnchor, right: containerView.rightAnchor, paddingTop: 80, paddingLeft: 0, paddingBottom: 0, paddingRight: 10, width: 0, height: 0)
@@ -970,7 +939,7 @@ class ShareController:
     let products:  UITextField = {
         let TextField =  UITextField()
         TextField.placeholder = "Caption"
-        TextField.keyboardType = UIKeyboardType.twitter
+        TextField.keyboardType = UIKeyboardType.webSearch
         TextField.font = UIFont.systemFont(ofSize: 15)
         TextField.translatesAutoresizingMaskIntoConstraints = true
         TextField.textColor = UIColor.black
@@ -1122,14 +1091,14 @@ class ShareController:
     
     @objc func openMapSelector() {
         CellType = CT.MAP
-        print("Open the maps window")
-        let config = GMSPlacePickerConfig(viewport: nil)
-        let placePicker = GMSPlacePickerViewController(config: config)
-        placePicker.delegate = self
-        placePicker.modalPresentationStyle = .popover
-        placePicker.popoverPresentationController?.sourceView = mapsButton
-        placePicker.popoverPresentationController?.sourceRect = mapsButton.bounds
-        self.present(placePicker, animated: true, completion: nil)
+//        print("Open the maps window")
+//        let config = GMSPlacePickerConfig(viewport: nil)
+//        let placePicker = GMSPlacePickerViewController(config: config)
+//        placePicker.delegate = self
+//        placePicker.modalPresentationStyle = .popover
+//        placePicker.popoverPresentationController?.sourceView = mapsButton
+//        placePicker.popoverPresentationController?.sourceRect = mapsButton.bounds
+//        self.present(placePicker, animated: true, completion: nil)
     }
     
     
@@ -1312,13 +1281,13 @@ class ShareController:
                 if item >= 0 {
                     // let place = mapObjects[item]
                     // we need to extend the class and make sure we go to the location selected
-                    let config = GMSPlacePickerConfig(viewport: nil)
-                    let placePicker = GMSPlacePickerViewController(config: config)
-                    placePicker.delegate = self
-                    placePicker.modalPresentationStyle = .popover
-                    placePicker.popoverPresentationController?.sourceView = mapsButton
-                    placePicker.popoverPresentationController?.sourceRect = mapsButton.bounds
-                    self.present(placePicker, animated: true, completion: nil)
+//                    let config = GMSPlacePickerConfig(viewport: nil)
+//                    let placePicker = GMSPlacePickerViewController(config: config)
+//                    placePicker.delegate = self
+//                    placePicker.modalPresentationStyle = .popover
+//                    placePicker.popoverPresentationController?.sourceView = mapsButton
+//                    placePicker.popoverPresentationController?.sourceRect = mapsButton.bounds
+//                    self.present(placePicker, animated: true, completion: nil)
                 }
             }
             break
@@ -1371,6 +1340,7 @@ class ShareController:
         CellType = CT.PIC
         gallery = GalleryController()
         gallery.delegate = self
+        gallery.modalPresentationStyle = .fullScreen
         present(gallery, animated: true, completion: nil)
     }
     
@@ -1490,42 +1460,42 @@ class ShareController:
     
 }
 
-
-extension ShareController : GMSPlacePickerViewControllerDelegate {
-    
-    func placePicker(_ viewController: GMSPlacePickerViewController, didPick place: GMSPlace) {
-        // Create the next view controller we are going to display and present it.
-        let nextScreen = PlaceDetailViewController(place: place)
-        self.splitPaneViewController?.push(viewController: nextScreen, animated: false)
-        self.mapViewController?.coordinate = place.coordinate
-        // Dismiss the place picker.
-        let placePickerObject = locObject(place: place)
-        mapObjects.append(placePickerObject!)
-        refreshMapCollection { error in
-            if let error = error {
-                print("Oops! Something went wrong... : ", error)
-            } else {
-                print("It has finished")
-            }
-        }
-        viewController.dismiss(animated: true, completion: nil)
-    }
-    
-    
-    
-    func placePicker(_ viewController: GMSPlacePickerViewController, didFailWithError error: Error) {
-        // In your own app you should handle this better, but for the demo we are just going to log
-        // a message.
-        NSLog("An error occurred while picking a place: \(error)")
-    }
-    
-    func placePickerDidCancel(_ viewController: GMSPlacePickerViewController) {
-        NSLog("The place picker was canceled by the user")
-        
-        // Dismiss the place picker.
-        viewController.dismiss(animated: true, completion: nil)
-        dismiss(animated: true, completion: nil)
-    }
-}
+//
+//extension ShareController : GMSPlacePickerViewControllerDelegate {
+//
+//    func placePicker(_ viewController: GMSPlacePickerViewController, didPick place: GMSPlace) {
+//        // Create the next view controller we are going to display and present it.
+//        let nextScreen = PlaceDetailViewController(place: place)
+//        self.splitPaneViewController?.push(viewController: nextScreen, animated: false)
+//        self.mapViewController?.coordinate = place.coordinate
+//        // Dismiss the place picker.
+//        let placePickerObject = locObject(place: place)
+//        mapObjects.append(placePickerObject!)
+//        refreshMapCollection { error in
+//            if let error = error {
+//                print("Oops! Something went wrong... : ", error)
+//            } else {
+//                print("It has finished")
+//            }
+//        }
+//        viewController.dismiss(animated: true, completion: nil)
+//    }
+//
+//
+//
+//    func placePicker(_ viewController: GMSPlacePickerViewController, didFailWithError error: Error) {
+//        // In your own app you should handle this better, but for the demo we are just going to log
+//        // a message.
+//        NSLog("An error occurred while picking a place: \(error)")
+//    }
+//
+//    func placePickerDidCancel(_ viewController: GMSPlacePickerViewController) {
+//        NSLog("The place picker was canceled by the user")
+//
+//        // Dismiss the place picker.
+//        viewController.dismiss(animated: true, completion: nil)
+//        dismiss(animated: true, completion: nil)
+//    }
+//}
 
 

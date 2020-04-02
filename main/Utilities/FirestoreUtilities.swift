@@ -15,6 +15,26 @@ import GooglePlaces
 
 extension Firestore {
     
+   
+        func fetchCurrentUser(completion: @escaping (User?, Error?) -> ()) {
+            guard let uid = Auth.auth().currentUser?.uid else { return }
+            Firestore.firestore().collection("users").document(uid).getDocument { (snapshot, err) in
+                if let err = err {
+                    completion(nil, err)
+                    return
+                }
+                
+                // fetched our user here
+                guard let dictionary = snapshot?.data() else {
+                    let error = NSError(domain: "com.lbta.swipematch", code: 500, userInfo: [NSLocalizedDescriptionKey: "No user found in Firestore"])
+                    completion(nil, error)
+                    return
+                }
+                let user = User(dictionary: dictionary)
+                completion(user, nil)
+            }
+        }
+    
     static func fetchUserWithUID(uid: String, completion: @escaping (MapleUser) -> ()) {
         let docRef = firestore().collection("users").document(uid).collection("profile").document(uid)
         docRef.getDocument { (document, error) in
@@ -361,7 +381,7 @@ extension Firestore {
                 completion(false)
             } else {
                 if query!.documents.count > 0 {
-                    print("Post \(postId) is likde by \(uid)")
+                    print("Post \(postId) is liked by \(uid)")
                     completion(true)
                 }
             }

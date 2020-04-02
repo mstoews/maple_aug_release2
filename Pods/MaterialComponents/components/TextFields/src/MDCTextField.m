@@ -58,6 +58,8 @@ static const CGFloat MDCTextInputTextRectYCorrection = 1;
 @implementation MDCTextField
 
 @dynamic borderStyle;
+@synthesize mdc_elevationDidChangeBlock = _mdc_elevationDidChangeBlock;
+@synthesize mdc_overrideBaseElevation = _mdc_overrideBaseElevation;
 
 - (instancetype)initWithFrame:(CGRect)frame {
   self = [super initWithFrame:frame];
@@ -139,6 +141,7 @@ static const CGFloat MDCTextInputTextRectYCorrection = 1;
 
   [self setContentCompressionResistancePriority:UILayoutPriorityDefaultHigh + 1
                                         forAxis:UILayoutConstraintAxisVertical];
+  _mdc_overrideBaseElevation = -1;
 }
 
 #pragma mark - Underline View Implementation
@@ -330,12 +333,25 @@ static const CGFloat MDCTextInputTextRectYCorrection = 1;
 }
 
 - (void)setTextColor:(UIColor *)textColor {
-  [super setTextColor:textColor];
-  _fundament.textColor = textColor;
+  // This identity check was added in
+  // https://github.com/material-components/material-components-ios/pull/9480 in response to
+  // b/148159587
+  if (textColor != self.textColor) {
+    [super setTextColor:textColor];
+    _fundament.textColor = textColor;
+  }
 }
 
 - (UIEdgeInsets)textInsets {
   return self.fundament.textInsets;
+}
+
+- (CGFloat)sizeThatFitsWidthHint {
+  return self.fundament.sizeThatFitsWidthHint;
+}
+
+- (void)setSizeThatFitsWidthHint:(CGFloat)sizeThatFitsWidthHint {
+  self.fundament.sizeThatFitsWidthHint = sizeThatFitsWidthHint;
 }
 
 - (MDCTextInputTextInsetsMode)textInsetsMode {
@@ -430,8 +446,9 @@ static const CGFloat MDCTextInputTextRectYCorrection = 1;
 }
 
 - (void)setFont:(UIFont *)font {
+  UIFont *previousFont = self.font;
   [super setFont:font];
-  [_fundament didSetFont];
+  [_fundament didSetFont:previousFont];
 }
 
 - (void)setEnabled:(BOOL)enabled {
@@ -708,9 +725,10 @@ static const CGFloat MDCTextInputTextRectYCorrection = 1;
 }
 
 - (CGSize)sizeThatFits:(CGSize)size {
+  self.sizeThatFitsWidthHint = size.width;
   CGSize sizeThatFits = [self intrinsicContentSize];
-  sizeThatFits.width = size.width;
-
+  sizeThatFits.width = self.sizeThatFitsWidthHint;
+  self.sizeThatFitsWidthHint = 0;
   return sizeThatFits;
 }
 
@@ -728,6 +746,18 @@ static const CGFloat MDCTextInputTextRectYCorrection = 1;
   if ([self.positioningDelegate respondsToSelector:@selector(textInputDidLayoutSubviews)]) {
     [self.positioningDelegate textInputDidLayoutSubviews];
   }
+}
+
+- (void)traitCollectionDidChange:(UITraitCollection *)previousTraitCollection {
+  [super traitCollectionDidChange:previousTraitCollection];
+
+  if (self.traitCollectionDidChangeBlock) {
+    self.traitCollectionDidChangeBlock(self, previousTraitCollection);
+  }
+}
+
+- (CGFloat)mdc_currentElevation {
+  return 0;
 }
 
 - (void)updateConstraints {

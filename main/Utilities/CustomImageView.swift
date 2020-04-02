@@ -87,8 +87,9 @@ extension UIImageView{
         else{
             self.sd_showActivityIndicatorView()
             self.sd_setIndicatorStyle(.gray)
-            let reference : StorageReference = Storage.storage().reference(forURL: storageRefString)
-            self.sd_setImage(with: reference, placeholderImage: placeholderImage)
+            //let reference : StorageReference = Storage.storage().reference(forURL: storageRefString)
+            //self.sd_setImage(with: reference, placeholderImage: placeholderImage)
+            
         }
         
     }

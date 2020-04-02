@@ -13,7 +13,7 @@ import AlgoliaSearch
 import InstantSearchCore
 import Lightbox
 import GoogleSignIn
-import GoogleToolboxForMac
+//import GoogleToolboxForMac
 import MaterialComponents
 import JGProgressHUD
 import Mapbox
@@ -27,7 +27,9 @@ enum  FetchType {
 }
 
 
-class HomeController: MDCCollectionViewController, HomePostCellDelegate,  HomeHeaderCellDelegate {
+class HomeController: MDCCollectionViewController, HomePostCellDelegate,HomeHeaderCellDelegate
+
+{
   
     var FETCH_TYPE = FetchType.USER
     let db = Firestore.firestore()
@@ -65,7 +67,7 @@ class HomeController: MDCCollectionViewController, HomePostCellDelegate,  HomeHe
         
         collectionView?.refreshControl = refreshControl
         collectionView?.backgroundView = nil
-        Firestore.updateDocCounts()
+        //Firestore.updateDocCounts()
         setupNavigationItems()
         collectionView?.delegate = self
         PAGINATION_LIMIT = 0
@@ -253,11 +255,11 @@ class HomeController: MDCCollectionViewController, HomePostCellDelegate,  HomeHe
     //MARK:- Top Posts
     func observeTopFeed(){
         stopObserving()
-        
+
         let hud = JGProgressHUD(style: .dark)
         hud.textLabel.text = "Fetching Posts"
         hud.show(in: view)
-        
+
         self.listener = self.db.collection("posts")
             .order(by: "numberOfLikes", descending: false).limit(to: 5)
             .addSnapshotListener{  (snapshot, error) in
@@ -265,7 +267,7 @@ class HomeController: MDCCollectionViewController, HomePostCellDelegate,  HomeHe
                     print("Error fetching snapshot results: \(error!)")
                     return
                 }
-                
+
                 let models = snapshot.documents.map { (document) -> FSPost in
                     if let model = FSPost(dictionary: document.data(), postId: document.documentID) {
                         //Firestore.updateAlgoliaPost(post: model)
@@ -276,11 +278,11 @@ class HomeController: MDCCollectionViewController, HomePostCellDelegate,  HomeHe
                         fatalError("Unable to initialize type \(FSPost.self) with dictionary \(document.data())")
                     }
                 }
-                
+
                 self.posts = models
-                
+
                 self.documents = snapshot.documents
-                
+
                 if self.documents.count > 0 {
                     //print("Number of posts: \(self.documents.count)")
                     self.collectionView?.backgroundView = nil
@@ -293,20 +295,16 @@ class HomeController: MDCCollectionViewController, HomePostCellDelegate,  HomeHe
         }
         hud.dismiss()
     }
-    
+
     
     func didTapImageCell(for cell: UserImageCell, post: Post) {
         
         var photos: [PhotoViewModel] = []
-        
         for url in post.imageUrlArray {
             let pt = PhotoViewModel(imageURL: URL(string: url),thumbnailImageURL: URL(string: url))
             pt.caption = post.caption
             photos.append(pt)
         }
-        
-        
-        
     }
     
     func didTapUserNameLabel(uid: String) {
@@ -329,21 +327,15 @@ class HomeController: MDCCollectionViewController, HomePostCellDelegate,  HomeHe
         observePostFeed()
     }
     
-    
-   
-    
-    
     override func viewDidAppear(_ animated: Bool) {
         MDCSnackbarManager.setBottomOffset(bottomBarView.frame.height)
-        //observeQuery()
+        
     }
     
     override func viewWillDisappear(_ animated: Bool) {
         super.viewWillDisappear(animated)
-        //stopObserving()
+        stopObserving()
     }
-    
-    
     
     func updateFireStore (post: Post)
     {
@@ -372,44 +364,6 @@ class HomeController: MDCCollectionViewController, HomePostCellDelegate,  HomeHe
         }
     }
     
-    
-    func didUploadUsersAglolia()
-    {
-//        Database.fetchAllUser ( completion: { (users) in
-//            for user in users {
-//                let values : [String: Any] = [
-//                    "name" : user.username,
-//                    "profileImageUrl" :  user.profileImageUrl,
-//                    "creationDate": Date().timeIntervalSince1970
-//                ]
-//                AlgoliaManager.sharedInstance.users.addObject(values, withID: user.uid , completionHandler: { (content, error) -> Void in
-//                    if error == nil {
-//                        if let objectID = content!["objectID"] as? String {
-//                            print("Object ID: \(objectID)")
-//                        }
-//                    }
-//                })
-//            }
-//        })
-        
-    }
-    
-    
-//    func fetchFollowingUserIds(completion: @escaping ([String])->() ) {
-//        var userFollowing = [String]()
-//        guard let uid = Auth.auth().currentUser?.uid else { return }
-//        Database.database().reference().child("following").child(uid).observeSingleEvent(of: .value, with: { (snapshot) in
-//            guard let userIdsDictionary = snapshot.value as? [String: Any] else { return }
-//            userIdsDictionary.forEach({ (key, value) in
-//                print(key)
-//                userFollowing.append(key)
-//            })
-//            completion(userFollowing)
-//        }) { (err) in
-//            print("Failed to fetch following user ids:", err)
-//        }
-//    }
-//
     internal func cleanCollectionView() {
         if collectionView!.numberOfItems(inSection: 0) > 0 {
             collectionView!.reloadSections([0])
@@ -418,13 +372,9 @@ class HomeController: MDCCollectionViewController, HomePostCellDelegate,  HomeHe
     
     // MARK: - Needs a fix to move to dynamic links 
     func setupNavigationItems() {
-        //navigationItem.titleView = UIImageView(image: #imageLiteral(resourceName: "logo2"))
-        navigationItem.title = "Home Page"
+        navigationItem.titleView = UIImageView(image: #imageLiteral(resourceName: "logo2"))
+        //navigationItem.title = "Home Page"
         
-        //let rightImage = UIImage(named: "ic_people")?.withRenderingMode(.alwaysOriginal)
-        //let rightButton = UIBarButtonItem(image: rightImage, style: .done , target: self, action: #selector(inviteTapped))
-        //rightButton.tintColor = UIColor.themeColor()
-        //navigationItem.rightBarButtonItem = rightButton
     }
     
     override func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
@@ -452,18 +402,7 @@ class HomeController: MDCCollectionViewController, HomePostCellDelegate,  HomeHe
             return 0
         }
     }
-    
-    override func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
-        //let cell : UICollectionViewCell = collectionView.cellForItem(at: indexPath as IndexPath)!
-//        if fs_posts.count > 0 {
-//            let fs_post = fs_posts[indexPath.item]
-//            let  productController = ProductController(collectionViewLayout: UICollectionViewFlowLayout())
-//            // todo
-//            productController.post = fs_post
-//            // navigationController?.pushViewController(productController, animated: true)
-//        }
-    }
-    
+        
     override func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, minimumInteritemSpacingForSectionAt section: Int) -> CGFloat {
         return 7
     }
@@ -501,17 +440,7 @@ class HomeController: MDCCollectionViewController, HomePostCellDelegate,  HomeHe
         return size
     }
     
-    func didOptions()
-    {
-        //let mapController = MapController()
-        //present(mapController, animated:  true, completion: nil)
-    }
-    
-    func didModifyOptions(for cell: HomePostCell)
-    {
-    }
-    
-    func didTapComment(post: FSPost) {
+     func didTapComment(post: FSPost) {
         print("Message coming from home controller ... didTapComment")
         let commentsController = CommentsController(collectionViewLayout: UICollectionViewFlowLayout())
         commentsController.post = post
@@ -519,38 +448,6 @@ class HomeController: MDCCollectionViewController, HomePostCellDelegate,  HomeHe
     }
     
     func didTapImage(for cell: PostImage, post: FSPost) {
-        /* var photos: [PhotoViewModel] = []
-        
-        if post.largeUrlArray.count > 0 {
-            for url in post.largeUrlArray {
-                let pt = PhotoViewModel(imageURL: URL(string: url),thumbnailImageURL: URL(string: url))
-                pt.caption = post.product + "\n" + post.description
-                photos.append(pt)
-            }
-        }
-        
-        
-        if post.largeUrlArray.count > 0 {
-            var count : Int
-            count = 0
-            if post.imageUrlArray.count > 0 {
-                for url in post.imageUrlArray {
-                    photos[count].thumbnailImageURL = URL(string: url)
-                    count = count + 1
-                }
-            }
-        }
-        else
-        {
-            if post.imageUrlArray.count > 0 {
-                for url in post.imageUrlArray {
-                    let pt = PhotoViewModel(imageURL: URL(string: url),thumbnailImageURL: URL(string: url))
-                    pt.caption = post.product + "\n" + post.description
-                    photos.append(pt)
-                }
-            }
-        }
-       */
         
         var images : [LightboxImage] = []
         if post.imageUrlArray.count > 0 {
@@ -568,6 +465,7 @@ class HomeController: MDCCollectionViewController, HomePostCellDelegate,  HomeHe
         if images.count > 0 {
             let controller = LightboxController(images: images)
             controller.dynamicBackground = true
+            controller.modalPresentationStyle = .fullScreen
             present(controller, animated: true, completion: nil)
         }
        
@@ -621,56 +519,6 @@ class HomeController: MDCCollectionViewController, HomePostCellDelegate,  HomeHe
         }
         else{
             self.setButtonImage(button: cell.likeButton, btnName: "ic_favorite_border", color: UIColor.red)
-        }
-    }
-}
-
-
-extension HomeController: GIDSignInDelegate, GIDSignInUIDelegate {
-    
-    @objc func inviteTapped() {
-        GIDSignIn.sharedInstance().clientID = FirebaseApp.app()?.options.clientID
-        GIDSignIn.sharedInstance().scopes = ["https://www.googleapis.com/auth/userinfo.email", "https://www.googleapis.com/auth/userinfo.profile"]
-        GIDSignIn.sharedInstance().uiDelegate = self
-        GIDSignIn.sharedInstance().delegate = self
-        GIDSignIn.sharedInstance().signInSilently()
-    }
-    
-    func inviteFinished(withInvitations invitationIds: [String], error: Error?) {
-        switch error {
-        case .some(let error as NSError) where error.code == -1009:
-            MDCSnackbarManager.show(MDCSnackbarMessage(text: error.localizedDescription))
-        case .some(let error):
-            print("Failed: \(error.localizedDescription)")
-        case .none:
-            print("\(invitationIds.count) invites sent")
-        }
-    }
-    
-    func sign(_ signIn: GIDSignIn!, didSignInFor user: GIDGoogleUser!, withError error: Error!) {
-        switch error {
-        case .some(let error as NSError) where error.code == GIDSignInErrorCode.hasNoAuthInKeychain.rawValue:
-            GIDSignIn.sharedInstance().signIn()
-        case .some(let error as NSError) where error.code == -1009:
-            MDCSnackbarManager.show(MDCSnackbarMessage(text: error.localizedDescription))
-        case .some(let error):
-            print("Login error: \(error.localizedDescription)")
-        case .none:
-            print("Login error: \(error.localizedDescription)")
-//            if let invite = Invites.inviteDialog() {
-//                invite.setInviteDelegate(self)
-//                // NOTE: You must have the App Store ID set in your developer console project
-//                // in order for invitations to successfully be sent.
-//                // A message hint for the dialog. Note this manifests differently depending on the
-//                // received invitation type. For example, in an email invite this appears as the subject.
-//                invite.setMessage("Try this out!\n -\(Auth.auth().currentUser!.displayName ?? "")")
-//                // Title for the dialog, this is what the user sees before sending the invites.
-//                //invite.setCustomImage(#imageLiteral(resourceName: "ic_insert_photo_white").imageAsset.)
-//                invite.setTitle("Maple")
-//                invite.setDeepLink("app_url")
-//                invite.setCallToActionText("Install!")
-//                invite.open()
-            
         }
     }
 }

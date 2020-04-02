@@ -23,13 +23,13 @@
 @property(nonatomic, assign) BOOL titleBelowIcon;
 @property(nonatomic, assign) BOOL selected;
 @property(nonatomic, assign) MDCBottomNavigationBarTitleVisibility titleVisibility;
-@property(nonatomic, strong) MDCInkView *inkView;
-@property(nonatomic, strong) MDCRippleTouchController *rippleTouchController;
+@property(nonatomic, strong, nonnull) MDCInkView *inkView;
+@property(nonatomic, strong, nonnull) MDCRippleTouchController *rippleTouchController;
 @property(nonatomic, assign) UIOffset titlePositionAdjustment;
 
-@property(nonatomic, copy) NSString *badgeValue;
-@property(nonatomic, copy) NSString *title;
-@property(nonatomic, strong) UIFont *itemTitleFont UI_APPEARANCE_SELECTOR;
+@property(nonatomic, copy, nullable) NSString *badgeValue;
+@property(nonatomic, copy, nullable) NSString *title;
+@property(nonatomic, strong, nullable) UIFont *itemTitleFont UI_APPEARANCE_SELECTOR;
 
 /**
  The number of lines available for rendering the title of this item.  Defaults to 1.
@@ -40,18 +40,35 @@
 // Default = YES
 @property(nonatomic, assign) BOOL truncatesTitle;
 
-@property(nonatomic, strong) UIButton *button;
-@property(nonatomic, strong) UIImage *image;
-@property(nonatomic, strong) UIImage *selectedImage;
+@property(nonatomic, strong, nonnull) UIButton *button;
+@property(nonatomic, strong, nullable) UIImage *image;
+@property(nonatomic, strong, nullable) UIImage *selectedImage;
 
-@property(nonatomic, strong) UIColor *badgeColor UI_APPEARANCE_SELECTOR;
-@property(nonatomic, strong) UIColor *selectedItemTintColor UI_APPEARANCE_SELECTOR;
-@property(nonatomic, strong) UIColor *unselectedItemTintColor UI_APPEARANCE_SELECTOR;
-@property(nonatomic, strong) UIColor *selectedItemTitleColor;
+@property(nonatomic, strong, nullable) UIColor *badgeColor UI_APPEARANCE_SELECTOR;
+@property(nonatomic, copy, nullable) UIColor *badgeTextColor;
+@property(nonatomic, strong, nullable) UIColor *selectedItemTintColor UI_APPEARANCE_SELECTOR;
+@property(nonatomic, strong, nullable) UIColor *unselectedItemTintColor UI_APPEARANCE_SELECTOR;
+@property(nonatomic, strong, nullable) UIColor *selectedItemTitleColor;
 
 @property(nonatomic, assign) CGFloat contentVerticalMargin;
 @property(nonatomic, assign) CGFloat contentHorizontalMargin;
+/** The @c accessibilityIdentifier of the accessibility element for this view. */
+@property(nonatomic, copy, nullable) NSString *accessibilityElementIdentifier;
 
 - (void)setSelected:(BOOL)selected animated:(BOOL)animated;
+
+#pragma mark - UILargeContentViewerItem
+
+/**
+ The title to display in the large content viewer. If set to nil, this property will return
+ @c title.
+ */
+@property(nonatomic, copy, nullable) NSString *largeContentTitle NS_AVAILABLE_IOS(13_0);
+
+/**
+ The image to display in the large content viwer.  If set to nil, the property will return
+ @c image . If set to nil (or not set) @c scalesLargeContentImage will return YES otherwise NO.
+ */
+@property(nonatomic, nullable) UIImage *largeContentImage NS_AVAILABLE_IOS(13_0);
 
 @end

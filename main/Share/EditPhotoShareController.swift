@@ -11,10 +11,10 @@ import Firebase
 import Photos
 import AssetsLibrary
 import FirebaseUI
-import AFNetworking
+//import AFNetworking
 import GoogleMaps
 import GooglePlaces
-import GooglePlacePicker
+//import GooglePlacePicker
 import os.log
 import AlgoliaSearch
 import InstantSearchCore

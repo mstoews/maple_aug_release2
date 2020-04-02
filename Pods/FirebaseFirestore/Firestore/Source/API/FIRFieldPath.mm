@@ -23,14 +23,14 @@
 
 #import "Firestore/Source/API/FIRFieldPath+Internal.h"
 
-#include "Firestore/core/src/firebase/firestore/api/input_validation.h"
 #include "Firestore/core/src/firebase/firestore/model/field_path.h"
+#include "Firestore/core/src/firebase/firestore/util/exception.h"
 #include "Firestore/core/src/firebase/firestore/util/hashing.h"
 #include "Firestore/core/src/firebase/firestore/util/string_apple.h"
 
 namespace util = firebase::firestore::util;
-using firebase::firestore::api::ThrowInvalidArgument;
 using firebase::firestore::model::FieldPath;
+using firebase::firestore::util::ThrowInvalidArgument;
 
 NS_ASSUME_NONNULL_BEGIN
 
@@ -48,13 +48,13 @@ NS_ASSUME_NONNULL_BEGIN
     ThrowInvalidArgument("Invalid field path. Provided names must not be empty.");
   }
 
-  std::vector<std::string> field_names;
-  field_names.reserve(fieldNames.count);
-  for (int i = 0; i < fieldNames.count; ++i) {
-    field_names.emplace_back(util::MakeString(fieldNames[i]));
+  std::vector<std::string> converted;
+  converted.reserve(fieldNames.count);
+  for (NSString *fieldName in fieldNames) {
+    converted.emplace_back(util::MakeString(fieldName));
   }
 
-  return [self initPrivate:FieldPath::FromSegments(std::move(field_names))];
+  return [self initPrivate:FieldPath::FromSegments(std::move(converted))];
 }
 
 + (instancetype)documentID {
@@ -71,16 +71,6 @@ NS_ASSUME_NONNULL_BEGIN
 + (instancetype)pathWithDotSeparatedString:(NSString *)path {
   return
       [[FIRFieldPath alloc] initPrivate:FieldPath::FromDotSeparatedString(util::MakeString(path))];
-}
-
-/** Matches any characters in a field path string that are reserved. */
-+ (NSRegularExpression *)reservedCharactersRegex {
-  static NSRegularExpression *regex = nil;
-  static dispatch_once_t onceToken;
-  dispatch_once(&onceToken, ^{
-    regex = [NSRegularExpression regularExpressionWithPattern:@"[~*/\\[\\]]" options:0 error:nil];
-  });
-  return regex;
 }
 
 - (id)copyWithZone:(NSZone *__nullable)zone {
