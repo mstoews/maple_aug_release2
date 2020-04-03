@@ -26,8 +26,8 @@ protocol ChangeSignPhotoControllerDelegate {
 
 class ChangeSignPhotoController: UIViewController,
     GalleryControllerDelegate,
-    LightboxControllerDismissalDelegate,
-    UINavigationControllerDelegate  {
+    LightboxControllerDismissalDelegate
+    {
     
     func lightboxControllerWillDismiss(_ controller: LightboxController) {
         
@@ -275,7 +275,7 @@ class ChangeSignPhotoController: UIViewController,
     }
     
     
-    var user: MapleUser?
+    var mapleUser: MapleUser?
     fileprivate func fetchUser() {
         
         let uid = Auth.auth().currentUser?.uid
@@ -284,10 +284,10 @@ class ChangeSignPhotoController: UIViewController,
         // best to double check that the code is still working under different circumstances.
         
         Firestore.fetchUserWithUID(uid: uid!) { (user) in
-            self.user = user
-            self.navigationItem.title = self.user?.username
-            self.usernameTextField.text = self.user?.username
-            if let profileImageUrl = self.user?.profileImageUrl {
+            self.mapleUser = user
+            self.navigationItem.title = self.mapleUser?.username
+            self.usernameTextField.text = self.mapleUser?.username
+            if let profileImageUrl = self.mapleUser?.profileImageUrl {
                 self.profileImageView.loadImage(urlString: profileImageUrl)
             }
             else
@@ -320,21 +320,21 @@ class ChangeSignPhotoController: UIViewController,
         
         
         let urlString = "\(url)"
-        user?.uid = uid
-        user?.username = username
-        user?.profileImageUrl = urlString
+        mapleUser?.uid = uid
+        mapleUser?.username = username
+        mapleUser?.profileImageUrl = urlString
         
-        self.delegate?.didChangeSignUpPhoto(user: user!)
+        self.delegate?.didChangeSignUpPhoto(user: mapleUser!)
         
         Firestore.fetchUserWithUID(uid: uid) { (user) in
-            self.user = user
+            self.mapleUser = user
             
             let dictionaryValues = ["username": username, "profileImageUrl":  urlString] as [String : Any]
             let values = [uid: dictionaryValues]
             print (values)
             
-            self.user!.profileImageUrl = urlString
-            self.user!.username = username
+            self.mapleUser!.profileImageUrl = urlString
+            self.mapleUser!.username = username
             
             Firestore.firestore().collection("users").document(uid).collection("profile").document(uid).updateData(dictionaryValues)
             {
@@ -342,7 +342,7 @@ class ChangeSignPhotoController: UIViewController,
                 if let err = err {
                     print("Error writing document: \(err)")
                 } else {
-                    Firestore.updateUserProfile(user: self.user!)
+                    Firestore.updateUserProfile(user: self.mapleUser!)
                    
                 }
             }

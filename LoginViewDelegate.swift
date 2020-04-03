@@ -37,6 +37,7 @@ class LoginController: UIViewController {
             emailTextField,
             passwordTextField,
             loginButton
+            //goBackButton
             ])
         sv.axis = .vertical
         sv.spacing = 8
@@ -65,6 +66,31 @@ class LoginController: UIViewController {
         return button
     }()
     
+    
+    fileprivate let backToRegisterButton: UIButton = {
+           let button = UIButton(type: .system)
+           button.setTitle("Go to Registration", for: .normal)
+           button.setTitleColor(.white, for: .normal)
+           button.titleLabel?.font = UIFont.systemFont(ofSize: 16, weight: .heavy)
+           button.isEnabled = true
+           button.addTarget(self, action: #selector(handleBack), for: .touchUpInside)
+           return button
+       }()
+    
+    let goBackButton: UIButton = {
+           let button = UIButton(type: .system)
+           button.setTitle("Go to Register", for: .normal)
+           button.setTitleColor(.white, for: .normal)
+           button.titleLabel?.font = UIFont.systemFont(ofSize: 16, weight: .heavy)
+           button.backgroundColor = .lightGray
+           button.setTitleColor(.gray, for: .disabled)
+           button.isEnabled = true
+           button.heightAnchor.constraint(equalToConstant: 44).isActive = true
+           button.layer.cornerRadius = 22
+           button.addTarget(self, action: #selector(handleBack), for: .touchUpInside)
+           return button
+       }()
+    
     @objc fileprivate func handleLogin() {
         loginViewModel.performLogin { (err) in
             self.loginHUD.dismiss()
@@ -80,17 +106,24 @@ class LoginController: UIViewController {
         }
     }
     
-    fileprivate let backToRegisterButton: UIButton = {
-        let button = UIButton(type: .system)
-        button.setTitle("Go back", for: .normal)
-        button.setTitleColor(.white, for: .normal)
-        button.titleLabel?.font = UIFont.boldSystemFont(ofSize: 16)
-        button.addTarget(self, action: #selector(handleBack), for: .touchUpInside)
-        return button
-    }()
+   
     
     @objc fileprivate func handleBack() {
-        navigationController?.popViewController(animated: true)
+        print("Handle go back function.")
+        //navigationController?.popViewController(animated: true)
+        
+        let transition = CATransition()
+        transition.duration = 0.5
+        transition.timingFunction = CAMediaTimingFunction(name: CAMediaTimingFunctionName.easeInEaseOut)
+        transition.type = CATransitionType.fade
+               
+        let regController = RegistrationController()
+        regController.delegate = delegate
+        regController.modalPresentationStyle = .fullScreen
+        self.view.layer.add(transition, forKey: nil)
+        navigationController?.pushViewController(regController, animated: true)
+        
+        
     }
 
     override func viewDidLoad() {
@@ -98,7 +131,6 @@ class LoginController: UIViewController {
         
         setupGradientLayer()
         setupLayout()
-        
         setupBindables()
     }
     
@@ -140,14 +172,13 @@ class LoginController: UIViewController {
     }
     
     fileprivate func setupLayout() {
-        modalPresentationStyle = .fullScreen
         navigationController?.isNavigationBarHidden = true
         view.addSubview(verticalStackView)
-        //verticalStackView.anchor(top: nil, leading: view.leadingAnchor, bottom: nil, trailing: view.trailingAnchor, padding: .init(top: 0, left: 50, bottom: 0, right: 50))
+        verticalStackView.anchor(top: nil, leading: view.leadingAnchor, bottom: nil, trailing: view.trailingAnchor, padding: .init(top: 0, left: 50, bottom: 0, right: 50))
         verticalStackView.centerYAnchor.constraint(equalTo: view.centerYAnchor).isActive = true
         
         view.addSubview(backToRegisterButton)
-        backToRegisterButton.anchor(top: nil, left: view.leadingAnchor, bottom: view.safeAreaLayoutGuide.bottomAnchor, right: view.trailingAnchor)
+        backToRegisterButton.anchor(top: view.topAnchor, left: view.leftAnchor, bottom: nil , right: nil, paddingTop: 60, paddingLeft: 10, paddingBottom: 0, paddingRight: 0, width: 150, height: 40)
     }
 
 }

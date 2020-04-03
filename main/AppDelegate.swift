@@ -62,12 +62,6 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
             application.registerUserNotificationSettings(settings)
         }
         
-        
-        let db = Firestore.firestore()
-        let setting = db.settings
-        //setting.areTimestampsInSnapshotsEnabled = true
-        db.settings = setting
-       
         application.registerForRemoteNotifications()
         
         UINavigationBar.appearance().backgroundColor = UIColor.themeColor()

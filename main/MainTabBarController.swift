@@ -15,6 +15,7 @@ import MaterialComponents
 import Lightbox
 import GoogleSignIn
 import UserNotifications
+import JGProgressHUD
 
 private let kFirebaseTermsOfService = URL(string: "https://mapleon.com/terms/")!
 
@@ -29,6 +30,7 @@ class MainTabBarController: UITabBarController, AuthUIDelegate  {
     lazy var uid = Auth.auth().currentUser!.uid
     var notificationGranted = false
     let imageView = CustomImageView()
+    fileprivate let hud = JGProgressHUD(style: .dark)
     
     var posts = [Post]()
     var observers = [DatabaseQuery]()
@@ -99,8 +101,6 @@ class MainTabBarController: UITabBarController, AuthUIDelegate  {
     let authUI: FUIAuth? = FUIAuth.defaultAuthUI()
     
     
-    
-    
     override func viewDidLoad() {
         super.viewDidLoad()
         
@@ -161,17 +161,11 @@ class MainTabBarController: UITabBarController, AuthUIDelegate  {
     func setupViewControllers() {
         
         let homeNavController = templateNavController(unselectedImage: #imageLiteral(resourceName: "ic_home_white"), selectedImage: #imageLiteral(resourceName: "ic_home"), rootViewController: HomeController(collectionViewLayout: UICollectionViewFlowLayout()))
-        
-        // let searchNavController = templateNavController(unselectedImage: #imageLiteral(resourceName: "ic_search_white"), selectedImage: #imageLiteral(resourceName: "ic_search"), rootViewController: SearchAlgoliaCollectionView(collectionViewLayout: UICollectionViewFlowLayout()))
-        
+                
         let searchNavController = templateNavController(unselectedImage: #imageLiteral(resourceName: "ic_search_white"), selectedImage: #imageLiteral(resourceName: "ic_search"), rootViewController: SearchAlgoliaCollectionView(collectionViewLayout: CollectionLayout()))
         
-        // let searchNavController = templateNavController(unselectedImage: #imageLiteral(resourceName: "ic_search_white"), selectedImage: #imageLiteral(resourceName: "ic_search"), rootViewController: PodcastsSearchController())
-        
         let sharePhotoNavController = templateNavController(unselectedImage: #imageLiteral(resourceName: "plus_unselected"), selectedImage: #imageLiteral(resourceName: "plus_unselected"), rootViewController: ShareController())
-        
-        //let notificationNavController = templateNavController(unselectedImage: #imageLiteral(resourceName: "ic_favorite_border"), selectedImage: #imageLiteral(resourceName: "ic_favorite"), rootViewController: NotificationViewController(collectionViewLayout: UICollectionViewFlowLayout()))
-        
+                
         let notificationNavController = templateNavController(unselectedImage: #imageLiteral(resourceName: "ic_notifications_white"), selectedImage: #imageLiteral(resourceName: "ic_notifications"), rootViewController: NotificationViewController(collectionViewLayout: UICollectionViewFlowLayout()))
         
         
@@ -190,14 +184,10 @@ class MainTabBarController: UITabBarController, AuthUIDelegate  {
         let plusImage = UIImage(named: "trending")?.withRenderingMode(.alwaysTemplate)
         let button = MDCFloatingButton()
         button.setImage(plusImage, for: .normal)
-        //MDCFloatingActionButtonThemer.applyScheme(buttonScheme, to: button)
         
         tabBar.addSubview(button)
         
         button.anchor(top: tabBar.bottomAnchor, left: nil, bottom: nil, right: view.rightAnchor, paddingTop: 10, paddingLeft: 0, paddingBottom: 100, paddingRight: 10, width: 50, height: 50)
-        
-        
-       
         
         viewControllers = [
             homeNavController,
@@ -228,7 +218,11 @@ class MainTabBarController: UITabBarController, AuthUIDelegate  {
 }
 
 
-extension MainTabBarController: FUIAuthDelegate {
+extension MainTabBarController: FUIAuthDelegate, LoginControllerDelegate {
+    func didFinishLoggingIn() {
+        fetchCurrentUser()
+    }
+    
     
     func authUI(_ authUI: FUIAuth, didSignInWith authDataResult: AuthDataResult?, error: Error?) {
         switch error {
@@ -250,11 +244,42 @@ extension MainTabBarController: FUIAuthDelegate {
         return true
     }
     
-    private func showLoginView(){
-        if let authVC = FUIAuth.defaultAuthUI()?.authViewController() {
-            authVC.modalPresentationStyle = .fullScreen
-            present(authVC,animated: true, completion: nil)
+     fileprivate func fetchCurrentUser() {
+            hud.textLabel.text = "Loading"
+            hud.show(in: view)
+            Firestore.firestore().fetchCurrentUser { (user, err) in
+                if let err = err {
+                    print("Failed to fetch user:", err)
+                    self.hud.dismiss()
+                    return
+                }
+                //self.user = user
+                
+                //self.fetchSwipes()
+    //          self.fetchUsersFromFirestore()
+            }
         }
+    
+    private func showLoginView(){
+        print("MainTabBarController did appear")
+              // you want to kick the user out when they log out
+              if Auth.auth().currentUser == nil {
+//                  let registrationController = RegistrationController()
+//                  registrationController.delegate = self
+//                  let navController = UINavigationController(rootViewController: registrationController)
+//                  navController.modalPresentationStyle = .fullScreen
+//                  present(navController, animated: true)
+                
+                
+                    let loginController = LoginController()
+                    loginController.delegate = self
+                    let navController = UINavigationController(rootViewController: loginController)
+                    navController.modalPresentationStyle = .fullScreen
+                    present(navController, animated: true)
+                
+                
+              }
+        
     }
     
     func authPickerViewController(forAuthUI authUI: FUIAuth) -> FUIAuthPickerViewController {
@@ -265,7 +290,6 @@ extension MainTabBarController: FUIAuthDelegate {
         let firebaseAuth = Auth.auth()
         do {
             try firebaseAuth.signOut()
-            //AppState.sharedInstance.signedIn = false
             dismiss(animated: true, completion: nil)
         } catch let signOutError as NSError {
             print ("Error signing out: \(signOutError)")
@@ -303,11 +327,9 @@ extension MainTabBarController: FUIAuthDelegate {
     
     func savePhotoImage(user: MapleUser)
     {
-        //self.imageView.loadImage(urlString: (user.photoURL?.absoluteString)!)
         if let image = self.imageView.image {
             let size = CGSize(width: 320.0, height: 320)
             let uploadData = image.RBResizeImage(image: image, targetSize: size)
-            
             let filename = NSUUID().uuidString
             let metadata = StorageMetadata()
             metadata.contentType = "image/jpeg"
@@ -319,7 +341,7 @@ extension MainTabBarController: FUIAuthDelegate {
                     return
                 }
                 
-                storeRef.downloadURL { (url, err)  in
+            storeRef.downloadURL { (url, err)  in
                     if let err = err {
                         self.navigationItem.rightBarButtonItem?.isEnabled = true
                         print("Failed to upload post image:", err)

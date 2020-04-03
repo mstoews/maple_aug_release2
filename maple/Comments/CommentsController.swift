@@ -48,7 +48,6 @@ class CommentsController: MDCCollectionViewController, CommentInputAccessoryView
             
         }
         
-        //fetchComments()
         observeComments()
     }
     
@@ -58,32 +57,6 @@ class CommentsController: MDCCollectionViewController, CommentInputAccessoryView
         observeComments()
         sender.endRefreshing()
     }
-    
-    
-//    fileprivate func fetchComments() {
-//        comments.removeAll()
-//        if let postId = self.post?.id {
-//            Firestore.firestore().collection("posts").document(postId).collection("comments").getDocuments() {
-//                (querySnapshot, err) in
-//                if let err = err  {
-//                    print("Error getting documents: \(err)");
-//                }
-//                else  {
-//                    
-//                    for document in querySnapshot!.documents {
-//                        let uid = document["uid"] as! String
-//                        Database.fetchUserWithUID(uid: uid, completion: { (user) in
-//                            let comment = Comment(user: user, dictionary: document.data())
-//                            self.comments.append(comment)
-//                        })
-//                        self.collectionView?.reloadData()
-//                    }
-//                }
-//            }
-//        }
-//    }
-//    
-    
    
     deinit {
         listener?.remove()

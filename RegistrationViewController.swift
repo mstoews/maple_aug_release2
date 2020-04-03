@@ -254,21 +254,27 @@ class RegistrationController: UIViewController {
     }()
     
     @objc fileprivate func handleGoToLogin() {
+        
+        let transition = CATransition()
+        transition.duration = 0.5
+        transition.timingFunction = CAMediaTimingFunction(name: CAMediaTimingFunctionName.easeInEaseOut)
+        transition.type = CATransitionType.fade
+        
         let loginController = LoginController()
         loginController.delegate = delegate
+        loginController.modalPresentationStyle = .fullScreen
+        self.view.layer.add(transition, forKey: nil)
         navigationController?.pushViewController(loginController, animated: true)
     }
     
     fileprivate func setupLayout() {
         navigationController?.isNavigationBarHidden = true
-        
         view.addSubview(overallStackView)
-        
         overallStackView.axis = .vertical
         overallStackView.spacing = 8
         overallStackView.anchor(top: nil, leading: view.leadingAnchor, bottom: nil, trailing: view.trailingAnchor, padding: .init(top: 0, left: 50, bottom: 0, right: 50))
         overallStackView.centerYAnchor.constraint(equalTo: view.centerYAnchor).isActive = true
-        
+
         view.addSubview(goToLoginButton)
         goToLoginButton.anchor(top: nil, leading: view.leadingAnchor, bottom: view.safeAreaLayoutGuide.bottomAnchor, trailing: view.trailingAnchor)
     }
