@@ -23,8 +23,6 @@ class PhotoViewModel: NSObject {
     
     var caption = ""
     
-    
-    
     var attributedTitle: NSAttributedString? {
         #if swift(>=4.0)
         return NSAttributedString(string: caption, attributes: [NSAttributedString.Key.foregroundColor: UIColor.white])
