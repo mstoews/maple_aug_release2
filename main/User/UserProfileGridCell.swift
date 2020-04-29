@@ -18,8 +18,6 @@ protocol UserProfileDelegate {
     func didTapCellProduct (post: Post)
 }
 
-
-
 class ScreenshotImageCell: MDCCardCollectionCell {
     
     var imageObject: ImageObject?  {

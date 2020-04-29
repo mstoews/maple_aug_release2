@@ -11,10 +11,8 @@ import Firebase
 import Photos
 import AssetsLibrary
 import FirebaseUI
-//import AFNetworking
 import GoogleMaps
 import GooglePlaces
-//import GooglePlacePicker
 import os.log
 import AlgoliaSearch
 import InstantSearchCore
@@ -722,8 +720,9 @@ class ShareController:
     
     @objc func imageCollectionViewTapped(tapGestureRecognizer: UITapGestureRecognizer){
         view.endEditing(true)
-        handleAddPhotos()
-        
+        //handleAddPhotos()
+        let gmp = MapPlacesViewController()
+        self.present(gmp, animated: true, completion: nil)
     }
     
     @objc func dissmissKeyboard(){
@@ -749,6 +748,7 @@ class ShareController:
     @objc func userTappedPhotoCollection(tapGestureRecognizer: UITapGestureRecognizer)
     {
         handleAddPhotos()
+       
     }
     
     

@@ -32,6 +32,9 @@ class MainTabBarController: UITabBarController, AuthUIDelegate  {
     let imageView = CustomImageView()
     fileprivate let hud = JGProgressHUD(style: .dark)
     
+    let layout = UICollectionViewFlowLayout()
+    lazy var userProfileController = UserProfileController (collectionViewLayout: layout).self
+    
     var posts = [Post]()
     var observers = [DatabaseQuery]()
     lazy var appDelegate = UIApplication.shared.delegate as! AppDelegate
@@ -158,28 +161,33 @@ class MainTabBarController: UITabBarController, AuthUIDelegate  {
     
     
     
+     func setUserProfile() {
+        if let uid = Auth.auth().currentUser?.uid {
+            Firestore.fetchUserWithUID(uid: uid) { (user) in
+                self.userProfileController.user = user
+                self.userProfileController.didChangeSignUpPhoto()
+            }
+        }
+    }
+    
     func setupViewControllers() {
         
         let homeNavController = templateNavController(unselectedImage: #imageLiteral(resourceName: "ic_home_white"), selectedImage: #imageLiteral(resourceName: "ic_home"), rootViewController: HomeController(collectionViewLayout: UICollectionViewFlowLayout()))
                 
-        let searchNavController = templateNavController(unselectedImage: #imageLiteral(resourceName: "ic_search_white"), selectedImage: #imageLiteral(resourceName: "ic_search"), rootViewController: SearchAlgoliaCollectionView(collectionViewLayout: CollectionLayout()))
+        let searchNavController = templateNavController(unselectedImage: #imageLiteral(resourceName: "ic_search_white"),
+                                                        selectedImage: #imageLiteral(resourceName: "ic_search"),
+                                                        rootViewController: SearchAlgoliaCollectionView(collectionViewLayout: CollectionLayout()))
         
         let sharePhotoNavController = templateNavController(unselectedImage: #imageLiteral(resourceName: "plus_unselected"), selectedImage: #imageLiteral(resourceName: "plus_unselected"), rootViewController: ShareController())
                 
         let notificationNavController = templateNavController(unselectedImage: #imageLiteral(resourceName: "ic_notifications_white"), selectedImage: #imageLiteral(resourceName: "ic_notifications"), rootViewController: NotificationViewController(collectionViewLayout: UICollectionViewFlowLayout()))
         
         
-        let layout = UICollectionViewFlowLayout()
-        let userProfileController = UserProfileController(collectionViewLayout: layout)
         let userProfileNavController = UINavigationController(rootViewController: userProfileController)
         userProfileNavController.tabBarItem.image = #imageLiteral(resourceName: "profile_unselected")
         userProfileNavController.tabBarItem.selectedImage = #imageLiteral(resourceName: "profile_selected")
         
-        if let uid = Auth.auth().currentUser?.uid {
-            Firestore.fetchUserWithUID(uid: uid) { (user) in
-                userProfileController.user = user
-            }
-        }
+        setUserProfile()
         
         let plusImage = UIImage(named: "trending")?.withRenderingMode(.alwaysTemplate)
         let button = MDCFloatingButton()
@@ -205,6 +213,9 @@ class MainTabBarController: UITabBarController, AuthUIDelegate  {
         
     }
     
+    fileprivate func setUser(){
+        
+    }
     
     
     fileprivate func templateNavController(unselectedImage: UIImage, selectedImage: UIImage, rootViewController: UIViewController = UIViewController()) -> UINavigationController {
@@ -253,31 +264,19 @@ extension MainTabBarController: FUIAuthDelegate, LoginControllerDelegate {
                     self.hud.dismiss()
                     return
                 }
-                //self.user = user
-                
-                //self.fetchSwipes()
-    //          self.fetchUsersFromFirestore()
             }
+            self.hud.dismiss()
         }
     
     private func showLoginView(){
         print("MainTabBarController did appear")
               // you want to kick the user out when they log out
               if Auth.auth().currentUser == nil {
-//                  let registrationController = RegistrationController()
-//                  registrationController.delegate = self
-//                  let navController = UINavigationController(rootViewController: registrationController)
-//                  navController.modalPresentationStyle = .fullScreen
-//                  present(navController, animated: true)
-                
-                
                     let loginController = LoginController()
                     loginController.delegate = self
                     let navController = UINavigationController(rootViewController: loginController)
                     navController.modalPresentationStyle = .fullScreen
                     present(navController, animated: true)
-                
-                
               }
         
     }

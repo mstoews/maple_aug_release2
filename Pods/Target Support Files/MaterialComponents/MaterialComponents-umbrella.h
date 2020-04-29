@@ -116,6 +116,7 @@
 #import "MDCCollectionViewStylingDelegate.h"
 #import "MaterialDialogs.h"
 #import "MDCAlertController+ButtonForAction.h"
+#import "MDCAlertController+Customize.h"
 #import "MDCAlertController.h"
 #import "MDCAlertControllerDelegate.h"
 #import "MDCAlertControllerView.h"

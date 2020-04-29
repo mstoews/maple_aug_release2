@@ -230,6 +230,8 @@ extension Firestore {
         
     }
     
+    
+    
     static func fetchLocationByUserId(uid: String, _ completion: @escaping ([LocationObject]) -> () ){
         
         var locationObjects = [LocationObject]()

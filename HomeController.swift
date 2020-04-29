@@ -27,7 +27,7 @@ enum  FetchType {
 }
 
 
-class HomeController: MDCCollectionViewController, HomePostCellDelegate,HomeHeaderCellDelegate
+class HomeController: MDCCollectionViewController, HomePostCellDelegate, HomeHeaderCellDelegate
 
 {
   
@@ -59,11 +59,11 @@ class HomeController: MDCCollectionViewController, HomePostCellDelegate,HomeHead
         
         super.viewDidLoad()
         NotificationCenter.default.addObserver(self, selector: #selector(handleUpdateFeed), name: HomeController.updateFeedNotificationName, object: nil)
-        
         collectionView?.backgroundColor = UIColor.collectionBackGround()
         collectionView?.register(HomePostCell.self, forCellWithReuseIdentifier: cellId)
         collectionView?.register(HomeHeaderCell.self, forSupplementaryViewOfKind: UICollectionView.elementKindSectionHeader, withReuseIdentifier: cellHeaderId)
         refreshControl.addTarget(self, action: #selector(handleRefresh), for: .valueChanged )
+        self.collectionView.alwaysBounceVertical = true
         
         collectionView?.refreshControl = refreshControl
         collectionView?.backgroundView = nil
@@ -75,7 +75,6 @@ class HomeController: MDCCollectionViewController, HomePostCellDelegate,HomeHead
     }
     
     @objc func handleUpdateFeed() {
-        
         handleRefresh()
     }
     
@@ -85,7 +84,6 @@ class HomeController: MDCCollectionViewController, HomePostCellDelegate,HomeHead
         observePostFeed()
         refreshControl.endRefreshing()
     }
-    
     
     func didTapMapButton(post: FSPost) {
         print("Did tap map button ... ")
@@ -181,8 +179,6 @@ class HomeController: MDCCollectionViewController, HomePostCellDelegate,HomeHead
     }
     
     private var listener: ListenerRegistration?
-    
-   
     
     
     func updateAlgoliaStore(post: FSPost)
@@ -380,12 +376,20 @@ class HomeController: MDCCollectionViewController, HomePostCellDelegate,HomeHead
     override func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
         if posts.count > 0 {
             
-            let approximateWidthOfBioTextView = view.frame.width
-            let size = CGSize(width: approximateWidthOfBioTextView, height: 1000)
-            let attributes = [NSAttributedString.Key.font : UIFont.systemFont(ofSize: CGFloat(15))]
+            //let approximateWidthOfBioTextView = view.frame.width
+            //let size = CGSize(width: approximateWidthOfBioTextView, height: 1000)
+            //let attributes = [NSAttributedString.Key.font : UIFont.systemFont(ofSize: CGFloat(15))]
             let post = posts[indexPath.item]
-            let estimatedFrame = NSString(string: post.description).boundingRect(with: size, options: .usesLineFragmentOrigin, attributes: attributes, context: nil)
-            return CGSize(width: view.frame.width - 15 , height: estimatedFrame.height + view.frame.width - 40 )
+            let lineHeight = CGFloat(40)
+            //
+            let totalHeight = CGFloat(360)
+            let descriptionLength = CGFloat(post.description.lengthOfBytes(using: String.Encoding.isoLatin2))
+            var descriptionRatio = descriptionLength/CGFloat(100)
+            descriptionRatio.round(.up)
+            
+            let estimatedHeight = descriptionRatio * lineHeight
+            //let estimatedFrame = NSString(string: post.description).boundingRect(with: size, options: .usesLineFragmentOrigin, attributes: attributes, context: nil)
+            return CGSize(width: view.frame.width - 15 , height: totalHeight + CGFloat(estimatedHeight))
         }
         else
         {

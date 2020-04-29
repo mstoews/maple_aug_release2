@@ -83,10 +83,6 @@ class UserListPostCell : UserGridPostCell {
         addSubview(rightDivider)
         addSubview(topDivider)
         
-        
-        
-        print("what is the width : \(frame.width)")
-        
         imageCollectionView.anchor(top: topAnchor,
                                    left: leftAnchor,
                                    bottom: nil ,
@@ -121,7 +117,68 @@ class UserListPostCell : UserGridPostCell {
     }
 }
 
+class UserGridCell: MDCCardCollectionCell  {
+    var images = [ImageObject]()
+    
+    let photoImageView: CustomImageView = {
+           let iv = CustomImageView()
+           iv.contentMode = .scaleToFill
+           iv.clipsToBounds = true
+           return iv
+       }()
+    
+    var post: FSPost? {
+        
+        didSet {
+            if post == nil { return }
+            images = []
+            
+            if let postid = post?.id {
+                if let count = post?.imageUrlArray.count {
+                    if count > 0 {
+                        for url in (post?.imageUrlArray)! {
+                            let obj = ImageObject(postid: postid, imageid: url , url: url)
+                            images.append(obj)
+                            photoImageView.loadImage(urlString: url)
+                        }
+                    }
+                }
+            }
+            
+        }
+    }
+    
+    func setupCollectionCell ()
+    {
+        backgroundColor = UIColor.collectionCell()
 
+            
+        addSubview(photoImageView)
+        
+        
+        photoImageView.anchor(
+                             top: topAnchor,
+                             left: leftAnchor,
+                             bottom: bottomAnchor,
+                             right: rightAnchor)
+                            
+        
+    }
+    
+    
+    override init(frame: CGRect) {
+        super.init(frame: frame)
+        setupCollectionCell()
+    }
+    
+    required init?(coder aDecoder: NSCoder) {
+        
+        fatalError("init(coder:) has not been implemented")
+    }
+    
+    
+    
+}
 
 class UserGridPostCell: MDCCardCollectionCell , UICollectionViewDataSource, UICollectionViewDelegate, UICollectionViewDelegateFlowLayout  {
     

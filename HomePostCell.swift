@@ -66,7 +66,6 @@ class PostImage: BaseCell
 
 class HomePostCell: MDCCardCollectionCell , UICollectionViewDataSource, UICollectionViewDelegate, UICollectionViewDelegateFlowLayout  {
     
-    
     var horizontalCellId = "horizontalCellId"
     var delegate: HomePostCellDelegate?
     var images = [ImageObject]()
@@ -204,10 +203,18 @@ class HomePostCell: MDCCardCollectionCell , UICollectionViewDataSource, UICollec
     }
     
     func configurePostCaption() {
+        var location: String?
         guard let post = self.post else { return }
         guard let caption = self.post?.description else { return }
         guard let product = self.post?.product else { return }
         guard let username = self.post?.userName else { return }
+        if (self.post?.locationObjects.count)! > 0 {
+            location = (self.post?.locationObjects[0].address)! as String
+        }
+        else {
+            location = "Tokyo Japan"
+        }
+        
          
         // look for username as pattern
         let customType = ActiveType.custom(pattern: "^\(username)\\b")
@@ -232,8 +239,10 @@ class HomePostCell: MDCCardCollectionCell , UICollectionViewDataSource, UICollec
             label.customColor[customType] = .red
             label.font = UIFont.systemFont(ofSize: 12)
             label.textColor = .black
-            captionLabel.numberOfLines = 6
+            label.backgroundColor = .blue
         }
+        
+        locationLabel.text = location
         
         timeAgoLabel.text = post.creationDate.timeAgoToDisplay()
     }
@@ -494,9 +503,16 @@ class HomePostCell: MDCCardCollectionCell , UICollectionViewDataSource, UICollec
     
     let captionLabel: ActiveLabel = {
         let label = ActiveLabel()
-        label.numberOfLines = 4
+        label.numberOfLines = 0
         return label
     }()
+    
+    let locationLabel: UILabel  = {
+           let label = UILabel()
+           label.numberOfLines = 1
+        label.font = UIFont.preferredFont(forTextStyle: UIFont.TextStyle.caption1)
+           return label
+       }()
     
     @objc func usernameLabelTapped(tapGestureRecognizer: UITapGestureRecognizer)
     {
@@ -540,47 +556,51 @@ class HomePostCell: MDCCardCollectionCell , UICollectionViewDataSource, UICollec
         addSubview(bookmarkButton)
         addSubview(mapButton)
         addSubview(topDividerView)
-        //addSubview(bottomDividerView)
+  
         addSubview(captionLabel)
         addSubview(likeBadge)
         addSubview(bookMarkBadge)
         addSubview(commentBadge)
+        addSubview(locationLabel)
+        
+        let lineHeight = CGFloat(40.0)
         
         imageCollectionView.register(PostImage.self, forCellWithReuseIdentifier: horizontalCellId)
         
         
         userProfileImageView.anchor(top: topAnchor, left: leftAnchor, bottom: nil,
                                     right: nil, paddingTop: 8, paddingLeft: 8,
-                                    paddingBottom: 0, paddingRight: 0, width: 40, height: 40)
+                                    paddingBottom: 0, paddingRight: 0, width: lineHeight, height: lineHeight)
         
-        userProfileImageView.layer.cornerRadius = 40 / 2
+        userProfileImageView.layer.cornerRadius = lineHeight / 2
         
-        usernameLabel.anchor(top: userProfileImageView.topAnchor, left: userProfileImageView.rightAnchor, bottom: nil,right: nil, paddingTop: 0, paddingLeft: 8, paddingBottom: 0, paddingRight: 0, width: frame.size.width - 100 , height: 40)
+        usernameLabel.anchor(top: userProfileImageView.topAnchor, left: userProfileImageView.rightAnchor, bottom: nil,right: nil, paddingTop: 0, paddingLeft: 8, paddingBottom: 0, paddingRight: 0, width: frame.size.width - 100 , height: lineHeight)
         shareButton.anchor(top: userProfileImageView.topAnchor, left: nil, bottom: nil,right: rightAnchor, paddingTop: 0, paddingLeft: 8, paddingBottom: 0, paddingRight: 8, width: 35, height: 35)
         
+        imageCollectionView.anchor(top: userProfileImageView.bottomAnchor, left: leftAnchor, bottom: nil, right: rightAnchor, paddingTop: 2, paddingLeft: 0, paddingBottom: 0, paddingRight: 0, width: 0, height: lineHeight * 6 )
         
-        //usernameLabel.anchor(top: userProfileImageView.topAnchor, left: userProfileImageView.rightAnchor, bottom: nil,right: nil, paddingTop: 0, paddingLeft: 8, paddingBottom: 0, paddingRight: 0, width: frame.size.width - 100 , height: 40)
-        shareButton.anchor(top: userProfileImageView.topAnchor, left: nil, bottom: nil,right: rightAnchor, paddingTop: 0, paddingLeft: 8, paddingBottom: 0, paddingRight: 8, width: 35, height: 35)
-        
-        imageCollectionView.anchor(top: userProfileImageView.bottomAnchor, left: leftAnchor, bottom: nil, right: rightAnchor, paddingTop: 2, paddingLeft: 0, paddingBottom: 0, paddingRight: 0, width: 0, height: frame.width )
         topDividerView.anchor(top: imageCollectionView.bottomAnchor, left: leftAnchor, bottom: nil, right: rightAnchor,paddingTop: 2 , paddingLeft: 0, paddingBottom: 0, paddingRight: 5, width: 0, height: 0.5)
-        likeButton.anchor(top: imageCollectionView.bottomAnchor , left: leftAnchor, bottom: nil, right: nil, paddingTop: 0, paddingLeft: 0, paddingBottom: 0, paddingRight: -15 , width: 50, height: 40)
-        commentButton.anchor(top: imageCollectionView.bottomAnchor, left: likeButton.rightAnchor, bottom: nil, right:nil , paddingTop: 0, paddingLeft: 0, paddingBottom: 0, paddingRight: -15 , width: 50, height: 40)
-        bookmarkButton.anchor (top: imageCollectionView.bottomAnchor, left: commentButton.rightAnchor, bottom: nil, right: nil, paddingTop: 0, paddingLeft: 4, paddingBottom: 0, paddingRight: -15  , width: 50, height: 40)
-        mapButton.anchor (top: imageCollectionView.bottomAnchor, left: bookmarkButton.rightAnchor, bottom: nil, right: nil, paddingTop: 0, paddingLeft: 4, paddingBottom: 0, paddingRight: -15  , width: 50, height: 40)
+        
+        likeButton.anchor(top: imageCollectionView.bottomAnchor , left: leftAnchor, bottom: nil, right: nil, paddingTop: 0, paddingLeft: 0, paddingBottom: 0, paddingRight: -15 , width: 50, height: lineHeight)
+        commentButton.anchor(top: imageCollectionView.bottomAnchor, left: likeButton.rightAnchor, bottom: nil, right:nil , paddingTop: 0, paddingLeft: 0, paddingBottom: 0, paddingRight: -15 , width: 50, height: lineHeight)
+        bookmarkButton.anchor (top: imageCollectionView.bottomAnchor, left: commentButton.rightAnchor, bottom: nil, right: nil, paddingTop: 0, paddingLeft: 4, paddingBottom: 0, paddingRight: -15  , width: 50, height: lineHeight)
+       
         
         timeAgoLabel.anchor (top: imageCollectionView.bottomAnchor, left: bookmarkButton.rightAnchor, bottom: nil, right: nil, paddingTop: 0, paddingLeft: 100, paddingBottom: 0, paddingRight: 0 , width: 0, height: 20)
         
         commentBadge.anchor(top: topDividerView.topAnchor, left: commentButton.rightAnchor, bottom: nil, right: nil, paddingTop: 2, paddingLeft: -20, paddingBottom: 0, paddingRight: 0 , width: 0, height: 0)
+        
         likeBadge.anchor(top: topDividerView.topAnchor, left: likeButton.rightAnchor, bottom: nil, right: nil, paddingTop: 2, paddingLeft: -20, paddingBottom: 0, paddingRight: 0 , width: 0, height: 0)
+        
         bookMarkBadge.anchor(top: topDividerView.topAnchor, left: bookmarkButton.rightAnchor, bottom: nil, right: nil, paddingTop: 2, paddingLeft: -22, paddingBottom: 0, paddingRight: 0 , width: 0, height: 0)
         
-        captionLabel.anchor(top: likeButton.bottomAnchor, left: leftAnchor, bottom: bottomAnchor, right: rightAnchor, paddingTop: 0, paddingLeft: 8, paddingBottom: 0, paddingRight: 8, width: 0, height: 0)
-        //bottomDividerView.anchor(top: captionLabel.bottomAnchor, left: leftAnchor, bottom: nil, right: rightAnchor,paddingTop: 5 , paddingLeft: 0, paddingBottom: 0, paddingRight: 5, width: 0, height: 0.5)
+        mapButton.anchor (top: likeButton.bottomAnchor, left: leftAnchor, bottom: nil, right: nil, paddingTop: 0, paddingLeft: 2,
+                          paddingBottom: 0, paddingRight: 2 , width: lineHeight, height: lineHeight)
         
-        /* Place a component here to view the last three comments if any ... if none hide the component */
+        locationLabel.anchor(top: likeButton.bottomAnchor, left: mapButton.rightAnchor, bottom: nil, right: rightAnchor, paddingTop: 0, paddingLeft: 2, paddingBottom: 0, paddingRight: 8, width: 0, height: lineHeight)
         
-
+        captionLabel.anchor(top: locationLabel.bottomAnchor, left: leftAnchor, bottom: bottomAnchor, right: rightAnchor, paddingTop: 0, paddingLeft: 8, paddingBottom: 8, paddingRight: 8, width: 0, height: 0)
+             
     }
     
     override init(frame: CGRect) {

@@ -15,12 +15,11 @@
         func didChangeToGridView()
         func didMapViewOpen()
         func didFavoritesOpen()
-        func didChangeSignUpFoto()
+        func didOpenSettings()
         func didOpenFollowersList()
         func didOpenFollowingList()
         func didOpenProductsList()
         func didEditPost()
-        func didOpenSettings()
     }
     
     class UserProfileHeader: MDCCardCollectionCell ,

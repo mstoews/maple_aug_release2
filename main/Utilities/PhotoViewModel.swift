@@ -54,7 +54,6 @@ class PhotoViewModel: NSObject {
             completion(thumbnailImage, nil)
             return
         }
-       
     }
 }
 

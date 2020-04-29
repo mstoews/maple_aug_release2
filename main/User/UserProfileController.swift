@@ -29,6 +29,7 @@ class UserProfileController: MDCCollectionViewController,
     
     let db = Firestore.firestore()
     let cellId = "cellId"
+    let  userGridCell = "userGridCell"
     let userGridCellId = "userGridCellId"
     let userListCellId = "userListCellId"
     let mapViewCell = "mapViewCell"
@@ -66,7 +67,7 @@ class UserProfileController: MDCCollectionViewController,
     }
     
     func didOpenSettings() {
-        didChangeSignUpFoto()
+        OpenSettings()
     }
     
     override func viewDidLoad() {
@@ -76,6 +77,7 @@ class UserProfileController: MDCCollectionViewController,
         collectionView?.register(UserProfileHeader.self, forSupplementaryViewOfKind: UICollectionView.elementKindSectionHeader, withReuseIdentifier: headerCellId)
         collectionView?.register(UserProfilePhotoCell.self, forCellWithReuseIdentifier: cellId)
         collectionView?.register(UserGridPostCell.self, forCellWithReuseIdentifier: userGridCellId)
+        collectionView?.register(UserGridCell.self,  forCellWithReuseIdentifier: userGridCell)
         collectionView?.register(UserListPostCell.self, forCellWithReuseIdentifier: userListCellId)
         collectionView?.register(MapViewCell.self, forCellWithReuseIdentifier: mapViewCell)
         
@@ -332,11 +334,11 @@ class UserProfileController: MDCCollectionViewController,
     // MARK :  SharePhotoControllerUpdateDelegate.refreshUsers()
     
    
-    @objc func didChangeSignUpFoto()
+    @objc func OpenSettings()
     {
-        print ("didChangeSignFoto")
+        print ("called OpenSettings")
         
-        let changePhotoSelectorController = SettingsController()
+        let settingsController = SettingsController()
         
         //let changePhotoSelectorController = ChangeSignPhotoController()
         
@@ -350,7 +352,7 @@ class UserProfileController: MDCCollectionViewController,
         self.view.layer.add(transition, forKey: nil)
         _ = self.navigationController?.popToRootViewController(animated: false)
         
-        navigationController?.pushViewController(changePhotoSelectorController, animated: true)
+        navigationController?.pushViewController(settingsController, animated: true)
     }
     
     
@@ -625,10 +627,10 @@ class UserProfileController: MDCCollectionViewController,
                 break
           
           case CellType.LIST :
-            let cell = collectionView.dequeueReusableCell(withReuseIdentifier: userListCellId, for: indexPath) as! UserListPostCell
+            let cell = collectionView.dequeueReusableCell(withReuseIdentifier: userGridCell, for: indexPath) as! UserGridCell
             if (posts.count > 0 ){
                 cell.post = posts[indexPath.item]
-                cell.delegate = self
+                //cell.delegate = self
             }
             rc = cell
             break
@@ -691,13 +693,8 @@ class UserProfileController: MDCCollectionViewController,
             break
             
         case CellType.LIST  :
-            //let width = view.frame.width
-            let approximateWidthOfBioTextView = view.frame.width
-            let size = CGSize(width: approximateWidthOfBioTextView, height: 1200)
-            let attributes = [NSAttributedString.Key.font : UIFont.systemFont(ofSize: CGFloat(15))]
-            let post = posts[indexPath.item]
-            let estimatedFrame = NSString(string: post.description).boundingRect(with: size, options: .usesLineFragmentOrigin, attributes: attributes, context: nil)
-            rc = CGSize(width: view.frame.width - 15, height: estimatedFrame.height + view.frame.width - 260 )
+            let cubeSize = view.frame.width / 3.2
+            rc = CGSize(width: cubeSize, height: cubeSize ) 
             break
    
         case CellType.MAP :
