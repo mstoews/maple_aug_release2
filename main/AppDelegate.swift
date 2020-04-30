@@ -70,8 +70,8 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         window?.backgroundColor = UIColor.themeColor()
         
         window?.rootViewController = MainTabBarController()
-        GMSServices.provideAPIKey(kMapsAPIKey)
-        GMSPlacesClient.provideAPIKey(kPlacesAPIKey)
+        //GMSServices.provideAPIKey(kMapsAPIKey)
+        //MKMapView(frame: view.bounds)GMSPlacesClient.provideAPIKey(kPlacesAPIKey)
         GIDSignIn.sharedInstance().clientID = FirebaseApp.app()?.options.clientID
         return true
     }

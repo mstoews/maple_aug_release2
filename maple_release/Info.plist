@@ -2,8 +2,6 @@
 <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
 <plist version="1.0">
 <dict>
-    <key>NSLocationWhenInUseUsageDescription</key>
-    <string>We want your LOCATION!!!</string>
 	<key>CFBundleDevelopmentRegion</key>
 	<string>en</string>
 	<key>CFBundleDisplayName</key>
@@ -80,12 +78,6 @@
 	<string>pk.eyJ1IjoibXN0b2V3cyIsImEiOiJjazU5YWJtOWkwM3dkM2x2MGU2Znp4NzN0In0.FEzzXLHdUWfmqel9gwm2-g</string>
 	<key>NSCameraUsageDescription</key>
 	<string>We would like to access your camera</string>
-    <key>NSLocationAlwaysUsageDescription</key>
-    <string>Show your location on a map.</string>
-    <key>NSLocationAlwaysAndWhenInUseUsageDescription</key>
-    <string>Show your location on a map.</string>
-    <key>NSLocationWhenInUseUsageDescription</key>
-    <string>Show your location on a map</string>
 	<key>NSContactsUsageDescription</key>
 	<string>to invite your friends.</string>
 	<key>NSLocationAlwaysAndWhenInUseUsageDescription</key>
@@ -119,6 +111,8 @@
 	<key>UISupportedInterfaceOrientations</key>
 	<array>
 		<string>UIInterfaceOrientationPortrait</string>
+		<string>UIInterfaceOrientationLandscapeLeft</string>
+		<string>UIInterfaceOrientationLandscapeRight</string>
 	</array>
 	<key>UISupportedInterfaceOrientations~ipad</key>
 	<array>

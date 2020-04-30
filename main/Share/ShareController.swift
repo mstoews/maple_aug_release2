@@ -83,6 +83,7 @@ class MapCellEdit : MapCell {
     
 }
 
+@available(iOS 13.0, *)
 class EditPhotoControllers: ShareController {
     
     var postId: String?
@@ -247,6 +248,7 @@ class EditPhotoControllers: ShareController {
 }
 
 
+@available(iOS 13.0, *)
 class ShareController:
     UIViewController,
     UIScrollViewDelegate,
@@ -256,14 +258,23 @@ class ShareController:
     UITextViewDelegate,
     UITextFieldDelegate,
     UIImageEditFilterDelegate,
-    UISearchBarDelegate,
+    //UISearchBarDelegate,
     UISearchResultsUpdating,
-    SearchProgressDelegate,
+    //SearchProgressDelegate,
     LightboxControllerDismissalDelegate,
     GalleryControllerDelegate,
     CropViewControllerDelegate,
     ShareHeaderCellDelegate
 {
+    func locateWithLongitude(_ lon: Double, andLatitude lat: Double, andTitle title: String) {
+        
+    }
+    
+    func didReturnMapLocation(Location: String, lat: Double, lon: Double) {
+        
+
+    }
+    
     
     // MARK: - Variables and containts
     
@@ -285,7 +296,7 @@ class ShareController:
     let imageCellId = "imageCellId"
     let mapCellId = "mapCellId"
     var isMapCell = false
-    var mapViewController: BackgroundMapViewController?
+    //var mapViewController: BackgroundMapViewController?
     var UIMapController: UIViewController?
     var presentWindow : UIWindow?
     
@@ -720,9 +731,7 @@ class ShareController:
     
     @objc func imageCollectionViewTapped(tapGestureRecognizer: UITapGestureRecognizer){
         view.endEditing(true)
-        //handleAddPhotos()
-        let gmp = MapPlacesViewController()
-        self.present(gmp, animated: true, completion: nil)
+        handleAddPhotos()
     }
     
     @objc func dissmissKeyboard(){
@@ -736,8 +745,8 @@ class ShareController:
     {
         CellType = CT.MAP
         print("Open the maps window")
-//        let config = GMSPlacePickerConfig(viewport: nil)
-//        let placePicker = GMSPlacePickerViewController(config: config)
+        //let config = GMSPlacePickerConfig(viewport: nil)
+//        let placePicker = MapLocationController()
 //        placePicker.delegate = self
 //        placePicker.modalPresentationStyle = .popover
 //        placePicker.popoverPresentationController?.sourceView = view
@@ -745,10 +754,8 @@ class ShareController:
 //        self.present(placePicker, animated: true, completion: nil)
     }
     
-    @objc func userTappedPhotoCollection(tapGestureRecognizer: UITapGestureRecognizer)
-    {
+    @objc func userTappedPhotoCollection(tapGestureRecognizer: UITapGestureRecognizer) {
         handleAddPhotos()
-       
     }
     
     
@@ -1053,7 +1060,7 @@ class ShareController:
     func setNavigationButtons(){
         
         let rightImage = UIImage(named: "ic_add_to_photos")?.withRenderingMode(.automatic)
-        let rightButton = UIBarButtonItem(image: rightImage, style: .done , target: self, action: #selector(handleShareAll))
+        let rightButton = UIBarButtonItem(image: rightImage, style: .done , target: self, action: #selector(handleOpenMaps))
         rightButton.tintColor = UIColor.buttonThemeColor()
         navigationItem.rightBarButtonItem = rightButton
     }
@@ -1330,10 +1337,10 @@ class ShareController:
     @objc func handleOpenMaps()
     {
         CellType = CT.MAP
-        print("Open the maps window")
-        let mapController = MapLocationController()
-        let navController = UINavigationController(rootViewController: mapController)
-        present(navController, animated: true, completion: nil)
+//      print("Open the maps window")
+        let controller = MapBoxSingleLocalViewController()
+        controller.modalPresentationStyle = .fullScreen
+        navigationController?.pushViewController(controller, animated: true)
     }
     
     @objc func handleAddPhotos(){

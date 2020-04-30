@@ -313,11 +313,6 @@ class SettingsController: UITableViewController, UIImagePickerControllerDelegate
         navigationItem.leftBarButtonItem = leftButton
         navigationItem.rightBarButtonItems = [ button_save, button_logout]
         
-//        navigationItem.leftBarButtonItem = UIBarButtonItem(title: "Cancel", style: .plain, target: self, action: #selector(handleCancel))
-//        navigationItem.rightBarButtonItems = [
-//            UIBarButtonItem(title: "Save", style: .plain, target: self, action: #selector(handleSave)),
-//            UIBarButtonItem(title: "Logout", style: .plain, target: self, action: #selector(handleLogOut))
-//        ]
     }
     
     
