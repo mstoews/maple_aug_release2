@@ -98,7 +98,7 @@ extension ShareController
         }
         
         
-        guard let product = products.text, product.count > 0  else {
+        guard let product = products.label.text, product.count > 0  else {
             message.text = "Please enter a product name ..."
             MDCSnackbarManager.show(message)
 
@@ -175,7 +175,7 @@ extension ShareController
         DispatchQueue.main.async {
             self.imageArray.removeAll()
             self.mapObjects.removeAll()
-            self.products.text?.removeAll()
+            self.products.label.text?.removeAll()
             self.descriptionTextView.text?.removeAll()
             self.imageCollectionView.reloadData()
             self.locationCollectionView.reloadData()
@@ -382,7 +382,7 @@ extension ShareController
     
     fileprivate func saveToDatabase( _ completion: @escaping (String) -> () )
     {
-        guard let product = products.text else { products.text = "Set a product" ; return }
+        guard let product = products.label.text else { products.label.text = "Set a product" ; return }
         guard let desc = descriptionTextView.text else { return }
         guard let uid = Auth.auth().currentUser?.uid else { return }
         

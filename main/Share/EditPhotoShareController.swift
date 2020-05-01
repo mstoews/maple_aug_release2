@@ -12,8 +12,8 @@ import Photos
 import AssetsLibrary
 import FirebaseUI
 //import AFNetworking
-import GoogleMaps
-import GooglePlaces
+//import GoogleMaps
+//import GooglePlaces
 //import GooglePlacePicker
 import os.log
 import AlgoliaSearch
@@ -62,7 +62,7 @@ class EditPhotoController: ShareController {
         self.view.tintColor  = UIColor.buttonThemeColor()
         imageCollectionView.backgroundView = backGroundViewImages
         
-        products.delegate = self
+        //products.delegate = self
         descriptionTextView.delegate = self
         //tableProductsView.delegate = self
         //tableProductsView.dataSource =  self
@@ -105,7 +105,7 @@ class EditPhotoController: ShareController {
         if let postId = postId {
             Firestore.fetchPostByPostId(postId: postId) { (post) in
                 Firestore.fetchUserWithUID(uid: post.uid) { (user) in
-                    self.products.text = post.product
+                    self.products.label.text = post.product
                     self.descriptionTextView.text = post.description
                     for url in post.imageUrlArray {
                         print(url)

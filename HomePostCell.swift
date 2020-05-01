@@ -239,7 +239,7 @@ class HomePostCell: MDCCardCollectionCell , UICollectionViewDataSource, UICollec
             label.customColor[customType] = .red
             label.font = UIFont.systemFont(ofSize: 12)
             label.textColor = .black
-            label.backgroundColor = .blue
+            label.backgroundColor = UIColor.collectionBackGround()
         }
         
         locationLabel.text = location

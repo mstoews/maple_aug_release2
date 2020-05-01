@@ -113,26 +113,17 @@ class UserListPostCell : UserGridPostCell {
         likeBadge.anchor(top: topDividerView.topAnchor, left: likeButton.rightAnchor, bottom: nil, right: nil, paddingTop: 2, paddingLeft: -20, paddingBottom: 0, paddingRight: 0 , width: 0, height: 0)
         
         bookMarkBadge.anchor(top: topDividerView.topAnchor, left: bookmarkButton.rightAnchor, bottom: nil, right: nil, paddingTop: 2, paddingLeft: -22, paddingBottom: 0, paddingRight: 0 , width: 0, height: 0)
+        
         captionLabel.anchor(top: likeButton.bottomAnchor, left: leftAnchor, bottom: nil, right: rightAnchor, paddingTop: 2, paddingLeft: 4, paddingBottom: 4, paddingRight: 0 , width: 0, height: 0)
     }
 }
 
-class UserGridCell: MDCCardCollectionCell  {
-    var images = [ImageObject]()
-    
-    let photoImageView: CustomImageView = {
-           let iv = CustomImageView()
-           iv.contentMode = .scaleToFill
-           iv.clipsToBounds = true
-           return iv
-       }()
-    
-    var post: FSPost? {
-        
+class UserGridCell: UserGridPostCell  {
+    override var post: FSPost? {
         didSet {
             if post == nil { return }
             images = []
-            
+
             if let postid = post?.id {
                 if let count = post?.imageUrlArray.count {
                     if count > 0 {
@@ -144,25 +135,21 @@ class UserGridCell: MDCCardCollectionCell  {
                     }
                 }
             }
-            
+
         }
     }
-    
-    func setupCollectionCell ()
+
+    override func setupCollectionCell ()
     {
         backgroundColor = UIColor.collectionCell()
-
-            
         addSubview(photoImageView)
         
-        
         photoImageView.anchor(
-                             top: topAnchor,
-                             left: leftAnchor,
-                             bottom: bottomAnchor,
-                             right: rightAnchor)
-                            
-        
+         top: topAnchor,
+         left: leftAnchor,
+         bottom: bottomAnchor,
+         right: rightAnchor)
+                                    
     }
     
     

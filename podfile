@@ -17,6 +17,8 @@ target 'Maple' do
   pod 'Firebase/Messaging'
   pod 'Firebase/Core'
   pod 'Firebase/Firestore'
+  pod 'GoogleMaps'
+  pod 'GooglePlaces'
   pod 'Mapbox-iOS-SDK', '~> 4.10'
   pod 'Crashlytics'
   pod 'InstantSearch-Core-Swift'
@@ -33,8 +35,6 @@ target 'Maple' do
   pod 'Alamofire', '~> 4.5'
   pod 'SDWebImage', '~> 4.0'
   pod 'ActiveLabel', '~> 1.1'
-  pod 'GoogleMaps'
-  pod 'GooglePlaces'
   pod 'BadgeSwift'
   pod 'LBTATools'
 end

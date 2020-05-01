@@ -114,8 +114,8 @@ class MapBoxSingleLocalViewController: UIViewController, MKMapViewDelegate {
         }
       
     fileprivate func requestUserLocation() {
-        locationManager.requestWhenInUseAuthorization()
-        locationManager.delegate = self
+        //locationManager.requestWhenInUseAuthorization()
+        //locationManager.delegate = self
        }
        
        func locationManager(_ manager: CLLocationManager, didChangeAuthorization status: CLAuthorizationStatus) {
@@ -123,7 +123,7 @@ class MapBoxSingleLocalViewController: UIViewController, MKMapViewDelegate {
            case .authorizedWhenInUse:
                print("Received authorization of user location")
                // request for where the user actually is
-               locationManager.startUpdatingLocation()
+               //locationManager.startUpdatingLocation()
            default:
                print("Failed to authorize")
            }
@@ -133,7 +133,7 @@ class MapBoxSingleLocalViewController: UIViewController, MKMapViewDelegate {
            guard let firstLocation = locations.first else { return }
            mapView.setRegion(.init(center: firstLocation.coordinate, span: .init(latitudeDelta: 0.1, longitudeDelta: 0.1)), animated: false)
            
-           locationManager.stopUpdatingLocation()
+           //locationManager.stopUpdatingLocation()
        }
     
     func mapView(_ mapView: MGLMapView, annotationCanShowCallout annotation: MGLAnnotation) -> Bool {

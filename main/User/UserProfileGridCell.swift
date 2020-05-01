@@ -81,7 +81,7 @@ class UserProfileGridCell: MDCCardCollectionCell, UICollectionViewDataSource, UI
     
     let iv: CustomImageView = {
         let iv = CustomImageView()
-        iv.contentMode = .scaleAspectFill
+        iv.contentMode = .scaleAspectFit
         iv.clipsToBounds = false
         return iv
     }()
@@ -253,7 +253,7 @@ class UserProfileGridCell: MDCCardCollectionCell, UICollectionViewDataSource, UI
     let imageView: CustomImageView = {
         let iv = CustomImageView()
         iv.contentMode = .scaleAspectFill
-        iv.clipsToBounds = true
+        iv.clipsToBounds = false
         return iv
     }()
     
@@ -261,7 +261,7 @@ class UserProfileGridCell: MDCCardCollectionCell, UICollectionViewDataSource, UI
     let photoImageView: CustomImageView = {
         let iv = CustomImageView()
         //iv.contentMode = .sc
-        iv.clipsToBounds = true
+        iv.clipsToBounds = false
         return iv
     }()
     

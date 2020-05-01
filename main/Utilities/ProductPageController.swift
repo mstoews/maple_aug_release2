@@ -8,6 +8,7 @@
 
 import UIKit
 import Firebase
+import MapKit
 import GoogleMaps
 import GooglePlaces
 import MaterialComponents
@@ -90,7 +91,8 @@ class PostDescriptionCell: BaseCell
 
 
 
-class ProductPageController:  UIViewController, CLLocationManagerDelegate,  UICollectionViewDataSource, UICollectionViewDelegate, UICollectionViewDelegateFlowLayout, GMSMapViewDelegate {
+class ProductPageController:  UIViewController,
+CLLocationManagerDelegate,  UICollectionViewDataSource, UICollectionViewDelegate, UICollectionViewDelegateFlowLayout, GMSMapViewDelegate {
     
     var productPageCellId = "productPageCellId"
     var postDescriptionCellId = "postDescriptionCellId"

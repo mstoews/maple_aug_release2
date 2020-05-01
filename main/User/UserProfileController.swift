@@ -29,7 +29,7 @@ class UserProfileController: MDCCollectionViewController,
     
     let db = Firestore.firestore()
     let cellId = "cellId"
-    let  userGridCell = "userGridCell"
+    let userGridCell = "userGridCell"
     let userGridCellId = "userGridCellId"
     let userListCellId = "userListCellId"
     let mapViewCell = "mapViewCell"

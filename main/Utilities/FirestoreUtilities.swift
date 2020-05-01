@@ -9,8 +9,8 @@ import Foundation
 import Firebase
 import FirebaseFirestore
 import FirebaseAuth
-import GoogleMaps
-import GooglePlaces
+//import GoogleMaps
+//import GooglePlaces
 
 
 extension Firestore {

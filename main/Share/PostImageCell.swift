@@ -9,8 +9,8 @@
 import UIKit
 import Firebase
 //
-import GoogleMaps
-import GooglePlaces
+//import GoogleMaps
+//import GooglePlaces
 //import GooglePlacePicker
 import os.log
 import AlgoliaSearch

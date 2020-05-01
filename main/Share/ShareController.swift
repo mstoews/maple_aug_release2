@@ -108,7 +108,7 @@ class EditPhotoControllers: ShareController {
         
         /***** Set up toasts *****/
         edgesForExtendedLayout = UIRectEdge()
-        presentWindow = UIApplication.shared.keyWindow
+        //presentWindow = UIApplication.shared.keyWindow
         
         imageCollectionView.register(PostImageObject.self, forCellWithReuseIdentifier: imageCellId)
         locationCollectionView.register(MapCellEdit.self, forCellWithReuseIdentifier: "mapCellEdit")
@@ -117,7 +117,7 @@ class EditPhotoControllers: ShareController {
         self.view.tintColor  = UIColor.buttonThemeColor()
         imageCollectionView.backgroundView = backGroundViewImages
         
-        products.delegate = self
+        //products.delegate = self
         descriptionTextView.delegate = self
         
         setupImageAndTextViews()
@@ -154,7 +154,7 @@ class EditPhotoControllers: ShareController {
             Firestore.fetchPostByPostId(postId: postId) { [weak self](post) in
                 guard let strongSelf = self else { return }
                 Firestore.fetchUserWithUID(uid: post.uid) { (user) in
-                    strongSelf.products.text = post.product
+                    strongSelf.products.label.text = post.product
                     strongSelf.descriptionTextView.text = post.description
                     for url in post.imageUrlArray {
                         print(url)
@@ -648,7 +648,7 @@ class ShareController:
         imageCollectionView.backgroundView = backGroundViewImages
         locationCollectionView.backgroundView = backGroundViewLocations
         
-        products.delegate = self
+        //products.delegate = self
         descriptionTextView.delegate = self
         setupImageAndTextViews()
         setNavigationButtons()
@@ -842,6 +842,7 @@ class ShareController:
         containerView.addSubview(mapLabel)
         containerView.addSubview(photos)
         containerView.addSubview(floatingAddButton)
+        containerView.addSubview(floatingMapButton)
         containerView.addSubview(progressIndicator)
         containerView.addSubview(cancelButton)
         
@@ -858,11 +859,8 @@ class ShareController:
             containerView.anchor(top: view.topAnchor , left: view.leftAnchor, bottom: view.bottomAnchor , right: view.rightAnchor)
         }
         
-        
         self.pictureSize = containerView.frame.size.width
-        
-        //let heightCollectionView = imageConstraint?.constant
-        
+                
         imageCard.anchor(top: containerView.topAnchor, left: containerView.leftAnchor, bottom: nil , right: containerView.rightAnchor,
                          paddingTop: paddingTopBottom,
                          paddingLeft: paddingSize,
@@ -870,48 +868,32 @@ class ShareController:
                          paddingRight: paddingSize,
                          width: 0 , height: (imageConstraint?.constant)!)
         
-        //let bounds = UIScreen.main.bounds
-        //let width = bounds.size.width - (2 * (paddingSize + 8) )
-        
 
         products.anchor(top:  imageCard.bottomAnchor,
                         left: containerView.leftAnchor,
                         bottom: nil ,
                         right: containerView.rightAnchor ,
-                        paddingTop: paddingTopBottom,
+                        paddingTop: paddingTopBottom + 20 ,
                         paddingLeft: paddingSize,
                         paddingBottom: paddingTopBottom,
                         paddingRight: paddingSize,
                         width: 0 ,
                         height: productsHeight)
-
-
-//        locationCard.anchor(top: products.bottomAnchor, left: containerView.leftAnchor, bottom: nil, right: containerView.rightAnchor ,
-//                            paddingTop: paddingTopBottom,
-//                            paddingLeft: paddingSize,
-//                            paddingBottom: paddingTopBottom,
-//                            paddingRight: paddingSize,
-//                            width: 0, height: 40)
-        
-        
-//
-//        descriptionTextView.anchor(top: locationCard.bottomAnchor, left: containerView.leftAnchor, bottom: nil , right: containerView.rightAnchor,
-//                                   paddingTop: paddingTopBottom ,
-//                                   paddingLeft: paddingSize,
-//                                   paddingBottom: paddingTopBottom,
-//                                   paddingRight: paddingSize,
-//                                   width: 0 , height: 2.5 * productsHeight)
         
        
         descriptionTextView.anchor(top: products.bottomAnchor, left: containerView.leftAnchor, bottom: nil , right: containerView.rightAnchor,
-                                       paddingTop: paddingTopBottom ,
+                                       paddingTop: paddingTopBottom + 20,
                                        paddingLeft: paddingSize,
                                        paddingBottom: paddingTopBottom,
                                        paddingRight: paddingSize,
-                                       width: 0 , height: 2.5 * productsHeight)
+                                       width: 0 ,
+                                       height: productsHeight)
         
-        runningCountLabel.anchor(top: nil, left: nil, bottom: descriptionTextView.bottomAnchor, right: descriptionTextView.rightAnchor , paddingTop: 4 , paddingLeft: 0, paddingBottom: 1 , paddingRight: 0, width: 50 , height: 30)
+        runningCountLabel.anchor(top: nil, left: nil, bottom: descriptionTextView.bottomAnchor, right: descriptionTextView.rightAnchor , paddingTop: 4 , paddingLeft: 0, paddingBottom: 1 , paddingRight: 8, width: 50 , height: 30)
+        
+        
         floatingAddButton.anchor(top: nil, left: nil, bottom: containerView.bottomAnchor, right: containerView.rightAnchor, paddingTop: 80, paddingLeft: 0, paddingBottom: 0, paddingRight: 10, width: 0, height: 0)
+        floatingMapButton.anchor(top: nil, left: nil, bottom: floatingAddButton.topAnchor, right: containerView.rightAnchor, paddingTop: 0, paddingLeft: 0, paddingBottom: 10, paddingRight: 10, width: 0, height: 0)
         
         progressIndicator.anchor(top: locationCard.bottomAnchor, left: containerView.leftAnchor, bottom: nil , right: containerView.rightAnchor,
                                  paddingTop: paddingTopBottom ,
@@ -928,45 +910,57 @@ class ShareController:
                             width: 0 , height: 40)
         
         progressIndicator.isHidden = true
+        
         cancelButton.isHidden = true
         
     }
     
     
     let floatingAddButton : MDCFloatingButton = {
-        let fb = MDCFloatingButton()
-        fb.backgroundColor = UIColor.buttonThemeColor()
-        fb.setImage(#imageLiteral(resourceName: "ic_add_to_photos_white"), for: .normal)
-        fb.addTarget(self, action: #selector(handleShareAll(_:)), for: .touchUpInside)
-        return fb
-    }()
+           let fb = MDCFloatingButton()
+           fb.backgroundColor = UIColor.buttonThemeColor()
+           fb.setImage(#imageLiteral(resourceName: "ic_add_to_photos_white"), for: .normal)
+           fb.addTarget(self, action: #selector(handleShareAll(_:)), for: .touchUpInside)
+           return fb
+       }()
+    
+    let floatingMapButton : MDCFloatingButton = {
+           let fb = MDCFloatingButton()
+           fb.backgroundColor = UIColor.buttonThemeColor()
+           fb.setImage(#imageLiteral(resourceName: "ic_location_on_white"), for: .normal)
+           fb.addTarget(self, action: #selector(didHandelLocation), for: .touchUpInside)
+           return fb
+       }()
     
     var textFieldControllerFloating : MDCTextInputController?
     
-    let products:  UITextField = {
-        let TextField =  UITextField()
-        TextField.placeholder = "Caption"
-        TextField.keyboardType = UIKeyboardType.webSearch
-        TextField.font = UIFont.systemFont(ofSize: 15)
-        TextField.translatesAutoresizingMaskIntoConstraints = true
-        TextField.textColor = UIColor.black
-        TextField.backgroundColor =  UIColor.collectionCell()
-        TextField.tag = 1
-        return TextField
+
+    
+    let products: MDCOutlinedTextField = {
+        let textField = MDCOutlinedTextField()
+        textField.font = UIFont.systemFont(ofSize: 14)
+        textField.label.text = "Caption"
+        textField.placeholder = "Please write a caption of the post ..."
+        textField.keyboardType = UIKeyboardType.twitter
+        textField.font = UIFont.systemFont(ofSize: 15)
+        textField.translatesAutoresizingMaskIntoConstraints = true
+        textField.keyboardType = UIKeyboardType.twitter
+        textField.sizeToFit()
+        textField.tag = 1
+        return textField
     }()
     
-    
-    let descriptionTextView:  UITextView = {
-        let TextField =  UITextView()
-        TextField.placeholder = "Description"
-        TextField.keyboardType = UIKeyboardType.twitter
-        TextField.font = UIFont.systemFont(ofSize: 15)
-        TextField.translatesAutoresizingMaskIntoConstraints = true
-        TextField.textColor = UIColor.black
-        TextField.backgroundColor =  UIColor.collectionCell()
-        TextField.tag = 2
-        return TextField
-    }()
+    let descriptionTextView:  MDCOutlinedTextField = {
+          let textField =  MDCOutlinedTextField()
+          textField.label.text = "Description"
+          textField.placeholder = "Please write a description of the post ..."
+          textField.keyboardType = UIKeyboardType.twitter
+          textField.font = UIFont.systemFont(ofSize: 15)
+          textField.translatesAutoresizingMaskIntoConstraints = true
+          textField.sizeToFit()
+          textField.tag = 2
+          return textField
+      }()
     
     
     let imageCollectionView:  UICollectionView = {
@@ -1078,7 +1072,7 @@ class ShareController:
                 case .default:
                     self.imageArray.removeAll()
                     self.mapObjects.removeAll()
-                    self.products.text?.removeAll()
+                    self.products.label.text?.removeAll()
                     self.descriptionTextView.text?.removeAll()
                     self.imageCollectionView.reloadData()
                     self.locationCollectionView.reloadData()
@@ -1312,7 +1306,7 @@ class ShareController:
         handleAddPhotos()
     }
     
-    func didHandelLocation() {
+    @objc func didHandelLocation() {
         handleOpenMaps()
     }
     
@@ -1353,15 +1347,15 @@ class ShareController:
     
     
     let runningCountLabel: UILabel = {
-        let TextField = UILabel()
-        TextField.text = "Max 300"
-        TextField.font = UIFont.systemFont(ofSize: 10)
-        TextField.layer.cornerRadius = 10
-        TextField.translatesAutoresizingMaskIntoConstraints = true
-        TextField.textColor = UIColor.lightGray
-        TextField.backgroundColor =  UIColor.collectionCell()
-        TextField.tag = 2
-        return TextField
+        let textField = UILabel()
+        textField.text = "Max 300"
+        textField.font = UIFont.systemFont(ofSize: 10)
+        textField.layer.cornerRadius = 10
+        textField.translatesAutoresizingMaskIntoConstraints = true
+        textField.textColor = UIColor.lightGray
+        //textField.backgroundColor =  UIColor.collectionCell()
+        textField.tag = 2
+        return textField
     }()
     
     let descriptionLabel: UILabel = {

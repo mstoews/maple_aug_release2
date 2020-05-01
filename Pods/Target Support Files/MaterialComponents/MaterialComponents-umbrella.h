@@ -11,6 +11,7 @@
 #endif
 
 #import "MaterialActionSheet.h"
+#import "MDCActionSheetAction.h"
 #import "MDCActionSheetController.h"
 #import "MDCActionSheetControllerDelegate.h"
 #import "MaterialActionSheet+Theming.h"

@@ -12,8 +12,8 @@ import FirebaseUI
 import Photos
 import VideoToolbox
 import FBSDKLoginKit
-import GoogleMaps
-import GooglePlaces
+//import GoogleMaps
+//import GooglePlaces
 import Lightbox
 import MaterialComponents
 

@@ -513,7 +513,6 @@ class HomeController: MDCCollectionViewController, HomePostCellDelegate, HomeHea
                     post.hasLiked = true
                     Firestore.didLikePost(postId: postId, uidLiked: uid, didLike: true)
                 }
-                
             }
         }
         self.posts[indexPath.item] = post
