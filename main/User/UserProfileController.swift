@@ -66,14 +66,22 @@ class UserProfileController: MDCCollectionViewController,
         stopBookMarkObserving()
     }
     
-    func didOpenSettings() {
+    @objc func didOpenSettings() {
         OpenSettings()
     }
+    
+    let colorScheme = MDCSemanticColorScheme(defaults: .material201804)
+
     
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        collectionView?.backgroundColor = UIColor.collectionBackGround()
+        let containerScheme = ApplicationScheme()
+        
+        //collectionView?.backgroundColor = UIColor.collectionBackGround()
+        collectionView?.backgroundColor = containerScheme.colorScheme.backgroundColor
+        
+    
         collectionView?.register(UserProfileHeader.self, forSupplementaryViewOfKind: UICollectionView.elementKindSectionHeader, withReuseIdentifier: headerCellId)
         collectionView?.register(UserProfilePhotoCell.self, forCellWithReuseIdentifier: cellId)
         collectionView?.register(UserGridPostCell.self, forCellWithReuseIdentifier: userGridCellId)
@@ -93,6 +101,13 @@ class UserProfileController: MDCCollectionViewController,
     {
         refreshControl.beginRefreshing()
         fetchUser()
+        let indexPath = IndexPath(index: 0)
+        let kind = "UICollectionElementKindSectionHeader"
+        let header = collectionView.dequeueReusableSupplementaryView(ofKind: kind, withReuseIdentifier: headerCellId , for: indexPath) as! UserProfileHeader
+        header.inkView.removeFromSuperview()
+        headerView = header
+        headerView?.userView = self.user
+        headerView?.delegate = self
         refreshControl.endRefreshing()
     }
     
@@ -459,7 +474,6 @@ class UserProfileController: MDCCollectionViewController,
     
     
     func setTransition(){
-        
         let backItem = UIBarButtonItem(title: "Back", style: .bordered, target: nil, action: nil)
         navigationItem.backBarButtonItem = backItem
         let transition = CATransition()
@@ -477,6 +491,7 @@ class UserProfileController: MDCCollectionViewController,
         let userController = UserFollowersController(collectionViewLayout: UICollectionViewFlowLayout())
         userController.user = user 
         navigationController?.pushViewController(userController, animated: true)
+        
     }
     
     func didOpenFollowingList() {
@@ -517,10 +532,13 @@ class UserProfileController: MDCCollectionViewController,
     }
     
     fileprivate func setupSettingsButton() {
-        //guard let currentLoggedInUserId = Auth.auth().currentUser?.uid else { return }
-        //guard let userId = user?.uid else { return }
-        //navigationItem.rightBarButtonItem = UIBarButtonItem(image: #imageLiteral(resourceName: "ic_settings").withRenderingMode(.alwaysOriginal), style: .plain, target: self, action: #selector(didChangeSignUpFoto))
-      
+        
+        let settings_image = UIImage(named: "ic_settings")?.withRenderingMode(.alwaysOriginal)
+        settings_image?.withTintColor(UIColor.themeColor())
+        let button_settings = UIBarButtonItem(image: settings_image, style: .plain, target: self, action: #selector(didOpenSettings))
+        navigationItem.rightBarButtonItem = button_settings
+        navigationItem.rightBarButtonItem?.tintColor = UIColor.buttonThemeColor()
+     
     }
     
     func deletePost(postId: String)

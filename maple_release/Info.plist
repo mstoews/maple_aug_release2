@@ -74,6 +74,11 @@
 	</array>
 	<key>LSRequiresIPhoneOS</key>
 	<true/>
+    <key>UIAppFonts</key>
+    <array>
+        <string>Rubik-Regular.ttf</string>
+        <string>Rubik-Medium.ttf</string>
+    </array>
 	<key>MGLMapboxAccessToken</key>
 	<string>pk.eyJ1IjoibXN0b2V3cyIsImEiOiJjazU5YWJtOWkwM3dkM2x2MGU2Znp4NzN0In0.FEzzXLHdUWfmqel9gwm2-g</string>
 	<key>NSCameraUsageDescription</key>

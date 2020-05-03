@@ -7,37 +7,37 @@
 		<key>Maple.temp_caseinsensitive_rename.xcscheme</key>
 		<dict>
 			<key>orderHint</key>
-			<integer>64</integer>
+			<integer>65</integer>
 		</dict>
 		<key>Maple.temp_caseinsensitive_rename_release.xcscheme</key>
 		<dict>
 			<key>orderHint</key>
-			<integer>65</integer>
+			<integer>68</integer>
 		</dict>
 		<key>Maple.xcscheme</key>
 		<dict>
 			<key>orderHint</key>
-			<integer>70</integer>
+			<integer>75</integer>
 		</dict>
 		<key>Maple.xcscheme_^#shared#^_</key>
 		<dict>
 			<key>orderHint</key>
-			<integer>91</integer>
+			<integer>99</integer>
 		</dict>
 		<key>Maple_release.xcscheme</key>
 		<dict>
 			<key>orderHint</key>
-			<integer>71</integer>
+			<integer>77</integer>
 		</dict>
 		<key>Maple_release.xcscheme_^#shared#^_</key>
 		<dict>
 			<key>orderHint</key>
-			<integer>87</integer>
+			<integer>94</integer>
 		</dict>
 		<key>maple 2.xcscheme</key>
 		<dict>
 			<key>orderHint</key>
-			<integer>64</integer>
+			<integer>66</integer>
 		</dict>
 		<key>maple-release.xcscheme</key>
 		<dict>
@@ -52,7 +52,7 @@
 		<key>maple_release.xcscheme</key>
 		<dict>
 			<key>orderHint</key>
-			<integer>65</integer>
+			<integer>69</integer>
 		</dict>
 	</dict>
 </dict>

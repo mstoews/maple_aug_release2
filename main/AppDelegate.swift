@@ -14,6 +14,9 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     
     let mdcMessage = MDCSnackbarMessage()
     let mdcAction = MDCSnackbarMessageAction()
+    
+   
+    
     var window: UIWindow?
     lazy var database = Database.database()
     let gcmMessageIDKey = "gcm.message_id"

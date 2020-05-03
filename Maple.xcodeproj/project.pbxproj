@@ -95,12 +95,16 @@
 		4876BD2320DA16B20057E5E0 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4876BD2220DA16B20057E5E0 /* AppDelegate.swift */; };
 		4878C10120F7486F0054F227 /* ShareHeaderCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4878C10020F7486F0054F227 /* ShareHeaderCell.swift */; };
 		4878C18F20F844C80054F227 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 4878C18E20F844C70054F227 /* Assets.xcassets */; };
+		48B3F925245EC21F002E8E05 /* ApplicationScheme.swift in Sources */ = {isa = PBXBuildFile; fileRef = 48B3F924245EC21F002E8E05 /* ApplicationScheme.swift */; };
 		48B4457F1FE7342D00DFD412 /* HomePostCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 48B444DF1FE7341700DFD412 /* HomePostCell.swift */; };
 		48B445AB1FE7342D00DFD412 /* CommentCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 48B4450C1FE7342200DFD412 /* CommentCell.swift */; };
 		48B445B91FE7342D00DFD412 /* CommentsController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 48B4451A1FE7342600DFD412 /* CommentsController.swift */; };
 		48EE3F9C24361A39007C7970 /* Bindable.swift in Sources */ = {isa = PBXBuildFile; fileRef = 48EE3F9B24361A39007C7970 /* Bindable.swift */; };
 		48F6E9D0245A4A5900C70A81 /* LocationCarousel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 48F6E9CF245A4A5900C70A81 /* LocationCarousel.swift */; };
 		48F6E9D2245A4D6200C70A81 /* MKMapItem+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 48F6E9D1245A4D6200C70A81 /* MKMapItem+Extension.swift */; };
+		48F6E9DD245D098900C70A81 /* Rubik-Regular.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 48F6E9DA245D098600C70A81 /* Rubik-Regular.ttf */; };
+		48F6E9DE245D098900C70A81 /* Rubik-Medium.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 48F6E9DB245D098700C70A81 /* Rubik-Medium.ttf */; };
+		48F6E9DF245D098900C70A81 /* Rubik-OFL.txt in Resources */ = {isa = PBXBuildFile; fileRef = 48F6E9DC245D098800C70A81 /* Rubik-OFL.txt */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -196,6 +200,7 @@
 		4876BD2220DA16B20057E5E0 /* AppDelegate.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = AppDelegate.swift; path = main/AppDelegate.swift; sourceTree = SOURCE_ROOT; };
 		4878C10020F7486F0054F227 /* ShareHeaderCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ShareHeaderCell.swift; sourceTree = "<group>"; };
 		4878C18E20F844C70054F227 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
+		48B3F924245EC21F002E8E05 /* ApplicationScheme.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ApplicationScheme.swift; sourceTree = "<group>"; };
 		48B444AB1FE7329900DFD412 /* Maple.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Maple.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		48B444C31FE7329900DFD412 /* maple_releaseTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = maple_releaseTests.swift; sourceTree = "<group>"; };
 		48B444C51FE7329900DFD412 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
@@ -208,6 +213,9 @@
 		48EE3F9B24361A39007C7970 /* Bindable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Bindable.swift; sourceTree = "<group>"; };
 		48F6E9CF245A4A5900C70A81 /* LocationCarousel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LocationCarousel.swift; sourceTree = "<group>"; };
 		48F6E9D1245A4D6200C70A81 /* MKMapItem+Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "MKMapItem+Extension.swift"; sourceTree = "<group>"; };
+		48F6E9DA245D098600C70A81 /* Rubik-Regular.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Rubik-Regular.ttf"; sourceTree = "<group>"; };
+		48F6E9DB245D098700C70A81 /* Rubik-Medium.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Rubik-Medium.ttf"; sourceTree = "<group>"; };
+		48F6E9DC245D098800C70A81 /* Rubik-OFL.txt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = "Rubik-OFL.txt"; sourceTree = "<group>"; };
 		7A9564352AD53882CD8730CA /* Pods-Maple.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Maple.debug.xcconfig"; path = "Pods/Target Support Files/Pods-Maple/Pods-Maple.debug.xcconfig"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -431,7 +439,9 @@
 		48B444AD1FE7329900DFD412 /* maple */ = {
 			isa = PBXGroup;
 			children = (
+				48F6E9D9245D095700C70A81 /* Fonts */,
 				4876BD2220DA16B20057E5E0 /* AppDelegate.swift */,
+				48B3F924245EC21F002E8E05 /* ApplicationScheme.swift */,
 				485EF5DE212E412000ACD44A /* LaunchScreen.storyboard */,
 				4876BBB520DA14EF0057E5E0 /* Localizable.strings */,
 				4876BBB120DA14EF0057E5E0 /* Main.storyboard */,
@@ -467,6 +477,16 @@
 				48B444D01FE7329900DFD412 /* Info.plist */,
 			);
 			path = "maple-releaseUITests";
+			sourceTree = "<group>";
+		};
+		48F6E9D9245D095700C70A81 /* Fonts */ = {
+			isa = PBXGroup;
+			children = (
+				48F6E9DB245D098700C70A81 /* Rubik-Medium.ttf */,
+				48F6E9DC245D098800C70A81 /* Rubik-OFL.txt */,
+				48F6E9DA245D098600C70A81 /* Rubik-Regular.ttf */,
+			);
+			path = Fonts;
 			sourceTree = "<group>";
 		};
 		E6DBE8D8E57BA29E0F31EDA1 /* Frameworks */ = {
@@ -591,11 +611,14 @@
 			buildActionMask = 2147483647;
 			files = (
 				4876BB3D20DA14880057E5E0 /* Amaranth-Bold.otf in Resources */,
+				48F6E9DD245D098900C70A81 /* Rubik-Regular.ttf in Resources */,
 				485EF5DC212E412000ACD44A /* LaunchScreen.storyboard in Resources */,
 				4876BBBB20DA14F00057E5E0 /* Localizable.strings in Resources */,
 				4876BBB920DA14F00057E5E0 /* Main.storyboard in Resources */,
 				482FC11E20DE168200E23DAE /* FPAuthPickerViewController.xib in Resources */,
+				48F6E9DE245D098900C70A81 /* Rubik-Medium.ttf in Resources */,
 				484F88D620DE327D0083D226 /* GoogleService-Info.plist in Resources */,
+				48F6E9DF245D098900C70A81 /* Rubik-OFL.txt in Resources */,
 				4878C18F20F844C80054F227 /* Assets.xcassets in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -823,6 +846,7 @@
 				48F6E9D2245A4D6200C70A81 /* MKMapItem+Extension.swift in Sources */,
 				4876BCA120DA16280057E5E0 /* PhotoSelectorHeader.swift in Sources */,
 				48482FC220DA18A00031EBFF /* DataModel.swift in Sources */,
+				48B3F925245EC21F002E8E05 /* ApplicationScheme.swift in Sources */,
 				482FC13620DE236D00E23DAE /* PostRecord.swift in Sources */,
 				482FC13B20DE236D00E23DAE /* PostCollectionCell.swift in Sources */,
 				482FC10620DE15D900E23DAE /* MapCell.swift in Sources */,
@@ -1107,6 +1131,7 @@
 				INFOPLIST_FILE = "$(SRCROOT)/maple_release/Info.plist";
 				IPHONEOS_DEPLOYMENT_TARGET = 13.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
+				ONLY_ACTIVE_ARCH = YES;
 				PRODUCT_BUNDLE_IDENTIFIER = com.mapleon.maple;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SUPPORTS_MACCATALYST = NO;

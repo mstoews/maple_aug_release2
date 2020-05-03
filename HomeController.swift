@@ -13,7 +13,6 @@ import AlgoliaSearch
 import InstantSearchCore
 import Lightbox
 import GoogleSignIn
-//import GoogleToolboxForMac
 import MaterialComponents
 import JGProgressHUD
 import Mapbox
@@ -40,6 +39,11 @@ class HomeController: MDCCollectionViewController, HomePostCellDelegate, HomeHea
     private let refreshControl = UIRefreshControl()
     var spinner: UIView?
     let bottomBarView = MDCBottomAppBarView()
+    
+  
+    
+    
+    
     lazy var appDelegate = UIApplication.shared.delegate as! AppDelegate
     
     let red = MDCPalette.red.tint600
@@ -369,7 +373,7 @@ class HomeController: MDCCollectionViewController, HomePostCellDelegate, HomeHea
     // MARK: - Needs a fix to move to dynamic links 
     func setupNavigationItems() {
         navigationItem.titleView = UIImageView(image: #imageLiteral(resourceName: "logo2"))
-        //navigationItem.title = "Home Page"
+        navigationItem.titleView?.backgroundColor = ApplicationScheme().colorScheme.backgroundColor
         
     }
     

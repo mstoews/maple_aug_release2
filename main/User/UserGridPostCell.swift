@@ -178,6 +178,7 @@ class UserGridPostCell: MDCCardCollectionCell , UICollectionViewDataSource, UICo
         super.updateConstraints()
         
         let constant = MDCCeil((self.bounds.width - 2) * 0.65)
+        
         if imageConstraint == nil {
             imageConstraint = imageCollectionView.heightAnchor.constraint(equalToConstant: constant)
             imageConstraint?.isActive = true

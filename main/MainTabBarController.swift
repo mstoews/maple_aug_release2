@@ -24,13 +24,21 @@ protocol SharePhotoControllerDelegate  {
     func handleAddPlace()
 }
 
+func globalContainerScheme() -> ApplicationScheme {
+    let containerScheme = ApplicationScheme()
+    return containerScheme
+}
 
-class MainTabBarController: UITabBarController, AuthUIDelegate  {
+
+
+class MainTabBarController: UITabBarController, MDCBottomNavigationBarDelegate, AuthUIDelegate  {
     
     lazy var uid = Auth.auth().currentUser!.uid
     var notificationGranted = false
     let imageView = CustomImageView()
     fileprivate let hud = JGProgressHUD(style: .dark)
+    
+    let containerScheme = globalContainerScheme()
     
     let layout = UICollectionViewFlowLayout()
     lazy var userProfileController = UserProfileController (collectionViewLayout: layout).self
@@ -39,12 +47,105 @@ class MainTabBarController: UITabBarController, AuthUIDelegate  {
     var observers = [DatabaseQuery]()
     lazy var appDelegate = UIApplication.shared.delegate as! AppDelegate
     
-    
     deinit {
         listener?.remove()
     }
     
     private var listener: ListenerRegistration?
+    
+    let bottomNavBar = MDCBottomNavigationBar()
+    override func viewDidLoad() {
+        view.backgroundColor = containerScheme.colorScheme.backgroundColor
+        let tabBarItem1 = UITabBarItem(title: "Home", image: UIImage(named: "ic_home"), tag: 0)
+        let tabBarItem2 = UITabBarItem(title: "Search", image: UIImage(named: "ic_search"), tag: 1)
+        let tabBarItem3 = UITabBarItem(title: "Post", image: UIImage(named: "plus_unselected"), tag: 2)
+        let tabBarItem4 = UITabBarItem(title: "Updates", image: UIImage(named: "ic_notifications"), tag: 3)
+        let tabBarItem5 = UITabBarItem(title: "Profile", image: UIImage(named: "profile_unselected"), tag: 4)
+        // tabBarItem3.selectedImage = UIImage(named: "Favorite")
+        bottomNavBar.items = [ tabBarItem1, tabBarItem2, tabBarItem3, tabBarItem4, tabBarItem5 ]
+        
+        bottomNavBar.selectedItem = tabBarItem1
+        view.addSubview(bottomNavBar)
+        bottomNavBar.delegate = self
+        
+        
+//        let homeNavController = templateNavController(unselectedImage: #imageLiteral(resourceName: "ic_home_white"), selectedImage: #imageLiteral(resourceName: "ic_home"), rootViewController: HomeController(collectionViewLayout: UICollectionViewFlowLayout()))
+//
+//
+//        viewControllers = [homeNavController]
+        
+        authUI?.delegate = self
+        authUI?.tosurl = kFirebaseTermsOfService
+        
+        let actionCodeSettings = ActionCodeSettings()
+        actionCodeSettings.url = URL(string: "https://example.appspot.com")
+        actionCodeSettings.handleCodeInApp = true
+        actionCodeSettings.setAndroidPackageName("com.firebase.example", installIfNotAvailable: false, minimumVersion: "12")
+        
+        let provider = FUIEmailAuth(authAuthUI: FUIAuth.defaultAuthUI()!,
+                                    signInMethod: EmailLinkAuthSignInMethod,
+                                    forceSameDevice: false,
+                                    allowNewEmailAccounts: true,
+                                    actionCodeSetting: actionCodeSettings)
+        
+        let providers: [FUIAuthProvider] = [provider, FUIGoogleAuth(), FUIFacebookAuth()]
+        authUI?.providers = providers
+        setupViewControllers()
+        //observeNotifications()
+        
+        //UINavigationBar.appearance().prefersLargeTitles = false
+        
+        //MDCBottomNavigationBarColorThemer.applySemanticColorScheme(colorScheme, toBottomNavigation: bottomNavBar)
+    }
+    
+    func layoutBottomNavBar() {
+          let size = bottomNavBar.sizeThatFits(view.bounds.size)
+           var bottomNavBarFrame = CGRect(x: 0,
+                                          y: view.bounds.height - size.height,
+                                          width: size.width,
+                                          height: size.height)
+        if #available(iOS 11.0, *) {
+          bottomNavBarFrame.size.height += view.safeAreaInsets.bottom
+          bottomNavBarFrame.origin.y -= view.safeAreaInsets.bottom
+        }
+        bottomNavBar.frame = bottomNavBarFrame
+           bottomNavBar.frame = bottomNavBarFrame
+       }
+       override func viewWillLayoutSubviews() {
+           super.viewWillLayoutSubviews()
+           layoutBottomNavBar()
+       }
+    
+    fileprivate func templateNavController(unselectedImage: UIImage, selectedImage: UIImage, rootViewController: UIViewController = UIViewController()) -> UINavigationController {
+        let viewController = rootViewController
+        let navController = UINavigationController(rootViewController: viewController)
+//        navController.tabBarItem.image = unselectedImage
+//        navController.tabBarItem.selectedImage = selectedImage
+//        navController.tabBarItem.selectedImage?.withTintColor( containerScheme.colorScheme.primaryColor)
+//        navController.tabBarController?.tabBar.tintColor =  containerScheme.colorScheme.primaryColor
+//        navController.tabBarController?.tabBar.backgroundColor = containerScheme.colorScheme.primaryColor
+        return navController
+    }
+    
+    func bottomNavigationBar(_ bottomNavigationBar: MDCBottomNavigationBar, didSelect item: UITabBarItem){
+        guard let fromView = selectedViewController?.view, let toView = customizableViewControllers?[item.tag].view else {
+            return
+        }
+        
+        if fromView != toView {
+            UIView.transition(from: fromView, to: toView, duration: 0.3, options: [.transitionCrossDissolve], completion: nil)
+        }
+        self.selectedIndex = item.tag
+    }
+    
+//    func layoutBottomNavBar() {
+//        let size = bottomNavBar.sizeThatFits(view.bounds.size)
+//        let bottomNavBarFrame = CGRect(x: 0,
+//                                       y: view.bounds.height - size.height,
+//                                       width: size.width,
+//                                       height: size.height)
+//        bottomNavBar.frame = bottomNavBarFrame
+//    }
     
     fileprivate func observeNotifications()
     {
@@ -88,7 +189,6 @@ class MainTabBarController: UITabBarController, AuthUIDelegate  {
     
     func setTabBarHome() {
         tabBar.selectedItem = tabBar.items![0] as UITabBarItem
-        tabBar.tintColor = UIColor.red
     }
     
     func showProfile(_ profile: MapleUser) {
@@ -104,35 +204,32 @@ class MainTabBarController: UITabBarController, AuthUIDelegate  {
     let authUI: FUIAuth? = FUIAuth.defaultAuthUI()
     
     
-    override func viewDidLoad() {
-        super.viewDidLoad()
-        
-        authUI?.delegate = self
-        authUI?.tosurl = kFirebaseTermsOfService
-        
-        let actionCodeSettings = ActionCodeSettings()
-        actionCodeSettings.url = URL(string: "https://example.appspot.com")
-        actionCodeSettings.handleCodeInApp = true
-        actionCodeSettings.setAndroidPackageName("com.firebase.example", installIfNotAvailable: false, minimumVersion: "12")
-
-        let provider = FUIEmailAuth(authAuthUI: FUIAuth.defaultAuthUI()!,
-                                    signInMethod: EmailLinkAuthSignInMethod,
-                                    forceSameDevice: false,
-                                    allowNewEmailAccounts: true,
-                                    actionCodeSetting: actionCodeSettings)
-        
-        let providers: [FUIAuthProvider] = [provider, FUIGoogleAuth(), FUIFacebookAuth()]
-        authUI?.providers = providers
-        setupViewControllers()
-        observeNotifications()
-        
-        UINavigationBar.appearance().prefersLargeTitles = false
-        UINavigationBar.appearance().backgroundColor = UIColor.themeColor()
-        UINavigationBar.appearance().alpha = CGFloat(0.1)
-        tabBar.tintColor = UIColor.buttonThemeColor()
-        
-        //NotificationCenter.default.addObserver(self, selector: #selector(resetBadges), name: NSNotification.Name(rawValue : "Badge Changed"), object: nil)
-    }
+    //    override func viewDidLoad() {
+    //        super.viewDidLoad()
+    //
+    //        authUI?.delegate = self
+    //        authUI?.tosurl = kFirebaseTermsOfService
+    //
+    //        let actionCodeSettings = ActionCodeSettings()
+    //        actionCodeSettings.url = URL(string: "https://example.appspot.com")
+    //        actionCodeSettings.handleCodeInApp = true
+    //        actionCodeSettings.setAndroidPackageName("com.firebase.example", installIfNotAvailable: false, minimumVersion: "12")
+    //
+    //        let provider = FUIEmailAuth(authAuthUI: FUIAuth.defaultAuthUI()!,
+    //                                    signInMethod: EmailLinkAuthSignInMethod,
+    //                                    forceSameDevice: false,
+    //                                    allowNewEmailAccounts: true,
+    //                                    actionCodeSetting: actionCodeSettings)
+    //
+    //        let providers: [FUIAuthProvider] = [provider, FUIGoogleAuth(), FUIFacebookAuth()]
+    //        authUI?.providers = providers
+    //        setupViewControllers()
+    //        observeNotifications()
+    //
+    //        UINavigationBar.appearance().prefersLargeTitles = false
+    //
+    //        //NotificationCenter.default.addObserver(self, selector: #selector(resetBadges), name: NSNotification.Name(rawValue : "Badge Changed"), object: nil)
+    //    }
     
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
@@ -154,14 +251,7 @@ class MainTabBarController: UITabBarController, AuthUIDelegate  {
     }()
     
     
-    lazy var FAB :  MDCFloatingButton = {
-        let fb = MDCFloatingButton()
-        return fb
-    }()
-    
-    
-    
-     func setUserProfile() {
+    func setUserProfile() {
         if let uid = Auth.auth().currentUser?.uid {
             Firestore.fetchUserWithUID(uid: uid) { (user) in
                 self.userProfileController.user = user
@@ -173,29 +263,21 @@ class MainTabBarController: UITabBarController, AuthUIDelegate  {
     func setupViewControllers() {
         
         let homeNavController = templateNavController(unselectedImage: #imageLiteral(resourceName: "ic_home_white"), selectedImage: #imageLiteral(resourceName: "ic_home"), rootViewController: HomeController(collectionViewLayout: UICollectionViewFlowLayout()))
-                
+        
         let searchNavController = templateNavController(unselectedImage: #imageLiteral(resourceName: "ic_search_white"),
                                                         selectedImage: #imageLiteral(resourceName: "ic_search"),
                                                         rootViewController: SearchAlgoliaCollectionView(collectionViewLayout: CollectionLayout()))
         
         let sharePhotoNavController = templateNavController(unselectedImage: #imageLiteral(resourceName: "plus_unselected"), selectedImage: #imageLiteral(resourceName: "plus_unselected"), rootViewController: ShareController())
-                
+        
         let notificationNavController = templateNavController(unselectedImage: #imageLiteral(resourceName: "ic_notifications_white"), selectedImage: #imageLiteral(resourceName: "ic_notifications"), rootViewController: NotificationViewController(collectionViewLayout: UICollectionViewFlowLayout()))
         
         
         let userProfileNavController = UINavigationController(rootViewController: userProfileController)
-        userProfileNavController.tabBarItem.image = #imageLiteral(resourceName: "profile_unselected")
+     userProfileNavController.tabBarItem.image = #imageLiteral(resourceName: "profile_unselected")
         userProfileNavController.tabBarItem.selectedImage = #imageLiteral(resourceName: "profile_selected")
         
         setUserProfile()
-        
-        let plusImage = UIImage(named: "trending")?.withRenderingMode(.alwaysTemplate)
-        let button = MDCFloatingButton()
-        button.setImage(plusImage, for: .normal)
-        
-        tabBar.addSubview(button)
-        
-        button.anchor(top: tabBar.bottomAnchor, left: nil, bottom: nil, right: view.rightAnchor, paddingTop: 10, paddingLeft: 0, paddingBottom: 100, paddingRight: 10, width: 50, height: 50)
         
         viewControllers = [
             homeNavController,
@@ -218,14 +300,7 @@ class MainTabBarController: UITabBarController, AuthUIDelegate  {
     }
     
     
-    fileprivate func templateNavController(unselectedImage: UIImage, selectedImage: UIImage, rootViewController: UIViewController = UIViewController()) -> UINavigationController {
-        let viewController = rootViewController
-        let navController = UINavigationController(rootViewController: viewController)
-        navController.tabBarItem.image = unselectedImage
-        navController.tabBarItem.selectedImage = selectedImage
-        navController.tabBarController?.tabBar.tintColor = UIColor.themeColor()
-        return navController
-    }
+    
 }
 
 
@@ -255,29 +330,29 @@ extension MainTabBarController: FUIAuthDelegate, LoginControllerDelegate {
         return true
     }
     
-     fileprivate func fetchCurrentUser() {
-            hud.textLabel.text = "Loading"
-            hud.show(in: view)
-            Firestore.firestore().fetchCurrentUser { (user, err) in
-                if let err = err {
-                    print("Failed to fetch user:", err)
-                    self.hud.dismiss()
-                    return
-                }
+    fileprivate func fetchCurrentUser() {
+        hud.textLabel.text = "Loading"
+        hud.show(in: view)
+        Firestore.firestore().fetchCurrentUser { (user, err) in
+            if let err = err {
+                print("Failed to fetch user:", err)
+                self.hud.dismiss()
+                return
             }
-            self.hud.dismiss()
         }
+        self.hud.dismiss()
+    }
     
     private func showLoginView(){
         print("MainTabBarController did appear")
-              // you want to kick the user out when they log out
-              if Auth.auth().currentUser == nil {
-                    let loginController = LoginController()
-                    loginController.delegate = self
-                    let navController = UINavigationController(rootViewController: loginController)
-                    navController.modalPresentationStyle = .fullScreen
-                    present(navController, animated: true)
-              }
+        // you want to kick the user out when they log out
+        if Auth.auth().currentUser == nil {
+            let loginController = LoginController()
+            loginController.delegate = self
+            let navController = UINavigationController(rootViewController: loginController)
+            navController.modalPresentationStyle = .fullScreen
+            present(navController, animated: true)
+        }
         
     }
     
@@ -321,7 +396,7 @@ extension MainTabBarController: FUIAuthDelegate, LoginControllerDelegate {
         URLSession.shared.dataTask(with: url) {
             (data, response, error) in
             completion(data, response, error)
-            }.resume()
+        }.resume()
     }
     
     func savePhotoImage(user: MapleUser)
@@ -340,7 +415,7 @@ extension MainTabBarController: FUIAuthDelegate, LoginControllerDelegate {
                     return
                 }
                 
-            storeRef.downloadURL { (url, err)  in
+                storeRef.downloadURL { (url, err)  in
                     if let err = err {
                         self.navigationItem.rightBarButtonItem?.isEnabled = true
                         print("Failed to upload post image:", err)

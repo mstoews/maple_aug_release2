@@ -250,6 +250,14 @@ extension UIColor {
     static func rgb(red: CGFloat, green: CGFloat, blue: CGFloat) -> UIColor {
         return UIColor(red: red/255, green: green/255, blue: blue/255, alpha: 1)
     }
+    
+    static func teal() -> UIColor {
+        return UIColor(hex: "#007E7E")
+    }
+    
+    static func lightTeal() -> UIColor {
+        return UIColor(hex: "#309898")
+    }
 
     static func mainBlue() -> UIColor {
         return UIColor.rgb(red: 17, green: 154, blue: 237)
@@ -260,31 +268,55 @@ extension UIColor {
     }
     
     static func themeColor() -> UIColor {
-      return .white
+       return UIColor(hex: "#F9D7D6")
     }
     
     static func buttonThemeColor() -> UIColor {
-        let mapleThemeColor = UIColor.rgb(red: 199, green: 63, blue: 74)
-        return mapleThemeColor
+        // let mapleThemeColor = UIColor.rgb(red: 199, green: 63, blue: 74)
+        return UIColor(hex: "#E95689")
     }
     
     static func mainBlack() -> UIColor{
-        return UIColor.rgb(red: 255, green: 255, blue: 255)
+        return UIColor(hex: "#EEEEEE")
     }
     
     static func backGroundTheme() -> UIColor {
-        return UIColor.rgb(red: 17, green: 154, blue: 200)
+        return UIColor(hex: "#FFF7F6")
     }
     
     static func collectionBackGround() -> UIColor {
-         return UIColor.rgb(red: 240, green: 240, blue: 240)
+        return UIColor(hex: "#FFF7F6")
     }
     
     static func collectionCell()-> UIColor {
         return .white
     }
     
-    
+    public convenience init?(hex: String) {
+           let r, g, b, a: CGFloat
+
+           if hex.hasPrefix("#") {
+               let start = hex.index(hex.startIndex, offsetBy: 1)
+               let hexColor = String(hex[start...])
+
+               if hexColor.count == 8 {
+                   let scanner = Scanner(string: hexColor)
+                   var hexNumber: UInt64 = 0
+
+                   if scanner.scanHexInt64(&hexNumber) {
+                       r = CGFloat((hexNumber & 0xff000000) >> 24) / 255
+                       g = CGFloat((hexNumber & 0x00ff0000) >> 16) / 255
+                       b = CGFloat((hexNumber & 0x0000ff00) >> 8) / 255
+                       a = CGFloat(hexNumber & 0x000000ff) / 255
+
+                       self.init(red: r, green: g, blue: b, alpha: a)
+                       return
+                   }
+               }
+           }
+
+           return nil
+       }
     /*
      
      Logo: FF0000

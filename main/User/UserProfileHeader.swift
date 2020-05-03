@@ -9,6 +9,7 @@
     import Firebase
     import FirebaseFirestore
     import MaterialComponents
+    import MaterialComponents.MaterialContainerScheme
     
     protocol UserProfileHeaderDelegate {
         func didChangeToListView()
@@ -22,11 +23,8 @@
         func didEditPost()
     }
     
-    class UserProfileHeader: MDCCardCollectionCell ,
-          ChangeSignPhotoControllerDelegate
-        
+    class UserProfileHeader: MDCCardCollectionCell ,ChangeSignPhotoControllerDelegate
     {
-      
         
         func didChangeSignUpPhoto(user: MapleUser) {
             profileImageView.loadImage(urlString: user.profileImageUrl)
@@ -34,8 +32,8 @@
             userId = user.uid
         }
         
-        
         var delegate: UserProfileHeaderDelegate?
+        let containerScheme = globalContainerScheme()
         
         var userId = "USERID"
         var userPhotoURL = "USER PHOTO URL"
@@ -44,7 +42,7 @@
         fileprivate func getNumberOfPosts() {
             // Posts
             if let postCount = userView?.postCount {
-                let posts = "Posts \(postCount)"
+                let posts = "POSTS"
                 self.postsLabel.setTitle(posts, for: .normal)
             }}
         
@@ -52,9 +50,9 @@
         {
             // Followers
             if let followersCount = userView?.followersCount {
-                let posts = "Followers \(followersCount)"
-                self.postsLabel.setTitle(posts, for: .normal)
-//                self.followersLabel.attributedText = NSMutableAttributedString(string: "Followers \(followersCount)" , attributes: [NSAttributedString.Key.font: UIFont.boldSystemFont(ofSize: 14)])
+                let followers = "FOLLOWER"
+                self.followersLabel.setTitle(followers, for: .normal)
+                //                self.followersLabel.attributedText = NSMutableAttributedString(string: "Followers \(followersCount)" , attributes: [NSAttributedString.Key.font: UIFont.boldSystemFont(ofSize: 14)])
             }
         }
         
@@ -63,8 +61,8 @@
         {
             // Following
             if let followingCount = userView?.followedCount {
-                let posts = "Following \(followingCount)"
-                self.postsLabel.setTitle(posts, for: .normal)
+                let following = "FOLLOWING"
+                self.followingLabel.setTitle(following, for: .normal)
                 //self.followingLabel.attributedText = NSMutableAttributedString(string: "Followed \(followingCount)" , attributes: [NSAttributedString.Key.font: UIFont.boldSystemFont(ofSize: 14)])
             }
         }
@@ -90,8 +88,8 @@
         @objc func handleFollow(){
             print("User has not been followed yet, so follow")
             userIsFollowed()
-             guard let uid = Auth.auth().currentUser?.uid else { return }
-             if let userId = userView?.uid {
+            guard let uid = Auth.auth().currentUser?.uid else { return }
+            if let userId = userView?.uid {
                 if userId == uid {
                     return
                 }
@@ -120,14 +118,14 @@
                     self.editProfileFollowButton.isHidden = true
                     self.editProfileFollowedButton.isHidden = true
                 } else {
-//                    Firestore.isUserBeingFollowedByUser(userId: uid, userFollowing: userId , { (isFollowed) in
-//                        if isFollowed.isEmpty {
-//                        self.userIsFollowed()
-//                    } else
-//                        {
-//                        self.userIsNotFollowed()
-//                    }
-//                })
+                    //                    Firestore.isUserBeingFollowedByUser(userId: uid, userFollowing: userId , { (isFollowed) in
+                    //                        if isFollowed.isEmpty {
+                    //                        self.userIsFollowed()
+                    //                    } else
+                    //                        {
+                    //                        self.userIsNotFollowed()
+                    //                    }
+                    //                })
                 }
                 getNumberOfFollowers()
                 getNumberOfPosts()
@@ -182,6 +180,8 @@
             //delegate?.didOpenProductsList()
         }
         
+        
+        
         lazy var editProfileFollowButton: UIButton = {
             let button = UIButton(type: .system)
             button.setTitle("FOLLOW\t", for: .normal)
@@ -214,7 +214,7 @@
             button.addTarget(self, action: #selector(handleSettings), for: .touchUpInside)
             return button
         }()
-      
+        
         @objc func handleSettings()
         {
             delegate?.didOpenSettings()
@@ -327,67 +327,66 @@
             return label
         }()
         
-        let postsLabel: MDCFlatButton = {
-            let myButton = MDCFlatButton()
-            myButton.setTitle("Posts", for: .normal)
-            myButton.isUppercaseTitle = false
-            //myButton.addTarget(self, action: #selector(myButtonAction(_:)), for: .touchUpInside)
+        let postsLabel: MDCButton = {
+            let myButton = MDCButton()
+            myButton.translatesAutoresizingMaskIntoConstraints = false
+            myButton.setTitle("POSTS", for: .normal)
+            myButton.isUppercaseTitle = true
             myButton.frame = CGRect(x: 10, y: 10, width: 150, height: 40)
-            myButton.setBackgroundColor(UIColor.white)
-            myButton.setTitleColor(UIColor.blue, for: UIControl.State.normal)
-            myButton.setBorderColor(UIColor.lightGray, for: UIControl.State.normal)
-            myButton.setBorderWidth(1.0, for: UIControl.State.normal)
-            //myButton.layer.cornerRadius = 5
+            //myButton.setBackgroundColor(UIColor.themeColor())
+            //myButton.setTitleColor(UIColor.buttonThemeColor(), for: UIControl.State.normal)
+            //myButton.setBorderColor(UIColor.buttonThemeColor(), for: UIControl.State.normal)
+            //myButton.setBorderWidth(1.0, for: UIControl.State.normal)
             return myButton
         }()
         
-        let followingLabel: MDCFlatButton = {
-            let myButton = MDCFlatButton()
-                  myButton.setTitle("Following", for: .normal)
-                  myButton.isUppercaseTitle = false
-                  myButton.frame = CGRect(x: 10, y: 10, width: 150, height: 40)
-                  myButton.setBackgroundColor(UIColor.white)
-                  myButton.setTitleColor(UIColor.blue, for: UIControl.State.normal)
-                  myButton.setBorderColor(UIColor.lightGray, for: UIControl.State.normal)
-                  myButton.setBorderWidth(1.0, for: UIControl.State.normal)
-                  return myButton
-            }()
+        let followingLabel: MDCButton = {
+            let myButton = MDCButton()
+            myButton.setTitle("FOLLOW", for: .normal)
+            myButton.isUppercaseTitle = true
+            myButton.frame = CGRect(x: 10, y: 10, width: 150, height: 40)
+//            myButton.setBackgroundColor(UIColor.themeColor())
+//            myButton.setTitleColor(UIColor.buttonThemeColor(), for: UIControl.State.normal)
+//            myButton.setBorderColor(UIColor.themeColor(), for: UIControl.State.normal)
+//            myButton.setBorderWidth(1.0, for: UIControl.State.normal)
+            return myButton
+        }()
         
-           let followersLabel: MDCFlatButton = {
-            let myButton = MDCFlatButton()
-                    myButton.setTitle("Followers", for: .normal)
-                    myButton.isUppercaseTitle = false
-                    myButton.frame = CGRect(x: 10, y: 10, width: 150, height: 40)
-                    myButton.setBackgroundColor(UIColor.themeColor())
-                    myButton.setTitleColor(UIColor.blue, for: UIControl.State.normal)
-                    myButton.setBorderColor(UIColor.lightGray, for: UIControl.State.normal)
-                    myButton.setBorderWidth(1.0, for: UIControl.State.normal)
-                    return myButton
-            }()
-          
+        let followersLabel: MDCButton = {
+            let myButton = MDCButton()
+            myButton.setTitle("FOLLOWER", for: .normal)
+            myButton.isUppercaseTitle = false
+            myButton.frame = CGRect(x: 10, y: 10, width: 150, height: 40)
+//            myButton.setBackgroundColor(UIColor.themeColor())
+//            myButton.setTitleColor(UIColor.buttonThemeColor(), for: UIControl.State.normal)
+//            myButton.setBorderColor(UIColor.buttonThemeColor(), for: UIControl.State.normal)
+//            myButton.setBorderWidth(1.0, for: UIControl.State.normal)
+           return myButton
+        }()
+        
         
         /*
-        let followersLabel: UILabel = {
-            let label = UILabel()
-            let attributedText = NSMutableAttributedString(string: "Followers:", attributes: [NSAttributedString.Key.font: UIFont.boldSystemFont(ofSize: 14)])
-            label.attributedText = attributedText
-            
-            label.textAlignment = .left
-            label.numberOfLines = 0
-            return label
-        }()
+         let followersLabel: UILabel = {
+         let label = UILabel()
+         let attributedText = NSMutableAttributedString(string: "Followers:", attributes: [NSAttributedString.Key.font: UIFont.boldSystemFont(ofSize: 14)])
+         label.attributedText = attributedText
+         
+         label.textAlignment = .left
+         label.numberOfLines = 0
+         return label
+         }()
+         
+         let followingLabel: UILabel  = {
+         let label  = UILabel()
+         let attributedText = NSMutableAttributedString(string: "Following:", attributes: [NSAttributedString.Key.font: UIFont.boldSystemFont(ofSize: 14)])
+         label.attributedText = attributedText
+         label.numberOfLines = 0
+         label.textAlignment = .left
+         return label
+         }()
+         */
         
-        let followingLabel: UILabel  = {
-            let label  = UILabel()
-            let attributedText = NSMutableAttributedString(string: "Following:", attributes: [NSAttributedString.Key.font: UIFont.boldSystemFont(ofSize: 14)])
-            label.attributedText = attributedText
-            label.numberOfLines = 0
-            label.textAlignment = .left
-            return label
-        }()
-        */
         
-       
         override init(frame: CGRect) {
             super.init(frame: frame)
             
@@ -410,6 +409,8 @@
             usernameLabel.anchor(top: profileImageView.topAnchor , left: profileImageView.rightAnchor , bottom: nil , right: rightAnchor, paddingTop: 15, paddingLeft: 10 , paddingBottom: 0, paddingRight: 0, width: 0, height: 0)
             
             
+            backgroundColor = containerScheme.colorScheme.backgroundColor
+            
             //setupFavoriteButtons()
             setupBottomToolbar()
             setupUserStatsView()
@@ -419,10 +420,10 @@
         {
             //let stackView = UIStackView(arrangedSubviews: [editProfileSetupButton, editProfileFollowButton, editProfileFollowedButton])
             
-//            stackView.axis = .vertical;
-//            stackView.distribution = .equalSpacing;
-//            stackView.alignment = .leading;
-//            stackView.spacing = 10;
+            //            stackView.axis = .vertical;
+            //            stackView.distribution = .equalSpacing;
+            //            stackView.alignment = .leading;
+            //            stackView.spacing = 10;
             
             self.addSubview(editProfileSetupButton)
             self.addSubview(editProfileFollowButton)
@@ -435,16 +436,23 @@
         }
         
         fileprivate func setupUserStatsView() {
+            postsLabel.applyContainedTheme(withScheme: containerScheme.buttonScheme)
+            postsLabel.applyOutlinedTheme(withScheme: containerScheme.buttonScheme)
+            postsLabel.applyTextTheme(withScheme: containerScheme.buttonScheme)
+            followersLabel.applyOutlinedTheme(withScheme: containerScheme.buttonScheme)
+            followersLabel.applyTextTheme(withScheme: containerScheme.buttonScheme)
+            followingLabel.applyOutlinedTheme(withScheme: containerScheme.buttonScheme)
+            followingLabel.applyTextTheme(withScheme: containerScheme.buttonScheme)
             
             let stackView = UIStackView(arrangedSubviews: [postsLabel, followersLabel, followingLabel])
             
             stackView.axis = .horizontal;
-            stackView.distribution = .equalSpacing;
+            stackView.distribution = .fillEqually;
             stackView.alignment = .center;
-            stackView.spacing = 10;
-        
+            stackView.spacing = 15;
+            
             addSubview(stackView)
-            stackView.anchor(top: profileImageView.bottomAnchor, left: leftAnchor, bottom: nil, right: rightAnchor, paddingTop: 10, paddingLeft: 20, paddingBottom: 0, paddingRight: 20, width: 0, height: 0)
+            stackView.anchor(top: profileImageView.bottomAnchor, left: leftAnchor, bottom: nil, right: rightAnchor, paddingTop: 5, paddingLeft: 6, paddingBottom: 0, paddingRight: 5 , width: 0, height: 0)
             
             let tapFollowers = UITapGestureRecognizer(target: self, action: #selector(followersTapped(tapGestureRecognizer: )))
             followersLabel.isUserInteractionEnabled = true
@@ -453,7 +461,7 @@
             let tapFollowing = UITapGestureRecognizer(target: self, action: #selector(followingTapped(tapGestureRecognizer: )))
             followingLabel.isUserInteractionEnabled = true
             followingLabel.addGestureRecognizer(tapFollowing)
-                        
+            
         }
         
         fileprivate func setupBottomToolbar() {
@@ -474,13 +482,13 @@
             addSubview(bottomDividerView)
             
             stackView.anchor(top: nil, left: leftAnchor, bottom: self.bottomAnchor, right: self.rightAnchor, paddingTop: 0,
-                                paddingLeft: 0, paddingBottom: 0, paddingRight: 0, width: 100, height: 50)
+                             paddingLeft: 0, paddingBottom: 0, paddingRight: 0, width: 100, height: 50)
             
             topDividerView.anchor(top: stackView.topAnchor, left: leftAnchor, bottom: nil, right: rightAnchor,
-                                paddingTop: 0, paddingLeft: 0, paddingBottom: 0, paddingRight: 0, width: 0, height: 0.5)
+                                  paddingTop: 0, paddingLeft: 0, paddingBottom: 0, paddingRight: 0, width: 0, height: 0.5)
             
             bottomDividerView.anchor(top: stackView.bottomAnchor, left: leftAnchor, bottom: nil, right: rightAnchor,
-                                paddingTop: 0, paddingLeft: 0, paddingBottom: 0, paddingRight: 0, width: 0, height: 0.5)
+                                     paddingTop: 0, paddingLeft: 0, paddingBottom: 0, paddingRight: 0, width: 0, height: 0.5)
             
             handleChangeToGridView()
         }
@@ -491,5 +499,4 @@
     }
     
     
-    
-  
+   

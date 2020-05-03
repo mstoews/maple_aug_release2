@@ -4306,7 +4306,7 @@
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
     <option name="LAST_RESOLUTION" value="IGNORE" />
   </component>
-  <component name="ExecutionTargetManager" SELECTED_TARGET="iphonesimulator_02DA3346-721D-49BD-B8E4-AFD01904D099" />
+  <component name="ExecutionTargetManager" SELECTED_TARGET="iphonesimulator_5DF34512-F9FB-409F-8E46-BBCDC7A06D15" />
   <component name="FindInProjectRecents">
     <findStrings>
       <find>channelRef</find>
@@ -4328,23 +4328,16 @@
   <component name="PropertiesComponent">
     <property name="ASKED_SHARE_PROJECT_CONFIGURATION_FILES" value="true" />
     <property name="OBJC.PRESERVED_TARGET_SELECTION" value="Maple" />
+    <property name="RunOnceActivity.OpenProjectViewOnStart" value="true" />
+    <property name="RunOnceActivity.ShowReadmeOnStart" value="true" />
     <property name="SHARE_PROJECT_CONFIGURATION_FILES" value="true" />
     <property name="WebServerToolWindowFactoryState" value="false" />
     <property name="last_opened_file_path" value="$PROJECT_DIR$/maple-release.xcworkspace" />
     <property name="nodejs_interpreter_path.stuck_in_default_project" value="undefined stuck path" />
     <property name="settings.editor.selected.configurable" value="preferences.lookFeel" />
   </component>
-  <component name="RunManager" selected="Application.maple">
+  <component name="RunManager">
     <configuration default="true" type="AppleRunConfiguration" factoryName="Application" REDIRECT_INPUT="false" PASS_PARENT_ENVS_2="true" PROJECT_NAME="maple-release" TARGET_NAME="maple-release" CONFIG_NAME="Debug" IS_LOCATION_SIMULATION_ALLOWED="true" APPLICATION_LANGUAGE="IDELaunchSchemeLanguageUseSystemLanguage" APPLICATION_REGION="" RUN_TARGET_PROJECT_NAME="maple-release" RUN_TARGET_NAME="maple-release" MAKE_ACTIVE="TRUE" SHOULD_DEBUG_EXTENSIONS="false">
-      <EXTENSION ID="org.jetbrains.appcode.reveal.RevealRunConfigurationExtension">
-        <REVEAL_SETTINGS autoInject="false" autoInstall="true" askToEnableAutoInstall="true" />
-      </EXTENSION>
-      <embedded_app_extension_list />
-      <method v="2">
-        <option name="com.jetbrains.cidr.execution.CidrBuildBeforeRunTaskProvider$BuildBeforeRunTask" enabled="true" />
-      </method>
-    </configuration>
-    <configuration name="maple-release" type="AppleRunConfiguration" factoryName="Application" REDIRECT_INPUT="false" PASS_PARENT_ENVS_2="true" PROJECT_NAME="maple-release" TARGET_NAME="maple-release" CONFIG_NAME="Debug" SCHEME_NAME="maple-release" IS_LOCATION_SIMULATION_ALLOWED="true" LOCATION_SCENARIO_ID="com.apple.dt.IDEFoundation.CurrentLocationScenarioIdentifier" LOCATION_SCENARIO_TYPE="1" APPLICATION_LANGUAGE="IDELaunchSchemeLanguageUseSystemLanguage" APPLICATION_REGION="" RUN_TARGET_PROJECT_NAME="maple-release" RUN_TARGET_NAME="maple-release" MAKE_ACTIVE="TRUE" SHOULD_DEBUG_EXTENSIONS="false">
       <EXTENSION ID="org.jetbrains.appcode.reveal.RevealRunConfigurationExtension">
         <REVEAL_SETTINGS autoInject="false" autoInstall="true" askToEnableAutoInstall="true" />
       </EXTENSION>
@@ -4362,10 +4355,6 @@
         <option name="com.jetbrains.cidr.execution.CidrBuildBeforeRunTaskProvider$BuildBeforeRunTask" enabled="true" />
       </method>
     </configuration>
-    <list>
-      <item itemvalue="Application.maple-release" />
-      <item itemvalue="Application.maple" />
-    </list>
   </component>
   <component name="StructureViewFactory">
     <option name="AUTOSCROLL_FROM_SOURCE" value="true" />
@@ -4381,6 +4370,8 @@
       <workItem from="1521284350036" duration="815000" />
       <workItem from="1521292044159" duration="11355000" />
       <workItem from="1588238984883" duration="5183000" />
+      <workItem from="1588406865675" duration="427000" />
+      <workItem from="1588407352474" duration="642000" />
     </task>
     <servers />
   </component>
@@ -4388,14 +4379,20 @@
     <option name="version" value="2" />
   </component>
   <component name="WindowStateProjectService">
-    <state x="744" y="352" key="#com.intellij.execution.impl.EditConfigurationsDialog" timestamp="1588243350390">
-      <screen x="0" y="23" width="2560" height="1335" />
+    <state x="488" y="259" key="#com.intellij.execution.impl.EditConfigurationsDialog" timestamp="1588407402795">
+      <screen x="0" y="23" width="1680" height="959" />
     </state>
+    <state x="488" y="259" key="#com.intellij.execution.impl.EditConfigurationsDialog/0.23.1680.959@0.23.1680.959" timestamp="1588407402795" />
     <state x="744" y="352" key="#com.intellij.execution.impl.EditConfigurationsDialog/0.23.2560.1335@0.23.2560.1335" timestamp="1588243350390" />
-    <state x="781" y="329" key="SettingsEditor" timestamp="1588242886298">
-      <screen x="0" y="23" width="2560" height="1335" />
+    <state x="513" y="243" key="SettingsEditor" timestamp="1588407517109">
+      <screen x="0" y="23" width="1680" height="959" />
     </state>
+    <state x="513" y="243" key="SettingsEditor/0.23.1680.959@0.23.1680.959" timestamp="1588407517109" />
     <state x="781" y="329" key="SettingsEditor/0.23.2560.1335@0.23.2560.1335" timestamp="1588242886298" />
+    <state x="505" y="231" key="run.anything.popup" timestamp="1588407195686">
+      <screen x="0" y="23" width="1680" height="959" />
+    </state>
+    <state x="505" y="231" key="run.anything.popup/0.23.1680.959@0.23.1680.959" timestamp="1588407195686" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
