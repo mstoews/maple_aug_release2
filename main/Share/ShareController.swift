@@ -602,11 +602,11 @@ class ShareController:
     }
     
     func searchDidStart(_ searchProgressController: SearchProgressController) {
-        UIApplication.shared.isNetworkActivityIndicatorVisible = true
+        //UIApplication.shared.isNetworkActivityIndicatorVisible = true
     }
     
     func searchDidStop(_ searchProgressController: SearchProgressController) {
-        UIApplication.shared.isNetworkActivityIndicatorVisible = false
+        //UIApplication.shared.isNetworkActivityIndicatorVisible = false
     }
     
     
@@ -758,7 +758,7 @@ class ShareController:
         handleAddPhotos()
     }
     
-    
+    let containerScheme = ApplicationScheme()
     
     // MARK: - Arrange Fields
     
@@ -770,10 +770,16 @@ class ShareController:
         
         //docRef = Firestore.firestore().document("maplefirebase/posts")
         
-        let productsHeight = CGFloat(45.0)
+        
+        
+        let productsHeight = CGFloat(40.0)
         let paddingSize = CGFloat(7.0)
         let paddingTopBottom = CGFloat(7.0)
         let containerView = MDCCard()
+        
+        let containerScheme = MDCContainerScheme()
+        containerView.applyTheme(withScheme: containerScheme)
+        
         
         imageCollectionView.dataSource = self
         imageCollectionView.delegate = self
@@ -847,18 +853,16 @@ class ShareController:
         containerView.addSubview(cancelButton)
         
         
-        if #available(iOS 11.0, *) {
-            containerView.anchor(top: view.safeAreaLayoutGuide.topAnchor , left: view.leftAnchor, bottom: view.safeAreaLayoutGuide.bottomAnchor, right: view.rightAnchor,
+        
+        containerView.anchor(top: view.safeAreaLayoutGuide.topAnchor , left: view.leftAnchor, bottom: view.safeAreaLayoutGuide.bottomAnchor,
+                                 right: view.rightAnchor,
                                  paddingTop: paddingSize,
                                  paddingLeft: paddingSize,
-                                 paddingBottom: paddingSize ,
+                                 paddingBottom: paddingSize + 10 ,
                                  paddingRight: paddingSize,
                                  width: 0 ,
                                  height: 0)
-        } else {
-            containerView.anchor(top: view.topAnchor , left: view.leftAnchor, bottom: view.bottomAnchor , right: view.rightAnchor)
-        }
-        
+       
         self.pictureSize = containerView.frame.size.width
                 
         imageCard.anchor(top: containerView.topAnchor, left: containerView.leftAnchor, bottom: nil , right: containerView.rightAnchor,
@@ -889,10 +893,10 @@ class ShareController:
                                        width: 0 ,
                                        height: productsHeight)
         
-        runningCountLabel.anchor(top: nil, left: nil, bottom: descriptionTextView.bottomAnchor, right: descriptionTextView.rightAnchor , paddingTop: 4 , paddingLeft: 0, paddingBottom: 1 , paddingRight: 8, width: 50 , height: 30)
+        runningCountLabel.anchor(top: descriptionTextView.bottomAnchor, left: nil, bottom: nil, right: descriptionTextView.rightAnchor , paddingTop: 14 , paddingLeft: 0, paddingBottom: 1 , paddingRight: 8, width: 50 , height: 30)
         
         
-        floatingAddButton.anchor(top: nil, left: nil, bottom: containerView.bottomAnchor, right: containerView.rightAnchor, paddingTop: 80, paddingLeft: 0, paddingBottom: 0, paddingRight: 10, width: 0, height: 0)
+        floatingAddButton.anchor(top: nil, left: nil, bottom: containerView.bottomAnchor, right: containerView.rightAnchor, paddingTop: 80, paddingLeft: 0, paddingBottom: 10, paddingRight: 10, width: 0, height: 0)
         floatingMapButton.anchor(top: nil, left: nil, bottom: floatingAddButton.topAnchor, right: containerView.rightAnchor, paddingTop: 0, paddingLeft: 0, paddingBottom: 10, paddingRight: 10, width: 0, height: 0)
         
         progressIndicator.anchor(top: locationCard.bottomAnchor, left: containerView.leftAnchor, bottom: nil , right: containerView.rightAnchor,

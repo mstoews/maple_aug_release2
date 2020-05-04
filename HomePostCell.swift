@@ -239,7 +239,7 @@ class HomePostCell: MDCCardCollectionCell , UICollectionViewDataSource, UICollec
             label.customColor[customType] = .red
             label.font = UIFont.systemFont(ofSize: 12)
             label.textColor = .black
-            label.backgroundColor = UIColor.collectionBackGround()
+            
         }
         
         locationLabel.text = location
@@ -374,6 +374,15 @@ class HomePostCell: MDCCardCollectionCell , UICollectionViewDataSource, UICollec
         button.addTarget(self, action: #selector(handleShare), for: .touchUpInside)
         return button
     }()
+
+    lazy var followButton: UIButton = {
+           let button = UIButton(type: .system)
+           button.setImage(#imageLiteral(resourceName: "user_group_man_woman").withRenderingMode(.alwaysOriginal), for: .normal)
+           button.addTarget(self, action: #selector(didFollowUser), for: .touchUpInside)
+           button.tintColor = .black
+           return button
+       }()
+    
     
     @objc func handleShare()
     {
@@ -381,7 +390,9 @@ class HomePostCell: MDCCardCollectionCell , UICollectionViewDataSource, UICollec
         delegate?.didSharePost(post: post!, imageObject: images[0])
     }
 
-   
+    @objc func didFollowUser () {
+        
+    }
     
     lazy var commentBadge : BadgeSwift = {
         let badge = BadgeSwift()
@@ -510,7 +521,7 @@ class HomePostCell: MDCCardCollectionCell , UICollectionViewDataSource, UICollec
     let locationLabel: UILabel  = {
            let label = UILabel()
            label.numberOfLines = 1
-        label.font = UIFont.preferredFont(forTextStyle: UIFont.TextStyle.caption1)
+           label.font = UIFont.preferredFont(forTextStyle: UIFont.TextStyle.caption1)
            return label
        }()
     
@@ -562,6 +573,7 @@ class HomePostCell: MDCCardCollectionCell , UICollectionViewDataSource, UICollec
         addSubview(bookMarkBadge)
         addSubview(commentBadge)
         addSubview(locationLabel)
+        addSubview(followButton)
         
         let lineHeight = CGFloat(40.0)
         
@@ -574,8 +586,13 @@ class HomePostCell: MDCCardCollectionCell , UICollectionViewDataSource, UICollec
         
         userProfileImageView.layer.cornerRadius = lineHeight / 2
         
-        usernameLabel.anchor(top: userProfileImageView.topAnchor, left: userProfileImageView.rightAnchor, bottom: nil,right: nil, paddingTop: 0, paddingLeft: 8, paddingBottom: 0, paddingRight: 0, width: frame.size.width - 100 , height: lineHeight)
-        shareButton.anchor(top: userProfileImageView.topAnchor, left: nil, bottom: nil,right: rightAnchor, paddingTop: 0, paddingLeft: 8, paddingBottom: 0, paddingRight: 8, width: 35, height: 35)
+        usernameLabel.anchor(top: userProfileImageView.topAnchor, left: userProfileImageView.rightAnchor, bottom: nil,right: nil, paddingTop: 0, paddingLeft: 8, paddingBottom: 0, paddingRight: 0, width: frame.size.width - 150 , height: lineHeight)
+        
+        followButton.anchor(top: userProfileImageView.topAnchor, left: usernameLabel.rightAnchor , bottom: nil, right: nil , paddingTop: 0, paddingLeft: 8, paddingBottom: 0, paddingRight: 8, width: 35, height: 35)
+        
+        shareButton.anchor(top: userProfileImageView.topAnchor, left: followButton.rightAnchor, bottom: nil, right: nil, paddingTop: 0, paddingLeft: 8, paddingBottom: 0, paddingRight: 8, width: 35, height: 35)
+        
+      
         
         imageCollectionView.anchor(top: userProfileImageView.bottomAnchor, left: leftAnchor, bottom: nil, right: rightAnchor, paddingTop: 2, paddingLeft: 0, paddingBottom: 0, paddingRight: 0, width: 0, height: lineHeight * 6 )
         

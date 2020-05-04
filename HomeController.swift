@@ -59,6 +59,8 @@ class HomeController: MDCCollectionViewController, HomePostCellDelegate, HomeHea
 
     static let updateFeedNotificationName = NSNotification.Name(rawValue: "handleRefresh")
     
+    var appBarViewController = MDCAppBarViewController()
+    
     override func viewDidLoad() {
         
         super.viewDidLoad()
@@ -76,6 +78,10 @@ class HomeController: MDCCollectionViewController, HomePostCellDelegate, HomeHea
         collectionView?.delegate = self
         PAGINATION_LIMIT = 0
         handleRefresh()
+        
+        MDCAppBarColorThemer.applyColorScheme(ApplicationScheme.shared.colorScheme, to:self.appBarViewController)
+
+        MDCAppBarTypographyThemer.applyTypographyScheme(ApplicationScheme.shared.typographyScheme, to: self.appBarViewController)
     }
     
     @objc func handleUpdateFeed() {
@@ -374,7 +380,6 @@ class HomeController: MDCCollectionViewController, HomePostCellDelegate, HomeHea
     func setupNavigationItems() {
         navigationItem.titleView = UIImageView(image: #imageLiteral(resourceName: "logo2"))
         navigationItem.titleView?.backgroundColor = ApplicationScheme().colorScheme.backgroundColor
-        
     }
     
     override func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {

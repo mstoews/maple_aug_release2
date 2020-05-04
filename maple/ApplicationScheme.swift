@@ -41,27 +41,29 @@ class ApplicationScheme: NSObject {
   }
 
   public let buttonScheme = MDCContainerScheme()
+    
+    let primaryColor = UIColor(red: 0.94, green: 0.60, blue: 0.60, alpha: 1.0);
+    let primaryLightColor = UIColor(red: 1.00, green: 0.80, blue: 0.80, alpha: 1.0);
+    let primaryDarkColor = UIColor(red: 0.73, green: 0.42, blue: 0.42, alpha: 1.0);
+    let primaryTextColor = UIColor(red: 0.00, green: 0.00, blue: 0.00, alpha: 1.0);
 
   public let colorScheme: MDCColorScheming = {
     let scheme = MDCSemanticColorScheme(defaults: .material201804)
     scheme.primaryColor =
-      UIColor(red: 252.0/255.0, green: 184.0/255.0, blue: 171.0/255.0, alpha: 1.0)
-    scheme.primaryColorVariant =
-      UIColor(red: 68.0/255.0, green: 44.0/255.0, blue: 46.0/255.0, alpha: 1.0)
-    scheme.onPrimaryColor =
-      UIColor(red: 68.0/255.0, green: 44.0/255.0, blue: 46.0/255.0, alpha: 1.0)
-    scheme.secondaryColor =
-      UIColor(red: 254.0/255.0, green: 234.0/255.0, blue: 230.0/255.0, alpha: 1.0)
-    scheme.onSecondaryColor =
-      UIColor(red: 68.0/255.0, green: 44.0/255.0, blue: 46.0/255.0, alpha: 1.0)
-    scheme.surfaceColor =
       UIColor(red: 255.0/255.0, green: 251.0/255.0, blue: 250.0/255.0, alpha: 1.0)
-    scheme.onSurfaceColor =
-      UIColor(red: 68.0/255.0, green: 44.0/255.0, blue: 46.0/255.0, alpha: 1.0)
-    scheme.backgroundColor =
-      UIColor(red: 255.0/255.0, green: 255.0/255.0, blue: 255.0/255.0, alpha: 1.0)
+    scheme.primaryColorVariant =
+      UIColor(red: 1.00, green: 0.80, blue: 0.80, alpha: 1.0);
+    scheme.onPrimaryColor =
+      UIColor(red: 0.94, green: 0.60, blue: 0.60, alpha: 1.0);
+    scheme.secondaryColor =
+      UIColor(red: 255.0/255.0, green: 251.0/255.0, blue: 250.0/255.0, alpha: 1.0)
+    scheme.onSecondaryColor =
+      UIColor(red: 0.94, green: 0.60, blue: 0.60, alpha: 1.0);
+    scheme.surfaceColor = UIColor.themeColor()
+    scheme.onSurfaceColor = UIColor.buttonThemeColor()
+    scheme.backgroundColor = UIColor(red: 255.0/255.0, green: 251.0/255.0, blue: 250.0/255.0, alpha: 1.0)
     scheme.onBackgroundColor =
-      UIColor(red: 68.0/255.0, green: 44.0/255.0, blue: 46.0/255.0, alpha: 1.0)
+    UIColor(red: 255.0/255.0, green: 251.0/255.0, blue: 250.0/255.0, alpha: 1.0)
     scheme.errorColor =
       UIColor(red: 197.0/255.0, green: 3.0/255.0, blue: 43.0/255.0, alpha: 1.0)
     return scheme

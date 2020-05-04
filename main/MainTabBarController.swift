@@ -60,9 +60,18 @@ class MainTabBarController: UITabBarController, MDCBottomNavigationBarDelegate, 
         let tabBarItem2 = UITabBarItem(title: "Search", image: UIImage(named: "ic_search"), tag: 1)
         let tabBarItem3 = UITabBarItem(title: "Post", image: UIImage(named: "plus_unselected"), tag: 2)
         let tabBarItem4 = UITabBarItem(title: "Updates", image: UIImage(named: "ic_notifications"), tag: 3)
-        let tabBarItem5 = UITabBarItem(title: "Profile", image: UIImage(named: "profile_unselected"), tag: 4)
+        let tabBarItem5 = UITabBarItem(title: "Profile", image: UIImage(named: "ic_person"), tag: 4)
         // tabBarItem3.selectedImage = UIImage(named: "Favorite")
         bottomNavBar.items = [ tabBarItem1, tabBarItem2, tabBarItem3, tabBarItem4, tabBarItem5 ]
+        
+        let containerScheme = MDCContainerScheme()
+     
+        // Either Primary Theme
+       // bottomNavBar.applyPrimaryTheme(withScheme: containerScheme)
+
+        // Or Surface Theme
+        containerScheme.colorScheme.primaryColor = UIColor.buttonThemeColor()
+        bottomNavBar.applySurfaceTheme(withScheme: containerScheme)
         
         bottomNavBar.selectedItem = tabBarItem1
         view.addSubview(bottomNavBar)
@@ -93,10 +102,7 @@ class MainTabBarController: UITabBarController, MDCBottomNavigationBarDelegate, 
         setupViewControllers()
         //observeNotifications()
         
-        //UINavigationBar.appearance().prefersLargeTitles = false
-        
-        //MDCBottomNavigationBarColorThemer.applySemanticColorScheme(colorScheme, toBottomNavigation: bottomNavBar)
-    }
+     }
     
     func layoutBottomNavBar() {
           let size = bottomNavBar.sizeThatFits(view.bounds.size)

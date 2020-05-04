@@ -436,13 +436,16 @@
         }
         
         fileprivate func setupUserStatsView() {
-            postsLabel.applyContainedTheme(withScheme: containerScheme.buttonScheme)
-            postsLabel.applyOutlinedTheme(withScheme: containerScheme.buttonScheme)
-            postsLabel.applyTextTheme(withScheme: containerScheme.buttonScheme)
-            followersLabel.applyOutlinedTheme(withScheme: containerScheme.buttonScheme)
-            followersLabel.applyTextTheme(withScheme: containerScheme.buttonScheme)
-            followingLabel.applyOutlinedTheme(withScheme: containerScheme.buttonScheme)
-            followingLabel.applyTextTheme(withScheme: containerScheme.buttonScheme)
+            
+            let containerScheme = MDCContainerScheme()
+            
+            postsLabel.applyContainedTheme(withScheme: containerScheme)
+            postsLabel.applyOutlinedTheme(withScheme: containerScheme)
+            postsLabel.applyTextTheme(withScheme: containerScheme)
+            followersLabel.applyOutlinedTheme(withScheme: containerScheme)
+            followersLabel.applyTextTheme(withScheme: containerScheme)
+            followingLabel.applyOutlinedTheme(withScheme: containerScheme)
+            followingLabel.applyTextTheme(withScheme: containerScheme)
             
             let stackView = UIStackView(arrangedSubviews: [postsLabel, followersLabel, followingLabel])
             
