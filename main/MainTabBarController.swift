@@ -28,8 +28,6 @@ func globalContainerScheme() -> ApplicationScheme {
     return containerScheme
 }
 
-
-
 class MainTabBarController: UITabBarController, MDCBottomNavigationBarDelegate, AuthUIDelegate  {
     
     lazy var uid = Auth.auth().currentUser!.uid
@@ -37,13 +35,12 @@ class MainTabBarController: UITabBarController, MDCBottomNavigationBarDelegate, 
     let imageView = CustomImageView()
     fileprivate let hud = JGProgressHUD(style: .dark)
     
+     let authUI: FUIAuth? = FUIAuth.defaultAuthUI()
+    
     let containerScheme = globalContainerScheme()
     
     let layout = UICollectionViewFlowLayout()
     lazy var userProfileController = UserProfileController (collectionViewLayout: layout).self
-    
-    var posts = [Post]()
-    var observers = [DatabaseQuery]()
     lazy var appDelegate = UIApplication.shared.delegate as! AppDelegate
     
     deinit {
@@ -65,23 +62,13 @@ class MainTabBarController: UITabBarController, MDCBottomNavigationBarDelegate, 
         
         let containerScheme = MDCContainerScheme()
      
-        // Either Primary Theme
-       // bottomNavBar.applyPrimaryTheme(withScheme: containerScheme)
-
-        // Or Surface Theme
         containerScheme.colorScheme.primaryColor = UIColor.buttonThemeColor()
         bottomNavBar.applySurfaceTheme(withScheme: containerScheme)
         
         bottomNavBar.selectedItem = tabBarItem1
         view.addSubview(bottomNavBar)
         bottomNavBar.delegate = self
-        
-        
-//        let homeNavController = templateNavController(unselectedImage: #imageLiteral(resourceName: "ic_home_white"), selectedImage: #imageLiteral(resourceName: "ic_home"), rootViewController: HomeController(collectionViewLayout: UICollectionViewFlowLayout()))
-//
-//
-//        viewControllers = [homeNavController]
-        
+    
         authUI?.delegate = self
         authUI?.tosurl = kFirebaseTermsOfService
         
@@ -99,8 +86,6 @@ class MainTabBarController: UITabBarController, MDCBottomNavigationBarDelegate, 
         let providers: [FUIAuthProvider] = [provider, FUIGoogleAuth()]
         authUI?.providers = providers
         setupViewControllers()
-        //observeNotifications()
-        
      }
     
     func layoutBottomNavBar() {
@@ -124,11 +109,6 @@ class MainTabBarController: UITabBarController, MDCBottomNavigationBarDelegate, 
     fileprivate func templateNavController(unselectedImage: UIImage, selectedImage: UIImage, rootViewController: UIViewController = UIViewController()) -> UINavigationController {
         let viewController = rootViewController
         let navController = UINavigationController(rootViewController: viewController)
-//        navController.tabBarItem.image = unselectedImage
-//        navController.tabBarItem.selectedImage = selectedImage
-//        navController.tabBarItem.selectedImage?.withTintColor( containerScheme.colorScheme.primaryColor)
-//        navController.tabBarController?.tabBar.tintColor =  containerScheme.colorScheme.primaryColor
-//        navController.tabBarController?.tabBar.backgroundColor = containerScheme.colorScheme.primaryColor
         return navController
     }
     
@@ -142,16 +122,7 @@ class MainTabBarController: UITabBarController, MDCBottomNavigationBarDelegate, 
         }
         self.selectedIndex = item.tag
     }
-    
-//    func layoutBottomNavBar() {
-//        let size = bottomNavBar.sizeThatFits(view.bounds.size)
-//        let bottomNavBarFrame = CGRect(x: 0,
-//                                       y: view.bounds.height - size.height,
-//                                       width: size.width,
-//                                       height: size.height)
-//        bottomNavBar.frame = bottomNavBarFrame
-//    }
-    
+        
     fileprivate func observeNotifications()
     {
         stopObserving()
@@ -206,43 +177,13 @@ class MainTabBarController: UITabBarController, MDCBottomNavigationBarDelegate, 
     }
     
     
-    let authUI: FUIAuth? = FUIAuth.defaultAuthUI()
-    
-    
-    //    override func viewDidLoad() {
-    //        super.viewDidLoad()
-    //
-    //        authUI?.delegate = self
-    //        authUI?.tosurl = kFirebaseTermsOfService
-    //
-    //        let actionCodeSettings = ActionCodeSettings()
-    //        actionCodeSettings.url = URL(string: "https://example.appspot.com")
-    //        actionCodeSettings.handleCodeInApp = true
-    //        actionCodeSettings.setAndroidPackageName("com.firebase.example", installIfNotAvailable: false, minimumVersion: "12")
-    //
-    //        let provider = FUIEmailAuth(authAuthUI: FUIAuth.defaultAuthUI()!,
-    //                                    signInMethod: EmailLinkAuthSignInMethod,
-    //                                    forceSameDevice: false,
-    //                                    allowNewEmailAccounts: true,
-    //                                    actionCodeSetting: actionCodeSettings)
-    //
-    //        let providers: [FUIAuthProvider] = [provider, FUIGoogleAuth(), FUIFacebookAuth()]
-    //        authUI?.providers = providers
-    //        setupViewControllers()
-    //        observeNotifications()
-    //
-    //        UINavigationBar.appearance().prefersLargeTitles = false
-    //
-    //        //NotificationCenter.default.addObserver(self, selector: #selector(resetBadges), name: NSNotification.Name(rawValue : "Badge Changed"), object: nil)
-    //    }
+   
     
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
         if !isUserSignedIn() {
             showLoginView()
         }
-        
-        
     }
     
     let followersLabel: UILabel = {
@@ -279,7 +220,7 @@ class MainTabBarController: UITabBarController, MDCBottomNavigationBarDelegate, 
         
         
         let userProfileNavController = UINavigationController(rootViewController: userProfileController)
-     userProfileNavController.tabBarItem.image = #imageLiteral(resourceName: "profile_unselected")
+        userProfileNavController.tabBarItem.image = #imageLiteral(resourceName: "profile_unselected")
         userProfileNavController.tabBarItem.selectedImage = #imageLiteral(resourceName: "profile_selected")
         
         setUserProfile()
@@ -296,16 +237,7 @@ class MainTabBarController: UITabBarController, MDCBottomNavigationBarDelegate, 
         for item in items {
             item.imageInsets = UIEdgeInsets(top: 4, left: 0, bottom: -4, right: 0)
         }
-        
-        
     }
-    
-    fileprivate func setUser(){
-        
-    }
-    
-    
-    
 }
 
 

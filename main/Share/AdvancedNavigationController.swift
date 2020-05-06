@@ -63,7 +63,7 @@ class AdvancedNavigationController: UIViewController, MGLMapViewDelegate, CLLoca
         mapView!.addAnnotation(marker)
         
         // Select the annotation so the callout will appear.
-        mapView!.selectAnnotation(marker, animated: true)
+        mapView!.selectAnnotation(marker, animated: false)
        
         view.addSubview(mapView!)
         setRoute()
@@ -125,7 +125,10 @@ class AdvancedNavigationController: UIViewController, MGLMapViewDelegate, CLLoca
     
 
     @objc func tappedButton() {
+        handleNavigationButton()
+        
         print ("AdvancedNavigationController::tappedbutton")
+        /*
         guard let route = currentRoute else { return }
         // For demonstration purposes, simulate locations if the Simulate Navigation option is on.
         //let navigationService = MapboxNavigationService(route: route, simulating: simulationIsEnabled ? .always : .onPoorGPS)
@@ -134,7 +137,8 @@ class AdvancedNavigationController: UIViewController, MGLMapViewDelegate, CLLoca
         let navigationViewController = NavigationViewController(for: route, options: navigationOptions)
         navigationViewController.delegate = self
         present(navigationViewController, animated: true, completion: nil)
-    }
+        */
+ }
     
     @objc func handleLongPress(_ gesture: UILongPressGestureRecognizer) {
         guard gesture.state == .ended else { return }
@@ -146,6 +150,13 @@ class AdvancedNavigationController: UIViewController, MGLMapViewDelegate, CLLoca
         
         requestRoute(destination: location)
     }
+    
+    
+    @objc func handleNavigationButton() {
+        let location = CLLocationCoordinate2D(latitude: nav!.destinationLocationLatitude! , longitude: nav!.destinationLocationLongitude!)
+        requestRoute(destination: location)
+    }
+    
     
     func requestRoute(destination: CLLocationCoordinate2D) {
         guard let userLocation = mapView?.userLocation!.location else { return }

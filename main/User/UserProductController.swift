@@ -145,7 +145,6 @@ class UserProductController: UserProfileController {
     }
     
     
-    
     override func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         var rc  = collectionView.dequeueReusableCell(withReuseIdentifier: userGridCellId, for: indexPath)
         switch cellType
@@ -189,14 +188,14 @@ class UserProductController: UserProfileController {
     
    
     
-    override func  collectionView(collectionView: UICollectionView, didSelectItemAtIndexPath indexPath: NSIndexPath){
+    override func collectionView(collectionView: UICollectionView, didSelectItemAtIndexPath indexPath: NSIndexPath){
         
         let cell : UICollectionViewCell = collectionView.cellForItem(at: indexPath as IndexPath)!
         cell.backgroundColor = UIColor.magenta
     }
     
     
-    override func  collectionView(collectionView: UICollectionView, cellForItemAtIndexPath  indexPath: NSIndexPath) -> UICollectionViewCell {
+    override func collectionView(collectionView: UICollectionView, cellForItemAtIndexPath  indexPath: NSIndexPath) -> UICollectionViewCell {
         let cell : UICollectionViewCell = collectionView.cellForItem(at: indexPath as IndexPath)!
         cell.backgroundColor = UIColor.magenta
         return cell
@@ -261,15 +260,13 @@ class UserProductController: UserProfileController {
     
     override func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, referenceSizeForHeaderInSection section: Int) -> CGSize
     {
-        return CGSize(width: view.frame.width, height: 200)
+        return CGSize(width: view.frame.width, height: 220)
     }
     
     
     override func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, minimumInteritemSpacingForSectionAt section: Int) -> CGFloat {
         return 5
     }
-    
-    
     
 }
 

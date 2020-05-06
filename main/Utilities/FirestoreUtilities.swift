@@ -174,7 +174,7 @@ extension Firestore {
                 if let err = err {
                     print("Error writing document: \(err)")
                 } else {
-                    print("Did successfully like : \(values) for user \(user.uid)")
+                    print("Did successfully update : \(values) for user \(user.uid)")
                 }
             }
         }
@@ -185,7 +185,7 @@ extension Firestore {
                 if let err = err {
                     print("Error writing document: \(err)")
                 } else {
-                    print("Did successfully like : \(values) for user \(user.uid)")
+                    print("Did successfully update : \(values) for user \(user.uid)")
                 }
             }
         }
@@ -266,7 +266,7 @@ extension Firestore {
             if let err = err {
                 print("Error writing document: \(err)")
             } else {
-                print("Did successfully like : \(uid) for user \(uidFollow)")
+                print("Did successfully follow : \(uid) for user \(uidFollow)")
             }
         }
         let followerData = [
@@ -427,7 +427,7 @@ extension Firestore {
                 if let err = err {
                     print("Error writing document: \(err)")
                 } else {
-                    print("Did successfully like : \(postId) for user \(post.uid)")
+                    print("Did successfully bookmark : \(postId) for user \(post.uid)")
                 }
             }
         }

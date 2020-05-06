@@ -23,7 +23,7 @@
         func didEditPost()
     }
     
-    class UserProfileHeader: MDCCardCollectionCell ,ChangeSignPhotoControllerDelegate
+    class UserProfileHeader: MDCCardCollectionCell, ChangeSignPhotoControllerDelegate
     {
         
         func didChangeSignUpPhoto(user: MapleUser) {

@@ -1,11 +1,12 @@
 {
   "images" : [
     {
-      "filename" : "seo-and-web.png",
+      "filename" : "collaboration.png",
       "idiom" : "universal",
       "scale" : "1x"
     },
     {
+      "filename" : "ic_collaboration.png",
       "idiom" : "universal",
       "scale" : "2x"
     },

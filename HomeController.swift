@@ -20,13 +20,53 @@ import Mapbox
 
 // MARK: - Fix the pagination
 
+
+import Foundation
+import CoreLocation
+
+class LocationManager: NSObject, CLLocationManagerDelegate {
+  var locationManager = CLLocationManager()
+  var latestLocation: CLLocation?
+
+  override init() {
+    super.init()
+    locationManager.delegate = self
+    locationManager.desiredAccuracy = kCLLocationAccuracyBest
+    locationManager.requestWhenInUseAuthorization()
+  }
+
+  func start() {
+    locationManager.startUpdatingLocation()
+  }
+
+  func stop() {
+    locationManager.stopUpdatingLocation()
+  }
+
+  // MARK: - CLLocationManagerDelegate
+
+  func locationManager(_ manager: CLLocationManager, didUpdateLocations locations: [CLLocation]) {
+    // Pick the location with best (= smallest value) horizontal accuracy
+    latestLocation = locations.sorted { $0.horizontalAccuracy < $1.horizontalAccuracy }.first
+  }
+
+  func locationManager(_ manager: CLLocationManager, didChangeAuthorization status: CLAuthorizationStatus) {
+    if status == .authorizedAlways || status == .authorizedWhenInUse {
+      locationManager.startUpdatingLocation()
+    } else {
+      locationManager.stopUpdatingLocation()
+    }
+  }
+}
+
+
 enum  FetchType {
     case ALL
     case USER
 }
 
 
-class HomeController: MDCCollectionViewController, HomePostCellDelegate, HomeHeaderCellDelegate
+class HomeController: MDCCollectionViewController, HomePostCellDelegate, HomeHeaderCellDelegate, CLLocationManagerDelegate
 
 {
 
@@ -86,16 +126,20 @@ class HomeController: MDCCollectionViewController, HomePostCellDelegate, HomeHea
     
     @objc func handleRefresh() {
         refreshControl.beginRefreshing()
-        PAGINATION_LIMIT = PAGINATION_LIMIT + 5
+        PAGINATION_LIMIT = PAGINATION_LIMIT + 100
         observePostFeed()
         refreshControl.endRefreshing()
     }
+
     
     func didTapMapButton(post: FSPost) {
         print("Did tap map button ... ")
         //let viewController = MapPostViewController()
         
         let viewController = AdvancedNavigationController()
+        
+        let locationManager = LocationManager()
+      
         
         // Get the current location here and add it below.
         // If there are multiple locations the user will be directed to the latest location
@@ -115,6 +159,26 @@ class HomeController: MDCCollectionViewController, HomePostCellDelegate, HomeHea
                     let nav = Navigation(dictionary: values)
                     viewController.nav = nav
                     self.navigationController?.pushViewController(viewController, animated: true)
+                }
+                else
+                {
+                    locationManager.start()
+                    let location = locationManager.latestLocation
+                    locationManager.stop()
+                    
+                    let values : [String: Any] = [
+                        "currentLat" : location?.coordinate.latitude as Any,
+                        "currentLng" : location?.coordinate.longitude as Any,
+                        "destinationLat" : location?.coordinate.latitude as Any,
+                        "destinationLng" : location?.coordinate.longitude as Any,
+                        "Title": post.product,
+                        "SubTitle" : post.description]
+                    
+                    let nav = Navigation(dictionary: values)
+                    viewController.nav = nav
+                    self.navigationController?.pushViewController(viewController, animated: true)
+                    
+                    
                 }
             }
             
