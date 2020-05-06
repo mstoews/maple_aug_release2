@@ -1,6 +1,5 @@
 //
 //  UserProfileController.swift
-//  InstagramFirebase
 //
 //  Created by Murray Toews on 6/3/17.
 //  Copyright © 2017 maple.com
@@ -10,7 +9,6 @@ import Firebase
 import FirebaseUI
 import Photos
 import VideoToolbox
-import FBSDKLoginKit
 import GoogleMaps
 import GooglePlaces
 import Lightbox
@@ -736,7 +734,7 @@ class UserProfileController: MDCCollectionViewController,
     
     override func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, referenceSizeForHeaderInSection section: Int) -> CGSize
     {
-        return CGSize(width: view.frame.width, height: 200)
+        return CGSize(width: view.frame.width, height: 220)
     }
     
     

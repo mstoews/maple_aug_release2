@@ -22,6 +22,7 @@ protocol HomePostCellDelegate {
     func didSharePost(post: FSPost, imageObject: ImageObject)
     func didTapUserNameLabel(uid: String)
     func didTapImageCell(for cell:  UserImageCell, post: FSPost)
+    func didTapFollowUser(for cell: HomePostCell, post: FSPost)
 }
 
 class PostImage: BaseCell
@@ -369,18 +370,26 @@ class HomePostCell: MDCCardCollectionCell , UICollectionViewDataSource, UICollec
     }
     
     lazy var shareButton: UIButton = {
-        let button = UIButton(type: .system)
-        button.setImage(#imageLiteral(resourceName: "ic_share").withRenderingMode(.alwaysOriginal), for: .normal)
+        let button = UIButton()
+        let origImage = UIImage(named: "ic_collaboration");
+        //let tintedImage = origImage?.withRenderingMode(UIImage.RenderingMode.alwaysTemplate)
+        button.setImage(origImage, for: .normal)
+        button.adjustsImageWhenDisabled = true
         button.addTarget(self, action: #selector(handleShare), for: .touchUpInside)
         return button
     }()
 
     lazy var followButton: UIButton = {
-           let button = UIButton(type: .system)
-           button.setImage(#imageLiteral(resourceName: "user_group_man_woman").withRenderingMode(.alwaysOriginal), for: .normal)
-           button.addTarget(self, action: #selector(didFollowUser), for: .touchUpInside)
-           button.tintColor = .black
-           return button
+        let button = UIButton()
+        let origImage = UIImage(named: "ic_followers");
+        //let tintedImage = origImage?.withRenderingMode(UIImage.RenderingMode.alwaysTemplate)
+        button.setImage(origImage, for: .normal)
+        button.adjustsImageWhenDisabled = true
+        
+        // button.contentRect(forBounds: CGRect)
+        button.addTarget(self, action: #selector(didFollowUser), for: .touchUpInside)
+        //button.tintColor = UIColor.buttonThemeColor()
+        return button
        }()
     
     
@@ -391,6 +400,9 @@ class HomePostCell: MDCCardCollectionCell , UICollectionViewDataSource, UICollec
     }
 
     @objc func didFollowUser () {
+        
+        print("didFollowUser")
+        delegate?.didTapFollowUser(for: self, post: post!)
         
     }
     
@@ -588,7 +600,7 @@ class HomePostCell: MDCCardCollectionCell , UICollectionViewDataSource, UICollec
         
         usernameLabel.anchor(top: userProfileImageView.topAnchor, left: userProfileImageView.rightAnchor, bottom: nil,right: nil, paddingTop: 0, paddingLeft: 8, paddingBottom: 0, paddingRight: 0, width: frame.size.width - 150 , height: lineHeight)
         
-        followButton.anchor(top: userProfileImageView.topAnchor, left: usernameLabel.rightAnchor , bottom: nil, right: nil , paddingTop: 0, paddingLeft: 8, paddingBottom: 0, paddingRight: 8, width: 35, height: 35)
+        followButton.anchor(top: userProfileImageView.topAnchor, left: usernameLabel.rightAnchor , bottom: nil, right: nil , paddingTop: 0, paddingLeft: 8, paddingBottom: 0, paddingRight: 8, width: 30, height: 30)
         
         shareButton.anchor(top: userProfileImageView.topAnchor, left: followButton.rightAnchor, bottom: nil, right: nil, paddingTop: 0, paddingLeft: 8, paddingBottom: 0, paddingRight: 8, width: 35, height: 35)
         

@@ -14,10 +14,6 @@
 	<string>6.0</string>
 	<key>CFBundleName</key>
 	<string>$(PRODUCT_NAME)</string>
-	<key>CFBundlePackageType</key>
-	<string>APPL</string>
-	<key>CFBundleShortVersionString</key>
-	<string>1</string>
 	<key>CFBundleURLTypes</key>
 	<array>
 		<dict>
@@ -41,6 +37,10 @@
 			</array>
 		</dict>
 	</array>
+	<key>CFBundlePackageType</key>
+	<string>APPL</string>
+	<key>CFBundleShortVersionString</key>
+	<string>1</string>
 	<key>CFBundleVersion</key>
 	<string>$(CURRENT_PROJECT_VERSION)</string>
 	<key>Fabric</key>
@@ -74,11 +74,11 @@
 	</array>
 	<key>LSRequiresIPhoneOS</key>
 	<true/>
-    <key>UIAppFonts</key>
-    <array>
-        <string>Rubik-Regular.ttf</string>
-        <string>Rubik-Medium.ttf</string>
-    </array>
+	<key>UIAppFonts</key>
+	<array>
+		<string>Rubik-Regular.ttf</string>
+		<string>Rubik-Medium.ttf</string>
+	</array>
 	<key>MGLMapboxAccessToken</key>
 	<string>pk.eyJ1IjoibXN0b2V3cyIsImEiOiJjazU5YWJtOWkwM3dkM2x2MGU2Znp4NzN0In0.FEzzXLHdUWfmqel9gwm2-g</string>
 	<key>NSCameraUsageDescription</key>

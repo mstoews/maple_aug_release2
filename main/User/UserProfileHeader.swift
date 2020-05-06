@@ -41,18 +41,18 @@
         
         fileprivate func getNumberOfPosts() {
             // Posts
-            if let postCount = userView?.postCount {
-                let posts = "POSTS"
-                self.postsLabel.setTitle(posts, for: .normal)
+            if let Count = userView?.postCount {
+                let countStr = "\(Count)"
+                self.postCnt.text = countStr
             }}
         
         fileprivate func getNumberOfFollowers()
         {
             // Followers
-            if let followersCount = userView?.followersCount {
-                let followers = "FOLLOWER"
-                self.followersLabel.setTitle(followers, for: .normal)
-                //                self.followersLabel.attributedText = NSMutableAttributedString(string: "Followers \(followersCount)" , attributes: [NSAttributedString.Key.font: UIFont.boldSystemFont(ofSize: 14)])
+            if let Count = userView?.followersCount {
+                let countStr = "\(Count)"
+                self.followersCnt.text = countStr
+                
             }
         }
         
@@ -60,10 +60,9 @@
         fileprivate func getNumberOfFollowing()
         {
             // Following
-            if let followingCount = userView?.followedCount {
-                let following = "FOLLOWING"
-                self.followingLabel.setTitle(following, for: .normal)
-                //self.followingLabel.attributedText = NSMutableAttributedString(string: "Followed \(followingCount)" , attributes: [NSAttributedString.Key.font: UIFont.boldSystemFont(ofSize: 14)])
+            if let Count = userView?.followedCount {
+                let countStr = "\(Count)"
+                self.followingCnt.text = countStr
             }
         }
         
@@ -82,6 +81,8 @@
                 }
             }
         }
+        
+        
         
         
         
@@ -327,12 +328,12 @@
             return label
         }()
         
-        let postsLabel: MDCButton = {
+        let postButton: MDCButton = {
             let myButton = MDCButton()
             myButton.translatesAutoresizingMaskIntoConstraints = false
             myButton.setTitle("POSTS", for: .normal)
             myButton.isUppercaseTitle = true
-            myButton.frame = CGRect(x: 10, y: 10, width: 150, height: 40)
+            myButton.frame = CGRect(x: 0, y: 0, width: 150, height: 30)
             //myButton.setBackgroundColor(UIColor.themeColor())
             //myButton.setTitleColor(UIColor.buttonThemeColor(), for: UIControl.State.normal)
             //myButton.setBorderColor(UIColor.buttonThemeColor(), for: UIControl.State.normal)
@@ -340,28 +341,31 @@
             return myButton
         }()
         
-        let followingLabel: MDCButton = {
+        let followingButton: MDCButton = {
             let myButton = MDCButton()
-            myButton.setTitle("FOLLOW", for: .normal)
+            myButton.setTitle("FOLLOWING", for: .normal)
             myButton.isUppercaseTitle = true
-            myButton.frame = CGRect(x: 10, y: 10, width: 150, height: 40)
-//            myButton.setBackgroundColor(UIColor.themeColor())
-//            myButton.setTitleColor(UIColor.buttonThemeColor(), for: UIControl.State.normal)
-//            myButton.setBorderColor(UIColor.themeColor(), for: UIControl.State.normal)
-//            myButton.setBorderWidth(1.0, for: UIControl.State.normal)
+            myButton.frame = CGRect(x: 0, y: 0, width: 150, height: 30)
+            //            myButton.setBackgroundColor(UIColor.themeColor())
+            //            myButton.setTitleColor(UIColor.buttonThemeColor(), for: UIControl.State.normal)
+            //            myButton.setBorderColor(UIColor.themeColor(), for: UIControl.State.normal)
+            //            myButton.setBorderWidth(1.0, for: UIControl.State.normal)
+            
+            myButton.layer as! MDCShadowLayer
+            myButton.elevation(for: .selected)
             return myButton
         }()
         
-        let followersLabel: MDCButton = {
+        let followersButton: MDCButton = {
             let myButton = MDCButton()
             myButton.setTitle("FOLLOWER", for: .normal)
             myButton.isUppercaseTitle = false
-            myButton.frame = CGRect(x: 10, y: 10, width: 150, height: 40)
-//            myButton.setBackgroundColor(UIColor.themeColor())
-//            myButton.setTitleColor(UIColor.buttonThemeColor(), for: UIControl.State.normal)
-//            myButton.setBorderColor(UIColor.buttonThemeColor(), for: UIControl.State.normal)
-//            myButton.setBorderWidth(1.0, for: UIControl.State.normal)
-           return myButton
+            myButton.frame = CGRect(x: 0, y: 0, width: 150, height: 30)
+            //            myButton.setBackgroundColor(UIColor.themeColor())
+            //            myButton.setTitleColor(UIColor.buttonThemeColor(), for: UIControl.State.normal)
+            //            myButton.setBorderColor(UIColor.buttonThemeColor(), for: UIControl.State.normal)
+            //            myButton.setBorderWidth(1.0, for: UIControl.State.normal)
+            return myButton
         }()
         
         
@@ -396,6 +400,9 @@
             addSubview(editProfileFollowButton)
             addSubview(editProfileFollowedButton)
             addSubview(editProfileSetupButton)
+            addSubview(postCnt)
+            addSubview(followersCnt)
+            addSubview(followingCnt)
             
             profileImageView.anchor(top: topAnchor , left: leftAnchor, bottom: nil, right: nil, paddingTop: 10, paddingLeft: 10 , paddingBottom: 0, paddingRight: 0, width: Width, height: Width)
             profileImageView.layer.cornerRadius = Width / 2
@@ -412,8 +419,8 @@
             backgroundColor = containerScheme.colorScheme.backgroundColor
             
             //setupFavoriteButtons()
-            setupBottomToolbar()
             setupUserStatsView()
+            setupBottomToolbar()
         }
         
         fileprivate func setupFavoriteButtons()
@@ -435,35 +442,84 @@
             
         }
         
+        
+        let postCnt : UILabel = {
+            let tx = UILabel()
+            tx.backgroundColor = UIColor.clear
+            tx.textAlignment = .center
+            tx.font = UIFont.boldSystemFont(ofSize: 14)
+            return tx
+        }()
+        
+        let followingCnt : UILabel = {
+            let tx = UILabel()
+            tx.backgroundColor = UIColor.clear
+            tx.textAlignment = .center
+            tx.font = UIFont.boldSystemFont(ofSize: 14)
+            return tx
+        }()
+        
+        let followersCnt : UILabel = {
+            let tx = UILabel()
+            tx.backgroundColor = UIColor.clear
+            tx.textAlignment = .center
+            tx.font = UIFont.boldSystemFont(ofSize: 14)
+            return tx
+        }()
+        
+        
         fileprivate func setupUserStatsView() {
             
             let containerScheme = MDCContainerScheme()
             
-            postsLabel.applyContainedTheme(withScheme: containerScheme)
-            postsLabel.applyOutlinedTheme(withScheme: containerScheme)
-            postsLabel.applyTextTheme(withScheme: containerScheme)
-            followersLabel.applyOutlinedTheme(withScheme: containerScheme)
-            followersLabel.applyTextTheme(withScheme: containerScheme)
-            followingLabel.applyOutlinedTheme(withScheme: containerScheme)
-            followingLabel.applyTextTheme(withScheme: containerScheme)
+            postButton.applyContainedTheme(withScheme: containerScheme)
+            postButton.applyOutlinedTheme(withScheme: containerScheme)
+            postButton.applyTextTheme(withScheme: containerScheme)
+            postButton.backgroundColor = UIColor.veryLightGray()
             
-            let stackView = UIStackView(arrangedSubviews: [postsLabel, followersLabel, followingLabel])
+            followersButton.applyOutlinedTheme(withScheme: containerScheme)
+            followersButton.applyTextTheme(withScheme: containerScheme)
+            followersButton.backgroundColor = UIColor.veryLightGray()
+            
+            followingButton.applyOutlinedTheme(withScheme: containerScheme)
+            followingButton.applyTextTheme(withScheme: containerScheme)
+            followingButton.backgroundColor = UIColor.veryLightGray()
+            
+            
+            let postStack = UIStackView(arrangedSubviews: [postButton,postCnt ])
+            postStack.axis = .vertical;
+            postStack.spacing = 5
+            
+            
+            let followerStack = UIStackView(arrangedSubviews: [followersButton,followersCnt])
+            followerStack.axis = .vertical;
+            followerStack.spacing = 5
+            
+            let followingStack = UIStackView(arrangedSubviews: [ followingButton,followingCnt])
+            followingStack.axis = .vertical;
+            followingStack.spacing = 5
+            
+            let stackView = UIStackView(arrangedSubviews: [postStack, followerStack, followingStack])
             
             stackView.axis = .horizontal;
             stackView.distribution = .fillEqually;
             stackView.alignment = .center;
-            stackView.spacing = 15;
+            stackView.spacing = 5;
             
             addSubview(stackView)
             stackView.anchor(top: profileImageView.bottomAnchor, left: leftAnchor, bottom: nil, right: rightAnchor, paddingTop: 5, paddingLeft: 6, paddingBottom: 0, paddingRight: 5 , width: 0, height: 0)
             
             let tapFollowers = UITapGestureRecognizer(target: self, action: #selector(followersTapped(tapGestureRecognizer: )))
-            followersLabel.isUserInteractionEnabled = true
-            followersLabel.addGestureRecognizer(tapFollowers)
+            followersButton.isUserInteractionEnabled = true
+            followersButton.addGestureRecognizer(tapFollowers)
             
             let tapFollowing = UITapGestureRecognizer(target: self, action: #selector(followingTapped(tapGestureRecognizer: )))
-            followingLabel.isUserInteractionEnabled = true
-            followingLabel.addGestureRecognizer(tapFollowing)
+            followingButton.isUserInteractionEnabled = true
+            followingButton.addGestureRecognizer(tapFollowing)
+            
+            let tapPosts = UITapGestureRecognizer(target: self, action: #selector(followersTapped(tapGestureRecognizer: )))
+            postButton.isUserInteractionEnabled = true
+            postButton.addGestureRecognizer(tapPosts)
             
         }
         
@@ -502,4 +558,21 @@
     }
     
     
-   
+    class UIShadowButton: MDCButton {
+
+      override class var layerClass: AnyClass {
+        return MDCShadowLayer.self
+      }
+
+      var shadowLayer: MDCShadowLayer {
+        return self.layer as! MDCShadowLayer
+      }
+
+      func setDefaultElevation() {
+        self.shadowLayer.elevation = .cardResting
+      }
+
+    }
+    
+    
+    

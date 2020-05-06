@@ -178,16 +178,6 @@ PODS:
     - Fabric (~> 1.10.2)
   - CropViewController (2.5.2)
   - Fabric (1.10.2)
-  - FBSDKCoreKit (5.15.1):
-    - FBSDKCoreKit/Basics (= 5.15.1)
-    - FBSDKCoreKit/Core (= 5.15.1)
-  - FBSDKCoreKit/Basics (5.15.1)
-  - FBSDKCoreKit/Core (5.15.1):
-    - FBSDKCoreKit/Basics
-  - FBSDKLoginKit (5.15.1):
-    - FBSDKLoginKit/Login (= 5.15.1)
-  - FBSDKLoginKit/Login (5.15.1):
-    - FBSDKCoreKit (~> 5.0)
   - Firebase/Auth (6.23.0):
     - Firebase/CoreOnly
     - FirebaseAuth (~> 6.5.2)
@@ -281,9 +271,6 @@ PODS:
     - Firebase/Auth (~> 6.0)
     - GoogleUtilities/UserDefaults
   - FirebaseUI/Email (8.4.2):
-    - FirebaseUI/Auth
-  - FirebaseUI/Facebook (8.4.2):
-    - FBSDKLoginKit (~> 5.0)
     - FirebaseUI/Auth
   - FirebaseUI/Google (8.4.2):
     - FirebaseUI/Auth
@@ -1019,7 +1006,6 @@ DEPENDENCIES:
   - Firebase/Storage
   - FirebaseUI/Auth
   - FirebaseUI/Email
-  - FirebaseUI/Facebook
   - FirebaseUI/Google
   - FirebaseUI/OAuth
   - Gallery
@@ -1051,8 +1037,6 @@ SPEC REPOS:
     - Crashlytics
     - CropViewController
     - Fabric
-    - FBSDKCoreKit
-    - FBSDKLoginKit
     - Firebase
     - FirebaseAnalytics
     - FirebaseAnalyticsInterop
@@ -1122,8 +1106,6 @@ SPEC CHECKSUMS:
   Crashlytics: 540b7e5f5da5a042647227a5e3ac51d85eed06df
   CropViewController: 1aac40093c5739e60d992b04724a55d12a689a4c
   Fabric: 706c8b8098fff96c33c0db69cbf81f9c551d0d74
-  FBSDKCoreKit: 1d5acf7c9d7a2f92bb1a242dc60cae5b7adb91df
-  FBSDKLoginKit: f1ea8026a58b52d30c9f2e6a58ca7d813619fb83
   Firebase: 585ae467b3edda6a5444e788fda6888f024d8d6f
   FirebaseAnalytics: 558f7a03d19de451093032c806f39d5f9dff096e
   FirebaseAnalyticsInterop: 3f86269c38ae41f47afeb43ebf32a001f58fcdae
@@ -1181,6 +1163,6 @@ SPEC CHECKSUMS:
   SVProgressHUD: 1428aafac632c1f86f62aa4243ec12008d7a51d6
   Turf: c6bdf62d6a70c647874f295dd1cf4eefc0c3e9e6
 
-PODFILE CHECKSUM: 71dd41142a0c1c340a87b8f419710077e5f1eca4
+PODFILE CHECKSUM: 213b5df4465e8e7d4af820ba99870a699730c198
 
 COCOAPODS: 1.9.1

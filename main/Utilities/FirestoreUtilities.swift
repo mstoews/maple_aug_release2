@@ -137,9 +137,7 @@ extension Firestore {
         }
         return false
     }
-    
-    
-    
+   
     
     /*******  updateUserProfile  *******/
     static func updateUserProfile(user: MapleUser) {

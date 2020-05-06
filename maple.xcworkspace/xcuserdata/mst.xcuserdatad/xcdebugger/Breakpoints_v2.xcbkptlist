@@ -1,54 +1,54 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <Bucket
-   uuid = "290EE66C-53E2-42A4-AA11-2DB199A8C60F"
+   uuid = "18E6102A-1CEF-44C7-9C71-2C54603DB7F4"
    type = "0"
    version = "2.0">
    <Breakpoints>
       <BreakpointProxy
          BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
          <BreakpointContent
-            uuid = "B117B8A2-BE70-429D-A88F-50AEF678EA3A"
-            shouldBeEnabled = "Yes"
+            uuid = "7E69F6EF-F584-4291-93E9-DDB1887A4AFC"
+            shouldBeEnabled = "No"
             ignoreCount = "0"
             continueAfterRunningActions = "No"
-            filePath = "maple/MapBox/MapboxViewController.swift"
+            filePath = "main/User/UserProfileHeader.swift"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "49"
-            endingLineNumber = "49"
-            landmarkName = "mapView(_:annotationCanShowCallout:)"
+            startingLineNumber = "46"
+            endingLineNumber = "46"
+            landmarkName = "getNumberOfPosts()"
             landmarkType = "7">
          </BreakpointContent>
       </BreakpointProxy>
       <BreakpointProxy
          BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
          <BreakpointContent
-            uuid = "C8F43BFE-4306-4CF4-8289-4B4EA16F2744"
-            shouldBeEnabled = "Yes"
+            uuid = "49B42EF4-ED42-406C-B0FC-D67E20B671C8"
+            shouldBeEnabled = "No"
             ignoreCount = "0"
             continueAfterRunningActions = "No"
-            filePath = "maple/MapBox/MapboxViewController.swift"
+            filePath = "main/User/UserProfileHeader.swift"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "20"
-            endingLineNumber = "20"
-            landmarkName = "viewDidLoad()"
+            startingLineNumber = "44"
+            endingLineNumber = "44"
+            landmarkName = "getNumberOfPosts()"
             landmarkType = "7">
          </BreakpointContent>
       </BreakpointProxy>
       <BreakpointProxy
          BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
          <BreakpointContent
-            uuid = "FEF06EAE-743A-4A8C-B709-43C088F9B3DA"
-            shouldBeEnabled = "Yes"
+            uuid = "660435D3-A664-4150-8220-80FA041D67BE"
+            shouldBeEnabled = "No"
             ignoreCount = "0"
             continueAfterRunningActions = "No"
-            filePath = "main/User/MapViewCell.swift"
+            filePath = "main/User/UserProfileHeader.swift"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "85"
-            endingLineNumber = "85"
-            landmarkName = "mapView(_:annotationCanShowCallout:)"
+            startingLineNumber = "490"
+            endingLineNumber = "490"
+            landmarkName = "setupUserStatsView()"
             landmarkType = "7">
          </BreakpointContent>
       </BreakpointProxy>

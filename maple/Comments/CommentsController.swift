@@ -1,5 +1,6 @@
 import UIKit
 import Firebase
+import FirebaseUI
 import FirebaseFirestore
 import MaterialComponents
 

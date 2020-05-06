@@ -8,7 +8,6 @@ import UIKit
 import Firebase
 import FirebaseFirestore
 import FirebaseUI
-import FBSDKLoginKit
 import GoogleMaps
 import GooglePlaces
 import MaterialComponents
@@ -97,7 +96,7 @@ class MainTabBarController: UITabBarController, MDCBottomNavigationBarDelegate, 
                                     allowNewEmailAccounts: true,
                                     actionCodeSetting: actionCodeSettings)
         
-        let providers: [FUIAuthProvider] = [provider, FUIGoogleAuth(), FUIFacebookAuth()]
+        let providers: [FUIAuthProvider] = [provider, FUIGoogleAuth()]
         authUI?.providers = providers
         setupViewControllers()
         //observeNotifications()

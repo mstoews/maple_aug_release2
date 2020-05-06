@@ -29,7 +29,7 @@ enum  FetchType {
 class HomeController: MDCCollectionViewController, HomePostCellDelegate, HomeHeaderCellDelegate
 
 {
-  
+
     var FETCH_TYPE = FetchType.USER
     let db = Firestore.firestore()
     let cellId = "cellId"
@@ -40,10 +40,6 @@ class HomeController: MDCCollectionViewController, HomePostCellDelegate, HomeHea
     var spinner: UIView?
     let bottomBarView = MDCBottomAppBarView()
     
-  
-    
-    
-    
     lazy var appDelegate = UIApplication.shared.delegate as! AppDelegate
     
     let red = MDCPalette.red.tint600
@@ -53,7 +49,7 @@ class HomeController: MDCCollectionViewController, HomePostCellDelegate, HomeHea
     var isFirstOpen = true
     var locations = [LocationObject]()
     let backgroundView = UIImageView()
-    
+    private var listener: ListenerRegistration?
     private var posts: [FSPost] = []
     private var documents: [DocumentSnapshot] = []
 
@@ -188,7 +184,7 @@ class HomeController: MDCCollectionViewController, HomePostCellDelegate, HomeHea
         listener?.remove()
     }
     
-    private var listener: ListenerRegistration?
+ 
     
     
     func updateAlgoliaStore(post: FSPost)
@@ -319,6 +315,22 @@ class HomeController: MDCCollectionViewController, HomePostCellDelegate, HomeHea
             userProfileController.user = user
             self.navigationController?.pushViewController(userProfileController, animated: true)
         })
+    }
+    
+    func didTapFollowUser(for cell: HomePostCell, post: FSPost) {
+        let message = MDCSnackbarMessage()
+        MDCSnackbarManager.snackbarMessageViewBackgroundColor  = UIColor.buttonThemeColor()
+        if let uid = Auth.auth().currentUser?.uid {
+            if uid != post.uid {
+                Firestore.didFollowUser(uid: uid, uidFollow: post.uid, didFollow: true)
+                message.text = "You are following \(post.userName)"
+                MDCSnackbarManager.show(message)
+            }
+            else {
+                message.text = "Probably should not follow yourself ..."
+                MDCSnackbarManager.show(message)
+            }
+        }
     }
     
     func didShowTopUsers() {
