@@ -35,13 +35,15 @@ class MainTabBarController: UITabBarController, MDCBottomNavigationBarDelegate, 
     let imageView = CustomImageView()
     fileprivate let hud = JGProgressHUD(style: .dark)
     
-     let authUI: FUIAuth? = FUIAuth.defaultAuthUI()
+    let authUI: FUIAuth? = FUIAuth.defaultAuthUI()
     
     let containerScheme = globalContainerScheme()
     
     let layout = UICollectionViewFlowLayout()
     lazy var userProfileController = UserProfileController (collectionViewLayout: layout).self
     lazy var appDelegate = UIApplication.shared.delegate as! AppDelegate
+    
+   
     
     deinit {
         listener?.remove()
@@ -50,25 +52,32 @@ class MainTabBarController: UITabBarController, MDCBottomNavigationBarDelegate, 
     private var listener: ListenerRegistration?
     
     let bottomNavBar = MDCBottomNavigationBar()
+    var topAppBar = MDCAppBarViewController()
+    
+    
     override func viewDidLoad() {
         view.backgroundColor = containerScheme.colorScheme.backgroundColor
-        let tabBarItem1 = UITabBarItem(title: "Home", image: UIImage(named: "ic_home"), tag: 0)
-        let tabBarItem2 = UITabBarItem(title: "Search", image: UIImage(named: "ic_search"), tag: 1)
-        let tabBarItem3 = UITabBarItem(title: "Post", image: UIImage(named: "plus_unselected"), tag: 2)
-        let tabBarItem4 = UITabBarItem(title: "Updates", image: UIImage(named: "ic_notifications"), tag: 3)
-        let tabBarItem5 = UITabBarItem(title: "Profile", image: UIImage(named: "ic_person"), tag: 4)
+        let HomeTab = UITabBarItem(title: "Home", image: UIImage(named: "ic_home"), tag: 0)
+        let SearchTab = UITabBarItem(title: "Search", image: UIImage(named: "ic_search"), tag: 1)
+        let ShareTab = UITabBarItem(title: "Post", image: UIImage(named: "plus_unselected"), tag: 2)
+        let NotifyTab = UITabBarItem(title: "Updates", image: UIImage(named: "ic_notifications"), tag: 3)
+        let UserTab = UITabBarItem(title: "Profile", image: UIImage(named: "ic_person"), tag: 4)
         // tabBarItem3.selectedImage = UIImage(named: "Favorite")
-        bottomNavBar.items = [ tabBarItem1, tabBarItem2, tabBarItem3, tabBarItem4, tabBarItem5 ]
+        bottomNavBar.items = [ HomeTab, SearchTab, ShareTab, NotifyTab, UserTab ]
+        
+        self.addChild(self.topAppBar)
+        self.view.addSubview(self.topAppBar.view)
+        self.topAppBar.didMove(toParent: self)
         
         let containerScheme = MDCContainerScheme()
-     
+        
         containerScheme.colorScheme.primaryColor = UIColor.buttonThemeColor()
         bottomNavBar.applySurfaceTheme(withScheme: containerScheme)
         
-        bottomNavBar.selectedItem = tabBarItem1
+        bottomNavBar.selectedItem = HomeTab
         view.addSubview(bottomNavBar)
         bottomNavBar.delegate = self
-    
+        
         authUI?.delegate = self
         authUI?.tosurl = kFirebaseTermsOfService
         
@@ -86,25 +95,39 @@ class MainTabBarController: UITabBarController, MDCBottomNavigationBarDelegate, 
         let providers: [FUIAuthProvider] = [provider, FUIGoogleAuth()]
         authUI?.providers = providers
         setupViewControllers()
-     }
+    }
     
     func layoutBottomNavBar() {
-          let size = bottomNavBar.sizeThatFits(view.bounds.size)
-           var bottomNavBarFrame = CGRect(x: 0,
-                                          y: view.bounds.height - size.height,
-                                          width: size.width,
-                                          height: size.height)
+        let size = bottomNavBar.sizeThatFits(view.bounds.size)
+        var bottomNavBarFrame = CGRect(x: 0,
+                                       y: view.bounds.height - size.height,
+                                       width: size.width,
+                                       height: size.height)
         if #available(iOS 11.0, *) {
-          bottomNavBarFrame.size.height += view.safeAreaInsets.bottom
-          bottomNavBarFrame.origin.y -= view.safeAreaInsets.bottom
+            bottomNavBarFrame.size.height += view.safeAreaInsets.bottom
+            bottomNavBarFrame.origin.y -= view.safeAreaInsets.bottom
         }
         bottomNavBar.frame = bottomNavBarFrame
-           bottomNavBar.frame = bottomNavBarFrame
+    }
+    
+    func layoutAppNavBar() {
+        let size = topAppBar.preferredContentSize
+           var topBarFrame = CGRect(x: 0,
+                                    y: view.bounds.height - size.height,
+                                    width: size.width,
+                                    height: size.height)
+           if #available(iOS 11.0, *) {
+               topBarFrame.size.height += view.safeAreaInsets.bottom
+               topBarFrame.origin.y -= view.safeAreaInsets.bottom
+           }
+        //topAppBar.size(topBarFrame)
        }
-       override func viewWillLayoutSubviews() {
-           super.viewWillLayoutSubviews()
-           layoutBottomNavBar()
-       }
+    override func viewWillLayoutSubviews() {
+        super.viewWillLayoutSubviews()
+       
+        layoutAppNavBar()
+         layoutBottomNavBar()
+    }
     
     fileprivate func templateNavController(unselectedImage: UIImage, selectedImage: UIImage, rootViewController: UIViewController = UIViewController()) -> UINavigationController {
         let viewController = rootViewController
@@ -122,7 +145,7 @@ class MainTabBarController: UITabBarController, MDCBottomNavigationBarDelegate, 
         }
         self.selectedIndex = item.tag
     }
-        
+    
     fileprivate func observeNotifications()
     {
         stopObserving()
@@ -177,7 +200,7 @@ class MainTabBarController: UITabBarController, MDCBottomNavigationBarDelegate, 
     }
     
     
-   
+    
     
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
