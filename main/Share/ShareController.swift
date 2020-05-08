@@ -25,6 +25,7 @@ import SVProgressHUD
 import CropViewController
 import ActiveLabel
 
+
 enum  CT {
     case PIC
     case MAP
@@ -247,8 +248,6 @@ class EditPhotoControllers: ShareController {
     
 }
 
-
-@available(iOS 13.0, *)
 class ShareController:
     UIViewController,
     UIScrollViewDelegate,
@@ -1332,14 +1331,7 @@ class ShareController:
         self.mapObjects.removeAll()
     }
     
-    @objc func handleOpenMaps()
-    {
-        CellType = CT.MAP
-//      print("Open the maps window")
-        let controller = MapBoxSingleLocalViewController()
-        controller.modalPresentationStyle = .fullScreen
-        navigationController?.pushViewController(controller, animated: true)
-    }
+   
     
     @objc func handleAddPhotos(){
         CellType = CT.PIC

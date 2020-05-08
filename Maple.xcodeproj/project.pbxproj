@@ -23,6 +23,9 @@
 		02DC63442001BDD600AE9662 /* CommentInputAccessoryView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 02DC63432001BDD600AE9662 /* CommentInputAccessoryView.swift */; };
 		02DC63462001BE7600AE9662 /* CommentInputTextView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 02DC63452001BE7600AE9662 /* CommentInputTextView.swift */; };
 		02DC634A2004E5C500AE9662 /* HomeHeaderCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 02DC63492004E5C500AE9662 /* HomeHeaderCell.swift */; };
+		02E631642465285700BA8C34 /* SlideMenuView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 02E631612465285600BA8C34 /* SlideMenuView.swift */; };
+		02E631652465285700BA8C34 /* DirectionsSearchView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 02E631622465285600BA8C34 /* DirectionsSearchView.swift */; };
+		02E631662465285700BA8C34 /* MapSearchingView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 02E631632465285700BA8C34 /* MapSearchingView.swift */; };
 		1A78E841FB764D5F4A99B36D /* AdvancedNavigationController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1A78EF63BD6DBB178F3EA7C6 /* AdvancedNavigationController.swift */; };
 		2F6DA8E6E451D4E4D137B11B /* Pods_Maple.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1E49CA1F1B426E691F3AE5AE /* Pods_Maple.framework */; };
 		4800DAE9226FDC6500B326FC /* UserProductController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4800DAE8226FDC6400B326FC /* UserProductController.swift */; };
@@ -124,6 +127,9 @@
 		02DC63432001BDD600AE9662 /* CommentInputAccessoryView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CommentInputAccessoryView.swift; sourceTree = "<group>"; };
 		02DC63452001BE7600AE9662 /* CommentInputTextView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CommentInputTextView.swift; sourceTree = "<group>"; };
 		02DC63492004E5C500AE9662 /* HomeHeaderCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeHeaderCell.swift; sourceTree = "<group>"; };
+		02E631612465285600BA8C34 /* SlideMenuView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SlideMenuView.swift; sourceTree = "<group>"; };
+		02E631622465285600BA8C34 /* DirectionsSearchView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DirectionsSearchView.swift; sourceTree = "<group>"; };
+		02E631632465285700BA8C34 /* MapSearchingView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MapSearchingView.swift; sourceTree = "<group>"; };
 		1A78EF63BD6DBB178F3EA7C6 /* AdvancedNavigationController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AdvancedNavigationController.swift; sourceTree = "<group>"; };
 		1E49CA1F1B426E691F3AE5AE /* Pods_Maple.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_Maple.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		21741E8B77BBF111E024E733 /* Pods-Maple.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Maple.release.xcconfig"; path = "Pods/Target Support Files/Pods-Maple/Pods-Maple.release.xcconfig"; sourceTree = "<group>"; };
@@ -292,6 +298,9 @@
 		4876BB0820DA14790057E5E0 /* Share */ = {
 			isa = PBXGroup;
 			children = (
+				02E631622465285600BA8C34 /* DirectionsSearchView.swift */,
+				02E631632465285700BA8C34 /* MapSearchingView.swift */,
+				02E631612465285600BA8C34 /* SlideMenuView.swift */,
 				481398AF22BA09B4004A4E20 /* ShareController.swift */,
 				482FC0FC20DE15CC00E23DAE /* SharePhotoController+Save.swift */,
 				02922405242AD0B8007D9AB2 /* MapboxViewController.swift */,
@@ -837,6 +846,7 @@
 				0298091C243312C0001C31A3 /* LoginViewDelegate.swift in Sources */,
 				4876BC9D20DA16280057E5E0 /* CustomAnimationDismisser.swift in Sources */,
 				4876BC9E20DA16280057E5E0 /* CircleImage.swift in Sources */,
+				02E631642465285700BA8C34 /* SlideMenuView.swift in Sources */,
 				48F6E9D2245A4D6200C70A81 /* MKMapItem+Extension.swift in Sources */,
 				4876BCA120DA16280057E5E0 /* PhotoSelectorHeader.swift in Sources */,
 				48482FC220DA18A00031EBFF /* DataModel.swift in Sources */,
@@ -845,6 +855,7 @@
 				482FC13B20DE236D00E23DAE /* PostCollectionCell.swift in Sources */,
 				482FC10620DE15D900E23DAE /* MapCell.swift in Sources */,
 				482FC12620DE168200E23DAE /* UserProfileHeader.swift in Sources */,
+				02E631662465285700BA8C34 /* MapSearchingView.swift in Sources */,
 				02DC63442001BDD600AE9662 /* CommentInputAccessoryView.swift in Sources */,
 				4876BC9F20DA16280057E5E0 /* ProductCell.swift in Sources */,
 				02D869112285A0C70093BD18 /* Navigation.swift in Sources */,
@@ -872,6 +883,7 @@
 				482C01F222AF276000000597 /* MultiLineTextView.swift in Sources */,
 				482FC12020DE168200E23DAE /* ChangeSignPhotoController.swift in Sources */,
 				02922406242AD0B8007D9AB2 /* MapboxViewController.swift in Sources */,
+				02E631652465285700BA8C34 /* DirectionsSearchView.swift in Sources */,
 				48482FC920DA18A00031EBFF /* Photo.swift in Sources */,
 				482FC13320DE236D00E23DAE /* LocationRecord.swift in Sources */,
 				481398AC22B21830004A4E20 /* EditPhotoShareController.swift in Sources */,

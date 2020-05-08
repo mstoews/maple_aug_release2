@@ -52,9 +52,7 @@ class MainTabBarController: UITabBarController, MDCBottomNavigationBarDelegate, 
     private var listener: ListenerRegistration?
     
     let bottomNavBar = MDCBottomNavigationBar()
-    var topAppBar = MDCAppBarViewController()
-    
-    
+  
     override func viewDidLoad() {
         view.backgroundColor = containerScheme.colorScheme.backgroundColor
         let HomeTab = UITabBarItem(title: "Home", image: UIImage(named: "ic_home"), tag: 0)
@@ -65,13 +63,12 @@ class MainTabBarController: UITabBarController, MDCBottomNavigationBarDelegate, 
         // tabBarItem3.selectedImage = UIImage(named: "Favorite")
         bottomNavBar.items = [ HomeTab, SearchTab, ShareTab, NotifyTab, UserTab ]
         
-        self.addChild(self.topAppBar)
-        self.view.addSubview(self.topAppBar.view)
-        self.topAppBar.didMove(toParent: self)
+       
         
         let containerScheme = MDCContainerScheme()
         
-        containerScheme.colorScheme.primaryColor = UIColor.buttonThemeColor()
+        //containerScheme.colorScheme.primaryColor = UIColor.buttonThemeColor()
+        
         bottomNavBar.applySurfaceTheme(withScheme: containerScheme)
         
         bottomNavBar.selectedItem = HomeTab
@@ -110,23 +107,11 @@ class MainTabBarController: UITabBarController, MDCBottomNavigationBarDelegate, 
         bottomNavBar.frame = bottomNavBarFrame
     }
     
-    func layoutAppNavBar() {
-        let size = topAppBar.preferredContentSize
-           var topBarFrame = CGRect(x: 0,
-                                    y: view.bounds.height - size.height,
-                                    width: size.width,
-                                    height: size.height)
-           if #available(iOS 11.0, *) {
-               topBarFrame.size.height += view.safeAreaInsets.bottom
-               topBarFrame.origin.y -= view.safeAreaInsets.bottom
-           }
-        //topAppBar.size(topBarFrame)
-       }
     override func viewWillLayoutSubviews() {
         super.viewWillLayoutSubviews()
-       
-        layoutAppNavBar()
-         layoutBottomNavBar()
+        
+        layoutBottomNavBar()
+   
     }
     
     fileprivate func templateNavController(unselectedImage: UIImage, selectedImage: UIImage, rootViewController: UIViewController = UIViewController()) -> UINavigationController {

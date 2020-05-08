@@ -13,11 +13,17 @@ import AlgoliaSearch
 import InstantSearchCore
 import MaterialComponents
 import JGProgressHUD
-
+import SwiftUI
 
 extension ShareController
-    
 {
+    
+     @objc func handleOpenMaps()  {
+          CellType = CT.MAP
+          let viewCtrl = UIHostingController(rootView: MapSearchingView())
+          navigationController?.pushViewController(viewCtrl, animated: true)
+    }
+    
     
     func updateAlgoliaUsers(user: MapleUser)
     {
@@ -104,16 +110,6 @@ extension ShareController
 
             return
         }
-
-//        if mapObjects.count == 0 {
-//            message.text = "Select at least one location ..."
-//            let action = MDCSnackbarMessageAction()
-//            action.handler = actionGoToMaps
-//            action.title = "OK"
-//            message.action = action
-//            MDCSnackbarManager.show(message)
-//            return
-//        }
         
         guard let description = descriptionTextView.text,  description.count > 0  else {
             message.text = "Please enter a description ..."
@@ -156,12 +152,6 @@ extension ShareController
         hud.textLabel.text = "Updating post ..."
         hud.show(in: view)
         
-//        saveLocations(docId) { (locId) in
-//            docId = locId
-//            print("Locations completed")
-//        }
-        
-        //saveImages(postid: docId, typeName: "thumbImages", imageSize: 160, images: self.imageArray)
         
         urlArray.removeAll()
         
@@ -288,9 +278,10 @@ extension ShareController
     }
     
     
+
     
-    
-    func saveImages( postid: String,  typeName: String, imageSize: CGFloat, images: [UIImage]  , _ completion: @escaping (String) -> ()) {
+    func saveImages( postid: String,  typeName: String, imageSize: CGFloat, images: [UIImage]  , _ completion: @escaping (String) -> ())
+    {
         var urlArray = [String]()
         
         if postid.count > 0 {

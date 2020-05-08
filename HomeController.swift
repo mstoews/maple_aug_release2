@@ -67,7 +67,6 @@ enum  FetchType {
 
 
 class HomeController: MDCCollectionViewController, HomePostCellDelegate, HomeHeaderCellDelegate, CLLocationManagerDelegate
-
 {
 
     var FETCH_TYPE = FetchType.USER
@@ -76,13 +75,12 @@ class HomeController: MDCCollectionViewController, HomePostCellDelegate, HomeHea
     let cellHeaderId = "cellHeaderId"
     
     var PAGINATION_LIMIT : Int = 0
+
     private let refreshControl = UIRefreshControl()
-    var spinner: UIView?
+
     let bottomBarView = MDCBottomAppBarView()
     
     lazy var appDelegate = UIApplication.shared.delegate as! AppDelegate
-    
-    let red = MDCPalette.red.tint600
  
     var newPost = false
     var followChanged = false
@@ -100,28 +98,41 @@ class HomeController: MDCCollectionViewController, HomePostCellDelegate, HomeHea
     override func viewDidLoad() {
         
         super.viewDidLoad()
+        
         NotificationCenter.default.addObserver(self, selector: #selector(handleUpdateFeed), name: HomeController.updateFeedNotificationName, object: nil)
+        
         collectionView?.backgroundColor = UIColor.collectionBackGround()
+        
         collectionView?.register(HomePostCell.self, forCellWithReuseIdentifier: cellId)
+        
         collectionView?.register(HomeHeaderCell.self, forSupplementaryViewOfKind: UICollectionView.elementKindSectionHeader, withReuseIdentifier: cellHeaderId)
+        
         refreshControl.addTarget(self, action: #selector(handleRefresh), for: .valueChanged )
+        
         self.collectionView.alwaysBounceVertical = true
         
         collectionView?.refreshControl = refreshControl
+        
         collectionView?.backgroundView = nil
-        //Firestore.updateDocCounts()
+        
         setupNavigationItems()
+        
         collectionView?.delegate = self
+        
         PAGINATION_LIMIT = 0
+        
         handleRefresh()
         
         MDCAppBarColorThemer.applyColorScheme(ApplicationScheme.shared.colorScheme, to:self.appBarViewController)
 
         MDCAppBarTypographyThemer.applyTypographyScheme(ApplicationScheme.shared.typographyScheme, to: self.appBarViewController)
+    
     }
     
     @objc func handleUpdateFeed() {
+    
         handleRefresh()
+    
     }
     
     @objc func handleRefresh() {
@@ -191,21 +202,24 @@ class HomeController: MDCCollectionViewController, HomePostCellDelegate, HomeHea
         
         if UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiom.pad {
             
-            //let objectsToShare = [post.description]
             let activityVC = UIActivityViewController(activityItems: [shareImageView.image!], applicationActivities: nil)
+     
             activityVC.title = "Share Post"
+            
             activityVC.excludedActivityTypes = []
             
             activityVC.popoverPresentationController?.sourceView = self.view
+            
             activityVC.popoverPresentationController?.barButtonItem = navigationItem.rightBarButtonItem
-            //activityVC.popoverPresentationController?.sourceRect = self.view.frame
             
             self.present(activityVC, animated: true, completion: nil)
         }
         else
         {
             let activityController = UIActivityViewController(activityItems:  [shareImageView.image!] , applicationActivities: nil)
-             activityController.popoverPresentationController?.barButtonItem = navigationItem.rightBarButtonItem
+            
+            activityController.popoverPresentationController?.barButtonItem = navigationItem.rightBarButtonItem
+            
             present(activityController, animated: true, completion: nil)
         }
     }
@@ -241,23 +255,18 @@ class HomeController: MDCCollectionViewController, HomePostCellDelegate, HomeHea
         return messageLabel
     }()
     
-   
-    
-    
+
     deinit {
         listener?.remove()
     }
     
  
-    
-    
     func updateAlgoliaStore(post: FSPost)
     {
         var imageUrl: String?
         if post.imageUrlArray.count > 0 {
             imageUrl = post.imageUrlArray[0]
         }
-        
         
         if let imageUrl = imageUrl {
         let values : [String: Any] = ["userid" : post.uid,
@@ -350,7 +359,6 @@ class HomeController: MDCCollectionViewController, HomePostCellDelegate, HomeHea
                 self.documents = snapshot.documents
 
                 if self.documents.count > 0 {
-                    //print("Number of posts: \(self.documents.count)")
                     self.collectionView?.backgroundView = nil
                 }
                 else
@@ -404,12 +412,16 @@ class HomeController: MDCCollectionViewController, HomePostCellDelegate, HomeHea
     }
     
     func didShowFollowersPosts() {
+        
         FETCH_TYPE = FetchType.ALL
+        
         print("didShowFollowerPosts")
+        
         observePostFeed()
     }
     
     override func viewDidAppear(_ animated: Bool) {
+        
         MDCSnackbarManager.setBottomOffset(bottomBarView.frame.height)
         
     }
