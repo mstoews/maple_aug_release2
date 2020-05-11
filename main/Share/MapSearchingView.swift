@@ -59,7 +59,8 @@ struct MapViewContainer: UIViewRepresentable {
     }
     
     fileprivate func setupRegionForMap() {
-        let centerCoordinate = CLLocationCoordinate2D(latitude: 37.7666, longitude: -122.427290)
+       // let centerCoordinate = CLLocationCoordinate2D(latitude: 37.7666, longitude: -122.427290)
+        let centerCoordinate = CLLocationCoordinate2D(latitude: 35.753630, longitude: 139.714151)
         let span = MKCoordinateSpan(latitudeDelta: 0.1, longitudeDelta: 0.1)
         let region = MKCoordinateRegion(center: centerCoordinate, span: span)
         mapView.setRegion(region, animated: true)

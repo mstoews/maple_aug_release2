@@ -381,7 +381,8 @@ class HomePostCell: MDCCardCollectionCell , UICollectionViewDataSource, UICollec
 
     lazy var followButton: UIButton = {
         let button = UIButton()
-        let origImage = UIImage(named: "ic_followers");
+        //let origImage = UIImage(named: "ic_followers");
+        let origImage = UIImage(named: "ic_people");
         //let tintedImage = origImage?.withRenderingMode(UIImage.RenderingMode.alwaysTemplate)
         button.setImage(origImage, for: .normal)
         button.adjustsImageWhenDisabled = true
