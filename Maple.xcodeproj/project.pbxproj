@@ -98,6 +98,7 @@
 		4876BD2320DA16B20057E5E0 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4876BD2220DA16B20057E5E0 /* AppDelegate.swift */; };
 		4878C10120F7486F0054F227 /* ShareHeaderCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4878C10020F7486F0054F227 /* ShareHeaderCell.swift */; };
 		4878C18F20F844C80054F227 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 4878C18E20F844C70054F227 /* Assets.xcassets */; };
+		48A8587E246E1C0F00A891A1 /* UserFollowersController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 48A8587D246E1C0F00A891A1 /* UserFollowersController.swift */; };
 		48B3F925245EC21F002E8E05 /* ApplicationScheme.swift in Sources */ = {isa = PBXBuildFile; fileRef = 48B3F924245EC21F002E8E05 /* ApplicationScheme.swift */; };
 		48B4457F1FE7342D00DFD412 /* HomePostCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 48B444DF1FE7341700DFD412 /* HomePostCell.swift */; };
 		48B445AB1FE7342D00DFD412 /* CommentCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 48B4450C1FE7342200DFD412 /* CommentCell.swift */; };
@@ -206,6 +207,7 @@
 		4876BD2220DA16B20057E5E0 /* AppDelegate.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = AppDelegate.swift; path = main/AppDelegate.swift; sourceTree = SOURCE_ROOT; };
 		4878C10020F7486F0054F227 /* ShareHeaderCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ShareHeaderCell.swift; sourceTree = "<group>"; };
 		4878C18E20F844C70054F227 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
+		48A8587D246E1C0F00A891A1 /* UserFollowersController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserFollowersController.swift; sourceTree = "<group>"; };
 		48B3F924245EC21F002E8E05 /* ApplicationScheme.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ApplicationScheme.swift; sourceTree = "<group>"; };
 		48B444AB1FE7329900DFD412 /* Maple.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Maple.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		48B444C31FE7329900DFD412 /* maple_releaseTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = maple_releaseTests.swift; sourceTree = "<group>"; };
@@ -323,7 +325,6 @@
 				4800DAE8226FDC6400B326FC /* UserProductController.swift */,
 				482FC10D20DE165B00E23DAE /* UserProfileController.swift */,
 				482FC11720DE168200E23DAE /* UserProfileHeader.swift */,
-				482FC13C20DE23C800E23DAE /* UserFollowingController.swift */,
 				482FC11120DE166B00E23DAE /* ChangeSignPhotoController.swift */,
 				482FC10A20DE165000E23DAE /* FPAuthPickerViewController.swift */,
 				482FC10F20DE166300E23DAE /* FPAuthPickerViewController.xib */,
@@ -341,6 +342,8 @@
 				482FC11420DE167600E23DAE /* UserProfilePhotoCell.swift */,
 				4876BB2620DA14880057E5E0 /* Amaranth-Bold.otf */,
 				02BB2406229EB3A70020601D /* BaseCell.swift */,
+				482FC13C20DE23C800E23DAE /* UserFollowingController.swift */,
+				48A8587D246E1C0F00A891A1 /* UserFollowersController.swift */,
 			);
 			name = User;
 			path = main/User;
@@ -836,6 +839,7 @@
 				48B445AB1FE7342D00DFD412 /* CommentCell.swift in Sources */,
 				48482FCA20DA18A00031EBFF /* Bookmark.swift in Sources */,
 				482FC14120DE29CF00E23DAE /* SearchTableCell.swift in Sources */,
+				48A8587E246E1C0F00A891A1 /* UserFollowersController.swift in Sources */,
 				48482FC120DA18A00031EBFF /* Situation.swift in Sources */,
 				48482FCC20DA18A00031EBFF /* Post.swift in Sources */,
 				4876BCAD20DA16290057E5E0 /* CustomImageView.swift in Sources */,
