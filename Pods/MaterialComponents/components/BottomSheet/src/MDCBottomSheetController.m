@@ -14,9 +14,18 @@
 
 #import "MDCBottomSheetController.h"
 
+#import "MDCBottomSheetControllerDelegate.h"
 #import "MDCBottomSheetPresentationController.h"
+#import "MDCBottomSheetPresentationControllerDelegate.h"
 #import "MDCBottomSheetTransitionController.h"
+#import "MDCSheetState.h"
 #import "UIViewController+MaterialBottomSheet.h"
+#import "MaterialElevation.h"
+#import "MaterialShadowElevations.h"
+#import "MaterialShapes.h"
+#import "MaterialMath.h"
+
+static const CGFloat kElevationSpreadMaskAffordance = 50.0f;
 
 @interface MDCBottomSheetController () <MDCBottomSheetPresentationControllerDelegate>
 @property(nonatomic, readonly, strong) MDCShapedView *view;
@@ -27,10 +36,13 @@
   NSMutableDictionary<NSNumber *, id<MDCShapeGenerating>> *_shapeGenerators;
 }
 
+@synthesize mdc_overrideBaseElevation = _mdc_overrideBaseElevation;
+@synthesize mdc_elevationDidChangeBlock = _mdc_elevationDidChangeBlock;
 @dynamic view;
 
 - (void)loadView {
   self.view = [[MDCShapedView alloc] initWithFrame:CGRectZero];
+  self.view.elevation = self.elevation;
 }
 
 - (nonnull instancetype)initWithContentViewController:
@@ -39,10 +51,18 @@
     _contentViewController = contentViewController;
     _transitionController = [[MDCBottomSheetTransitionController alloc] init];
     _transitionController.dismissOnBackgroundTap = YES;
+    _transitionController.dismissOnDraggingDownSheet = YES;
+    _transitionController.adjustHeightForSafeAreaInsets = YES;
     super.transitioningDelegate = _transitionController;
     super.modalPresentationStyle = UIModalPresentationCustom;
     _shapeGenerators = [NSMutableDictionary dictionary];
-    _state = MDCSheetStatePreferred;
+    if (UIAccessibilityIsVoiceOverRunning()) {
+      _state = MDCSheetStateExtended;
+    } else {
+      _state = MDCSheetStatePreferred;
+    }
+    _elevation = MDCShadowElevationModalBottomSheet;
+    _mdc_overrideBaseElevation = -1;
   }
   return self;
 }
@@ -51,12 +71,14 @@
   [super viewDidLoad];
 
   self.view.preservesSuperviewLayoutMargins = YES;
-  self.contentViewController.view.autoresizingMask =
-      UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
-  self.contentViewController.view.frame = self.view.bounds;
-  [self addChildViewController:self.contentViewController];
-  [self.view addSubview:self.contentViewController.view];
-  [self.contentViewController didMoveToParentViewController:self];
+  if (self.contentViewController) {
+    self.contentViewController.view.autoresizingMask =
+        UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
+    self.contentViewController.view.frame = self.view.bounds;
+    [self addChildViewController:self.contentViewController];
+    [self.view addSubview:self.contentViewController.view];
+    [self.contentViewController didMoveToParentViewController:self];
+  }
 }
 
 - (void)viewWillAppear:(BOOL)animated {
@@ -69,7 +91,10 @@
 
   self.mdc_bottomSheetPresentationController.dismissOnBackgroundTap =
       _transitionController.dismissOnBackgroundTap;
+  self.mdc_bottomSheetPresentationController.dismissOnDraggingDownSheet =
+      _transitionController.dismissOnDraggingDownSheet;
 
+  self.contentViewController.view.frame = self.view.bounds;
   [self.contentViewController.view layoutIfNeeded];
 }
 
@@ -79,6 +104,12 @@
   if (self.shouldFlashScrollIndicatorsOnAppearance) {
     [self.trackingScrollView flashScrollIndicators];
   }
+}
+
+- (void)viewDidLayoutSubviews {
+  [super viewDidLayoutSubviews];
+
+  self.view.layer.mask = [self createBottomEdgeElevationMask];
 }
 
 - (UIInterfaceOrientationMask)supportedInterfaceOrientations {
@@ -138,6 +169,25 @@
   self.mdc_bottomSheetPresentationController.dismissOnBackgroundTap = dismissOnBackgroundTap;
 }
 
+- (BOOL)dismissOnDraggingDownSheet {
+  return _transitionController.dismissOnDraggingDownSheet;
+}
+
+- (void)setDismissOnDraggingDownSheet:(BOOL)dismissOnDraggingDownSheet {
+  _transitionController.dismissOnDraggingDownSheet = dismissOnDraggingDownSheet;
+  self.mdc_bottomSheetPresentationController.dismissOnDraggingDownSheet =
+      dismissOnDraggingDownSheet;
+}
+
+- (BOOL)ignoreKeyboardHeight {
+  return _transitionController.ignoreKeyboardHeight;
+}
+
+- (void)setIgnoreKeyboardHeight:(BOOL)ignoreKeyboardHeight {
+  _transitionController.ignoreKeyboardHeight = ignoreKeyboardHeight;
+  self.mdc_bottomSheetPresentationController.ignoreKeyboardHeight = ignoreKeyboardHeight;
+}
+
 - (void)bottomSheetWillChangeState:(MDCBottomSheetPresentationController *)bottomSheet
                         sheetState:(MDCSheetState)sheetState {
   _state = sheetState;
@@ -185,6 +235,33 @@
   }
 }
 
+- (void)setElevation:(MDCShadowElevation)elevation {
+  if (MDCCGFloatEqual(elevation, _elevation)) {
+    return;
+  }
+
+  _elevation = elevation;
+  self.view.elevation = elevation;
+  [self.view mdc_elevationDidChange];
+}
+
+- (CGFloat)mdc_currentElevation {
+  return self.elevation;
+}
+
+- (CAShapeLayer *)createBottomEdgeElevationMask {
+  CGFloat boundsWidth = CGRectGetWidth(self.view.bounds);
+  CGFloat boundsHeight = CGRectGetHeight(self.view.bounds);
+  CGRect visibleRectOutsideBounds =
+      CGRectMake(0 - kElevationSpreadMaskAffordance, 0 - kElevationSpreadMaskAffordance,
+                 boundsWidth + (2.0f * kElevationSpreadMaskAffordance),
+                 boundsHeight + kElevationSpreadMaskAffordance);
+  CAShapeLayer *maskLayer = [[CAShapeLayer alloc] init];
+  UIBezierPath *visibleAreaPath = [UIBezierPath bezierPathWithRect:visibleRectOutsideBounds];
+  maskLayer.path = visibleAreaPath.CGPath;
+  return maskLayer;
+}
+
 /* Disable setter. Always use internal transition controller */
 - (void)setTransitioningDelegate:
     (__unused id<UIViewControllerTransitioningDelegate>)transitioningDelegate {
@@ -204,6 +281,14 @@
 
 - (UIColor *)scrimColor {
   return _transitionController.scrimColor;
+}
+
+- (void)setAdjustHeightForSafeAreaInsets:(BOOL)adjustHeightForSafeAreaInsets {
+  _transitionController.adjustHeightForSafeAreaInsets = adjustHeightForSafeAreaInsets;
+}
+
+- (BOOL)adjustHeightForSafeAreaInsets {
+  return _transitionController.adjustHeightForSafeAreaInsets;
 }
 
 - (void)setIsScrimAccessibilityElement:(BOOL)isScrimAccessibilityElement {
@@ -236,6 +321,14 @@
 
 - (UIAccessibilityTraits)scrimAccessibilityTraits {
   return _transitionController.scrimAccessibilityTraits;
+}
+
+- (void)traitCollectionDidChange:(UITraitCollection *)previousTraitCollection {
+  [super traitCollectionDidChange:previousTraitCollection];
+
+  if (self.traitCollectionDidChangeBlock) {
+    self.traitCollectionDidChangeBlock(self, previousTraitCollection);
+  }
 }
 
 #pragma clang diagnostic push

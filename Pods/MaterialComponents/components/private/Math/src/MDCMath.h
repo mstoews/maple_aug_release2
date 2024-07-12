@@ -14,9 +14,10 @@
 
 #import <CoreGraphics/CoreGraphics.h>
 #import <Foundation/Foundation.h>
+#import <UIKit/UIKit.h>
 #import <math.h>
 
-static inline CGFloat MDCSin(CGFloat value) {
+__deprecated_msg("Use sin instead.") static inline CGFloat MDCSin(CGFloat value) {
 #if CGFLOAT_IS_DOUBLE
   return sin(value);
 #else
@@ -24,7 +25,7 @@ static inline CGFloat MDCSin(CGFloat value) {
 #endif
 }
 
-static inline CGFloat MDCCos(CGFloat value) {
+__deprecated_msg("Use cos instead.") static inline CGFloat MDCCos(CGFloat value) {
 #if CGFLOAT_IS_DOUBLE
   return cos(value);
 #else
@@ -32,7 +33,7 @@ static inline CGFloat MDCCos(CGFloat value) {
 #endif
 }
 
-static inline CGFloat MDCAtan2(CGFloat y, CGFloat x) {
+__deprecated_msg("Use atan2 instead.") static inline CGFloat MDCAtan2(CGFloat y, CGFloat x) {
 #if CGFLOAT_IS_DOUBLE
   return atan2(y, x);
 #else
@@ -40,7 +41,7 @@ static inline CGFloat MDCAtan2(CGFloat y, CGFloat x) {
 #endif
 }
 
-static inline CGFloat MDCCeil(CGFloat value) {
+__deprecated_msg("Use ceil instead.") static inline CGFloat MDCCeil(CGFloat value) {
 #if CGFLOAT_IS_DOUBLE
   return ceil(value);
 #else
@@ -48,7 +49,7 @@ static inline CGFloat MDCCeil(CGFloat value) {
 #endif
 }
 
-static inline CGFloat MDCFabs(CGFloat value) {
+__deprecated_msg("Use fabs instead.") static inline CGFloat MDCFabs(CGFloat value) {
 #if CGFLOAT_IS_DOUBLE
   return fabs(value);
 #else
@@ -73,10 +74,10 @@ static inline BOOL MDCCGFloatEqual(CGFloat a, CGFloat b) {
   const CGFloat epsilon = FLT_EPSILON;
   const CGFloat min = FLT_MIN;
 #endif
-  return (MDCFabs(a - b) < constantK * epsilon * MDCFabs(a + b) || MDCFabs(a - b) < min);
+  return (fabs(a - b) < constantK * epsilon * fabs(a + b) || fabs(a - b) < min);
 }
 
-static inline CGFloat MDCFloor(CGFloat value) {
+__deprecated_msg("Use floor instead.") static inline CGFloat MDCFloor(CGFloat value) {
 #if CGFLOAT_IS_DOUBLE
   return floor(value);
 #else
@@ -84,7 +85,7 @@ static inline CGFloat MDCFloor(CGFloat value) {
 #endif
 }
 
-static inline CGFloat MDCHypot(CGFloat x, CGFloat y) {
+__deprecated_msg("Use hypot instead.") static inline CGFloat MDCHypot(CGFloat x, CGFloat y) {
 #if CGFLOAT_IS_DOUBLE
   return hypot(x, y);
 #else
@@ -97,7 +98,7 @@ static inline BOOL MDCCGFloatIsExactlyZero(CGFloat value) {
   return (value == 0);
 }
 
-static inline CGFloat MDCPow(CGFloat value, CGFloat power) {
+__deprecated_msg("Use pow instead.") static inline CGFloat MDCPow(CGFloat value, CGFloat power) {
 #if CGFLOAT_IS_DOUBLE
   return pow(value, power);
 #else
@@ -105,7 +106,7 @@ static inline CGFloat MDCPow(CGFloat value, CGFloat power) {
 #endif
 }
 
-static inline CGFloat MDCRint(CGFloat value) {
+__deprecated_msg("Use rint instead.") static inline CGFloat MDCRint(CGFloat value) {
 #if CGFLOAT_IS_DOUBLE
   return rint(value);
 #else
@@ -113,7 +114,7 @@ static inline CGFloat MDCRint(CGFloat value) {
 #endif
 }
 
-static inline CGFloat MDCRound(CGFloat value) {
+__deprecated_msg("Use round instead.") static inline CGFloat MDCRound(CGFloat value) {
 #if CGFLOAT_IS_DOUBLE
   return round(value);
 #else
@@ -121,7 +122,7 @@ static inline CGFloat MDCRound(CGFloat value) {
 #endif
 }
 
-static inline CGFloat MDCSqrt(CGFloat value) {
+__deprecated_msg("Use sqrt instead.") static inline CGFloat MDCSqrt(CGFloat value) {
 #if CGFLOAT_IS_DOUBLE
   return sqrt(value);
 #else
@@ -142,7 +143,7 @@ static inline CGFloat MDCCeilScaled(CGFloat value, CGFloat scale) {
     return 0;
   }
 
-  return MDCCeil(value * scale) / scale;
+  return ceil(value * scale) / scale;
 }
 
 /**
@@ -158,7 +159,7 @@ static inline CGFloat MDCFloorScaled(CGFloat value, CGFloat scale) {
     return 0;
   }
 
-  return MDCFloor(value * scale) / scale;
+  return floor(value * scale) / scale;
 }
 
 /**
@@ -185,13 +186,13 @@ static inline CGRect MDCRectAlignToScale(CGRect rect, CGFloat scale) {
   }
 
   CGPoint originalMinimumPoint = CGPointMake(CGRectGetMinX(rect), CGRectGetMinY(rect));
-  CGPoint newOrigin = CGPointMake(MDCFloor(originalMinimumPoint.x * scale) / scale,
-                                  MDCFloor(originalMinimumPoint.y * scale) / scale);
+  CGPoint newOrigin = CGPointMake(floor(originalMinimumPoint.x * scale) / scale,
+                                  floor(originalMinimumPoint.y * scale) / scale);
   CGSize adjustWidthHeight =
       CGSizeMake(originalMinimumPoint.x - newOrigin.x, originalMinimumPoint.y - newOrigin.y);
   return CGRectMake(newOrigin.x, newOrigin.y,
-                    MDCCeil((CGRectGetWidth(rect) + adjustWidthHeight.width) * scale) / scale,
-                    MDCCeil((CGRectGetHeight(rect) + adjustWidthHeight.height) * scale) / scale);
+                    ceil((CGRectGetWidth(rect) + adjustWidthHeight.width) * scale) / scale,
+                    ceil((CGRectGetHeight(rect) + adjustWidthHeight.height) * scale) / scale);
 }
 
 static inline CGPoint MDCPointRoundWithScale(CGPoint point, CGFloat scale) {
@@ -199,7 +200,7 @@ static inline CGPoint MDCPointRoundWithScale(CGPoint point, CGFloat scale) {
     return CGPointZero;
   }
 
-  return CGPointMake(MDCRound(point.x * scale) / scale, MDCRound(point.y * scale) / scale);
+  return CGPointMake(round(point.x * scale) / scale, round(point.y * scale) / scale);
 }
 
 /**
@@ -216,7 +217,7 @@ static inline CGSize MDCSizeCeilWithScale(CGSize size, CGFloat scale) {
     return CGSizeZero;
   }
 
-  return CGSizeMake(MDCCeil(size.width * scale) / scale, MDCCeil(size.height * scale) / scale);
+  return CGSizeMake(ceil(size.width * scale) / scale, ceil(size.height * scale) / scale);
 }
 
 /**
@@ -241,4 +242,15 @@ static inline CGPoint MDCRoundCenterWithBoundsAndScale(CGPoint center,
   CGPoint origin = CGPointMake(center.x - halfWidth, center.y - halfHeight);
   origin = MDCPointRoundWithScale(origin, scale);
   return CGPointMake(origin.x + halfWidth, origin.y + halfHeight);
+}
+
+/// Compare two edge insets using MDCCGFloatEqual.
+/// @param insets1 An edge inset to compare with insets2
+/// @param insets2 An edge inset to compare with insets1
+static inline BOOL MDCEdgeInsetsEqualToEdgeInsets(UIEdgeInsets insets1, UIEdgeInsets insets2) {
+  BOOL topEqual = MDCCGFloatEqual(insets1.top, insets2.top);
+  BOOL leftEqual = MDCCGFloatEqual(insets1.left, insets2.left);
+  BOOL bottomEqual = MDCCGFloatEqual(insets1.bottom, insets2.bottom);
+  BOOL rightEqual = MDCCGFloatEqual(insets1.right, insets2.right);
+  return topEqual && leftEqual && bottomEqual && rightEqual;
 }

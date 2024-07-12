@@ -17,9 +17,7 @@
 #import <MDFInternationalization/MDFInternationalization.h>
 
 #import "MDCTextFieldPositioningDelegate.h"
-#import "MDCTextInput.h"
 #import "MDCTextInputBorderView.h"
-#import "MDCTextInputCharacterCounter.h"
 #import "MDCTextInputUnderlineView.h"
 #import "private/MDCTextField+Testing.h"
 #import "private/MDCTextInputCommonFundament.h"
@@ -58,6 +56,8 @@ static const CGFloat MDCTextInputTextRectYCorrection = 1;
 @implementation MDCTextField
 
 @dynamic borderStyle;
+@synthesize mdc_elevationDidChangeBlock = _mdc_elevationDidChangeBlock;
+@synthesize mdc_overrideBaseElevation = _mdc_overrideBaseElevation;
 
 - (instancetype)initWithFrame:(CGRect)frame {
   self = [super initWithFrame:frame];
@@ -139,6 +139,7 @@ static const CGFloat MDCTextInputTextRectYCorrection = 1;
 
   [self setContentCompressionResistancePriority:UILayoutPriorityDefaultHigh + 1
                                         forAxis:UILayoutConstraintAxisVertical];
+  _mdc_overrideBaseElevation = -1;
 }
 
 #pragma mark - Underline View Implementation
@@ -330,12 +331,25 @@ static const CGFloat MDCTextInputTextRectYCorrection = 1;
 }
 
 - (void)setTextColor:(UIColor *)textColor {
-  [super setTextColor:textColor];
-  _fundament.textColor = textColor;
+  // This identity check was added in
+  // https://github.com/material-components/material-components-ios/pull/9480 in response to
+  // b/148159587
+  if (textColor != self.textColor) {
+    [super setTextColor:textColor];
+    _fundament.textColor = textColor;
+  }
 }
 
 - (UIEdgeInsets)textInsets {
   return self.fundament.textInsets;
+}
+
+- (CGFloat)sizeThatFitsWidthHint {
+  return self.fundament.sizeThatFitsWidthHint;
+}
+
+- (void)setSizeThatFitsWidthHint:(CGFloat)sizeThatFitsWidthHint {
+  self.fundament.sizeThatFitsWidthHint = sizeThatFitsWidthHint;
 }
 
 - (MDCTextInputTextInsetsMode)textInsetsMode {
@@ -430,8 +444,9 @@ static const CGFloat MDCTextInputTextRectYCorrection = 1;
 }
 
 - (void)setFont:(UIFont *)font {
+  UIFont *previousFont = self.font;
   [super setFont:font];
-  [_fundament didSetFont];
+  [_fundament didSetFont:previousFont];
 }
 
 - (void)setEnabled:(BOOL)enabled {
@@ -563,9 +578,9 @@ static const CGFloat MDCTextInputTextRectYCorrection = 1;
   // both. Don't know why. So, we have to leave the text rect as big as the bounds and move it to a
   // Y that works.
   CGFloat actualY =
-      (CGRectGetHeight(bounds) / 2) - MDCRint(MAX(self.font.lineHeight,
-                                                  self.placeholderLabel.font.lineHeight) /
-                                              2);  // Text field or placeholder
+      (CGRectGetHeight(bounds) / 2) - rint(MAX(self.font.lineHeight,
+                                               self.placeholderLabel.font.lineHeight) /
+                                           2);  // Text field or placeholder
   actualY = textInsets.top - actualY + MDCTextInputTextRectYCorrection;
   textRect.origin.y = actualY;
 
@@ -690,7 +705,7 @@ static const CGFloat MDCTextInputTextRectYCorrection = 1;
 
 - (CGFloat)estimatedTextHeight {
   CGFloat scale = UIScreen.mainScreen.scale;
-  CGFloat estimatedTextHeight = MDCCeil(self.font.lineHeight * scale) / scale;
+  CGFloat estimatedTextHeight = ceil(self.font.lineHeight * scale) / scale;
 
   return estimatedTextHeight;
 }
@@ -708,9 +723,10 @@ static const CGFloat MDCTextInputTextRectYCorrection = 1;
 }
 
 - (CGSize)sizeThatFits:(CGSize)size {
+  self.sizeThatFitsWidthHint = size.width;
   CGSize sizeThatFits = [self intrinsicContentSize];
-  sizeThatFits.width = size.width;
-
+  sizeThatFits.width = self.sizeThatFitsWidthHint;
+  self.sizeThatFitsWidthHint = 0;
   return sizeThatFits;
 }
 
@@ -728,6 +744,18 @@ static const CGFloat MDCTextInputTextRectYCorrection = 1;
   if ([self.positioningDelegate respondsToSelector:@selector(textInputDidLayoutSubviews)]) {
     [self.positioningDelegate textInputDidLayoutSubviews];
   }
+}
+
+- (void)traitCollectionDidChange:(UITraitCollection *)previousTraitCollection {
+  [super traitCollectionDidChange:previousTraitCollection];
+
+  if (self.traitCollectionDidChangeBlock) {
+    self.traitCollectionDidChangeBlock(self, previousTraitCollection);
+  }
+}
+
+- (CGFloat)mdc_currentElevation {
+  return 0;
 }
 
 - (void)updateConstraints {
@@ -822,7 +850,11 @@ static const CGFloat MDCTextInputTextRectYCorrection = 1;
   if (self.text.length > 0) {
     return [super accessibilityValue];
   }
-  return nil;
+
+  // Returning nil here causes iOS to default to [super accessibilityValue], which results in both
+  // accessibilityValue and accessibilityLabel being read out by VoiceOver, so we return the empty
+  // string instead.
+  return @"";
 }
 
 #pragma mark - Testing

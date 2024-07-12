@@ -18,11 +18,11 @@
 @implementation MDCHeaderStackView
 
 - (CGSize)sizeThatFits:(CGSize)size {
+  CGFloat height = [_topBar sizeThatFits:size].height;
   if (_bottomBar) {
-    size.height = [_bottomBar sizeThatFits:size].height;
-  } else {
-    size.height = [_topBar sizeThatFits:size].height;
+    height += [_bottomBar sizeThatFits:size].height;
   }
+  size.height = height;
   return size;
 }
 
@@ -51,6 +51,14 @@
 
   _topBar.frame = topBarFrame;
   _bottomBar.frame = bottomBarFrame;
+}
+
+- (void)traitCollectionDidChange:(UITraitCollection *)previousTraitCollection {
+  [super traitCollectionDidChange:previousTraitCollection];
+
+  if (self.traitCollectionDidChangeBlock) {
+    self.traitCollectionDidChangeBlock(self, previousTraitCollection);
+  }
 }
 
 #pragma mark - Public

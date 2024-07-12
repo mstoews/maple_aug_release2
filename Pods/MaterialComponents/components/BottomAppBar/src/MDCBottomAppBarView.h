@@ -35,7 +35,7 @@ typedef NS_ENUM(NSInteger, MDCBottomAppBarFloatingButtonPosition) {
  The bottom app bar is a bar docked at the bottom of the screen. A floating action button is
  provided for a primary action.
  */
-@interface MDCBottomAppBarView : UIView
+@interface MDCBottomAppBarView : UIView <MDCElevatable, MDCElevationOverriding>
 
 /**
  Is the floating button on the bottom bar hidden.
@@ -105,6 +105,25 @@ typedef NS_ENUM(NSInteger, MDCBottomAppBarFloatingButtonPosition) {
 @property(nullable, nonatomic, strong) UIColor *shadowColor UI_APPEARANCE_SELECTOR;
 
 /**
+ The color of ink that ripples across the buttons.
+
+ @note This API only has a visual effect if @c enableRippleBehavior is set to @c YES.
+ */
+@property(nonnull, nonatomic, copy) UIColor *rippleColor;
+
+/**
+ By setting this property to @c YES, the Ripple component will be used instead of Ink
+ to display visual feedback to the user.
+
+ @note This property will eventually be enabled by default, deprecated, and then deleted as part
+ of our migration to Ripple. Learn more at
+ https://github.com/material-components/material-components-ios/tree/develop/components/Ink#migration-guide-ink-to-ripple
+
+ Defaults to NO.
+ */
+@property(nonatomic, assign) BOOL enableRippleBehavior;
+
+/**
  Sets the visibility of the floating action button.
 
  @param animated Enable or disable animation.
@@ -128,5 +147,18 @@ typedef NS_ENUM(NSInteger, MDCBottomAppBarFloatingButtonPosition) {
  */
 - (void)setFloatingButtonPosition:(MDCBottomAppBarFloatingButtonPosition)floatingButtonPosition
                          animated:(BOOL)animated;
+
+/**
+ A block that is invoked when the @c MDCBottomAppBarView receives a call to @c
+ traitCollectionDidChange:. The block is called after the call to the superclass.
+ */
+@property(nonatomic, copy, nullable) void (^traitCollectionDidChangeBlock)
+    (MDCBottomAppBarView *_Nonnull bottomAppBar,
+     UITraitCollection *_Nullable previousTraitCollection);
+
+/**
+ The elevation of the bottom app bar. Defaults to @c MDCShadowElevationBottomAppBar.
+ */
+@property(nonatomic, assign) MDCShadowElevation elevation;
 
 @end

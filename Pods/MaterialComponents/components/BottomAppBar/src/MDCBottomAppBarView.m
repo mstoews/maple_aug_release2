@@ -18,9 +18,13 @@
 
 #import <MDFInternationalization/MDFInternationalization.h>
 
-#import "MaterialNavigationBar.h"
 #import "private/MDCBottomAppBarAttributes.h"
 #import "private/MDCBottomAppBarLayer.h"
+#import "MaterialButtons.h"
+#import "MaterialElevation.h"
+#import "MaterialNavigationBar.h"
+#import "MaterialShadowElevations.h"
+#import "MaterialMath.h"
 
 static NSString *kMDCBottomAppBarViewAnimKeyString = @"AnimKey";
 static NSString *kMDCBottomAppBarViewPathString = @"path";
@@ -28,7 +32,6 @@ static NSString *kMDCBottomAppBarViewPositionString = @"position";
 static const CGFloat kMDCBottomAppBarViewFloatingButtonCenterToNavigationBarTopOffset = 0;
 static const CGFloat kMDCBottomAppBarViewFloatingButtonElevationPrimary = 6;
 static const CGFloat kMDCBottomAppBarViewFloatingButtonElevationSecondary = 4;
-static const int kMDCButtonAnimationDuration = 200;
 
 @interface MDCBottomAppBarCutView : UIView
 
@@ -54,6 +57,9 @@ static const int kMDCButtonAnimationDuration = 200;
 @end
 
 @implementation MDCBottomAppBarView
+
+@synthesize mdc_overrideBaseElevation = _mdc_overrideBaseElevation;
+@synthesize mdc_elevationDidChangeBlock = _mdc_elevationDidChangeBlock;
 
 - (instancetype)initWithFrame:(CGRect)frame {
   self = [super initWithFrame:frame];
@@ -83,6 +89,15 @@ static const int kMDCButtonAnimationDuration = 200;
   [self addFloatingButton];
   [self addBottomBarLayer];
   [self addNavBar];
+
+  self.barTintColor = UIColor.whiteColor;
+  self.shadowColor = UIColor.blackColor;
+  _elevation = MDCShadowElevationBottomAppBar;
+  _mdc_overrideBaseElevation = -1;
+}
+
+- (CGSize)intrinsicContentSize {
+  return CGSizeMake(UIViewNoIntrinsicMetric, kMDCBottomAppBarHeight);
 }
 
 - (void)addFloatingButton {
@@ -121,31 +136,30 @@ static const int kMDCButtonAnimationDuration = 200;
 
 - (CGPoint)getFloatingButtonCenterPositionForAppBarWidth:(CGFloat)appBarWidth {
   CGPoint floatingButtonPoint = CGPointZero;
-  CGFloat navigationBarTopEdgeYOffset = CGRectGetMinY(self.navBar.frame);
-  CGFloat midX = appBarWidth / 2;
+  CGFloat navigationBarMinY = CGRectGetMinY(self.navBar.frame);
+  floatingButtonPoint.y = MAX(0, navigationBarMinY - self.floatingButtonVerticalOffset);
 
-  floatingButtonPoint.y = MAX(0, navigationBarTopEdgeYOffset - self.floatingButtonVerticalOffset);
+  UIEdgeInsets safeAreaInsets = UIEdgeInsetsZero;
+  if (@available(iOS 11.0, *)) {
+    safeAreaInsets = self.safeAreaInsets;
+  }
+
+  CGFloat leftCenter = kMDCBottomAppBarFloatingButtonPositionX + safeAreaInsets.left;
+  CGFloat rightCenter =
+      appBarWidth - kMDCBottomAppBarFloatingButtonPositionX - safeAreaInsets.right;
+  BOOL isRTL =
+      self.mdf_effectiveUserInterfaceLayoutDirection == UIUserInterfaceLayoutDirectionRightToLeft;
   switch (self.floatingButtonPosition) {
     case MDCBottomAppBarFloatingButtonPositionLeading: {
-      if (self.mdf_effectiveUserInterfaceLayoutDirection ==
-          UIUserInterfaceLayoutDirectionLeftToRight) {
-        floatingButtonPoint.x = kMDCBottomAppBarFloatingButtonPositionX;
-      } else {
-        floatingButtonPoint.x = appBarWidth - kMDCBottomAppBarFloatingButtonPositionX;
-      }
+      floatingButtonPoint.x = isRTL ? rightCenter : leftCenter;
       break;
     }
     case MDCBottomAppBarFloatingButtonPositionCenter: {
-      floatingButtonPoint.x = midX;
+      floatingButtonPoint.x = appBarWidth / 2;
       break;
     }
     case MDCBottomAppBarFloatingButtonPositionTrailing: {
-      if (self.mdf_effectiveUserInterfaceLayoutDirection ==
-          UIUserInterfaceLayoutDirectionLeftToRight) {
-        floatingButtonPoint.x = appBarWidth - kMDCBottomAppBarFloatingButtonPositionX;
-      } else {
-        floatingButtonPoint.x = kMDCBottomAppBarFloatingButtonPositionX;
-      }
+      floatingButtonPoint.x = isRTL ? leftCenter : rightCenter;
       break;
     }
     default:
@@ -163,6 +177,8 @@ static const int kMDCButtonAnimationDuration = 200;
   if (animated) {
     CABasicAnimation *pathAnimation =
         [CABasicAnimation animationWithKeyPath:kMDCBottomAppBarViewPathString];
+    pathAnimation.timingFunction =
+        [CAMediaTimingFunction functionWithName:kCAMediaTimingFunctionEaseInEaseOut];
     pathAnimation.duration = kMDCFloatingButtonExitDuration;
     pathAnimation.fromValue = (id)self.bottomBarLayer.presentationLayer.path;
     pathAnimation.toValue = (__bridge id _Nullable)(pathWithCut);
@@ -185,6 +201,8 @@ static const int kMDCButtonAnimationDuration = 200;
   if (animated) {
     CABasicAnimation *pathAnimation =
         [CABasicAnimation animationWithKeyPath:kMDCBottomAppBarViewPathString];
+    pathAnimation.timingFunction =
+        [CAMediaTimingFunction functionWithName:kCAMediaTimingFunctionEaseInEaseOut];
     pathAnimation.duration = kMDCFloatingButtonEnterDuration;
     pathAnimation.fromValue = (id)self.bottomBarLayer.presentationLayer.path;
     pathAnimation.toValue = (__bridge id _Nullable)(pathWithoutCut);
@@ -205,6 +223,8 @@ static const int kMDCButtonAnimationDuration = 200;
   if (animated) {
     CABasicAnimation *animation =
         [CABasicAnimation animationWithKeyPath:kMDCBottomAppBarViewPositionString];
+    animation.timingFunction =
+        [CAMediaTimingFunction functionWithName:kCAMediaTimingFunctionEaseInEaseOut];
     animation.duration = kMDCFloatingButtonExitDuration;
     animation.fromValue = [NSValue valueWithCGPoint:self.floatingButton.center];
     animation.toValue = [NSValue valueWithCGPoint:endPoint];
@@ -251,6 +271,9 @@ static const int kMDCButtonAnimationDuration = 200;
   self.floatingButton.center =
       [self getFloatingButtonCenterPositionForAppBarWidth:CGRectGetWidth(self.bounds)];
   [self renderPathBasedOnFloatingButtonVisibitlityAnimated:NO];
+
+  self.bottomBarLayer.fillColor = self.barTintColor.CGColor;
+  self.bottomBarLayer.shadowColor = self.shadowColor.CGColor;
 }
 
 - (UIEdgeInsets)mdc_safeAreaInsets {
@@ -296,6 +319,14 @@ static const int kMDCButtonAnimationDuration = 200;
 
 #pragma mark - Setters
 
+- (void)setElevation:(MDCShadowElevation)elevation {
+  if (MDCCGFloatEqual(elevation, _elevation)) {
+    return;
+  }
+  _elevation = elevation;
+  [self mdc_elevationDidChange];
+}
+
 - (void)setFloatingButton:(MDCFloatingButton *)floatingButton {
   if (_floatingButton == floatingButton) {
     return;
@@ -323,17 +354,11 @@ static const int kMDCButtonAnimationDuration = 200;
     elevation = kMDCBottomAppBarViewFloatingButtonElevationSecondary;
     subViewIndex = 0;
   }
-  if (animated) {
-    [_floatingButton setElevation:1 forState:UIControlStateNormal];
-    dispatch_after(dispatch_time(DISPATCH_TIME_NOW, kMDCButtonAnimationDuration * NSEC_PER_MSEC),
-                   dispatch_get_main_queue(), ^{
-                     [self insertSubview:self.floatingButton atIndex:subViewIndex];
-                     [self.floatingButton setElevation:elevation forState:UIControlStateNormal];
-                   });
-  } else {
-    [self insertSubview:_floatingButton atIndex:subViewIndex];
-    [_floatingButton setElevation:elevation forState:UIControlStateNormal];
-  }
+  // Immediately move the button to the correct z-ordering so that the shadow clipping effect isn't
+  // as apparent. If we did this at the end of the animation, then the shadow would appear to
+  // suddenly clip at the end of the animation.
+  [self insertSubview:_floatingButton atIndex:subViewIndex];
+  [_floatingButton setElevation:elevation forState:UIControlStateNormal];
 }
 
 - (void)setFloatingButtonPosition:(MDCBottomAppBarFloatingButtonPosition)floatingButtonPosition {
@@ -384,11 +409,8 @@ static const int kMDCButtonAnimationDuration = 200;
 }
 
 - (void)setBarTintColor:(UIColor *)barTintColor {
+  _barTintColor = barTintColor;
   _bottomBarLayer.fillColor = barTintColor.CGColor;
-}
-
-- (UIColor *)barTintColor {
-  return [UIColor colorWithCGColor:_bottomBarLayer.fillColor];
 }
 
 - (void)setLeadingBarItemsTintColor:(UIColor *)leadingBarItemsTintColor {
@@ -416,11 +438,37 @@ static const int kMDCButtonAnimationDuration = 200;
 }
 
 - (void)setShadowColor:(UIColor *)shadowColor {
+  _shadowColor = shadowColor;
   _bottomBarLayer.shadowColor = shadowColor.CGColor;
 }
 
-- (UIColor *)shadowColor {
-  return [UIColor colorWithCGColor:_bottomBarLayer.shadowColor];
+- (void)setRippleColor:(UIColor *)rippleColor {
+  _rippleColor = [rippleColor copy];
+  self.navBar.rippleColor = _rippleColor;
+}
+
+- (BOOL)enableRippleBehavior {
+  return self.navBar.enableRippleBehavior;
+}
+
+- (void)setEnableRippleBehavior:(BOOL)enableRippleBehavior {
+  self.navBar.enableRippleBehavior = enableRippleBehavior;
+}
+
+#pragma mark TraitCollection
+
+- (void)traitCollectionDidChange:(UITraitCollection *)previousTraitCollection {
+  [super traitCollectionDidChange:previousTraitCollection];
+
+  if (self.traitCollectionDidChangeBlock) {
+    self.traitCollectionDidChangeBlock(self, previousTraitCollection);
+  }
+}
+
+#pragma mark - MDCElevation
+
+- (CGFloat)mdc_currentElevation {
+  return self.elevation;
 }
 
 @end

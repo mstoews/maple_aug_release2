@@ -14,7 +14,6 @@
 
 #import "MDCTextInputUnderlineView.h"
 
-#import "MaterialPalettes.h"
 
 static const CGFloat MDCTextInputUnderlineDefaultHeight = 1;
 
@@ -74,6 +73,7 @@ static inline UIColor *MDCTextInputUnderlineColor() {
 - (void)layoutSubviews {
   [super layoutSubviews];
   [self updateUnderlinePath];
+  [self updateColor];
 }
 
 - (CGSize)intrinsicContentSize {

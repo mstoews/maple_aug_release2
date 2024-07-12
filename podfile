@@ -1,12 +1,15 @@
-platform :ios, '11.2'
-
 target 'Maple' do
 # Comment the next line if you're not using Swift and don't want to use dynamic frameworks
 use_frameworks!
 
-project 'Maple.xcodeproj'
-pod 'AFNetworking'
-pod 'Fabric'
+post_install do |installer|
+  installer.pods_project.targets.each do |target|
+    target.build_configurations.each do |config|
+      config.build_settings['IPHONEOS_DEPLOYMENT_TARGET'] = '15.0'
+    end
+  end
+end
+
 pod 'Firebase'
 pod 'Firebase/Core'
 pod 'Firebase/Firestore'
@@ -18,12 +21,9 @@ pod 'GoogleMaps'
 pod 'GoogleSignIn'
 pod 'BadgeSwift', '~> 5.0'
 pod 'Fabric'
-pod 'Mapbox-iOS-SDK', '~> 4.10'
-pod 'Crashlytics'
 pod 'InstantSearch-Core-Swift'
-pod 'MapboxNavigation'
 pod 'Reachability', '~> 3.2'
-pod 'ImagePicker', '~> 3.1'
+pod 'ImagePicker'
 pod 'Lightbox'
 pod 'Hue'
 pod 'Gallery'
@@ -34,5 +34,6 @@ pod 'JGProgressHUD','~>2.0.3'
 pod 'Alamofire', '~> 4.5'
 pod 'SDWebImage', '~> 4.0'
 pod 'ActiveLabel'
+pod 'JJFloatingActionButton'
 end
 

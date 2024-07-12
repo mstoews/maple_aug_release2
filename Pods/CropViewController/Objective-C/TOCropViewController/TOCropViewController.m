@@ -1,7 +1,7 @@
 //
 //  TOCropViewController.m
 //
-//  Copyright 2015-2018 Timothy Oliver. All rights reserved.
+//  Copyright 2015-2024 Timothy Oliver. All rights reserved.
 //
 //  Permission is hereby granted, free of charge, to any person obtaining a copy
 //  of this software and associated documentation files (the "Software"), to
@@ -75,7 +75,7 @@ static const CGFloat kTOCropViewControllerToolbarHeight = 44.0f;
 {
     NSParameterAssert(image);
 
-    self = [super init];
+    self = [super initWithNibName:nil bundle:nil];
     if (self) {
         // Init parameters
         _image = image;
@@ -84,7 +84,6 @@ static const CGFloat kTOCropViewControllerToolbarHeight = 44.0f;
         // Set up base view controller behaviour
         self.modalTransitionStyle = UIModalTransitionStyleCrossDissolve;
         self.modalPresentationStyle = UIModalPresentationFullScreen;
-        self.automaticallyAdjustsScrollViewInsets = NO;
         self.hidesNavigationBar = true;
         
         // Controller object that handles the transition animation when presenting / dismissing this app
@@ -92,7 +91,12 @@ static const CGFloat kTOCropViewControllerToolbarHeight = 44.0f;
 
         // Default initial behaviour
         _aspectRatioPreset = TOCropViewControllerAspectRatioPresetOriginal;
+
+        #if TARGET_OS_MACCATALYST
+        _toolbarPosition = TOCropViewControllerToolbarPositionTop;
+        #else
         _toolbarPosition = TOCropViewControllerToolbarPositionBottom;
+        #endif
     }
 	
     return self;
@@ -139,7 +143,9 @@ static const CGFloat kTOCropViewControllerToolbarHeight = 44.0f;
     // so we can manually control the status bar fade out timing
     if (animated) {
         self.inTransition = YES;
+#if TARGET_OS_IOS
         [self setNeedsStatusBarAppearanceUpdate];
+#endif
     }
     
     // If this controller is pushed onto a navigation stack, set flags noting the
@@ -182,7 +188,9 @@ static const CGFloat kTOCropViewControllerToolbarHeight = 44.0f;
     // Now that the presentation animation will have finished, animate
     // the status bar fading out, and if present, the title label fading in
     void (^updateContentBlock)(void) = ^{
+#if TARGET_OS_IOS
         [self setNeedsStatusBarAppearanceUpdate];
+#endif
         self.titleLabel.alpha = 1.0f;
     };
 
@@ -210,8 +218,10 @@ static const CGFloat kTOCropViewControllerToolbarHeight = 44.0f;
     
     // Set the transition flag again so we can defer the status bar
     self.inTransition = YES;
+#if TARGET_OS_IOS
     [UIView animateWithDuration:0.5f animations:^{ [self setNeedsStatusBarAppearanceUpdate]; }];
-    
+#endif
+
     // Restore the navigation controller to its state before we were presented
     if (self.navigationController && self.hidesNavigationBar) {
         [self.navigationController setNavigationBarHidden:self.navigationBarHidden animated:animated];
@@ -225,7 +235,9 @@ static const CGFloat kTOCropViewControllerToolbarHeight = 44.0f;
     
     // Reset the state once the view has gone offscreen
     self.inTransition = NO;
+#if TARGET_OS_IOS
     [self setNeedsStatusBarAppearanceUpdate];
+#endif
 }
 
 #pragma mark - Status Bar -
@@ -237,6 +249,9 @@ static const CGFloat kTOCropViewControllerToolbarHeight = 44.0f;
 
     // Even though we are a dark theme, leave the status bar
     // as black so it's not obvious that it's still visible during the transition
+    if (@available(iOS 13.0, *)) {
+        return UIStatusBarStyleDarkContent;
+    }
     return UIStatusBarStyleDefault;
 }
 
@@ -841,7 +856,7 @@ static const CGFloat kTOCropViewControllerToolbarHeight = 44.0f;
 #pragma mark - Button Feedback -
 - (void)cancelButtonTapped
 {
-    if (!self.cropView.canBeReset || !self.showCancelConfirmationDialog) {
+    if (!self.showCancelConfirmationDialog) {
         [self dismissCropViewController];
         return;
     }
@@ -849,14 +864,13 @@ static const CGFloat kTOCropViewControllerToolbarHeight = 44.0f;
     // Get the resource bundle depending on the framework/dependency manager we're using
     NSBundle *resourceBundle = TO_CROP_VIEW_RESOURCE_BUNDLE_FOR_OBJECT(self);
 
-    NSString *title = NSLocalizedStringFromTableInBundle(@"Delete Changes?", @"TOCropViewControllerLocalizable", resourceBundle, nil);
-    UIAlertController *alertController = [UIAlertController alertControllerWithTitle:title
+    UIAlertController *alertController = [UIAlertController alertControllerWithTitle:nil
                                                                              message:nil
                                                                       preferredStyle:UIAlertControllerStyleActionSheet];
+    alertController.popoverPresentationController.sourceView = self.toolbar.visibleCancelButton;
 
-
-    NSString *yesButtonTitle = NSLocalizedStringFromTableInBundle(@"Yes", @"TOCropViewControllerLocalizable", resourceBundle, nil);
-    NSString *noButtonTitle = NSLocalizedStringFromTableInBundle(@"No", @"TOCropViewControllerLocalizable", resourceBundle, nil);
+    NSString *yesButtonTitle = NSLocalizedStringFromTableInBundle(@"Delete Changes", @"TOCropViewControllerLocalizable", resourceBundle, nil);
+    NSString *noButtonTitle = NSLocalizedStringFromTableInBundle(@"Cancel", @"TOCropViewControllerLocalizable", resourceBundle, nil);
 
     __weak typeof (self) weakSelf = self;
     UIAlertAction *yesAction = [UIAlertAction actionWithTitle:yesButtonTitle style:UIAlertActionStyleDestructive handler:^(UIAlertAction *action) {
@@ -888,11 +902,10 @@ static const CGFloat kTOCropViewControllerToolbarHeight = 44.0f;
 
     // If neither callbacks were implemented, perform a default dismissing animation
     if (!isDelegateOrCallbackHandled) {
-        if (self.navigationController) {
+        if (self.navigationController && self.navigationController.viewControllers.count > 1) {
             [self.navigationController popViewControllerAnimated:YES];
         }
         else {
-            self.modalTransitionStyle = UIModalTransitionStyleCoverVertical;
             [self.presentingViewController dismissViewControllerAnimated:YES completion:nil];
         }
     }
@@ -940,12 +953,19 @@ static const CGFloat kTOCropViewControllerToolbarHeight = 44.0f;
             }
             
             if (!isCallbackOrDelegateHandled) {
-                [self.presentingViewController dismissViewControllerAnimated:YES completion:nil];
-                blockController.completionWithItemsHandler = nil;
+                if (self.navigationController != nil && self.navigationController.viewControllers.count > 1) {
+                    [self.navigationController popViewControllerAnimated:YES];
+                }
+                else {
+                    [self.presentingViewController dismissViewControllerAnimated:YES completion:nil];
+                    blockController.completionWithItemsHandler = nil;
+                }
             }
         };
 
         return;
+    } else {
+      self.toolbar.doneTextButton.enabled = false;
     }
     
     BOOL isCallbackOrDelegateHandled = NO;
@@ -1014,6 +1034,11 @@ static const CGFloat kTOCropViewControllerToolbarHeight = 44.0f;
     }
 }
 
+- (void)commitCurrentCrop
+{
+    [self doneButtonTapped];
+}
+
 #pragma mark - Property Methods -
 
 - (void)setTitle:(NSString *)title
@@ -1032,15 +1057,30 @@ static const CGFloat kTOCropViewControllerToolbarHeight = 44.0f;
     self.titleLabel.frame = [self frameForTitleLabelWithSize:self.titleLabel.frame.size verticalLayout:self.verticalLayout];
 }
 
-- (void)setDoneButtonTitle:(NSString *)title {
+- (void)setDoneButtonTitle:(NSString *)title
+{
     self.toolbar.doneTextButtonTitle = title;
 }
 
-- (void)setCancelButtonTitle:(NSString *)title {
+- (void)setCancelButtonTitle:(NSString *)title
+{
     self.toolbar.cancelTextButtonTitle = title;
 }
 
-- (TOCropView *)cropView {
+- (void)setShowOnlyIcons:(BOOL)showOnlyIcons {
+    self.toolbar.showOnlyIcons = showOnlyIcons;
+}
+  
+- (void)setDoneButtonColor:(UIColor *)color {
+    self.toolbar.doneButtonColor = color;
+}
+
+- (void)setCancelButtonColor:(UIColor *)color {
+    self.toolbar.cancelButtonColor = color;
+}
+
+- (TOCropView *)cropView
+{
     // Lazily create the crop view in case we try and access it before presentation, but
     // don't add it until our parent view controller view has loaded at the right time
     if (!_cropView) {
@@ -1052,7 +1092,8 @@ static const CGFloat kTOCropViewControllerToolbarHeight = 44.0f;
     return _cropView;
 }
 
-- (TOCropToolbar *)toolbar {
+- (TOCropToolbar *)toolbar
+{
     if (!_toolbar) {
         _toolbar = [[TOCropToolbar alloc] initWithFrame:CGRectZero];
         [self.view addSubview:_toolbar];
@@ -1091,6 +1132,7 @@ static const CGFloat kTOCropViewControllerToolbarHeight = 44.0f;
 
 - (void)setAspectRatioLockDimensionSwapEnabled:(BOOL)aspectRatioLockDimensionSwapEnabled
 {
+    _aspectRatioLockDimensionSwapEnabled = aspectRatioLockDimensionSwapEnabled;
     self.cropView.aspectRatioLockDimensionSwapEnabled = aspectRatioLockDimensionSwapEnabled;
 }
 
@@ -1120,7 +1162,8 @@ static const CGFloat kTOCropViewControllerToolbarHeight = 44.0f;
     self.toolbar.rotateClockwiseButtonHidden = rotateClockwiseButtonHidden;
 }
 
-- (BOOL)rotateClockwiseButtonHidden {
+- (BOOL)rotateClockwiseButtonHidden
+{
     return self.toolbar.rotateClockwiseButtonHidden;
 }
 
@@ -1132,6 +1175,36 @@ static const CGFloat kTOCropViewControllerToolbarHeight = 44.0f;
 - (BOOL)aspectRatioPickerButtonHidden
 {
     return self.toolbar.clampButtonHidden;
+}
+
+- (void)setDoneButtonHidden:(BOOL)doneButtonHidden
+{
+    self.toolbar.doneButtonHidden = doneButtonHidden;
+}
+
+- (BOOL)doneButtonHidden
+{
+    return self.toolbar.doneButtonHidden;
+}
+
+- (void)setCancelButtonHidden:(BOOL)cancelButtonHidden
+{
+    self.toolbar.cancelButtonHidden = cancelButtonHidden;
+}
+
+- (BOOL)cancelButtonHidden
+{
+    return self.toolbar.cancelButtonHidden;
+}
+
+- (BOOL)reverseContentLayout
+{
+    return self.toolbar.reverseContentLayout;
+}
+- (void)setReverseContentLayout:(BOOL)reverseContentLayout
+{
+
+    self.toolbar.reverseContentLayout = reverseContentLayout;
 }
 
 - (void)setResetAspectRatioEnabled:(BOOL)resetAspectRatioEnabled
@@ -1175,6 +1248,10 @@ static const CGFloat kTOCropViewControllerToolbarHeight = 44.0f;
 
 - (BOOL)verticalLayout
 {
+#if TARGET_OS_MACCATALYST
+    return YES;
+#endif
+
     return CGRectGetWidth(self.view.bounds) < CGRectGetHeight(self.view.bounds);
 }
 
@@ -1198,7 +1275,7 @@ static const CGFloat kTOCropViewControllerToolbarHeight = 44.0f;
 
 - (BOOL)statusBarHidden
 {
-    // Defer behavioir to the hosting navigation controller
+    // Defer behaviour to the hosting navigation controller
     if (self.navigationController) {
         return self.navigationController.prefersStatusBarHidden;
     }
@@ -1215,16 +1292,23 @@ static const CGFloat kTOCropViewControllerToolbarHeight = 44.0f;
 
 - (CGFloat)statusBarHeight
 {
-    if (self.statusBarHidden) {
-        return 0.0f;
-    }
-
     CGFloat statusBarHeight = 0.0f;
-    if (@available(iOS 11.0, *)) {
-        statusBarHeight = self.view.safeAreaInsets.top;
-    }
-    else {
-        statusBarHeight = self.topLayoutGuide.length;
+    statusBarHeight = self.view.safeAreaInsets.top;
+
+    // We do need to include the status bar height on devices
+    // that have a physical hardware inset, like an iPhone X notch
+    BOOL hardwareRelatedInset = self.view.safeAreaInsets.bottom > FLT_EPSILON
+                                && UIDevice.currentDevice.userInterfaceIdiom == UIUserInterfaceIdiomPhone;
+
+    // Always have insetting on Mac Catalyst
+    #if TARGET_OS_MACCATALYST
+    hardwareRelatedInset = YES;
+    #endif
+
+    // Unless the status bar is visible, or we need to account
+    // for a hardware notch, always treat the status bar height as zero
+    if (self.statusBarHidden && !hardwareRelatedInset) {
+        statusBarHeight = 0.0f;
     }
     
     return statusBarHeight;
@@ -1233,19 +1317,8 @@ static const CGFloat kTOCropViewControllerToolbarHeight = 44.0f;
 - (UIEdgeInsets)statusBarSafeInsets
 {
     UIEdgeInsets insets = UIEdgeInsetsZero;
-    if (@available(iOS 11.0, *)) {
-        insets = self.view.safeAreaInsets;
-
-        // Since iPhone X insets are always 44, check if this is merely
-        // accounting for a non-X status bar and cancel it
-        if (insets.top <= 40.0f + FLT_EPSILON) {
-            insets.top = self.statusBarHeight;
-        }
-    }
-    else {
-        insets.top = self.statusBarHeight;
-    }
-
+    insets = self.view.safeAreaInsets;
+    insets.top = self.statusBarHeight;
     return insets;
 }
 

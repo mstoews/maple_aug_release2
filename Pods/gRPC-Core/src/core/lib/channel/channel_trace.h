@@ -1,30 +1,34 @@
-/*
- *
- * Copyright 2017 gRPC authors.
- *
- * Licensed under the Apache License, Version 2.0 (the "License");
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
- *
- *     http://www.apache.org/licenses/LICENSE-2.0
- *
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
- *
- */
+//
+//
+// Copyright 2017 gRPC authors.
+//
+// Licensed under the Apache License, Version 2.0 (the "License");
+// you may not use this file except in compliance with the License.
+// You may obtain a copy of the License at
+//
+//     http://www.apache.org/licenses/LICENSE-2.0
+//
+// Unless required by applicable law or agreed to in writing, software
+// distributed under the License is distributed on an "AS IS" BASIS,
+// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+// See the License for the specific language governing permissions and
+// limitations under the License.
+//
+//
 
-#ifndef GRPC_CORE_LIB_CHANNEL_CHANNEL_TRACE_H
-#define GRPC_CORE_LIB_CHANNEL_CHANNEL_TRACE_H
+#ifndef GRPC_SRC_CORE_LIB_CHANNEL_CHANNEL_TRACE_H
+#define GRPC_SRC_CORE_LIB_CHANNEL_CHANNEL_TRACE_H
 
-#include <grpc/impl/codegen/port_platform.h>
+#include <grpc/support/port_platform.h>
 
-#include <grpc/grpc.h>
-#include "src/core/lib/gprpp/ref_counted.h"
+#include <stddef.h>
+#include <stdint.h>
+
+#include <grpc/slice.h>
+#include <grpc/support/sync.h>
+#include <grpc/support/time.h>
+
 #include "src/core/lib/gprpp/ref_counted_ptr.h"
-#include "src/core/lib/iomgr/error.h"
 #include "src/core/lib/json/json.h"
 
 namespace grpc_core {
@@ -41,7 +45,7 @@ class BaseNode;
 // https://github.com/grpc/proposal/blob/master/A14-channelz.md
 class ChannelTrace {
  public:
-  ChannelTrace(size_t max_event_memory);
+  explicit ChannelTrace(size_t max_event_memory);
   ~ChannelTrace();
 
   enum Severity {
@@ -75,9 +79,9 @@ class ChannelTrace {
   void AddTraceEventWithReference(Severity severity, const grpc_slice& data,
                                   RefCountedPtr<BaseNode> referenced_entity);
 
-  // Creates and returns the raw grpc_json object, so a parent channelz
+  // Creates and returns the raw Json object, so a parent channelz
   // object may incorporate the json before rendering.
-  grpc_json* RenderJson() const;
+  Json RenderJson() const;
 
  private:
   friend size_t testing::GetSizeofTraceEvent(void);
@@ -98,7 +102,7 @@ class ChannelTrace {
 
     // Renders the data inside of this TraceEvent into a json object. This is
     // used by the ChannelTrace, when it is rendering itself.
-    void RenderTraceEvent(grpc_json* json) const;
+    Json RenderTraceEvent() const;
 
     // set and get for the next_ pointer.
     TraceEvent* next() const { return next_; }
@@ -131,4 +135,4 @@ class ChannelTrace {
 }  // namespace channelz
 }  // namespace grpc_core
 
-#endif /* GRPC_CORE_LIB_CHANNEL_CHANNEL_TRACE_H */
+#endif  // GRPC_SRC_CORE_LIB_CHANNEL_CHANNEL_TRACE_H

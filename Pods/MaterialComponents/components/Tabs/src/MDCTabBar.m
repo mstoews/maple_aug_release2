@@ -14,19 +14,21 @@
 
 #import "MDCTabBar.h"
 
+#import "MDCTabBarAlignment.h"
+#import "MDCTabBarItemAppearance.h"
+#import "MDCTabBarTextTransform.h"
+#import "MDCItemBarDelegate.h"
 #import <MDFInternationalization/MDFInternationalization.h>
 
-#import "MDCTabBarDisplayDelegate.h"
-#import "MDCTabBarExtendedAlignment.h"
-#import "MDCTabBarIndicatorTemplate.h"
-#import "MDCTabBarSizeClassDelegate.h"
-#import "MDCTabBarUnderlineIndicatorTemplate.h"
-#import "MaterialInk.h"
-#import "MaterialRipple.h"
-#import "MaterialTypography.h"
 #import "private/MDCItemBar.h"
 #import "private/MDCItemBarAlignment.h"
 #import "private/MDCItemBarStyle.h"
+#import "MaterialInk.h"
+#import "MaterialRipple.h"
+#import "MDCTabBarExtendedAlignment.h"
+#import "MDCTabBarDelegate.h"
+#import "MDCTabBarUnderlineIndicatorTemplate.h"
+#import "MaterialTypography.h"
 
 /// Padding between image and title in points, according to the spec.
 static const CGFloat kImageTitleSpecPadding = 10;
@@ -84,11 +86,11 @@ static inline UIColor *RippleColor() {
   return [UIColor colorWithWhite:1 alpha:(CGFloat)0.7];
 }
 
-@interface MDCTabBar ()
-@property(nonatomic, weak, nullable) id<MDCTabBarSizeClassDelegate> sizeClassDelegate;
-@end
+@protocol MDCTabBarSizeClassDelegate;
+@protocol MDCTabBarDisplayDelegate;
 
 @interface MDCTabBar ()
+@property(nonatomic, weak, nullable) id<MDCTabBarSizeClassDelegate> sizeClassDelegate;
 @property(nonatomic, weak, nullable) id<MDCTabBarDisplayDelegate> displayDelegate;
 @end
 
@@ -118,6 +120,8 @@ static inline UIColor *RippleColor() {
 @synthesize alignment = _alignment;
 @synthesize barPosition = _barPosition;
 @synthesize itemAppearance = _itemAppearance;
+@synthesize mdc_overrideBaseElevation = _mdc_overrideBaseElevation;
+@synthesize mdc_elevationDidChangeBlock = _mdc_elevationDidChangeBlock;
 
 #pragma mark - Initialization
 
@@ -178,6 +182,7 @@ static inline UIColor *RippleColor() {
   [self addSubview:_dividerBar];
 
   [self updateItemBarStyle];
+  _mdc_overrideBaseElevation = -1;
 }
 
 - (void)layoutSubviews {
@@ -185,6 +190,18 @@ static inline UIColor *RippleColor() {
 
   CGSize sizeThatFits = [_itemBar sizeThatFits:self.bounds.size];
   _itemBar.frame = CGRectMake(0, 0, sizeThatFits.width, sizeThatFits.height);
+}
+
+- (void)traitCollectionDidChange:(UITraitCollection *)previousTraitCollection {
+  [super traitCollectionDidChange:previousTraitCollection];
+
+  if (self.traitCollectionDidChangeBlock) {
+    self.traitCollectionDidChangeBlock(self, previousTraitCollection);
+  }
+}
+
+- (CGFloat)mdc_currentElevation {
+  return 0;
 }
 
 #pragma mark - Public

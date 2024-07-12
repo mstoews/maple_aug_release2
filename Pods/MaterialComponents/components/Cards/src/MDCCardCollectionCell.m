@@ -14,9 +14,14 @@
 
 #import "MDCCardCollectionCell.h"
 
+#import "MaterialElevation.h"
+#import "MaterialInk.h"
+#import "MaterialRipple.h"
+#import "MaterialShadowElevations.h"
+#import "MaterialShadowLayer.h"
+#import "MaterialShapes.h"
 #import "MaterialIcons+ic_check_circle.h"
 #import "MaterialMath.h"
-#import "MaterialShapes.h"
 
 static const CGFloat MDCCardCellCornerRadiusDefault = 4;
 static const CGFloat MDCCardCellSelectedImagePadding = 8;
@@ -44,6 +49,8 @@ static const BOOL MDCCardCellIsInteractableDefault = YES;
   CGPoint _lastTouch;
 }
 
+@synthesize mdc_overrideBaseElevation = _mdc_overrideBaseElevation;
+@synthesize mdc_elevationDidChangeBlock = _mdc_elevationDidChangeBlock;
 @synthesize state = _state;
 @dynamic layer;
 
@@ -72,8 +79,13 @@ static const BOOL MDCCardCellIsInteractableDefault = YES;
 }
 
 - (void)commonMDCCardCollectionCellInit {
+  _mdc_overrideBaseElevation = -1;
+
   if (_inkView == nil) {
+#pragma clang diagnostic push
+#pragma clang diagnostic ignored "-Wdeprecated-declarations"
     _inkView = [[MDCInkView alloc] initWithFrame:self.bounds];
+#pragma clang diagnostic pop
     _inkView.autoresizingMask =
         (UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight);
     _inkView.usesLegacyInkRipple = NO;
@@ -147,6 +159,14 @@ static const BOOL MDCCardCellIsInteractableDefault = YES;
     self.layer.shadowPath = [self boundingPath].CGPath;
   }
   [self updateImageAlignment];
+}
+
+- (void)traitCollectionDidChange:(UITraitCollection *)previousTraitCollection {
+  [super traitCollectionDidChange:previousTraitCollection];
+
+  if (self.traitCollectionDidChangeBlock) {
+    self.traitCollectionDidChangeBlock(self, previousTraitCollection);
+  }
 }
 
 - (void)updateCardCellVisuals {
@@ -295,6 +315,7 @@ static const BOOL MDCCardCellIsInteractableDefault = YES;
       self.layer.shadowPath = [self boundingPath].CGPath;
     }
     [(MDCShadowLayer *)self.layer setElevation:elevation];
+    [self mdc_elevationDidChange];
   }
 }
 
@@ -520,7 +541,7 @@ static const BOOL MDCCardCellIsInteractableDefault = YES;
 - (void)updateInkForShape {
   CGRect boundingBox = CGPathGetBoundingBox(self.layer.shapeLayer.path);
   self.inkView.maxRippleRadius =
-      (CGFloat)(MDCHypot(CGRectGetHeight(boundingBox), CGRectGetWidth(boundingBox)) / 2 + 10);
+      (CGFloat)(hypot(CGRectGetHeight(boundingBox), CGRectGetWidth(boundingBox)) / 2 + 10);
   self.inkView.layer.masksToBounds = NO;
 }
 
@@ -630,4 +651,9 @@ static const BOOL MDCCardCellIsInteractableDefault = YES;
     [self addSubview:_inkView];
   }
 }
+
+- (CGFloat)mdc_currentElevation {
+  return [self shadowElevationForState:self.state];
+}
+
 @end

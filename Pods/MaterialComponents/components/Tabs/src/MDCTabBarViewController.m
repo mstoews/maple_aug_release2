@@ -16,6 +16,10 @@
 
 #import "MaterialShadowElevations.h"
 #import "MaterialShadowLayer.h"
+#import "MDCTabBar.h"
+#import "MDCTabBarAlignment.h"
+#import "MDCTabBarControllerDelegate.h"
+#import "MDCTabBarItemAppearance.h"
 
 const CGFloat MDCTabBarViewControllerAnimationDuration = (CGFloat)0.3;
 
@@ -120,6 +124,14 @@ const CGFloat MDCTabBarViewControllerAnimationDuration = (CGFloat)0.3;
   [self updateLayout];
 }
 
+- (void)traitCollectionDidChange:(UITraitCollection *)previousTraitCollection {
+  [super traitCollectionDidChange:previousTraitCollection];
+
+  if (self.traitCollectionDidChangeBlock) {
+    self.traitCollectionDidChangeBlock(self, previousTraitCollection);
+  }
+}
+
 #pragma mark - Properties
 
 - (BOOL)tabBarHidden {
@@ -201,6 +213,10 @@ const CGFloat MDCTabBarViewControllerAnimationDuration = (CGFloat)0.3;
     NSAssert([_viewControllers containsObject:selectedViewController], @"not one of us.");
   }
 
+  [oldSelectedViewController willMoveToParentViewController:nil];
+  [oldSelectedViewController.view removeFromSuperview];
+  [oldSelectedViewController removeFromParentViewController];
+
   if (![self.childViewControllers containsObject:selectedViewController]) {
     [self addChildViewController:selectedViewController];
     UIView *view = selectedViewController.view;
@@ -222,6 +238,8 @@ const CGFloat MDCTabBarViewControllerAnimationDuration = (CGFloat)0.3;
     self.tabBar.selectedItem = selectedViewController.tabBarItem;
   }
   [self setNeedsStatusBarAppearanceUpdate];
+
+  UIAccessibilityPostNotification(UIAccessibilityScreenChangedNotification, nil);
 }
 
 - (void)setSelectedViewController:(nullable UIViewController *)selectedViewController {

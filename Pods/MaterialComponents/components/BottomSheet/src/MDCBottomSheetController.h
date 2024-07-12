@@ -13,7 +13,12 @@
 // limitations under the License.
 
 #import <UIKit/UIKit.h>
+// TODO(b/151929968): Delete import of MDCBottomSheetControllerDelegate.h when client code has been
+// migrated to no longer import MDCBottomSheetControllerDelegate as a transitive dependency.
+#import "MDCBottomSheetControllerDelegate.h"
 #import "MDCSheetState.h"
+#import "MaterialElevation.h"
+#import "MaterialShadowElevations.h"
 #import "MaterialShapes.h"
 
 @protocol MDCBottomSheetControllerDelegate;
@@ -28,7 +33,7 @@
  MDCBottomSheetController automatically sets the appropriate presentation style and
  transitioningDelegate for the bottom sheet behavior.
  */
-@interface MDCBottomSheetController : UIViewController
+@interface MDCBottomSheetController : UIViewController <MDCElevatable, MDCElevationOverriding>
 
 /**
  The view controller being presented as a bottom sheet.
@@ -57,6 +62,21 @@
  When set to false, the bottom sheet controller can't be dismissed by tapping outside of sheet area.
  */
 @property(nonatomic, assign) BOOL dismissOnBackgroundTap;
+
+/**
+ When set to false, the bottom sheet controller can't be dismissed by dragging the sheet down.
+
+ Defaults to @c YES.
+ */
+@property(nonatomic, assign) BOOL dismissOnDraggingDownSheet;
+
+/**
+ A Boolean value that controls whether the height of the keyboard should affect
+ the bottom sheet's frame when the keyboard shows on the screen.
+
+ The default value is @c NO.
+ */
+@property(nonatomic) BOOL ignoreKeyboardHeight;
 
 /**
  The color applied to the sheet's background when presented by MDCBottomSheetPresentationController.
@@ -105,6 +125,34 @@
 @property(nonatomic, readonly) MDCSheetState state;
 
 /**
+ The elevation of the bottom sheet. Defaults to @c MDCShadowElevationModalBottomSheet.
+ */
+@property(nonatomic, assign) MDCShadowElevation elevation;
+
+/**
+ Whether or not the height of the bottom sheet should adjust to include extra height for any bottom
+ safe area insets. If, for example, this is set to @c YES, and the preferred content size height is
+ 100 and the screen has a bottom safe area inset of 10, the total height of the displayed bottom
+ sheet height would be 110. If set to @c NO, the height would be 100.
+
+ Defaults to @c YES.
+ */
+@property(nonatomic, assign) BOOL adjustHeightForSafeAreaInsets;
+
+/**
+ Bottom sheet controllers must be created with @c initWithContentViewController:.
+ */
+- (nonnull instancetype)init NS_UNAVAILABLE;
+
+/**
+ Initializes the controller with a content view controller.
+
+ @param contentViewController The view controller to be presented as a bottom sheet.
+ */
+- (nonnull instancetype)initWithContentViewController:
+    (nonnull UIViewController *)contentViewController;
+
+/**
  Sets the shape generator for state that is used to define the bottom sheet's shape for that state.
 
  note: If a layer property is explicitly set after the shapeGenerator has been set,
@@ -129,47 +177,11 @@
 - (nullable id<MDCShapeGenerating>)shapeGeneratorForState:(MDCSheetState)state;
 
 /**
- Initializes the controller with a content view controller.
-
- @param contentViewController The view controller to be presented as a bottom sheet.
+ A block that is invoked when the @c MDCBottomSheetController receives a call to @c
+ traitCollectionDidChange:. The block is called after the call to the superclass.
  */
-- (nonnull instancetype)initWithContentViewController:
-    (nonnull UIViewController *)contentViewController;
+@property(nonatomic, copy, nullable) void (^traitCollectionDidChangeBlock)
+    (MDCBottomSheetController *_Nonnull bottomSheetController,
+     UITraitCollection *_Nullable previousTraitCollection);
 
-@end
-
-/**
- Delegate for MDCBottomSheetController.
- */
-@protocol MDCBottomSheetControllerDelegate <NSObject>
-@optional
-/**
- Called when the user taps the dimmed background or swipes the bottom sheet off to dismiss the
- bottom sheet. Also called with accessibility escape "two finger Z" gestures.
-
- This method is not called if the bottom sheet is dismissed programatically.
-
- @param controller The MDCBottomSheetController that was dismissed.
- */
-- (void)bottomSheetControllerDidDismissBottomSheet:(nonnull MDCBottomSheetController *)controller;
-
-/**
- Called when the state of the bottom sheet changes.
-
- Note: See what states the sheet can transition to by looking at MDCSheetState.
-
- @param controller The MDCBottomSheetController that its state changed.
- @param state The state the sheet changed to.
- */
-- (void)bottomSheetControllerStateChanged:(nonnull MDCBottomSheetController *)controller
-                                    state:(MDCSheetState)state;
-
-/**
- Called when the Y offset of the sheet's changes in relation to the top of the screen.
-
- @param controller The MDCBottomSheetController that its Y offset changed.
- @param yOffset The Y offset the bottom sheet changed to.
- */
-- (void)bottomSheetControllerDidChangeYOffset:(nonnull MDCBottomSheetController *)controller
-                                      yOffset:(CGFloat)yOffset;
 @end
