@@ -237,7 +237,21 @@ class  Post {
         else{
             self.hasBookmark = false
         }
-        
+
+    }
+
+    // Flat-dictionary initializer used by Firestore fetch helpers (keys: uid, name, profileUrl, product).
+    convenience init?(dictionary: [String: Any], postId: String) {
+        let uid = dictionary["uid"] as? String ?? ""
+        let userDict: [String: Any] = [
+            "username": dictionary["name"] as? String ?? "",
+            "profileImageUrl": dictionary["profileUrl"] as? String ?? "",
+            "firstName": "", "lastName": "", "email": "",
+            "followedCount": 0, "followerCount": 0, "postCount": 0
+        ]
+        let user = MapleUser(uid: uid, dictionary: userDict)
+        self.init(user: user, dictionary: dictionary)
+        self.id = postId
     }
 }
 
@@ -323,7 +337,7 @@ extension Post: Equatable {
 var  postbyUser: [Post]?
 
 extension PostStruct: Equatable {
-    static func ==(lhs: Post, rhs: Post) -> Bool {
+    static func ==(lhs: PostStruct, rhs: PostStruct) -> Bool {
         return lhs.id == rhs.id
     }
 }

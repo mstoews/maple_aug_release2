@@ -297,7 +297,7 @@ class UserGridPostCell: MDCCardCollectionCell , UICollectionViewDataSource, UICo
     {
         var attributedText: NSMutableAttributedString?
         attributedText = NSMutableAttributedString(string: "" , attributes: attributeCaption)
-        //attributedText?.append(NSMutableAttributedString(string: userName , attributes: [NSAttributedStringKey.font: font as Any]))
+        //attributedText?.append(NSMutableAttributedString(string: userName , attributes: [NSAttributedString.Key.font: font as Any]))
         attributedText?.append(NSMutableAttributedString(string: userName , attributes:attributeCaption))
         attributedText?.append(NSMutableAttributedString(string: " : " , attributes: attributeCaption))
         attributedText?.append(NSMutableAttributedString(string: caption , attributes: attributeCaption))

@@ -10,7 +10,6 @@ import UIKit
 import GoogleMaps
 import GooglePlaces
 import Firebase
-import Mapbox
 
 
 class POIItem: NSObject, GMUClusterItem {
@@ -35,7 +34,7 @@ class MapViewCell: UICollectionViewCell,
     
     private var clusterManager: GMUClusterManager!
     
-    var post : FSPost
+    var post: FSPost?
     
     let locationManager = CLLocationManager()
     
@@ -260,7 +259,7 @@ class MapViewCell: UICollectionViewCell,
                        right: nil, paddingTop: 0, paddingLeft: 0 ,
                        paddingBottom: 0, paddingRight: 0, width: frame.width, height: frame.height - 350)
         
-        if let postId = post.id {
+        if let postId = post?.id {
             Firestore.fetchLocationByPostId(postId: postId) { (locationObjects) in
                 if locationObjects.count > 0 {
                     let values : [String: Any] = [
@@ -268,8 +267,8 @@ class MapViewCell: UICollectionViewCell,
                         "currentLng" : locationObjects[0].longitude!,
                         "destinationLat" : locationObjects[0].latitude!,
                         "destinationLng" : locationObjects[0].longitude!,
-                        "Title": self.post.caption,
-                        "SubTitle" : self.post.description]
+                        "Title": self.post?.product ?? "",
+                        "SubTitle" : self.post?.description ?? ""]
                     let nav = NavigationStruct(dictionary: values)
                 }
             }

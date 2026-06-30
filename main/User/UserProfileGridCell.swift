@@ -199,8 +199,8 @@ class UserProfileGridCell: MDCCardCollectionCell, UICollectionViewDataSource, UI
         
         let attributedText = NSMutableAttributedString(string: "商品名:\t\(post.caption)", attributes: [NSAttributedString.Key.font: UIFont.systemFont(ofSize: 12)])
         attributedText.append(NSAttributedString(string:   "\n\(post.description)", attributes: [NSAttributedString.Key.font: UIFont.systemFont(ofSize: 12)]))
-        //attributedText.append(NSAttributedString(string:   "\n購入場所:\t\(post.location)", attributes: [NSAttributedStringKey.font: UIFont.systemFont(ofSize: 12)]))
-        //attributedText.append(NSAttributedString(string:   "\n種類:\t\(post.category)", attributes: [NSAttributedStringKey.font: UIFont.systemFont(ofSize: 12)]))
+        //attributedText.append(NSAttributedString(string:   "\n購入場所:\t\(post.location)", attributes: [NSAttributedString.Key.font: UIFont.systemFont(ofSize: 12)]))
+        //attributedText.append(NSAttributedString(string:   "\n種類:\t\(post.category)", attributes: [NSAttributedString.Key.font: UIFont.systemFont(ofSize: 12)]))
         attributedText.append(NSAttributedString(string:   "\n", attributes: [NSAttributedString.Key.font: UIFont.systemFont(ofSize: 4)]))
         
         let timeAgoDisplay = post.creationDate.timeAgoToDisplay()

@@ -37,10 +37,10 @@ extension ShareController
     
     func updateAlgoliaStore(post: Post)
     {
-        let values : [String: Any] = ["userid" : post.uid,
-                                      "name" : post.userName,
+        let values : [String: Any] = ["userid" : post.user.uid,
+                                      "name" : post.user.username,
                                       "profileUrl" : post.imageUrl,
-                                      "product": post.product ,
+                                      "product": post.caption ,
                                       "description" : post.description,
                                       "urlArray" : post.imageUrlArray,
                                       "creationDate": Date().timeIntervalSince1970]

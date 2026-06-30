@@ -123,7 +123,7 @@ class ProductCell: MDCCardCollectionCell , UICollectionViewDataSource, UICollect
             bookmarkButton.setImage(post?.hasBookmark == true ? #imageLiteral(resourceName: "bookmarkFilled").withRenderingMode(.alwaysOriginal) : #imageLiteral(resourceName: "bookmark").withRenderingMode(.alwaysOriginal), for: .normal)
             
             if let postId = post?.id {
-                if let uid = post?.uid {
+                if let uid = post?.user.uid {
                     print ("Post id: " + postId + " :Uid " + uid )
 //                    Firestore.IsPostLiked(postId,uid, completion: { (isLiked) in
 //                        if isLiked == 1 {
@@ -142,13 +142,13 @@ class ProductCell: MDCCardCollectionCell , UICollectionViewDataSource, UICollect
             self.hideCommentBadge(0)
             
             usernameLabel.text = "TEST USERNAME"
-            if let user = post?.userName {
-                if let caption = post?.product {
+            if let user = post?.user.username {
+                if let caption = post?.caption {
                     usernameLabel.attributedText = setUserName(userName: user, caption: caption)
                 }
                 
             }
-            guard let profileImageUrl = post?.profileURL else { return }
+            guard let profileImageUrl = post?.user.profileImageUrl else { return }
             userProfileImageView.loadImage(urlString: profileImageUrl)
             
             if let count = post?.imageUrlArray.count {
@@ -539,7 +539,7 @@ class ProductCell: MDCCardCollectionCell , UICollectionViewDataSource, UICollect
     
     @objc func usernameLabelTapped(tapGestureRecognizer: UITapGestureRecognizer)
     {
-        delegate?.didTapUserNameLabel(uid: post!.uid)
+        delegate?.didTapUserNameLabel(uid: post!.user.uid)
     }
     
     let timeAgoLabel: UILabel = {

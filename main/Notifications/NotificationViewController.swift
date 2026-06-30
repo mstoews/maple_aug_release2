@@ -240,7 +240,7 @@ class NotificationViewController: MDCCollectionViewController , NotificationDele
     
     fileprivate func openPost(_ postId: String) {
         Firestore.fetchPostByPostId(postId: postId) { (post) in
-            Firestore.fetchUserWithUID(uid: post.uid) { (user) in
+            Firestore.fetchUserWithUID(uid: post.user.uid) { (user) in
                 let userProductController = UserProductController(collectionViewLayout: UICollectionViewFlowLayout())
                 userProductController.setPostId(postId: postId)
                 userProductController.user = user

@@ -5,7 +5,8 @@ import MaterialComponents
 
 class CommentsController: MDCCollectionViewController, CommentInputAccessoryViewDelegate {
     
-    var post: Post?
+    var postId: String?
+    var postAuthorUid: String?
     let cellId = "cellId"
     var sizingCell: CommentCell!
     var insets: UIEdgeInsets!
@@ -62,7 +63,7 @@ class CommentsController: MDCCollectionViewController, CommentInputAccessoryView
     
 //    fileprivate func fetchComments() {
 //        comments.removeAll()
-//        if let postId = self.post?.id {
+//        if let postId = self.postId {
 //            Firestore.firestore().collection("posts").document(postId).collection("comments").getDocuments() {
 //                (querySnapshot, err) in
 //                if let err = err  {
@@ -96,7 +97,7 @@ class CommentsController: MDCCollectionViewController, CommentInputAccessoryView
         stopObserving()
         comments.removeAll()
         self.collectionView?.reloadData()
-        if let postId = self.post?.id {
+        if let postId = self.postId {
             self.listener =
                 db.collection("posts").document(postId).collection("comments")
                     .order(by: "creationDate", descending: false)
@@ -199,16 +200,16 @@ class CommentsController: MDCCollectionViewController, CommentInputAccessoryView
         
         if comment.count > 0 {
             guard let uid = Auth.auth().currentUser?.uid else { return }
-            let postId = self.post?.id ?? ""
+            let postId = self.postId ?? ""
             
             Firestore.fetchUserWithUID(uid: uid ,  completion: { (mapleUser) in
                 let values = ["text": comment,
                               "creationDate": Date().timeIntervalSince1970,
-                              "postUid" : self.post?.uid ?? "uid",
+                              "postUid" : self.postAuthorUid ?? "uid",
                               "username" : mapleUser.username,
                               "imageProfileUrl" : mapleUser.profileImageUrl,
                               "uid": uid,
-                              "postId" : self.post?.id ?? ""
+                              "postId" : self.postId ?? ""
                     ]
                     as [String : Any]
                 

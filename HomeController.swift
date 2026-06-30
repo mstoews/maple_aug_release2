@@ -16,7 +16,6 @@ import GoogleSignIn
 import GoogleToolboxForMac
 import MaterialComponents
 import JGProgressHUD
-import Mapbox
 
 
 // MARK: - Fix the pagination
@@ -103,7 +102,7 @@ class HomeController: MDCCollectionViewController, HomePostCellDelegate,  HomeHe
                         "currentLng" : locationObjects[0].longitude!,
                         "destinationLat" : locationObjects[0].latitude!,
                         "destinationLng" : locationObjects[0].longitude!,
-                        "Title": post.product,
+                        "Title": post.caption,
                         "SubTitle" : post.description]
                     
                     let nav = NavigationStruct(dictionary: values)
@@ -140,11 +139,6 @@ class HomeController: MDCCollectionViewController, HomePostCellDelegate,  HomeHe
         }
     }
     
-    func didTapImageCell(for cell: UserImageCell, post: Post) {
-        
-    }
-    
-   
     func setButtonImage(button: UIButton, btnName: String,  color: UIColor)
     {
         let origImage = UIImage(named: btnName);
@@ -192,10 +186,10 @@ class HomeController: MDCCollectionViewController, HomePostCellDelegate,  HomeHe
         
         
         if let imageUrl = imageUrl {
-        let values : [String: Any] = ["userid" : post.uid,
-                                      "name" : post.userName,
+        let values : [String: Any] = ["userid" : post.user.uid,
+                                      "name" : post.user.username,
                                       "profileUrl" : post.imageUrl,
-                                      "product": post.product ,
+                                      "product": post.caption ,
                                       "description" : post.description,
                                       "urlArray" : imageUrl,
                                       "creationDate": Date().timeIntervalSince1970]
@@ -514,7 +508,8 @@ class HomeController: MDCCollectionViewController, HomePostCellDelegate,  HomeHe
     func didTapComment(post: Post) {
         print("Message coming from home controller ... didTapComment")
         let commentsController = CommentsController(collectionViewLayout: UICollectionViewFlowLayout())
-        commentsController.post = post
+        commentsController.postId = post.id
+        commentsController.postAuthorUid = post.user.uid
         navigationController?.pushViewController(commentsController, animated: true)
     }
     
@@ -524,7 +519,7 @@ class HomeController: MDCCollectionViewController, HomePostCellDelegate,  HomeHe
         if post.largeUrlArray.count > 0 {
             for url in post.largeUrlArray {
                 let pt = PhotoViewModel(imageURL: URL(string: url),thumbnailImageURL: URL(string: url))
-                pt.caption = post.product + "\n" + post.description
+                pt.caption = post.caption + "\n" + post.description
                 photos.append(pt)
             }
         }
@@ -545,7 +540,7 @@ class HomeController: MDCCollectionViewController, HomePostCellDelegate,  HomeHe
             if post.imageUrlArray.count > 0 {
                 for url in post.imageUrlArray {
                     let pt = PhotoViewModel(imageURL: URL(string: url),thumbnailImageURL: URL(string: url))
-                    pt.caption = post.product + "\n" + post.description
+                    pt.caption = post.caption + "\n" + post.description
                     photos.append(pt)
                 }
             }
@@ -556,10 +551,10 @@ class HomeController: MDCCollectionViewController, HomePostCellDelegate,  HomeHe
         if post.imageUrlArray.count > 0 {
             for url in post.imageUrlArray {
                 //let pt = PhotoViewModel(imageURL: URL(string: url),thumbnailImageURL: URL(string: url))
-                //pt.caption = post.product + "\n" + post.description
+                //pt.caption = post.caption + "\n" + post.description
                 //photos.append(pt)
                 let lightbox = LightboxImage(imageURL: URL(string: url)! )
-                lightbox.text = post.product + "\n" + post.description
+                lightbox.text = post.caption + "\n" + post.description
                 images.append( lightbox)
                 
             }

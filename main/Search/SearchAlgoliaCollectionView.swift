@@ -430,7 +430,7 @@ class SearchAlgoliaCollectionView: MDCCollectionViewController , UISearchBarDele
     {
         if let postId = postRecord.objectID {
             Firestore.fetchPostByPostId(postId: postId) { (post) in
-                    Firestore.fetchUserWithUID(uid: post.uid) { [weak self] (user) in
+                    Firestore.fetchUserWithUID(uid: post.user.uid) { [weak self] (user) in
                         guard let strongSelf = self else {return}
                         DispatchQueue.main.async {
                             //let userProfileController = UserProfileController(collectionViewLayout: UICollectionViewFlowLayout())

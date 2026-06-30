@@ -8,6 +8,13 @@
 
 import UIKit
 
+struct CategoryModel {
+    var Category: String
+}
+
+class CategoryData {
+    static func getData() -> [CategoryModel] { return [] }
+}
 
 class CategoryPicker: UIPickerView, UIPickerViewDataSource, UIPickerViewDelegate {
     

@@ -298,7 +298,8 @@ class UserProfileController: MDCCollectionViewController,
         print("Message coming from home controller ... didTapComment")
         print(post.product)
         let commentsController = CommentsController(collectionViewLayout: UICollectionViewFlowLayout())
-        commentsController.post = post
+        commentsController.postId = post.id
+        commentsController.postAuthorUid = post.uid
         navigationController?.pushViewController(commentsController, animated: true)
     }
     

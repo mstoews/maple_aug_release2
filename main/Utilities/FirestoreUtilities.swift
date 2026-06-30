@@ -370,6 +370,27 @@ extension Firestore {
     
     //MARK:- Bookmark
     
+    static func didBookmarkedPost(post: FSPost, didBookmark: Bool) {
+        guard let postId = post.id else { return }
+        let values: [String: Any] = [
+            "creationDate": post.creationDate,
+            "description": post.description,
+            "name": post.userName,
+            "numberOfComments": post.commentCount,
+            "numberOfLikes": post.likeCount,
+            "postid": postId,
+            "product": post.product,
+            "profileUrl": post.profileURL,
+            "thumbImages": post.imageUrlArray,
+            "uid": post.uid,
+            "bookMarked": didBookmark
+        ]
+        if let uid = Auth.auth().currentUser?.uid {
+            firestore().collection("users").document(uid).collection("bookmarked").document(postId).setData(values) { _ in }
+        }
+        firestore().collection("posts").document(postId).collection("bookmarked").document(post.uid).setData(["BookMarked": didBookmark]) { _ in }
+    }
+
     static func didBookmarkedPost(post: Post, didBookmark: Bool) {
         
         if let postId = post.id {
@@ -377,37 +398,37 @@ extension Firestore {
                 [
                     "creationDate": post.creationDate,
                     "description": post.description,
-                    "name" : post.userName,
+                    "name" : post.user.username,
                     "numberOfComments": post.noOfComments,
                     "numberOfLikes": post.noOfLikes,
                     "postid": post.id!,
-                    "product": post.product,
-                    "profileUrl": post.profileURL,
+                    "product": post.caption,
+                    "profileUrl": post.user.profileImageUrl,
                     "thumbImages": post.imageUrlArray,
-                    "uid": post.uid,
+                    "uid": post.user.uid,
                     "bookMarked" : didBookmark
                     ]
                     as [String: Any]
-            
+
             if let uid = Auth.auth().currentUser?.uid  {
-                
+
                 firestore().collection("users").document(uid).collection("bookmarked").document(postId).setData(values)
                 { err in
                     if let err = err {
                         print("Error writing document: \(err)")
                     } else {
-                        print("Did successfully bookmark : \(postId) for user \(post.uid)")
+                        print("Did successfully bookmark : \(postId) for user \(post.user.uid)")
                     }
                 }
             }
-            
+
             let Booked = [ "BookMarked" : didBookmark ] as [String: Any]
-            firestore().collection("posts").document(postId).collection("bookmarked").document(post.uid).setData(Booked)
+            firestore().collection("posts").document(postId).collection("bookmarked").document(post.user.uid).setData(Booked)
             { err in
                 if let err = err {
                     print("Error writing document: \(err)")
                 } else {
-                    print("Did successfully like : \(postId) for user \(post.uid)")
+                    print("Did successfully like : \(postId) for user \(post.user.uid)")
                 }
             }
         }
@@ -537,10 +558,10 @@ extension Firestore {
                 if snapshot != nil {
                     let postId = snapshot!["postid"] as! String
                     if let post = Post(dictionary: (snapshot?.data())!, postId: postId) {
-                        let values : [String: Any] = ["userid" : post.uid,
-                                                      "name" : post.userName,
+                        let values : [String: Any] = ["userid" : post.user.uid,
+                                                      "name" : post.user.username,
                                                       "profileUrl" : post.imageUrl,
-                                                      "product": post.product ,
+                                                      "product": post.caption ,
                                                       "description" : post.description,
                                                       "urlArray" : post.imageUrlArray,
                                                       "creationDate": Date().timeIntervalSince1970]
@@ -560,10 +581,10 @@ extension Firestore {
     
     static func updateAlgoliaPost(post: Post) {
         if let postId = post.id {
-            let values : [String: Any] = ["userid" : post.uid,
-                                          "name" : post.userName,
+            let values : [String: Any] = ["userid" : post.user.uid,
+                                          "name" : post.user.username,
                                           "profileUrl" : post.imageUrl,
-                                          "product": post.product ,
+                                          "product": post.caption ,
                                           "description" : post.description,
                                           "urlArray" : post.imageUrlArray,
                                           "creationDate": Date().timeIntervalSince1970]

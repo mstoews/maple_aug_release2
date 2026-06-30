@@ -11,7 +11,6 @@ import Firebase
 import Photos
 import AssetsLibrary
 import FirebaseUI
-import AFNetworking
 import GoogleMaps
 import GooglePlaces
 import GooglePlacePicker
@@ -104,8 +103,8 @@ class EditPhotoController: ShareController {
         
         if let postId = postId {
             Firestore.fetchPostByPostId(postId: postId) { (post) in
-                Firestore.fetchUserWithUID(uid: post.uid) { (user) in
-                    self.products.text = post.product
+                Firestore.fetchUserWithUID(uid: post.user.uid) { (user) in
+                    self.products.text = post.caption
                     self.descriptionTextView.text = post.description
                     for url in post.imageUrlArray {
                         print(url)

@@ -114,7 +114,7 @@ class ProductPageController:  UIViewController, CLLocationManagerDelegate,  UICo
 //                }
 //            }
             
-            productLabel.text = post?.product
+            productLabel.text = post?.caption
             //guard let profileImageUrl = post?.user.profileImageUrl else { return }
             //userProfileImageView.loadImage(urlString: profileImageUrl)
             imageCollectionView.reloadData()
@@ -158,7 +158,7 @@ class ProductPageController:  UIViewController, CLLocationManagerDelegate,  UICo
         
         for url in post.imageUrlArray {
             let pt = PhotoViewModel(imageURL: URL(string: url),thumbnailImageURL: URL(string: url))
-            pt.caption = post.product
+            pt.caption = post.caption
             photos.append(pt)
         }
         
@@ -548,7 +548,7 @@ class ProductPageController:  UIViewController, CLLocationManagerDelegate,  UICo
 //        dummySettingsViewController.view.backgroundColor = UIColor.white
 //        //dummySettingsViewController.navigationItem.title = setting.name.rawValue
 //        //navigationController?.navigationBar.tintColor = UIColor.white
-//        navigationController?.navigationBar.titleTextAttributes = [NSAttributedStringKey.foregroundColor: UIColor.white]
+//        navigationController?.navigationBar.titleTextAttributes = [NSAttributedString.Key.foregroundColor: UIColor.white]
 //        navigationController?.pushViewController(dummySettingsViewController, animated: true)
 //    }
 //    

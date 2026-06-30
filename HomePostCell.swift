@@ -132,7 +132,7 @@ class HomePostCell: MDCCardCollectionCell , UICollectionViewDataSource, UICollec
             images = []
         
             self.setButtonImage(button: self.likeButton, btnName: "ic_favorite_border", color: UIColor.red)
-            self.uid = post?.uid
+            self.uid = post?.user.uid
             
             isLikedByUid(uid: self.uid!, postId: self.post!.id!) { (isLiked) in
                  if isLiked == true {
@@ -159,14 +159,14 @@ class HomePostCell: MDCCardCollectionCell , UICollectionViewDataSource, UICollec
             self.hideCommentBadge(0)
             
             usernameLabel.text = "TEST USERNAME"
-            if let userName = post?.userName {
+            if let userName = post?.user.username {
                 //if let product = fs_post?.product {
                     usernameLabel.attributedText = setUserName(userName: userName, caption: "")
                 //}
-                
+
             }
-            
-            if let profileURL = post?.profileURL {
+
+            if let profileURL = post?.user.profileImageUrl {
                     self.userProfileImageView.loadImage(urlString: profileURL)
             }
             
@@ -186,7 +186,7 @@ class HomePostCell: MDCCardCollectionCell , UICollectionViewDataSource, UICollec
                 self.putNumberOfLikes(likes: likeCount)
             }
             
-            if let commentCount = post?.commentCount {
+            if let commentCount = post?.noOfComments {
                 self.putNumberOfComments(likes: commentCount)
             }
             
@@ -206,8 +206,8 @@ class HomePostCell: MDCCardCollectionCell , UICollectionViewDataSource, UICollec
     func configurePostCaption() {
         guard let post = self.post else { return }
         guard let caption = self.post?.description else { return }
-        guard let product = self.post?.product else { return }
-        guard let username = self.post?.userName else { return }
+        guard let product = self.post?.caption else { return }
+        guard let username = self.post?.user.username else { return }
          
         // look for username as pattern
         let customType = ActiveType.custom(pattern: "^\(username)\\b")
@@ -500,7 +500,7 @@ class HomePostCell: MDCCardCollectionCell , UICollectionViewDataSource, UICollec
     
     @objc func usernameLabelTapped(tapGestureRecognizer: UITapGestureRecognizer)
     {
-        delegate?.didTapUserNameLabel(uid: post!.uid)
+        delegate?.didTapUserNameLabel(uid: post!.user.uid)
     }
     
     let timeAgoLabel: UILabel = {

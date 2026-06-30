@@ -13,12 +13,12 @@ class ButtonPicker: UIButton {
     static let buttonBorderSize: CGFloat = 68
   }
 
-  var configuration = Configuration()
+  var pickerConfiguration: ImagePicker.Configuration = .init()
 
   lazy var numberLabel: UILabel = { [unowned self] in
     let label = UILabel()
     label.translatesAutoresizingMaskIntoConstraints = false
-    label.font = self.configuration.numberLabelFont
+    label.font = self.pickerConfiguration.numberLabelFont
 
     return label
     }()
@@ -27,9 +27,9 @@ class ButtonPicker: UIButton {
 
   // MARK: - Initializers
 
-  public init(configuration: Configuration? = nil) {
-    if let configuration = configuration {
-      self.configuration = configuration
+  public init(pickerConfiguration: ImagePicker.Configuration? = nil) {
+    if let pickerConfiguration = pickerConfiguration {
+      self.pickerConfiguration = pickerConfiguration
     }
     super.init(frame: .zero)
     configure()

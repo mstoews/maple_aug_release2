@@ -24,7 +24,6 @@ import AssetsLibrary
 import FirebaseUI
 import AlgoliaSearch
 import InstantSearchCore
-import AFNetworking
 import Firebase
 import FirebaseFirestore
 import GoogleMaps
@@ -351,9 +350,9 @@ class SharePhotoController:
     var UIMapController: UIViewController?
     var presentWindow : UIWindow?
     
-    let attributeTitle = [NSAttributedStringKey.font: UIFont.mdc_preferredFont(forMaterialTextStyle: .title)]
-    let attributeCaption = [NSAttributedStringKey.font: UIFont.mdc_preferredFont(forMaterialTextStyle: .body2 )]
-    let attributeSubline = [NSAttributedStringKey.font: UIFont.mdc_preferredFont(forMaterialTextStyle:  .subheadline )]
+    let attributeTitle = [NSAttributedString.Key.font: UIFont.mdc_preferredFont(forMaterialTextStyle: .title)]
+    let attributeCaption = [NSAttributedString.Key.font: UIFont.mdc_preferredFont(forMaterialTextStyle: .body2 )]
+    let attributeSubline = [NSAttributedString.Key.font: UIFont.mdc_preferredFont(forMaterialTextStyle:  .subheadline )]
     
     public var imageConstraint: NSLayoutConstraint?
     public var imageWidthConstraint: NSLayoutConstraint?
@@ -921,7 +920,7 @@ class SharePhotoController:
         dummySettingsViewController.view.backgroundColor = UIColor.white
         dummySettingsViewController.navigationItem.title = setting.name.rawValue
         navigationController?.navigationBar.tintColor = UIColor.white
-        navigationController?.navigationBar.titleTextAttributes = [NSAttributedStringKey.foregroundColor: UIColor.white]
+        navigationController?.navigationBar.titleTextAttributes = [NSAttributedString.Key.foregroundColor: UIColor.white]
         navigationController?.pushViewController(dummySettingsViewController, animated: true)
     }
     

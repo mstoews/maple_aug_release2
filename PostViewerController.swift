@@ -218,12 +218,12 @@
             
             fileprivate func setupAttributedCaption() {
                 guard let post = self.post else { return }
-                let attributedText = NSMutableAttributedString(string: "", attributes: [NSAttributedStringKey.font: UIFont.systemFont(ofSize: 10)])
-                attributedText.append(NSAttributedString(string: "\(post.description)", attributes: [NSAttributedStringKey.font: UIFont.systemFont(ofSize: 14)]))
-                attributedText.append(NSAttributedString(string: "\n", attributes: [NSAttributedStringKey.font: UIFont.systemFont(ofSize: 6)]))
+                let attributedText = NSMutableAttributedString(string: "", attributes: [NSAttributedString.Key.font: UIFont.systemFont(ofSize: 10)])
+                attributedText.append(NSAttributedString(string: "\(post.description)", attributes: [NSAttributedString.Key.font: UIFont.systemFont(ofSize: 14)]))
+                attributedText.append(NSAttributedString(string: "\n", attributes: [NSAttributedString.Key.font: UIFont.systemFont(ofSize: 6)]))
                 
                 let timeAgoDisplay = post.creationDate.timeAgoDisplay()
-                attributedText.append(NSAttributedString(string: timeAgoDisplay, attributes: [NSAttributedStringKey.font: UIFont.systemFont(ofSize: 12), NSAttributedStringKey.foregroundColor: UIColor.gray]))
+                attributedText.append(NSAttributedString(string: timeAgoDisplay, attributes: [NSAttributedString.Key.font: UIFont.systemFont(ofSize: 12), NSAttributedString.Key.foregroundColor: UIColor.gray]))
                 Description.attributedText = attributedText
             }
             
@@ -610,10 +610,10 @@
                 let size = systemDynamicFontDescriptor.pointSize
                 let font = UIFont(name: "ArialHebrew", size: size)
                 
-                attributedText = NSMutableAttributedString(string: "" , attributes: [NSAttributedStringKey.font: font as Any])
-                attributedText?.append(NSMutableAttributedString(string: userName , attributes: [NSAttributedStringKey.font: font as Any]))
-                attributedText?.append(NSMutableAttributedString(string: " : " , attributes: [NSAttributedStringKey.font: UIFont.boldSystemFont(ofSize: 12)]))
-                attributedText?.append(NSMutableAttributedString(string: caption , attributes: [NSAttributedStringKey.font: UIFont.boldSystemFont(ofSize: 12)]))
+                attributedText = NSMutableAttributedString(string: "" , attributes: [NSAttributedString.Key.font: font as Any])
+                attributedText?.append(NSMutableAttributedString(string: userName , attributes: [NSAttributedString.Key.font: font as Any]))
+                attributedText?.append(NSMutableAttributedString(string: " : " , attributes: [NSAttributedString.Key.font: UIFont.boldSystemFont(ofSize: 12)]))
+                attributedText?.append(NSMutableAttributedString(string: caption , attributes: [NSAttributedString.Key.font: UIFont.boldSystemFont(ofSize: 12)]))
                 
                 return attributedText!
             }
@@ -626,7 +626,7 @@
                 dummySettingsViewController.view.backgroundColor = UIColor.white
                 dummySettingsViewController.navigationItem.title = setting.name.rawValue
                 navigationController?.navigationBar.tintColor = UIColor.white
-                navigationController?.navigationBar.titleTextAttributes = [NSAttributedStringKey.foregroundColor: UIColor.white]
+                navigationController?.navigationBar.titleTextAttributes = [NSAttributedString.Key.foregroundColor: UIColor.white]
                 navigationController?.pushViewController(dummySettingsViewController, animated: true)
             }
             

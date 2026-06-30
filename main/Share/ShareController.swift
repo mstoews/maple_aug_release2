@@ -11,7 +11,6 @@ import Firebase
 import Photos
 import AssetsLibrary
 import FirebaseUI
-import AFNetworking
 import GoogleMaps
 import GooglePlaces
 import GooglePlacePicker
@@ -154,8 +153,8 @@ class EditPhotoControllers: ShareController {
         if let postId = postId {
             Firestore.fetchPostByPostId(postId: postId) { [weak self](post) in
                 guard let strongSelf = self else { return }
-                Firestore.fetchUserWithUID(uid: post.uid) { (user) in
-                    strongSelf.products.text = post.product
+                Firestore.fetchUserWithUID(uid: post.user.uid) { (user) in
+                    strongSelf.products.text = post.caption
                     strongSelf.descriptionTextView.text = post.description
                     for url in post.imageUrlArray {
                         print(url)
@@ -1028,7 +1027,7 @@ class ShareController:
     //        dummySettingsViewController.view.backgroundColor = UIColor.white
     //        dummySettingsViewController.navigationItem.title = setting.name.rawValue
     //        navigationController?.navigationBar.tintColor = UIColor.white
-    //        navigationController?.navigationBar.titleTextAttributes = [NSAttributedStringKey.foregroundColor: UIColor.white]
+    //        navigationController?.navigationBar.titleTextAttributes = [NSAttributedString.Key.foregroundColor: UIColor.white]
     //        navigationController?.pushViewController(dummySettingsViewController, animated: true)
     //    }
     

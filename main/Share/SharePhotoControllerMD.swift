@@ -11,7 +11,6 @@ import Firebase
 import Photos
 import AssetsLibrary
 import FirebaseUI
-import AFNetworking
 import GoogleMaps
 import GooglePlaces
 import GooglePlacePicker
